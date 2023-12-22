@@ -45,11 +45,7 @@ _Built on NexGen Cloud, built for you._
 ## TL;DR :
 1. Install and generate :
 
-   brew install go
-   echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.zshrc
-   source ~/.zshrc
-   make all
+   brew install go && echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.zshrc && source ~/.zshrc && make all
 
 2.[optional] Enable full test client and re-run tests to be sure
-export NEXGEN_CLOUD_API_KEY = <your nexgen API KEY>
-make test
+export NEXGEN_CLOUD_API_KEY = <your nexgen API KEY> && make test
