@@ -1,2 +1,0 @@
-# sdk-go
-sdk-go
