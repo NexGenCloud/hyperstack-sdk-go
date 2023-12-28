@@ -1,4 +1,4 @@
-package package-replace-location
+package PACKAGE_REPLACE
 
 import (
 	"fmt"
