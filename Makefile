@@ -30,8 +30,8 @@ generate: # Generates go sdk file from api.json
 	if [ -d "./${TIME_PACKAGE}" ]; then rm -Rf ./${TIME_PACKAGE}; fi
 	go run sdk_generator.go
 	mkdir ${PACKAGE}/${TIME_PACKAGE}
-	find ./${PACKAGE} -name "*.go" -exec sed -i '' -e "s/*time.Time/*${TIME_PACKAGE}.CustomTime/g" {} \;
-	find ./${PACKAGE} -name "*.go" -exec sed -i '' -e 's/"time"/"${PROJECT}\/${PACKAGE}\/${PACKAGE}\/${TIME_PACKAGE}"/g' {} \;
+	find ./${PACKAGE} -name "*.go" -exec echo sed -i -e "s/*time.Time/*${TIME_PACKAGE}.CustomTime/g" {} \;
+	find ./${PACKAGE} -name "*.go" -exec sed -i -e 's/"time"/"${PROJECT}\/${PACKAGE}\/${PACKAGE}\/${TIME_PACKAGE}"/g' {} \;
 	sed 's/package-replace-location/'$(TIME_PACKAGE)'/g' CustomTime.stub > ${PACKAGE}/${TIME_PACKAGE}/CustomTime.go
 
 test:

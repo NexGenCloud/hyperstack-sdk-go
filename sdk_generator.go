@@ -5,46 +5,47 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"path"
 	"strings"
 
 	yaml "gopkg.in/yaml.v2"
 )
 
-type Operation struct {
+type operation struct {
 	Tags        []string    `yaml:"tags"`
-	Parameters  []Parameter `yaml:"parameters,omitempty"`
+	Parameters  []parameter `yaml:"parameters,omitempty"`
 	Summary     string      `yaml:"summary,omitempty"`
 	Description string      `yaml:"description,omitempty"`
 	OperationId string      `yaml:"operationId,omitempty"`
 	Responses   interface{} `yaml:"responses"`
 }
 
-type PathItem struct {
-	Get     *Operation `yaml:"get,omitempty"`
-	Put     *Operation `yaml:"put,omitempty"`
-	Post    *Operation `yaml:"post,omitempty"`
-	Delete  *Operation `yaml:"delete,omitempty"`
-	Options *Operation `yaml:"options,omitempty"`
-	Head    *Operation `yaml:"head,omitempty"`
-	Patch   *Operation `yaml:"patch,omitempty"`
-	Trace   *Operation `yaml:"trace,omitempty"`
+type pathItem struct {
+	Get     *operation `yaml:"get,omitempty"`
+	Put     *operation `yaml:"put,omitempty"`
+	Post    *operation `yaml:"post,omitempty"`
+	Delete  *operation `yaml:"delete,omitempty"`
+	Options *operation `yaml:"options,omitempty"`
+	Head    *operation `yaml:"head,omitempty"`
+	Patch   *operation `yaml:"patch,omitempty"`
+	Trace   *operation `yaml:"trace,omitempty"`
 }
 
-type OpenAPISpec struct {
+type openAPISpec struct {
 	Openapi    string                 `yaml:"openapi"`
 	Info       map[string]interface{} `yaml:"info"`
-	Paths      map[string]*PathItem   `yaml:"paths"`
+	Paths      map[string]*pathItem   `yaml:"paths"`
 	Components map[string]interface{} `yaml:"components"`
 }
 
-type Schema struct {
+type schema struct {
 	Type string `yaml:"type"`
 }
-type Parameter struct {
+type parameter struct {
 	Name     string `yaml:"name"`
 	In       string `yaml:"in"`
 	Required bool   `yaml:"required"`
-	Schema   Schema `yaml:"schema"`
+	Schema   schema `yaml:"schema"`
 }
 
 func formatFileName(name string) string {
@@ -52,44 +53,62 @@ func formatFileName(name string) string {
 	fileName = strings.ReplaceAll(fileName, "-", "_")
 	return fileName
 }
-
 func main() {
-	specBytes, err := ioutil.ReadFile("api.json")
+	var err error
+
+	dirArtifacts := os.Getenv("DIR_ARTIFACTS")
+	if dirArtifacts == "" {
+		dirArtifacts = "."
+	}
+
+	dirApi := path.Join(dirArtifacts, "api")
+	err = os.RemoveAll(dirApi)
+	checkErr(err)
+	err = os.MkdirAll(dirApi, os.ModePerm)
 	checkErr(err)
 
-	var spec OpenAPISpec
+	dirSdk := os.Getenv("DIR_PACKAGE")
+	if dirSdk == "" {
+		checkErr(fmt.Errorf("DIR_PACKAGE must be specified"))
+	}
+	err = os.RemoveAll(dirSdk)
+	checkErr(err)
+	err = os.MkdirAll(dirSdk, os.ModePerm)
+	checkErr(err)
+
+	specBytes, err := ioutil.ReadFile(path.Join(dirArtifacts, "api.json"))
+	checkErr(err)
+
+	var spec openAPISpec
 	err = yaml.Unmarshal(specBytes, &spec)
 	checkErr(err)
 
-	os.MkdirAll("./api", os.ModePerm)
-	os.MkdirAll("./gosdk", os.ModePerm)
+	tags := make(map[string]*openAPISpec, 0)
 
-	tags := make(map[string]*OpenAPISpec, 0)
-
-	for path, pathItem := range spec.Paths {
+	for apiPath, pathItem := range spec.Paths {
 		if pathItem.Get != nil {
-			appendTaggedSpecs(pathItem.Get, path, pathItem, &spec, tags)
+			appendTaggedSpecs(pathItem.Get, apiPath, pathItem, &spec, tags)
 		}
 		if pathItem.Put != nil {
-			appendTaggedSpecs(pathItem.Put, path, pathItem, &spec, tags)
+			appendTaggedSpecs(pathItem.Put, apiPath, pathItem, &spec, tags)
 		}
 		if pathItem.Post != nil {
-			appendTaggedSpecs(pathItem.Post, path, pathItem, &spec, tags)
+			appendTaggedSpecs(pathItem.Post, apiPath, pathItem, &spec, tags)
 		}
 		if pathItem.Delete != nil {
-			appendTaggedSpecs(pathItem.Delete, path, pathItem, &spec, tags)
+			appendTaggedSpecs(pathItem.Delete, apiPath, pathItem, &spec, tags)
 		}
 		if pathItem.Options != nil {
-			appendTaggedSpecs(pathItem.Options, path, pathItem, &spec, tags)
+			appendTaggedSpecs(pathItem.Options, apiPath, pathItem, &spec, tags)
 		}
 		if pathItem.Head != nil {
-			appendTaggedSpecs(pathItem.Head, path, pathItem, &spec, tags)
+			appendTaggedSpecs(pathItem.Head, apiPath, pathItem, &spec, tags)
 		}
 		if pathItem.Patch != nil {
-			appendTaggedSpecs(pathItem.Patch, path, pathItem, &spec, tags)
+			appendTaggedSpecs(pathItem.Patch, apiPath, pathItem, &spec, tags)
 		}
 		if pathItem.Trace != nil {
-			appendTaggedSpecs(pathItem.Trace, path, pathItem, &spec, tags)
+			appendTaggedSpecs(pathItem.Trace, apiPath, pathItem, &spec, tags)
 		}
 	}
 
@@ -98,30 +117,41 @@ func main() {
 		checkErr(err)
 
 		folderName := formatFileName(tag)
-		err = os.MkdirAll("./api/"+folderName, os.ModePerm)
+		err = os.MkdirAll(path.Join(dirApi, folderName), os.ModePerm)
 		checkErr(err)
-		err = os.MkdirAll("./gosdk/"+folderName, os.ModePerm)
+		err = os.MkdirAll(path.Join(dirSdk, folderName), os.ModePerm)
 		checkErr(err)
 
-		tagSpecPath := "./api/" + folderName + "/" + folderName + ".yaml"
+		tagSpecPath := path.Join(dirApi, folderName, folderName+".yaml")
 		err = ioutil.WriteFile(tagSpecPath, tagBytes, 0644)
 		checkErr(err)
 
 		outPackage := folderName
-		cmd := exec.Command("oapi-codegen", "-package", outPackage, "-generate", "types,client", tagSpecPath)
+		cmd := exec.Command(
+			"oapi-codegen",
+			"-package",
+			outPackage,
+			"-generate",
+			"types,client",
+			tagSpecPath,
+		)
 		cmdOutput, err := cmd.CombinedOutput()
 		if err != nil {
-			fmt.Printf("Failed to generate client code for the tag '%s'. oapi-codegen output: \n%s\n", tag, string(cmdOutput))
+			fmt.Printf(
+				"Failed to generate client code for the tag '%s'. oapi-codegen output: \n%s\n",
+				tag,
+				string(cmdOutput),
+			)
 			continue
 		}
 
-		outputPath := "./gosdk/" + folderName + "/" + folderName + "_client.go"
+		outputPath := path.Join(dirSdk, folderName, folderName+"_client.go")
 		err = ioutil.WriteFile(outputPath, cmdOutput, 0644)
 		checkErr(err)
 	}
 }
 
-func appendTaggedSpecs(operation *Operation, path string, pathItem *PathItem, spec *OpenAPISpec, tags map[string]*OpenAPISpec) {
+func appendTaggedSpecs(operation *operation, path string, pathItem *pathItem, spec *openAPISpec, tags map[string]*openAPISpec) {
 	if operation.Tags == nil || len(operation.Tags) == 0 {
 		tags["Other"] = appendSpecToTag("Other", path, pathItem, spec, tags)
 	} else {
@@ -132,20 +162,20 @@ func appendTaggedSpecs(operation *Operation, path string, pathItem *PathItem, sp
 }
 
 // Modify appendSpecToTag function
-func appendSpecToTag(tag string, path string, pathItem *PathItem, spec *OpenAPISpec, tags map[string]*OpenAPISpec) *OpenAPISpec {
-	var tagSpec *OpenAPISpec
+func appendSpecToTag(tag string, path string, item *pathItem, spec *openAPISpec, tags map[string]*openAPISpec) *openAPISpec {
+	var tagSpec *openAPISpec
 	if ts, ok := tags[tag]; ok {
 		tagSpec = ts
 	} else {
-		tagSpec = &OpenAPISpec{
+		tagSpec = &openAPISpec{
 			Openapi:    spec.Openapi,
 			Info:       spec.Info,
-			Paths:      make(map[string]*PathItem),
+			Paths:      make(map[string]*pathItem),
 			Components: spec.Components,
 		}
 	}
 
-	tagSpec.Paths[path] = pathItem
+	tagSpec.Paths[path] = item
 	return tagSpec
 }
 

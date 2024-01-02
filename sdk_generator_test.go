@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/nexgen/gosdk/gosdk/auth"
+	"github.com/nexgen/hyperstack-sdk-go/lib/auth"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -13,9 +13,10 @@ import (
 	"time"
 )
 
-const API_URL = "https://infrahub-api.nexgencloud.com/v1/"
-
-var API_KEY = os.Getenv("NEXGEN_CLOUD_API_KEY")
+var (
+	API_SERVER         = "https://infrahub-api.nexgencloud.com/v1"
+	API_SERVER_STAGING = "https://infrahub-api-stg.ngbackend.cloud/v1"
+)
 
 type CustomTime struct {
 	time.Time
@@ -48,14 +49,23 @@ type UserFields struct {
 	Username  *string     `json:"username,omitempty"`
 }
 
-func createAuthClient(apiKey, serverURL, token string) (*auth.ClientWithResponses, error) {
+func createAuthClient() (*auth.ClientWithResponses, error) {
+	apiKey := os.Getenv("HYPERSTACK_API_KEY")
+	staging := os.Getenv("HYPERSTACK_STAGING") == "true"
+
+	apiServer := API_SERVER
+	if staging {
+		apiServer = API_SERVER_STAGING
+	}
+
 	addHeaders := func(ctx context.Context, req *http.Request) error {
 		req.Header.Add("api_key", apiKey)
+		// TODO: do we need to support it?
 		//req.Header.Add("Authorization", "Bearer "+token)
 		return nil
 	}
 
-	authClient, err := auth.NewClientWithResponses(serverURL, auth.WithRequestEditorFn(addHeaders))
+	authClient, err := auth.NewClientWithResponses(apiServer, auth.WithRequestEditorFn(addHeaders))
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +74,7 @@ func createAuthClient(apiKey, serverURL, token string) (*auth.ClientWithResponse
 }
 
 func TestAuthUserInformation(t *testing.T) {
-	authClient, err := createAuthClient(API_KEY, API_URL, "")
+	authClient, err := createAuthClient()
 
 	if err != nil {
 		log.Fatalf("failed to create client: %s", err)
