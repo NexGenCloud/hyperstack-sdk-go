@@ -26,7 +26,7 @@ type ErrorResponseModel struct {
 // RBACRole defines model for RBAC Role.
 type RBACRole struct {
 	Message *string         `json:"message,omitempty"`
-	Role    *RBACRoleFields `json:"role,omitempty"`
+	Roles   *RBACRoleFields `json:"roles,omitempty"`
 	Status  *bool           `json:"status,omitempty"`
 }
 

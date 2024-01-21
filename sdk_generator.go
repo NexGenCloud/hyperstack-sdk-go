@@ -85,7 +85,15 @@ func main() {
 
 	tags := make(map[string]*openAPISpec, 0)
 
+	type nMap = map[interface{}]interface{}
+
 	for apiPath, pathItem := range spec.Paths {
+		switch apiPath {
+		case "/auth/roles/{id}":
+			spec.Components["schemas"].(nMap)["RBAC Role"].(nMap)["properties"].(nMap)["roles"] = spec.Components["schemas"].(nMap)["RBAC Role"].(nMap)["properties"].(nMap)["role"]
+			delete(spec.Components["schemas"].(nMap)["RBAC Role"].(nMap)["properties"].(nMap), "role")
+		}
+
 		if pathItem.Get != nil {
 			appendTaggedSpecs(pathItem.Get, apiPath, pathItem, &spec, tags)
 		}
