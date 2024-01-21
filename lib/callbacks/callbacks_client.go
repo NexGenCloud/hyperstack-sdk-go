@@ -4,6 +4,7 @@
 package callbacks
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -14,6 +15,11 @@ import (
 
 	"github.com/oapi-codegen/runtime"
 )
+
+// AttachCallbackPayload defines model for Attach Callback Payload.
+type AttachCallbackPayload struct {
+	Url string `json:"url"`
+}
 
 // AttachCallbackResponse defines model for Attach Callback Response.
 type AttachCallbackResponse struct {
@@ -34,6 +40,18 @@ type ResponseModel struct {
 	Message *string `json:"message,omitempty"`
 	Status  *bool   `json:"status,omitempty"`
 }
+
+// AttachACallbackToAnInstanceJSONRequestBody defines body for AttachACallbackToAnInstance for application/json ContentType.
+type AttachACallbackToAnInstanceJSONRequestBody = AttachCallbackPayload
+
+// UpdateACallbackURLJSONRequestBody defines body for UpdateACallbackURL for application/json ContentType.
+type UpdateACallbackURLJSONRequestBody = AttachCallbackPayload
+
+// AttachACallbackToAVolumeJSONRequestBody defines body for AttachACallbackToAVolume for application/json ContentType.
+type AttachACallbackToAVolumeJSONRequestBody = AttachCallbackPayload
+
+// UpdateCallbackURLForVolumeJSONRequestBody defines body for UpdateCallbackURLForVolume for application/json ContentType.
+type UpdateCallbackURLForVolumeJSONRequestBody = AttachCallbackPayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -108,27 +126,47 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// AttachACallbackToAnInstance request
-	AttachACallbackToAnInstance(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// AttachACallbackToAnInstanceWithBody request with any body
+	AttachACallbackToAnInstanceWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AttachACallbackToAnInstance(ctx context.Context, id int, body AttachACallbackToAnInstanceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteACallbackURLForAnInstance request
 	DeleteACallbackURLForAnInstance(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateACallbackURL request
-	UpdateACallbackURL(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdateACallbackURLWithBody request with any body
+	UpdateACallbackURLWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// AttachACallbackToAVolume request
-	AttachACallbackToAVolume(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateACallbackURL(ctx context.Context, id int, body UpdateACallbackURLJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AttachACallbackToAVolumeWithBody request with any body
+	AttachACallbackToAVolumeWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AttachACallbackToAVolume(ctx context.Context, id int, body AttachACallbackToAVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteCallbackURLForAVolume request
 	DeleteCallbackURLForAVolume(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateCallbackURLForVolume request
-	UpdateCallbackURLForVolume(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdateCallbackURLForVolumeWithBody request with any body
+	UpdateCallbackURLForVolumeWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateCallbackURLForVolume(ctx context.Context, id int, body UpdateCallbackURLForVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) AttachACallbackToAnInstance(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAttachACallbackToAnInstanceRequest(c.Server, id)
+func (c *Client) AttachACallbackToAnInstanceWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachACallbackToAnInstanceRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AttachACallbackToAnInstance(ctx context.Context, id int, body AttachACallbackToAnInstanceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachACallbackToAnInstanceRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -151,8 +189,8 @@ func (c *Client) DeleteACallbackURLForAnInstance(ctx context.Context, id int, re
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateACallbackURL(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateACallbackURLRequest(c.Server, id)
+func (c *Client) UpdateACallbackURLWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateACallbackURLRequestWithBody(c.Server, id, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -163,8 +201,32 @@ func (c *Client) UpdateACallbackURL(ctx context.Context, id int, reqEditors ...R
 	return c.Client.Do(req)
 }
 
-func (c *Client) AttachACallbackToAVolume(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAttachACallbackToAVolumeRequest(c.Server, id)
+func (c *Client) UpdateACallbackURL(ctx context.Context, id int, body UpdateACallbackURLJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateACallbackURLRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AttachACallbackToAVolumeWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachACallbackToAVolumeRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AttachACallbackToAVolume(ctx context.Context, id int, body AttachACallbackToAVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachACallbackToAVolumeRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -187,8 +249,8 @@ func (c *Client) DeleteCallbackURLForAVolume(ctx context.Context, id int, reqEdi
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateCallbackURLForVolume(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateCallbackURLForVolumeRequest(c.Server, id)
+func (c *Client) UpdateCallbackURLForVolumeWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateCallbackURLForVolumeRequestWithBody(c.Server, id, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -199,8 +261,31 @@ func (c *Client) UpdateCallbackURLForVolume(ctx context.Context, id int, reqEdit
 	return c.Client.Do(req)
 }
 
-// NewAttachACallbackToAnInstanceRequest generates requests for AttachACallbackToAnInstance
-func NewAttachACallbackToAnInstanceRequest(server string, id int) (*http.Request, error) {
+func (c *Client) UpdateCallbackURLForVolume(ctx context.Context, id int, body UpdateCallbackURLForVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateCallbackURLForVolumeRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// NewAttachACallbackToAnInstanceRequest calls the generic AttachACallbackToAnInstance builder with application/json body
+func NewAttachACallbackToAnInstanceRequest(server string, id int, body AttachACallbackToAnInstanceJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAttachACallbackToAnInstanceRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewAttachACallbackToAnInstanceRequestWithBody generates requests for AttachACallbackToAnInstance with any type of body
+func NewAttachACallbackToAnInstanceRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -225,10 +310,12 @@ func NewAttachACallbackToAnInstanceRequest(server string, id int) (*http.Request
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -267,8 +354,19 @@ func NewDeleteACallbackURLForAnInstanceRequest(server string, id int) (*http.Req
 	return req, nil
 }
 
-// NewUpdateACallbackURLRequest generates requests for UpdateACallbackURL
-func NewUpdateACallbackURLRequest(server string, id int) (*http.Request, error) {
+// NewUpdateACallbackURLRequest calls the generic UpdateACallbackURL builder with application/json body
+func NewUpdateACallbackURLRequest(server string, id int, body UpdateACallbackURLJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateACallbackURLRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateACallbackURLRequestWithBody generates requests for UpdateACallbackURL with any type of body
+func NewUpdateACallbackURLRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -293,16 +391,29 @@ func NewUpdateACallbackURLRequest(server string, id int) (*http.Request, error) 
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PUT", queryURL.String(), nil)
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
 
+	req.Header.Add("Content-Type", contentType)
+
 	return req, nil
 }
 
-// NewAttachACallbackToAVolumeRequest generates requests for AttachACallbackToAVolume
-func NewAttachACallbackToAVolumeRequest(server string, id int) (*http.Request, error) {
+// NewAttachACallbackToAVolumeRequest calls the generic AttachACallbackToAVolume builder with application/json body
+func NewAttachACallbackToAVolumeRequest(server string, id int, body AttachACallbackToAVolumeJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAttachACallbackToAVolumeRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewAttachACallbackToAVolumeRequestWithBody generates requests for AttachACallbackToAVolume with any type of body
+func NewAttachACallbackToAVolumeRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -327,10 +438,12 @@ func NewAttachACallbackToAVolumeRequest(server string, id int) (*http.Request, e
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -369,8 +482,19 @@ func NewDeleteCallbackURLForAVolumeRequest(server string, id int) (*http.Request
 	return req, nil
 }
 
-// NewUpdateCallbackURLForVolumeRequest generates requests for UpdateCallbackURLForVolume
-func NewUpdateCallbackURLForVolumeRequest(server string, id int) (*http.Request, error) {
+// NewUpdateCallbackURLForVolumeRequest calls the generic UpdateCallbackURLForVolume builder with application/json body
+func NewUpdateCallbackURLForVolumeRequest(server string, id int, body UpdateCallbackURLForVolumeJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateCallbackURLForVolumeRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateCallbackURLForVolumeRequestWithBody generates requests for UpdateCallbackURLForVolume with any type of body
+func NewUpdateCallbackURLForVolumeRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -395,10 +519,12 @@ func NewUpdateCallbackURLForVolumeRequest(server string, id int) (*http.Request,
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PUT", queryURL.String(), nil)
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -446,23 +572,31 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// AttachACallbackToAnInstanceWithResponse request
-	AttachACallbackToAnInstanceWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*AttachACallbackToAnInstanceResponse, error)
+	// AttachACallbackToAnInstanceWithBodyWithResponse request with any body
+	AttachACallbackToAnInstanceWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachACallbackToAnInstanceResponse, error)
+
+	AttachACallbackToAnInstanceWithResponse(ctx context.Context, id int, body AttachACallbackToAnInstanceJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachACallbackToAnInstanceResponse, error)
 
 	// DeleteACallbackURLForAnInstanceWithResponse request
 	DeleteACallbackURLForAnInstanceWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteACallbackURLForAnInstanceResponse, error)
 
-	// UpdateACallbackURLWithResponse request
-	UpdateACallbackURLWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*UpdateACallbackURLResponse, error)
+	// UpdateACallbackURLWithBodyWithResponse request with any body
+	UpdateACallbackURLWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateACallbackURLResponse, error)
 
-	// AttachACallbackToAVolumeWithResponse request
-	AttachACallbackToAVolumeWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*AttachACallbackToAVolumeResponse, error)
+	UpdateACallbackURLWithResponse(ctx context.Context, id int, body UpdateACallbackURLJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateACallbackURLResponse, error)
+
+	// AttachACallbackToAVolumeWithBodyWithResponse request with any body
+	AttachACallbackToAVolumeWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachACallbackToAVolumeResponse, error)
+
+	AttachACallbackToAVolumeWithResponse(ctx context.Context, id int, body AttachACallbackToAVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachACallbackToAVolumeResponse, error)
 
 	// DeleteCallbackURLForAVolumeWithResponse request
 	DeleteCallbackURLForAVolumeWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteCallbackURLForAVolumeResponse, error)
 
-	// UpdateCallbackURLForVolumeWithResponse request
-	UpdateCallbackURLForVolumeWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*UpdateCallbackURLForVolumeResponse, error)
+	// UpdateCallbackURLForVolumeWithBodyWithResponse request with any body
+	UpdateCallbackURLForVolumeWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateCallbackURLForVolumeResponse, error)
+
+	UpdateCallbackURLForVolumeWithResponse(ctx context.Context, id int, body UpdateCallbackURLForVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateCallbackURLForVolumeResponse, error)
 }
 
 type AttachACallbackToAnInstanceResponse struct {
@@ -615,9 +749,17 @@ func (r UpdateCallbackURLForVolumeResponse) StatusCode() int {
 	return 0
 }
 
-// AttachACallbackToAnInstanceWithResponse request returning *AttachACallbackToAnInstanceResponse
-func (c *ClientWithResponses) AttachACallbackToAnInstanceWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*AttachACallbackToAnInstanceResponse, error) {
-	rsp, err := c.AttachACallbackToAnInstance(ctx, id, reqEditors...)
+// AttachACallbackToAnInstanceWithBodyWithResponse request with arbitrary body returning *AttachACallbackToAnInstanceResponse
+func (c *ClientWithResponses) AttachACallbackToAnInstanceWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachACallbackToAnInstanceResponse, error) {
+	rsp, err := c.AttachACallbackToAnInstanceWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAttachACallbackToAnInstanceResponse(rsp)
+}
+
+func (c *ClientWithResponses) AttachACallbackToAnInstanceWithResponse(ctx context.Context, id int, body AttachACallbackToAnInstanceJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachACallbackToAnInstanceResponse, error) {
+	rsp, err := c.AttachACallbackToAnInstance(ctx, id, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -633,18 +775,34 @@ func (c *ClientWithResponses) DeleteACallbackURLForAnInstanceWithResponse(ctx co
 	return ParseDeleteACallbackURLForAnInstanceResponse(rsp)
 }
 
-// UpdateACallbackURLWithResponse request returning *UpdateACallbackURLResponse
-func (c *ClientWithResponses) UpdateACallbackURLWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*UpdateACallbackURLResponse, error) {
-	rsp, err := c.UpdateACallbackURL(ctx, id, reqEditors...)
+// UpdateACallbackURLWithBodyWithResponse request with arbitrary body returning *UpdateACallbackURLResponse
+func (c *ClientWithResponses) UpdateACallbackURLWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateACallbackURLResponse, error) {
+	rsp, err := c.UpdateACallbackURLWithBody(ctx, id, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseUpdateACallbackURLResponse(rsp)
 }
 
-// AttachACallbackToAVolumeWithResponse request returning *AttachACallbackToAVolumeResponse
-func (c *ClientWithResponses) AttachACallbackToAVolumeWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*AttachACallbackToAVolumeResponse, error) {
-	rsp, err := c.AttachACallbackToAVolume(ctx, id, reqEditors...)
+func (c *ClientWithResponses) UpdateACallbackURLWithResponse(ctx context.Context, id int, body UpdateACallbackURLJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateACallbackURLResponse, error) {
+	rsp, err := c.UpdateACallbackURL(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateACallbackURLResponse(rsp)
+}
+
+// AttachACallbackToAVolumeWithBodyWithResponse request with arbitrary body returning *AttachACallbackToAVolumeResponse
+func (c *ClientWithResponses) AttachACallbackToAVolumeWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachACallbackToAVolumeResponse, error) {
+	rsp, err := c.AttachACallbackToAVolumeWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAttachACallbackToAVolumeResponse(rsp)
+}
+
+func (c *ClientWithResponses) AttachACallbackToAVolumeWithResponse(ctx context.Context, id int, body AttachACallbackToAVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachACallbackToAVolumeResponse, error) {
+	rsp, err := c.AttachACallbackToAVolume(ctx, id, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -660,9 +818,17 @@ func (c *ClientWithResponses) DeleteCallbackURLForAVolumeWithResponse(ctx contex
 	return ParseDeleteCallbackURLForAVolumeResponse(rsp)
 }
 
-// UpdateCallbackURLForVolumeWithResponse request returning *UpdateCallbackURLForVolumeResponse
-func (c *ClientWithResponses) UpdateCallbackURLForVolumeWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*UpdateCallbackURLForVolumeResponse, error) {
-	rsp, err := c.UpdateCallbackURLForVolume(ctx, id, reqEditors...)
+// UpdateCallbackURLForVolumeWithBodyWithResponse request with arbitrary body returning *UpdateCallbackURLForVolumeResponse
+func (c *ClientWithResponses) UpdateCallbackURLForVolumeWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateCallbackURLForVolumeResponse, error) {
+	rsp, err := c.UpdateCallbackURLForVolumeWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateCallbackURLForVolumeResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateCallbackURLForVolumeWithResponse(ctx context.Context, id int, body UpdateCallbackURLForVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateCallbackURLForVolumeResponse, error) {
+	rsp, err := c.UpdateCallbackURLForVolume(ctx, id, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}

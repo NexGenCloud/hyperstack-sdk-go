@@ -4,6 +4,7 @@
 package virtual_machine
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -16,11 +17,45 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// CreateInstancesPayload defines model for Create Instances Payload.
+type CreateInstancesPayload struct {
+	AssignFloatingIp     *bool                `json:"assign_floating_ip,omitempty"`
+	CallbackUrl          *string              `json:"callback_url,omitempty"`
+	Count                int                  `json:"count"`
+	CreateBootableVolume *bool                `json:"create_bootable_volume,omitempty"`
+	EnvironmentName      string               `json:"environment_name"`
+	Flavor               *FlavorObjectFields  `json:"flavor,omitempty"`
+	FlavorName           *string              `json:"flavor_name,omitempty"`
+	ImageName            *string              `json:"image_name,omitempty"`
+	KeyName              string               `json:"key_name"`
+	Name                 string               `json:"name"`
+	Profile              *ProfileObjectFields `json:"profile,omitempty"`
+	UserData             *string              `json:"user_data,omitempty"`
+	VolumeName           *string              `json:"volume_name,omitempty"`
+}
+
+// CreateSecurityRulePayload defines model for Create Security Rule Payload.
+type CreateSecurityRulePayload struct {
+	Direction      string `json:"direction"`
+	Ethertype      string `json:"ethertype"`
+	Protocol       string `json:"protocol"`
+	RemoteIpPrefix string `json:"remote_ip_prefix"`
+}
+
 // ErrorResponseModel defines model for ErrorResponseModel.
 type ErrorResponseModel struct {
 	ErrorReason *string `json:"error_reason,omitempty"`
 	Message     *string `json:"message,omitempty"`
 	Status      *bool   `json:"status,omitempty"`
+}
+
+// FlavorObjectFields defines model for Flavor Object Fields.
+type FlavorObjectFields struct {
+	Cpu      *int     `json:"cpu,omitempty"`
+	Disk     *int     `json:"disk,omitempty"`
+	Gpu      *string  `json:"gpu,omitempty"`
+	GpuCount *int     `json:"gpu_count,omitempty"`
+	Ram      *float32 `json:"ram,omitempty"`
 }
 
 // Instance defines model for Instance.
@@ -78,12 +113,24 @@ type InstanceKeypairFields struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// InstanceResizePayload defines model for InstanceResizePayload.
+type InstanceResizePayload struct {
+	Flavor     *FlavorObjectFields `json:"flavor,omitempty"`
+	FlavorName *string             `json:"flavor_name,omitempty"`
+}
+
 // Instances defines model for Instances.
 type Instances struct {
 	InstanceCount *int                   `json:"instance_count,omitempty"`
 	Instances     *[]InstanceAdminFields `json:"instances,omitempty"`
 	Message       *string                `json:"message,omitempty"`
 	Status        *bool                  `json:"status,omitempty"`
+}
+
+// ProfileObjectFields defines model for Profile Object Fields.
+type ProfileObjectFields struct {
+	Description *string `json:"description,omitempty"`
+	Name        string  `json:"name"`
 }
 
 // ResponseModel defines model for ResponseModel.
@@ -146,6 +193,15 @@ type VolumeFieldsForInstance struct {
 type RetrievedMetricsSuccessfullyParams struct {
 	Duration *string `form:"duration,omitempty" json:"duration,omitempty"`
 }
+
+// CreateInstancesJSONRequestBody defines body for CreateInstances for application/json ContentType.
+type CreateInstancesJSONRequestBody = CreateInstancesPayload
+
+// AddSecurityRuleJSONRequestBody defines body for AddSecurityRule for application/json ContentType.
+type AddSecurityRuleJSONRequestBody = CreateSecurityRulePayload
+
+// ResizeVirtualMachineJSONRequestBody defines body for ResizeVirtualMachine for application/json ContentType.
+type ResizeVirtualMachineJSONRequestBody = InstanceResizePayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -223,8 +279,10 @@ type ClientInterface interface {
 	// ListInstances request
 	ListInstances(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateInstances request
-	CreateInstances(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateInstancesWithBody request with any body
+	CreateInstancesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateInstances(ctx context.Context, body CreateInstancesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteAnInstance request
 	DeleteAnInstance(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -235,8 +293,10 @@ type ClientInterface interface {
 	// HardRebootInstance request
 	HardRebootInstance(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// AddSecurityRule request
-	AddSecurityRule(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// AddSecurityRuleWithBody request with any body
+	AddSecurityRuleWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AddSecurityRule(ctx context.Context, id int, body AddSecurityRuleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// StartInstance request
 	StartInstance(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -253,8 +313,10 @@ type ClientInterface interface {
 	// RetrievedMetricsSuccessfully request
 	RetrievedMetricsSuccessfully(ctx context.Context, virtualMachineId int, params *RetrievedMetricsSuccessfullyParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ResizeVirtualMachine request
-	ResizeVirtualMachine(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ResizeVirtualMachineWithBody request with any body
+	ResizeVirtualMachineWithBody(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ResizeVirtualMachine(ctx context.Context, virtualMachineId int, body ResizeVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteASecurityRule request
 	DeleteASecurityRule(ctx context.Context, virtualMachineId int, sgRuleId int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -272,8 +334,20 @@ func (c *Client) ListInstances(ctx context.Context, reqEditors ...RequestEditorF
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateInstances(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateInstancesRequest(c.Server)
+func (c *Client) CreateInstancesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateInstancesRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateInstances(ctx context.Context, body CreateInstancesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateInstancesRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -320,8 +394,20 @@ func (c *Client) HardRebootInstance(ctx context.Context, id int, reqEditors ...R
 	return c.Client.Do(req)
 }
 
-func (c *Client) AddSecurityRule(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAddSecurityRuleRequest(c.Server, id)
+func (c *Client) AddSecurityRuleWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddSecurityRuleRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AddSecurityRule(ctx context.Context, id int, body AddSecurityRuleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddSecurityRuleRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -392,8 +478,20 @@ func (c *Client) RetrievedMetricsSuccessfully(ctx context.Context, virtualMachin
 	return c.Client.Do(req)
 }
 
-func (c *Client) ResizeVirtualMachine(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewResizeVirtualMachineRequest(c.Server, virtualMachineId)
+func (c *Client) ResizeVirtualMachineWithBody(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewResizeVirtualMachineRequestWithBody(c.Server, virtualMachineId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ResizeVirtualMachine(ctx context.Context, virtualMachineId int, body ResizeVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewResizeVirtualMachineRequest(c.Server, virtualMachineId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -443,8 +541,19 @@ func NewListInstancesRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewCreateInstancesRequest generates requests for CreateInstances
-func NewCreateInstancesRequest(server string) (*http.Request, error) {
+// NewCreateInstancesRequest calls the generic CreateInstances builder with application/json body
+func NewCreateInstancesRequest(server string, body CreateInstancesJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateInstancesRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateInstancesRequestWithBody generates requests for CreateInstances with any type of body
+func NewCreateInstancesRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -462,10 +571,12 @@ func NewCreateInstancesRequest(server string) (*http.Request, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -572,8 +683,19 @@ func NewHardRebootInstanceRequest(server string, id int) (*http.Request, error) 
 	return req, nil
 }
 
-// NewAddSecurityRuleRequest generates requests for AddSecurityRule
-func NewAddSecurityRuleRequest(server string, id int) (*http.Request, error) {
+// NewAddSecurityRuleRequest calls the generic AddSecurityRule builder with application/json body
+func NewAddSecurityRuleRequest(server string, id int, body AddSecurityRuleJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAddSecurityRuleRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewAddSecurityRuleRequestWithBody generates requests for AddSecurityRule with any type of body
+func NewAddSecurityRuleRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -598,10 +720,12 @@ func NewAddSecurityRuleRequest(server string, id int) (*http.Request, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -798,8 +922,19 @@ func NewRetrievedMetricsSuccessfullyRequest(server string, virtualMachineId int,
 	return req, nil
 }
 
-// NewResizeVirtualMachineRequest generates requests for ResizeVirtualMachine
-func NewResizeVirtualMachineRequest(server string, virtualMachineId int) (*http.Request, error) {
+// NewResizeVirtualMachineRequest calls the generic ResizeVirtualMachine builder with application/json body
+func NewResizeVirtualMachineRequest(server string, virtualMachineId int, body ResizeVirtualMachineJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewResizeVirtualMachineRequestWithBody(server, virtualMachineId, "application/json", bodyReader)
+}
+
+// NewResizeVirtualMachineRequestWithBody generates requests for ResizeVirtualMachine with any type of body
+func NewResizeVirtualMachineRequestWithBody(server string, virtualMachineId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -824,10 +959,12 @@ func NewResizeVirtualMachineRequest(server string, virtualMachineId int) (*http.
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -919,8 +1056,10 @@ type ClientWithResponsesInterface interface {
 	// ListInstancesWithResponse request
 	ListInstancesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListInstancesResponse, error)
 
-	// CreateInstancesWithResponse request
-	CreateInstancesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CreateInstancesResponse, error)
+	// CreateInstancesWithBodyWithResponse request with any body
+	CreateInstancesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateInstancesResponse, error)
+
+	CreateInstancesWithResponse(ctx context.Context, body CreateInstancesJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateInstancesResponse, error)
 
 	// DeleteAnInstanceWithResponse request
 	DeleteAnInstanceWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteAnInstanceResponse, error)
@@ -931,8 +1070,10 @@ type ClientWithResponsesInterface interface {
 	// HardRebootInstanceWithResponse request
 	HardRebootInstanceWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*HardRebootInstanceResponse, error)
 
-	// AddSecurityRuleWithResponse request
-	AddSecurityRuleWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*AddSecurityRuleResponse, error)
+	// AddSecurityRuleWithBodyWithResponse request with any body
+	AddSecurityRuleWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddSecurityRuleResponse, error)
+
+	AddSecurityRuleWithResponse(ctx context.Context, id int, body AddSecurityRuleJSONRequestBody, reqEditors ...RequestEditorFn) (*AddSecurityRuleResponse, error)
 
 	// StartInstanceWithResponse request
 	StartInstanceWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*StartInstanceResponse, error)
@@ -949,8 +1090,10 @@ type ClientWithResponsesInterface interface {
 	// RetrievedMetricsSuccessfullyWithResponse request
 	RetrievedMetricsSuccessfullyWithResponse(ctx context.Context, virtualMachineId int, params *RetrievedMetricsSuccessfullyParams, reqEditors ...RequestEditorFn) (*RetrievedMetricsSuccessfullyResponse, error)
 
-	// ResizeVirtualMachineWithResponse request
-	ResizeVirtualMachineWithResponse(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*ResizeVirtualMachineResponse, error)
+	// ResizeVirtualMachineWithBodyWithResponse request with any body
+	ResizeVirtualMachineWithBodyWithResponse(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ResizeVirtualMachineResponse, error)
+
+	ResizeVirtualMachineWithResponse(ctx context.Context, virtualMachineId int, body ResizeVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*ResizeVirtualMachineResponse, error)
 
 	// DeleteASecurityRuleWithResponse request
 	DeleteASecurityRuleWithResponse(ctx context.Context, virtualMachineId int, sgRuleId int, reqEditors ...RequestEditorFn) (*DeleteASecurityRuleResponse, error)
@@ -1294,9 +1437,17 @@ func (c *ClientWithResponses) ListInstancesWithResponse(ctx context.Context, req
 	return ParseListInstancesResponse(rsp)
 }
 
-// CreateInstancesWithResponse request returning *CreateInstancesResponse
-func (c *ClientWithResponses) CreateInstancesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CreateInstancesResponse, error) {
-	rsp, err := c.CreateInstances(ctx, reqEditors...)
+// CreateInstancesWithBodyWithResponse request with arbitrary body returning *CreateInstancesResponse
+func (c *ClientWithResponses) CreateInstancesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateInstancesResponse, error) {
+	rsp, err := c.CreateInstancesWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateInstancesResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateInstancesWithResponse(ctx context.Context, body CreateInstancesJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateInstancesResponse, error) {
+	rsp, err := c.CreateInstances(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -1330,9 +1481,17 @@ func (c *ClientWithResponses) HardRebootInstanceWithResponse(ctx context.Context
 	return ParseHardRebootInstanceResponse(rsp)
 }
 
-// AddSecurityRuleWithResponse request returning *AddSecurityRuleResponse
-func (c *ClientWithResponses) AddSecurityRuleWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*AddSecurityRuleResponse, error) {
-	rsp, err := c.AddSecurityRule(ctx, id, reqEditors...)
+// AddSecurityRuleWithBodyWithResponse request with arbitrary body returning *AddSecurityRuleResponse
+func (c *ClientWithResponses) AddSecurityRuleWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddSecurityRuleResponse, error) {
+	rsp, err := c.AddSecurityRuleWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAddSecurityRuleResponse(rsp)
+}
+
+func (c *ClientWithResponses) AddSecurityRuleWithResponse(ctx context.Context, id int, body AddSecurityRuleJSONRequestBody, reqEditors ...RequestEditorFn) (*AddSecurityRuleResponse, error) {
+	rsp, err := c.AddSecurityRule(ctx, id, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -1384,9 +1543,17 @@ func (c *ClientWithResponses) RetrievedMetricsSuccessfullyWithResponse(ctx conte
 	return ParseRetrievedMetricsSuccessfullyResponse(rsp)
 }
 
-// ResizeVirtualMachineWithResponse request returning *ResizeVirtualMachineResponse
-func (c *ClientWithResponses) ResizeVirtualMachineWithResponse(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*ResizeVirtualMachineResponse, error) {
-	rsp, err := c.ResizeVirtualMachine(ctx, virtualMachineId, reqEditors...)
+// ResizeVirtualMachineWithBodyWithResponse request with arbitrary body returning *ResizeVirtualMachineResponse
+func (c *ClientWithResponses) ResizeVirtualMachineWithBodyWithResponse(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ResizeVirtualMachineResponse, error) {
+	rsp, err := c.ResizeVirtualMachineWithBody(ctx, virtualMachineId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseResizeVirtualMachineResponse(rsp)
+}
+
+func (c *ClientWithResponses) ResizeVirtualMachineWithResponse(ctx context.Context, virtualMachineId int, body ResizeVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*ResizeVirtualMachineResponse, error) {
+	rsp, err := c.ResizeVirtualMachine(ctx, virtualMachineId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}

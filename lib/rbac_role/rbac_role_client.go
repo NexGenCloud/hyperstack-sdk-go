@@ -4,6 +4,7 @@
 package rbac_role
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -40,6 +41,14 @@ type RBACRoleFields struct {
 	Policies    *[]RolePolicyFields     `json:"policies,omitempty"`
 }
 
+// RBACRolePayload defines model for RBAC Role Payload.
+type RBACRolePayload struct {
+	Description string `json:"description"`
+	Name        string `json:"name"`
+	Permissions *[]int `json:"permissions,omitempty"`
+	Policies    *[]int `json:"policies,omitempty"`
+}
+
 // RBACRoles defines model for RBAC Roles.
 type RBACRoles struct {
 	Message *string           `json:"message,omitempty"`
@@ -66,6 +75,12 @@ type RolePolicyFields struct {
 	Id          *int    `json:"id,omitempty"`
 	Name        *string `json:"name,omitempty"`
 }
+
+// CreateRBACRoleJSONRequestBody defines body for CreateRBACRole for application/json ContentType.
+type CreateRBACRoleJSONRequestBody = RBACRolePayload
+
+// UpdateARBACRoleJSONRequestBody defines body for UpdateARBACRole for application/json ContentType.
+type UpdateARBACRoleJSONRequestBody = RBACRolePayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -143,8 +158,10 @@ type ClientInterface interface {
 	// ListRBACRoles request
 	ListRBACRoles(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateRBACRole request
-	CreateRBACRole(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateRBACRoleWithBody request with any body
+	CreateRBACRoleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateRBACRole(ctx context.Context, body CreateRBACRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteARBACRole request
 	DeleteARBACRole(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -152,8 +169,10 @@ type ClientInterface interface {
 	// GetARBACRoleDetail request
 	GetARBACRoleDetail(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateARBACRole request
-	UpdateARBACRole(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdateARBACRoleWithBody request with any body
+	UpdateARBACRoleWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateARBACRole(ctx context.Context, id int, body UpdateARBACRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) ListRBACRoles(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -168,8 +187,20 @@ func (c *Client) ListRBACRoles(ctx context.Context, reqEditors ...RequestEditorF
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateRBACRole(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateRBACRoleRequest(c.Server)
+func (c *Client) CreateRBACRoleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateRBACRoleRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateRBACRole(ctx context.Context, body CreateRBACRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateRBACRoleRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -204,8 +235,20 @@ func (c *Client) GetARBACRoleDetail(ctx context.Context, id int, reqEditors ...R
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateARBACRole(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateARBACRoleRequest(c.Server, id)
+func (c *Client) UpdateARBACRoleWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateARBACRoleRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateARBACRole(ctx context.Context, id int, body UpdateARBACRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateARBACRoleRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -243,8 +286,19 @@ func NewListRBACRolesRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewCreateRBACRoleRequest generates requests for CreateRBACRole
-func NewCreateRBACRoleRequest(server string) (*http.Request, error) {
+// NewCreateRBACRoleRequest calls the generic CreateRBACRole builder with application/json body
+func NewCreateRBACRoleRequest(server string, body CreateRBACRoleJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateRBACRoleRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateRBACRoleRequestWithBody generates requests for CreateRBACRole with any type of body
+func NewCreateRBACRoleRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -262,10 +316,12 @@ func NewCreateRBACRoleRequest(server string) (*http.Request, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -338,8 +394,19 @@ func NewGetARBACRoleDetailRequest(server string, id int) (*http.Request, error) 
 	return req, nil
 }
 
-// NewUpdateARBACRoleRequest generates requests for UpdateARBACRole
-func NewUpdateARBACRoleRequest(server string, id int) (*http.Request, error) {
+// NewUpdateARBACRoleRequest calls the generic UpdateARBACRole builder with application/json body
+func NewUpdateARBACRoleRequest(server string, id int, body UpdateARBACRoleJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateARBACRoleRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateARBACRoleRequestWithBody generates requests for UpdateARBACRole with any type of body
+func NewUpdateARBACRoleRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -364,10 +431,12 @@ func NewUpdateARBACRoleRequest(server string, id int) (*http.Request, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PUT", queryURL.String(), nil)
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -418,8 +487,10 @@ type ClientWithResponsesInterface interface {
 	// ListRBACRolesWithResponse request
 	ListRBACRolesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListRBACRolesResponse, error)
 
-	// CreateRBACRoleWithResponse request
-	CreateRBACRoleWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CreateRBACRoleResponse, error)
+	// CreateRBACRoleWithBodyWithResponse request with any body
+	CreateRBACRoleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateRBACRoleResponse, error)
+
+	CreateRBACRoleWithResponse(ctx context.Context, body CreateRBACRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateRBACRoleResponse, error)
 
 	// DeleteARBACRoleWithResponse request
 	DeleteARBACRoleWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteARBACRoleResponse, error)
@@ -427,8 +498,10 @@ type ClientWithResponsesInterface interface {
 	// GetARBACRoleDetailWithResponse request
 	GetARBACRoleDetailWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*GetARBACRoleDetailResponse, error)
 
-	// UpdateARBACRoleWithResponse request
-	UpdateARBACRoleWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*UpdateARBACRoleResponse, error)
+	// UpdateARBACRoleWithBodyWithResponse request with any body
+	UpdateARBACRoleWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateARBACRoleResponse, error)
+
+	UpdateARBACRoleWithResponse(ctx context.Context, id int, body UpdateARBACRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateARBACRoleResponse, error)
 }
 
 type ListRBACRolesResponse struct {
@@ -564,9 +637,17 @@ func (c *ClientWithResponses) ListRBACRolesWithResponse(ctx context.Context, req
 	return ParseListRBACRolesResponse(rsp)
 }
 
-// CreateRBACRoleWithResponse request returning *CreateRBACRoleResponse
-func (c *ClientWithResponses) CreateRBACRoleWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CreateRBACRoleResponse, error) {
-	rsp, err := c.CreateRBACRole(ctx, reqEditors...)
+// CreateRBACRoleWithBodyWithResponse request with arbitrary body returning *CreateRBACRoleResponse
+func (c *ClientWithResponses) CreateRBACRoleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateRBACRoleResponse, error) {
+	rsp, err := c.CreateRBACRoleWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateRBACRoleResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateRBACRoleWithResponse(ctx context.Context, body CreateRBACRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateRBACRoleResponse, error) {
+	rsp, err := c.CreateRBACRole(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -591,9 +672,17 @@ func (c *ClientWithResponses) GetARBACRoleDetailWithResponse(ctx context.Context
 	return ParseGetARBACRoleDetailResponse(rsp)
 }
 
-// UpdateARBACRoleWithResponse request returning *UpdateARBACRoleResponse
-func (c *ClientWithResponses) UpdateARBACRoleWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*UpdateARBACRoleResponse, error) {
-	rsp, err := c.UpdateARBACRole(ctx, id, reqEditors...)
+// UpdateARBACRoleWithBodyWithResponse request with arbitrary body returning *UpdateARBACRoleResponse
+func (c *ClientWithResponses) UpdateARBACRoleWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateARBACRoleResponse, error) {
+	rsp, err := c.UpdateARBACRoleWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateARBACRoleResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateARBACRoleWithResponse(ctx context.Context, id int, body UpdateARBACRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateARBACRoleResponse, error) {
+	rsp, err := c.UpdateARBACRole(ctx, id, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}

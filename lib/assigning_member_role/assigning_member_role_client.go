@@ -4,6 +4,7 @@
 package assigning_member_role
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -15,6 +16,11 @@ import (
 
 	"github.com/oapi-codegen/runtime"
 )
+
+// AssignRBACRolePayload defines model for Assign RBAC Role Payload.
+type AssignRBACRolePayload struct {
+	RoleId int `json:"role_id"`
+}
 
 // ErrorResponseModel defines model for ErrorResponseModel.
 type ErrorResponseModel struct {
@@ -59,6 +65,9 @@ type RolePolicyFields struct {
 	Id          *int    `json:"id,omitempty"`
 	Name        *string `json:"name,omitempty"`
 }
+
+// AssignRBACRolesJSONRequestBody defines body for AssignRBACRoles for application/json ContentType.
+type AssignRBACRolesJSONRequestBody = AssignRBACRolePayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -133,15 +142,29 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// AssignRBACRoles request
-	AssignRBACRoles(ctx context.Context, userId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// AssignRBACRolesWithBody request with any body
+	AssignRBACRolesWithBody(ctx context.Context, userId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AssignRBACRoles(ctx context.Context, userId int, body AssignRBACRolesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// RemoveRoleFromAUser request
 	RemoveRoleFromAUser(ctx context.Context, userId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) AssignRBACRoles(ctx context.Context, userId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAssignRBACRolesRequest(c.Server, userId)
+func (c *Client) AssignRBACRolesWithBody(ctx context.Context, userId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAssignRBACRolesRequestWithBody(c.Server, userId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AssignRBACRoles(ctx context.Context, userId int, body AssignRBACRolesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAssignRBACRolesRequest(c.Server, userId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -164,8 +187,19 @@ func (c *Client) RemoveRoleFromAUser(ctx context.Context, userId int, reqEditors
 	return c.Client.Do(req)
 }
 
-// NewAssignRBACRolesRequest generates requests for AssignRBACRoles
-func NewAssignRBACRolesRequest(server string, userId int) (*http.Request, error) {
+// NewAssignRBACRolesRequest calls the generic AssignRBACRoles builder with application/json body
+func NewAssignRBACRolesRequest(server string, userId int, body AssignRBACRolesJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAssignRBACRolesRequestWithBody(server, userId, "application/json", bodyReader)
+}
+
+// NewAssignRBACRolesRequestWithBody generates requests for AssignRBACRoles with any type of body
+func NewAssignRBACRolesRequestWithBody(server string, userId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -190,10 +224,12 @@ func NewAssignRBACRolesRequest(server string, userId int) (*http.Request, error)
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PUT", queryURL.String(), nil)
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -275,8 +311,10 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// AssignRBACRolesWithResponse request
-	AssignRBACRolesWithResponse(ctx context.Context, userId int, reqEditors ...RequestEditorFn) (*AssignRBACRolesResponse, error)
+	// AssignRBACRolesWithBodyWithResponse request with any body
+	AssignRBACRolesWithBodyWithResponse(ctx context.Context, userId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AssignRBACRolesResponse, error)
+
+	AssignRBACRolesWithResponse(ctx context.Context, userId int, body AssignRBACRolesJSONRequestBody, reqEditors ...RequestEditorFn) (*AssignRBACRolesResponse, error)
 
 	// RemoveRoleFromAUserWithResponse request
 	RemoveRoleFromAUserWithResponse(ctx context.Context, userId int, reqEditors ...RequestEditorFn) (*RemoveRoleFromAUserResponse, error)
@@ -332,9 +370,17 @@ func (r RemoveRoleFromAUserResponse) StatusCode() int {
 	return 0
 }
 
-// AssignRBACRolesWithResponse request returning *AssignRBACRolesResponse
-func (c *ClientWithResponses) AssignRBACRolesWithResponse(ctx context.Context, userId int, reqEditors ...RequestEditorFn) (*AssignRBACRolesResponse, error) {
-	rsp, err := c.AssignRBACRoles(ctx, userId, reqEditors...)
+// AssignRBACRolesWithBodyWithResponse request with arbitrary body returning *AssignRBACRolesResponse
+func (c *ClientWithResponses) AssignRBACRolesWithBodyWithResponse(ctx context.Context, userId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AssignRBACRolesResponse, error) {
+	rsp, err := c.AssignRBACRolesWithBody(ctx, userId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAssignRBACRolesResponse(rsp)
+}
+
+func (c *ClientWithResponses) AssignRBACRolesWithResponse(ctx context.Context, userId int, body AssignRBACRolesJSONRequestBody, reqEditors ...RequestEditorFn) (*AssignRBACRolesResponse, error) {
+	rsp, err := c.AssignRBACRoles(ctx, userId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}

@@ -4,6 +4,7 @@
 package template
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -14,6 +15,7 @@ import (
 	"github.com/nexgen/hyperstack-sdk-go/lib/time"
 
 	"github.com/oapi-codegen/runtime"
+	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 // ErrorResponseModel defines model for ErrorResponseModel.
@@ -53,10 +55,38 @@ type Templates struct {
 	Templates *[]TemplateFields `json:"templates,omitempty"`
 }
 
+// UpdateTemplate defines model for Update Template.
+type UpdateTemplate struct {
+	Description *string `json:"description,omitempty"`
+	IsPublic    *bool   `json:"is_public,omitempty"`
+	Name        *string `json:"name,omitempty"`
+}
+
 // ListTemplatesParams defines parameters for ListTemplates.
 type ListTemplatesParams struct {
 	Visibility *interface{} `form:"visibility,omitempty" json:"visibility,omitempty"`
 }
+
+// CreateTemplateMultipartBody defines parameters for CreateTemplate.
+type CreateTemplateMultipartBody struct {
+	// Content YAML file is required
+	Content openapi_types.File `json:"content"`
+
+	// Description description is required
+	Description string `json:"description"`
+
+	// IsPublic is_public is required
+	IsPublic string `json:"is_public"`
+
+	// Name name is required
+	Name string `json:"name"`
+}
+
+// CreateTemplateMultipartRequestBody defines body for CreateTemplate for multipart/form-data ContentType.
+type CreateTemplateMultipartRequestBody CreateTemplateMultipartBody
+
+// UpdateTemplateJSONRequestBody defines body for UpdateTemplate for application/json ContentType.
+type UpdateTemplateJSONRequestBody = UpdateTemplate
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -134,8 +164,8 @@ type ClientInterface interface {
 	// ListTemplates request
 	ListTemplates(ctx context.Context, params *ListTemplatesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateTemplate request
-	CreateTemplate(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateTemplateWithBody request with any body
+	CreateTemplateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteATemplate request
 	DeleteATemplate(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -143,8 +173,10 @@ type ClientInterface interface {
 	// DetailsOfATemplateByID request
 	DetailsOfATemplateByID(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateTemplate request
-	UpdateTemplate(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdateTemplateWithBody request with any body
+	UpdateTemplateWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateTemplate(ctx context.Context, id int, body UpdateTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) ListTemplates(ctx context.Context, params *ListTemplatesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -159,8 +191,8 @@ func (c *Client) ListTemplates(ctx context.Context, params *ListTemplatesParams,
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateTemplate(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateTemplateRequest(c.Server)
+func (c *Client) CreateTemplateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateTemplateRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -195,8 +227,20 @@ func (c *Client) DetailsOfATemplateByID(ctx context.Context, id int, reqEditors 
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateTemplate(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateTemplateRequest(c.Server, id)
+func (c *Client) UpdateTemplateWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateTemplateRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateTemplate(ctx context.Context, id int, body UpdateTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateTemplateRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -256,8 +300,8 @@ func NewListTemplatesRequest(server string, params *ListTemplatesParams) (*http.
 	return req, nil
 }
 
-// NewCreateTemplateRequest generates requests for CreateTemplate
-func NewCreateTemplateRequest(server string) (*http.Request, error) {
+// NewCreateTemplateRequestWithBody generates requests for CreateTemplate with any type of body
+func NewCreateTemplateRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -275,10 +319,12 @@ func NewCreateTemplateRequest(server string) (*http.Request, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -351,8 +397,19 @@ func NewDetailsOfATemplateByIDRequest(server string, id int) (*http.Request, err
 	return req, nil
 }
 
-// NewUpdateTemplateRequest generates requests for UpdateTemplate
-func NewUpdateTemplateRequest(server string, id int) (*http.Request, error) {
+// NewUpdateTemplateRequest calls the generic UpdateTemplate builder with application/json body
+func NewUpdateTemplateRequest(server string, id int, body UpdateTemplateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateTemplateRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateTemplateRequestWithBody generates requests for UpdateTemplate with any type of body
+func NewUpdateTemplateRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -377,10 +434,12 @@ func NewUpdateTemplateRequest(server string, id int) (*http.Request, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PUT", queryURL.String(), nil)
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -431,8 +490,8 @@ type ClientWithResponsesInterface interface {
 	// ListTemplatesWithResponse request
 	ListTemplatesWithResponse(ctx context.Context, params *ListTemplatesParams, reqEditors ...RequestEditorFn) (*ListTemplatesResponse, error)
 
-	// CreateTemplateWithResponse request
-	CreateTemplateWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CreateTemplateResponse, error)
+	// CreateTemplateWithBodyWithResponse request with any body
+	CreateTemplateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTemplateResponse, error)
 
 	// DeleteATemplateWithResponse request
 	DeleteATemplateWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteATemplateResponse, error)
@@ -440,8 +499,10 @@ type ClientWithResponsesInterface interface {
 	// DetailsOfATemplateByIDWithResponse request
 	DetailsOfATemplateByIDWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DetailsOfATemplateByIDResponse, error)
 
-	// UpdateTemplateWithResponse request
-	UpdateTemplateWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*UpdateTemplateResponse, error)
+	// UpdateTemplateWithBodyWithResponse request with any body
+	UpdateTemplateWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateTemplateResponse, error)
+
+	UpdateTemplateWithResponse(ctx context.Context, id int, body UpdateTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateTemplateResponse, error)
 }
 
 type ListTemplatesResponse struct {
@@ -577,9 +638,9 @@ func (c *ClientWithResponses) ListTemplatesWithResponse(ctx context.Context, par
 	return ParseListTemplatesResponse(rsp)
 }
 
-// CreateTemplateWithResponse request returning *CreateTemplateResponse
-func (c *ClientWithResponses) CreateTemplateWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CreateTemplateResponse, error) {
-	rsp, err := c.CreateTemplate(ctx, reqEditors...)
+// CreateTemplateWithBodyWithResponse request with arbitrary body returning *CreateTemplateResponse
+func (c *ClientWithResponses) CreateTemplateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTemplateResponse, error) {
+	rsp, err := c.CreateTemplateWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -604,9 +665,17 @@ func (c *ClientWithResponses) DetailsOfATemplateByIDWithResponse(ctx context.Con
 	return ParseDetailsOfATemplateByIDResponse(rsp)
 }
 
-// UpdateTemplateWithResponse request returning *UpdateTemplateResponse
-func (c *ClientWithResponses) UpdateTemplateWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*UpdateTemplateResponse, error) {
-	rsp, err := c.UpdateTemplate(ctx, id, reqEditors...)
+// UpdateTemplateWithBodyWithResponse request with arbitrary body returning *UpdateTemplateResponse
+func (c *ClientWithResponses) UpdateTemplateWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateTemplateResponse, error) {
+	rsp, err := c.UpdateTemplateWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateTemplateResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateTemplateWithResponse(ctx context.Context, id int, body UpdateTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateTemplateResponse, error) {
+	rsp, err := c.UpdateTemplate(ctx, id, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}

@@ -4,6 +4,7 @@
 package invite
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -38,6 +39,11 @@ type InviteFields struct {
 	Status    *string    `json:"status,omitempty"`
 }
 
+// InviteUser defines model for Invite User.
+type InviteUser struct {
+	Email string `json:"email"`
+}
+
 // Invites defines model for Invites.
 type Invites struct {
 	Invites *[]InviteFields `json:"invites,omitempty"`
@@ -50,6 +56,9 @@ type ResponseModel struct {
 	Message *string `json:"message,omitempty"`
 	Status  *bool   `json:"status,omitempty"`
 }
+
+// InviteAnUserToOrganizationJSONRequestBody defines body for InviteAnUserToOrganization for application/json ContentType.
+type InviteAnUserToOrganizationJSONRequestBody = InviteUser
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -127,8 +136,10 @@ type ClientInterface interface {
 	// ListInvites request
 	ListInvites(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// InviteAnUserToOrganization request
-	InviteAnUserToOrganization(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// InviteAnUserToOrganizationWithBody request with any body
+	InviteAnUserToOrganizationWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	InviteAnUserToOrganization(ctx context.Context, body InviteAnUserToOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteInvite request
 	DeleteInvite(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -146,8 +157,20 @@ func (c *Client) ListInvites(ctx context.Context, reqEditors ...RequestEditorFn)
 	return c.Client.Do(req)
 }
 
-func (c *Client) InviteAnUserToOrganization(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewInviteAnUserToOrganizationRequest(c.Server)
+func (c *Client) InviteAnUserToOrganizationWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewInviteAnUserToOrganizationRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) InviteAnUserToOrganization(ctx context.Context, body InviteAnUserToOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewInviteAnUserToOrganizationRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -197,8 +220,19 @@ func NewListInvitesRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewInviteAnUserToOrganizationRequest generates requests for InviteAnUserToOrganization
-func NewInviteAnUserToOrganizationRequest(server string) (*http.Request, error) {
+// NewInviteAnUserToOrganizationRequest calls the generic InviteAnUserToOrganization builder with application/json body
+func NewInviteAnUserToOrganizationRequest(server string, body InviteAnUserToOrganizationJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewInviteAnUserToOrganizationRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewInviteAnUserToOrganizationRequestWithBody generates requests for InviteAnUserToOrganization with any type of body
+func NewInviteAnUserToOrganizationRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -216,10 +250,12 @@ func NewInviteAnUserToOrganizationRequest(server string) (*http.Request, error) 
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -304,8 +340,10 @@ type ClientWithResponsesInterface interface {
 	// ListInvitesWithResponse request
 	ListInvitesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListInvitesResponse, error)
 
-	// InviteAnUserToOrganizationWithResponse request
-	InviteAnUserToOrganizationWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*InviteAnUserToOrganizationResponse, error)
+	// InviteAnUserToOrganizationWithBodyWithResponse request with any body
+	InviteAnUserToOrganizationWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*InviteAnUserToOrganizationResponse, error)
+
+	InviteAnUserToOrganizationWithResponse(ctx context.Context, body InviteAnUserToOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*InviteAnUserToOrganizationResponse, error)
 
 	// DeleteInviteWithResponse request
 	DeleteInviteWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteInviteResponse, error)
@@ -394,9 +432,17 @@ func (c *ClientWithResponses) ListInvitesWithResponse(ctx context.Context, reqEd
 	return ParseListInvitesResponse(rsp)
 }
 
-// InviteAnUserToOrganizationWithResponse request returning *InviteAnUserToOrganizationResponse
-func (c *ClientWithResponses) InviteAnUserToOrganizationWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*InviteAnUserToOrganizationResponse, error) {
-	rsp, err := c.InviteAnUserToOrganization(ctx, reqEditors...)
+// InviteAnUserToOrganizationWithBodyWithResponse request with arbitrary body returning *InviteAnUserToOrganizationResponse
+func (c *ClientWithResponses) InviteAnUserToOrganizationWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*InviteAnUserToOrganizationResponse, error) {
+	rsp, err := c.InviteAnUserToOrganizationWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseInviteAnUserToOrganizationResponse(rsp)
+}
+
+func (c *ClientWithResponses) InviteAnUserToOrganizationWithResponse(ctx context.Context, body InviteAnUserToOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*InviteAnUserToOrganizationResponse, error) {
+	rsp, err := c.InviteAnUserToOrganization(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}

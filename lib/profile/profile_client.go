@@ -4,6 +4,7 @@
 package profile
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -15,6 +16,13 @@ import (
 
 	"github.com/oapi-codegen/runtime"
 )
+
+// CreateProfilePayload defines model for Create Profile Payload.
+type CreateProfilePayload struct {
+	Data        map[string]string `json:"data"`
+	Description *string           `json:"description,omitempty"`
+	Name        string            `json:"name"`
+}
 
 // CreateProfileResponse defines model for Create Profile Response.
 type CreateProfileResponse struct {
@@ -51,6 +59,9 @@ type ResponseModel struct {
 	Message *string `json:"message,omitempty"`
 	Status  *bool   `json:"status,omitempty"`
 }
+
+// CreateProfileJSONRequestBody defines body for CreateProfile for application/json ContentType.
+type CreateProfileJSONRequestBody = CreateProfilePayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -128,8 +139,10 @@ type ClientInterface interface {
 	// GetProfileList request
 	GetProfileList(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateProfile request
-	CreateProfile(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateProfileWithBody request with any body
+	CreateProfileWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateProfile(ctx context.Context, body CreateProfileJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteProfile request
 	DeleteProfile(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -150,8 +163,20 @@ func (c *Client) GetProfileList(ctx context.Context, reqEditors ...RequestEditor
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateProfile(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateProfileRequest(c.Server)
+func (c *Client) CreateProfileWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateProfileRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateProfile(ctx context.Context, body CreateProfileJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateProfileRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -213,8 +238,19 @@ func NewGetProfileListRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewCreateProfileRequest generates requests for CreateProfile
-func NewCreateProfileRequest(server string) (*http.Request, error) {
+// NewCreateProfileRequest calls the generic CreateProfile builder with application/json body
+func NewCreateProfileRequest(server string, body CreateProfileJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateProfileRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateProfileRequestWithBody generates requests for CreateProfile with any type of body
+func NewCreateProfileRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -232,10 +268,12 @@ func NewCreateProfileRequest(server string) (*http.Request, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -354,8 +392,10 @@ type ClientWithResponsesInterface interface {
 	// GetProfileListWithResponse request
 	GetProfileListWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetProfileListResponse, error)
 
-	// CreateProfileWithResponse request
-	CreateProfileWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CreateProfileResponse, error)
+	// CreateProfileWithBodyWithResponse request with any body
+	CreateProfileWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProfileResponse, error)
+
+	CreateProfileWithResponse(ctx context.Context, body CreateProfileJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateProfileResponse, error)
 
 	// DeleteProfileWithResponse request
 	DeleteProfileWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteProfileResponse, error)
@@ -472,9 +512,17 @@ func (c *ClientWithResponses) GetProfileListWithResponse(ctx context.Context, re
 	return ParseGetProfileListResponse(rsp)
 }
 
-// CreateProfileWithResponse request returning *CreateProfileResponse
-func (c *ClientWithResponses) CreateProfileWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CreateProfileResponse, error) {
-	rsp, err := c.CreateProfile(ctx, reqEditors...)
+// CreateProfileWithBodyWithResponse request with arbitrary body returning *CreateProfileResponse
+func (c *ClientWithResponses) CreateProfileWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProfileResponse, error) {
+	rsp, err := c.CreateProfileWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateProfileResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateProfileWithResponse(ctx context.Context, body CreateProfileJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateProfileResponse, error) {
+	rsp, err := c.CreateProfile(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}

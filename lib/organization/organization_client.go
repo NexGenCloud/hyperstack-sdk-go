@@ -4,6 +4,7 @@
 package organization
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -58,6 +59,14 @@ type RemoveMemberResponse struct {
 	Message *string `json:"message,omitempty"`
 	Status  *bool   `json:"status,omitempty"`
 }
+
+// RemoveMember defines model for Remove member.
+type RemoveMember struct {
+	Email string `json:"email"`
+}
+
+// RemoveAMemberFromOrganizationJSONRequestBody defines body for RemoveAMemberFromOrganization for application/json ContentType.
+type RemoveAMemberFromOrganizationJSONRequestBody = RemoveMember
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -135,8 +144,10 @@ type ClientInterface interface {
 	// GetOrganizationInfo request
 	GetOrganizationInfo(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RemoveAMemberFromOrganization request
-	RemoveAMemberFromOrganization(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RemoveAMemberFromOrganizationWithBody request with any body
+	RemoveAMemberFromOrganizationWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	RemoveAMemberFromOrganization(ctx context.Context, body RemoveAMemberFromOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) GetOrganizationInfo(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -151,8 +162,20 @@ func (c *Client) GetOrganizationInfo(ctx context.Context, reqEditors ...RequestE
 	return c.Client.Do(req)
 }
 
-func (c *Client) RemoveAMemberFromOrganization(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRemoveAMemberFromOrganizationRequest(c.Server)
+func (c *Client) RemoveAMemberFromOrganizationWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRemoveAMemberFromOrganizationRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RemoveAMemberFromOrganization(ctx context.Context, body RemoveAMemberFromOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRemoveAMemberFromOrganizationRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -190,8 +213,19 @@ func NewGetOrganizationInfoRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewRemoveAMemberFromOrganizationRequest generates requests for RemoveAMemberFromOrganization
-func NewRemoveAMemberFromOrganizationRequest(server string) (*http.Request, error) {
+// NewRemoveAMemberFromOrganizationRequest calls the generic RemoveAMemberFromOrganization builder with application/json body
+func NewRemoveAMemberFromOrganizationRequest(server string, body RemoveAMemberFromOrganizationJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewRemoveAMemberFromOrganizationRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewRemoveAMemberFromOrganizationRequestWithBody generates requests for RemoveAMemberFromOrganization with any type of body
+func NewRemoveAMemberFromOrganizationRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -209,10 +243,12 @@ func NewRemoveAMemberFromOrganizationRequest(server string) (*http.Request, erro
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -263,8 +299,10 @@ type ClientWithResponsesInterface interface {
 	// GetOrganizationInfoWithResponse request
 	GetOrganizationInfoWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetOrganizationInfoResponse, error)
 
-	// RemoveAMemberFromOrganizationWithResponse request
-	RemoveAMemberFromOrganizationWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RemoveAMemberFromOrganizationResponse, error)
+	// RemoveAMemberFromOrganizationWithBodyWithResponse request with any body
+	RemoveAMemberFromOrganizationWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RemoveAMemberFromOrganizationResponse, error)
+
+	RemoveAMemberFromOrganizationWithResponse(ctx context.Context, body RemoveAMemberFromOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*RemoveAMemberFromOrganizationResponse, error)
 }
 
 type GetOrganizationInfoResponse struct {
@@ -324,9 +362,17 @@ func (c *ClientWithResponses) GetOrganizationInfoWithResponse(ctx context.Contex
 	return ParseGetOrganizationInfoResponse(rsp)
 }
 
-// RemoveAMemberFromOrganizationWithResponse request returning *RemoveAMemberFromOrganizationResponse
-func (c *ClientWithResponses) RemoveAMemberFromOrganizationWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RemoveAMemberFromOrganizationResponse, error) {
-	rsp, err := c.RemoveAMemberFromOrganization(ctx, reqEditors...)
+// RemoveAMemberFromOrganizationWithBodyWithResponse request with arbitrary body returning *RemoveAMemberFromOrganizationResponse
+func (c *ClientWithResponses) RemoveAMemberFromOrganizationWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RemoveAMemberFromOrganizationResponse, error) {
+	rsp, err := c.RemoveAMemberFromOrganizationWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRemoveAMemberFromOrganizationResponse(rsp)
+}
+
+func (c *ClientWithResponses) RemoveAMemberFromOrganizationWithResponse(ctx context.Context, body RemoveAMemberFromOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*RemoveAMemberFromOrganizationResponse, error) {
+	rsp, err := c.RemoveAMemberFromOrganization(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}

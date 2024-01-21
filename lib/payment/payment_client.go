@@ -4,6 +4,7 @@
 package payment
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -45,12 +46,20 @@ type PaymentInitiateFields struct {
 	PaymentId *string `json:"payment_id,omitempty"`
 }
 
+// PaymentInitiatePayload defines model for Payment Initiate Payload.
+type PaymentInitiatePayload struct {
+	Amount *float32 `json:"amount,omitempty"`
+}
+
 // PaymentInitiateResponse defines model for Payment Initiate Response.
 type PaymentInitiateResponse struct {
 	Data    *PaymentInitiateFields `json:"data,omitempty"`
 	Message *string                `json:"message,omitempty"`
 	Status  *bool                  `json:"status,omitempty"`
 }
+
+// PostPaymentJSONRequestBody defines body for PostPayment for application/json ContentType.
+type PostPaymentJSONRequestBody = PaymentInitiatePayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -128,8 +137,10 @@ type ClientInterface interface {
 	// GetDetails request
 	GetDetails(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostPayment request
-	PostPayment(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// PostPaymentWithBody request with any body
+	PostPaymentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostPayment(ctx context.Context, body PostPaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) GetDetails(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -144,8 +155,20 @@ func (c *Client) GetDetails(ctx context.Context, reqEditors ...RequestEditorFn) 
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostPayment(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostPaymentRequest(c.Server)
+func (c *Client) PostPaymentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostPaymentRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostPayment(ctx context.Context, body PostPaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostPaymentRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -183,8 +206,19 @@ func NewGetDetailsRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewPostPaymentRequest generates requests for PostPayment
-func NewPostPaymentRequest(server string) (*http.Request, error) {
+// NewPostPaymentRequest calls the generic PostPayment builder with application/json body
+func NewPostPaymentRequest(server string, body PostPaymentJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostPaymentRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostPaymentRequestWithBody generates requests for PostPayment with any type of body
+func NewPostPaymentRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -202,10 +236,12 @@ func NewPostPaymentRequest(server string) (*http.Request, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -256,8 +292,10 @@ type ClientWithResponsesInterface interface {
 	// GetDetailsWithResponse request
 	GetDetailsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetDetailsResponse, error)
 
-	// PostPaymentWithResponse request
-	PostPaymentWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostPaymentResponse, error)
+	// PostPaymentWithBodyWithResponse request with any body
+	PostPaymentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostPaymentResponse, error)
+
+	PostPaymentWithResponse(ctx context.Context, body PostPaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*PostPaymentResponse, error)
 }
 
 type GetDetailsResponse struct {
@@ -321,9 +359,17 @@ func (c *ClientWithResponses) GetDetailsWithResponse(ctx context.Context, reqEdi
 	return ParseGetDetailsResponse(rsp)
 }
 
-// PostPaymentWithResponse request returning *PostPaymentResponse
-func (c *ClientWithResponses) PostPaymentWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostPaymentResponse, error) {
-	rsp, err := c.PostPayment(ctx, reqEditors...)
+// PostPaymentWithBodyWithResponse request with arbitrary body returning *PostPaymentResponse
+func (c *ClientWithResponses) PostPaymentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostPaymentResponse, error) {
+	rsp, err := c.PostPaymentWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostPaymentResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostPaymentWithResponse(ctx context.Context, body PostPaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*PostPaymentResponse, error) {
+	rsp, err := c.PostPayment(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}

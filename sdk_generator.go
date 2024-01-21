@@ -18,6 +18,7 @@ type operation struct {
 	Description string      `yaml:"description,omitempty"`
 	OperationId string      `yaml:"operationId,omitempty"`
 	Responses   interface{} `yaml:"responses"`
+	RequestBody interface{} `yaml:"requestBody"`
 }
 
 type pathItem struct {

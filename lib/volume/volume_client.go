@@ -4,6 +4,7 @@
 package volume
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -15,6 +16,17 @@ import (
 
 	"github.com/oapi-codegen/runtime"
 )
+
+// CreateVolumePayload defines model for Create Volume Payload.
+type CreateVolumePayload struct {
+	CallbackUrl     *string `json:"callback_url,omitempty"`
+	Description     *string `json:"description,omitempty"`
+	EnvironmentName *string `json:"environment_name,omitempty"`
+	ImageId         *int    `json:"image_id,omitempty"`
+	Name            *string `json:"name,omitempty"`
+	Size            *int    `json:"size,omitempty"`
+	VolumeType      *string `json:"volume_type,omitempty"`
+}
 
 // EnvironmentFieldsForVolume defines model for Environment Fields for Volume.
 type EnvironmentFieldsForVolume struct {
@@ -70,6 +82,9 @@ type Volumes struct {
 	Status  *bool           `json:"status,omitempty"`
 	Volumes *[]VolumeFields `json:"volumes,omitempty"`
 }
+
+// CreateVolumeJSONRequestBody defines body for CreateVolume for application/json ContentType.
+type CreateVolumeJSONRequestBody = CreateVolumePayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -150,8 +165,10 @@ type ClientInterface interface {
 	// ListVolumes request
 	ListVolumes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateVolume request
-	CreateVolume(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateVolumeWithBody request with any body
+	CreateVolumeWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateVolume(ctx context.Context, body CreateVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteVolume request
 	DeleteVolume(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -181,8 +198,20 @@ func (c *Client) ListVolumes(ctx context.Context, reqEditors ...RequestEditorFn)
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateVolume(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateVolumeRequest(c.Server)
+func (c *Client) CreateVolumeWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVolumeRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateVolume(ctx context.Context, body CreateVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVolumeRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -259,8 +288,19 @@ func NewListVolumesRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewCreateVolumeRequest generates requests for CreateVolume
-func NewCreateVolumeRequest(server string) (*http.Request, error) {
+// NewCreateVolumeRequest calls the generic CreateVolume builder with application/json body
+func NewCreateVolumeRequest(server string, body CreateVolumeJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateVolumeRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateVolumeRequestWithBody generates requests for CreateVolume with any type of body
+func NewCreateVolumeRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -278,10 +318,12 @@ func NewCreateVolumeRequest(server string) (*http.Request, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -369,8 +411,10 @@ type ClientWithResponsesInterface interface {
 	// ListVolumesWithResponse request
 	ListVolumesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListVolumesResponse, error)
 
-	// CreateVolumeWithResponse request
-	CreateVolumeWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CreateVolumeResponse, error)
+	// CreateVolumeWithBodyWithResponse request with any body
+	CreateVolumeWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVolumeResponse, error)
+
+	CreateVolumeWithResponse(ctx context.Context, body CreateVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVolumeResponse, error)
 
 	// DeleteVolumeWithResponse request
 	DeleteVolumeWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteVolumeResponse, error)
@@ -494,9 +538,17 @@ func (c *ClientWithResponses) ListVolumesWithResponse(ctx context.Context, reqEd
 	return ParseListVolumesResponse(rsp)
 }
 
-// CreateVolumeWithResponse request returning *CreateVolumeResponse
-func (c *ClientWithResponses) CreateVolumeWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CreateVolumeResponse, error) {
-	rsp, err := c.CreateVolume(ctx, reqEditors...)
+// CreateVolumeWithBodyWithResponse request with arbitrary body returning *CreateVolumeResponse
+func (c *ClientWithResponses) CreateVolumeWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVolumeResponse, error) {
+	rsp, err := c.CreateVolumeWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateVolumeResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateVolumeWithResponse(ctx context.Context, body CreateVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVolumeResponse, error) {
+	rsp, err := c.CreateVolume(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}

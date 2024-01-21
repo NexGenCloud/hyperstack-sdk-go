@@ -4,6 +4,7 @@
 package deployment
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -63,6 +64,17 @@ type StartDeployment struct {
 	Message    *string                              `json:"message,omitempty"`
 	Status     *bool                                `json:"status,omitempty"`
 }
+
+// StartDeploymentPayload defines model for Start Deployment Payload.
+type StartDeploymentPayload struct {
+	Description string             `json:"description"`
+	Name        string             `json:"name"`
+	TemplateId  int                `json:"template_id"`
+	Variables   *map[string]string `json:"variables,omitempty"`
+}
+
+// StartDeploymentJSONRequestBody defines body for StartDeployment for application/json ContentType.
+type StartDeploymentJSONRequestBody = StartDeploymentPayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -140,8 +152,10 @@ type ClientInterface interface {
 	// ListDeployments request
 	ListDeployments(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// StartDeployment request
-	StartDeployment(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// StartDeploymentWithBody request with any body
+	StartDeploymentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	StartDeployment(ctx context.Context, body StartDeploymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteDeployment request
 	DeleteDeployment(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -162,8 +176,20 @@ func (c *Client) ListDeployments(ctx context.Context, reqEditors ...RequestEdito
 	return c.Client.Do(req)
 }
 
-func (c *Client) StartDeployment(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewStartDeploymentRequest(c.Server)
+func (c *Client) StartDeploymentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStartDeploymentRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) StartDeployment(ctx context.Context, body StartDeploymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStartDeploymentRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -225,8 +251,19 @@ func NewListDeploymentsRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewStartDeploymentRequest generates requests for StartDeployment
-func NewStartDeploymentRequest(server string) (*http.Request, error) {
+// NewStartDeploymentRequest calls the generic StartDeployment builder with application/json body
+func NewStartDeploymentRequest(server string, body StartDeploymentJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewStartDeploymentRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewStartDeploymentRequestWithBody generates requests for StartDeployment with any type of body
+func NewStartDeploymentRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -244,10 +281,12 @@ func NewStartDeploymentRequest(server string) (*http.Request, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -366,8 +405,10 @@ type ClientWithResponsesInterface interface {
 	// ListDeploymentsWithResponse request
 	ListDeploymentsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListDeploymentsResponse, error)
 
-	// StartDeploymentWithResponse request
-	StartDeploymentWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*StartDeploymentResponse, error)
+	// StartDeploymentWithBodyWithResponse request with any body
+	StartDeploymentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*StartDeploymentResponse, error)
+
+	StartDeploymentWithResponse(ctx context.Context, body StartDeploymentJSONRequestBody, reqEditors ...RequestEditorFn) (*StartDeploymentResponse, error)
 
 	// DeleteDeploymentWithResponse request
 	DeleteDeploymentWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteDeploymentResponse, error)
@@ -485,9 +526,17 @@ func (c *ClientWithResponses) ListDeploymentsWithResponse(ctx context.Context, r
 	return ParseListDeploymentsResponse(rsp)
 }
 
-// StartDeploymentWithResponse request returning *StartDeploymentResponse
-func (c *ClientWithResponses) StartDeploymentWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*StartDeploymentResponse, error) {
-	rsp, err := c.StartDeployment(ctx, reqEditors...)
+// StartDeploymentWithBodyWithResponse request with arbitrary body returning *StartDeploymentResponse
+func (c *ClientWithResponses) StartDeploymentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*StartDeploymentResponse, error) {
+	rsp, err := c.StartDeploymentWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStartDeploymentResponse(rsp)
+}
+
+func (c *ClientWithResponses) StartDeploymentWithResponse(ctx context.Context, body StartDeploymentJSONRequestBody, reqEditors ...RequestEditorFn) (*StartDeploymentResponse, error) {
+	rsp, err := c.StartDeployment(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
