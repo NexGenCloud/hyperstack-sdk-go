@@ -88,36 +88,36 @@ func main() {
 
 	type nMap = map[interface{}]interface{}
 
-	for apiPath, pathItem := range spec.Paths {
-		switch apiPath {
-		case "/auth/roles/{id}":
-			spec.Components["schemas"].(nMap)["RBAC Role"].(nMap)["properties"].(nMap)["roles"] = spec.Components["schemas"].(nMap)["RBAC Role"].(nMap)["properties"].(nMap)["role"]
-			delete(spec.Components["schemas"].(nMap)["RBAC Role"].(nMap)["properties"].(nMap), "role")
+	for apiPath, item := range spec.Paths {
+		operations := map[string]*operation{
+			"get":     item.Get,
+			"put":     item.Put,
+			"post":    item.Post,
+			"delete":  item.Delete,
+			"options": item.Options,
+			"head":    item.Head,
+			"patch":   item.Patch,
+			"trace":   item.Trace,
 		}
 
-		if pathItem.Get != nil {
-			appendTaggedSpecs(pathItem.Get, apiPath, pathItem, &spec, tags)
-		}
-		if pathItem.Put != nil {
-			appendTaggedSpecs(pathItem.Put, apiPath, pathItem, &spec, tags)
-		}
-		if pathItem.Post != nil {
-			appendTaggedSpecs(pathItem.Post, apiPath, pathItem, &spec, tags)
-		}
-		if pathItem.Delete != nil {
-			appendTaggedSpecs(pathItem.Delete, apiPath, pathItem, &spec, tags)
-		}
-		if pathItem.Options != nil {
-			appendTaggedSpecs(pathItem.Options, apiPath, pathItem, &spec, tags)
-		}
-		if pathItem.Head != nil {
-			appendTaggedSpecs(pathItem.Head, apiPath, pathItem, &spec, tags)
-		}
-		if pathItem.Patch != nil {
-			appendTaggedSpecs(pathItem.Patch, apiPath, pathItem, &spec, tags)
-		}
-		if pathItem.Trace != nil {
-			appendTaggedSpecs(pathItem.Trace, apiPath, pathItem, &spec, tags)
+		for opName, op := range operations {
+			if op == nil {
+				continue
+			}
+
+			switch apiPath {
+			case "/auth/roles/{id}":
+				if opName == "get" {
+					spec.Components["schemas"].(nMap)["RBACRoleTMPGet"] = CopyableMap(spec.Components["schemas"].(nMap)["RBAC Role"].(nMap)).DeepCopy()
+
+					spec.Components["schemas"].(nMap)["RBACRoleTMPGet"].(nMap)["properties"].(nMap)["roles"] = spec.Components["schemas"].(nMap)["RBACRoleTMPGet"].(nMap)["properties"].(nMap)["role"]
+					delete(spec.Components["schemas"].(nMap)["RBACRoleTMPGet"].(nMap)["properties"].(nMap), "role")
+
+					op.Responses.(nMap)["200"].(nMap)["content"].(nMap)["application/json"].(nMap)["schema"].(nMap)["$ref"] = "#/components/schemas/RBACRoleTMPGet"
+				}
+			}
+
+			appendTaggedSpecs(op, apiPath, item, &spec, tags)
 		}
 	}
 
@@ -192,4 +192,64 @@ func checkErr(err error) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+// TODO: remove?
+// https://stackoverflow.com/questions/23057785/how-to-deep-copy-a-map-and-then-clear-the-original
+
+type CopyableMap map[interface{}]interface{}
+type CopyableSlice []interface{}
+
+// DeepCopy will create a deep copy of this map. The depth of this
+// copy is all inclusive. Both maps and slices will be considered when
+// making the copy.
+func (m CopyableMap) DeepCopy() map[interface{}]interface{} {
+	result := map[interface{}]interface{}{}
+
+	for k, v := range m {
+		// Handle maps
+		mapvalue, isMap := v.(map[interface{}]interface{})
+		if isMap {
+			result[k] = CopyableMap(mapvalue).DeepCopy()
+			continue
+		}
+
+		// Handle slices
+		slicevalue, isSlice := v.([]interface{})
+		if isSlice {
+			result[k] = CopyableSlice(slicevalue).DeepCopy()
+			continue
+		}
+
+		result[k] = v
+	}
+
+	return result
+}
+
+// DeepCopy will create a deep copy of this slice. The depth of this
+// copy is all inclusive. Both maps and slices will be considered when
+// making the copy.
+func (s CopyableSlice) DeepCopy() []interface{} {
+	result := []interface{}{}
+
+	for _, v := range s {
+		// Handle maps
+		mapvalue, isMap := v.(map[interface{}]interface{})
+		if isMap {
+			result = append(result, CopyableMap(mapvalue).DeepCopy())
+			continue
+		}
+
+		// Handle slices
+		slicevalue, isSlice := v.([]interface{})
+		if isSlice {
+			result = append(result, CopyableSlice(slicevalue).DeepCopy())
+			continue
+		}
+
+		result = append(result, v)
+	}
+
+	return result
 }

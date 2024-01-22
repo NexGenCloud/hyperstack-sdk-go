@@ -27,7 +27,7 @@ type ErrorResponseModel struct {
 // RBACRole defines model for RBAC Role.
 type RBACRole struct {
 	Message *string         `json:"message,omitempty"`
-	Roles   *RBACRoleFields `json:"roles,omitempty"`
+	Role    *RBACRoleFields `json:"role,omitempty"`
 	Status  *bool           `json:"status,omitempty"`
 }
 
@@ -54,6 +54,13 @@ type RBACRoles struct {
 	Message *string           `json:"message,omitempty"`
 	Roles   *[]RBACRoleFields `json:"roles,omitempty"`
 	Status  *bool             `json:"status,omitempty"`
+}
+
+// RBACRoleTMPGet defines model for RBACRoleTMPGet.
+type RBACRoleTMPGet struct {
+	Message *string         `json:"message,omitempty"`
+	Roles   *RBACRoleFields `json:"roles,omitempty"`
+	Status  *bool           `json:"status,omitempty"`
 }
 
 // ResponseModel defines model for ResponseModel.
@@ -581,7 +588,7 @@ func (r DeleteARBACRoleResponse) StatusCode() int {
 type GetARBACRoleDetailResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *RBACRole
+	JSON200      *RBACRoleTMPGet
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 	JSON404      *ErrorResponseModel
@@ -838,7 +845,7 @@ func ParseGetARBACRoleDetailResponse(rsp *http.Response) (*GetARBACRoleDetailRes
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest RBACRole
+		var dest RBACRoleTMPGet
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
