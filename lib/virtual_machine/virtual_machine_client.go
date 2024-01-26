@@ -94,13 +94,13 @@ type InstanceEnvironmentFields struct {
 
 // InstanceFlavorFields defines model for Instance Flavor Fields.
 type InstanceFlavorFields struct {
-	Cpu      *int    `json:"cpu,omitempty"`
-	Disk     *int    `json:"disk,omitempty"`
-	Gpu      *string `json:"gpu,omitempty"`
-	GpuCount *int    `json:"gpu_count,omitempty"`
-	Id       *int    `json:"id,omitempty"`
-	Name     *string `json:"name,omitempty"`
-	Ram      *int    `json:"ram,omitempty"`
+	Cpu      *int     `json:"cpu,omitempty"`
+	Disk     *int     `json:"disk,omitempty"`
+	Gpu      *string  `json:"gpu,omitempty"`
+	GpuCount *int     `json:"gpu_count,omitempty"`
+	Id       *int     `json:"id,omitempty"`
+	Name     *string  `json:"name,omitempty"`
+	Ram      *float32 `json:"ram,omitempty"`
 }
 
 // InstanceImageFields defines model for Instance Image Fields.

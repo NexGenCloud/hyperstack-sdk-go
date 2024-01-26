@@ -117,6 +117,13 @@ func main() {
 				}
 			}
 
+			switch apiPath {
+			case "/core/virtual-machines":
+				if opName == "get" {
+					spec.Components["schemas"].(nMap)["Instance Flavor Fields"].(nMap)["properties"].(nMap)["ram"].(nMap)["type"] = "number"
+				}
+			}
+
 			appendTaggedSpecs(op, apiPath, item, &spec, tags)
 		}
 	}
