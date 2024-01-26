@@ -41,6 +41,8 @@ tasks:
         curl "{{.SPEC_PATH}}"  | \
           python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.stdin.read()))" \
             > "{{.API_JSON_PATH}}"
+        sed -i '' 's/Update Keypair name response/UpdatedKeypairNameResponseAPIObject/g' "{{.API_JSON_PATH}}"
+        sed -i '' 's/Import Keypair Response/ImportedKeypairResponseAPIObject/g' "{{.API_JSON_PATH}}"
 
   build:
     desc: |

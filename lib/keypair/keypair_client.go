@@ -8,11 +8,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/nexgen/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
-	"github.com/nexgen/hyperstack-sdk-go/lib/time"
 
 	"github.com/oapi-codegen/runtime"
 )
@@ -31,8 +31,8 @@ type ImportKeypairPayload struct {
 	PublicKey       string `json:"public_key"`
 }
 
-// ImportKeypairResponse defines model for Import Keypair Response.
-type ImportKeypairResponse struct {
+// ImportedKeypairResponseAPIObject defines model for ImportedKeypairResponseAPIObject.
+type ImportedKeypairResponseAPIObject struct {
 	Keypair *KeypairFields `json:"keypair,omitempty"`
 	Message *string        `json:"message,omitempty"`
 	Status  *bool          `json:"status,omitempty"`
@@ -41,11 +41,11 @@ type ImportKeypairResponse struct {
 // KeypairFields defines model for Keypair Fields.
 type KeypairFields struct {
 	CreatedAt   *time.CustomTime `json:"created_at,omitempty"`
-	Environment *string    `json:"environment,omitempty"`
-	Fingerprint *string    `json:"fingerprint,omitempty"`
-	Id          *int       `json:"id,omitempty"`
-	Name        *string    `json:"name,omitempty"`
-	PublicKey   *string    `json:"public_key,omitempty"`
+	Environment *string          `json:"environment,omitempty"`
+	Fingerprint *string          `json:"fingerprint,omitempty"`
+	Id          *int             `json:"id,omitempty"`
+	Name        *string          `json:"name,omitempty"`
+	PublicKey   *string          `json:"public_key,omitempty"`
 }
 
 // Keypairs defines model for Keypairs.
@@ -66,8 +66,8 @@ type UpdateKeypairName struct {
 	Name string `json:"name"`
 }
 
-// UpdateKeypairNameResponse defines model for Update Keypair name response.
-type UpdateKeypairNameResponse struct {
+// UpdatedKeypairNameResponseAPIObject defines model for UpdatedKeypairNameResponseAPIObject.
+type UpdatedKeypairNameResponseAPIObject struct {
 	Keypair *KeypairFields `json:"keypair,omitempty"`
 	Message *string        `json:"message,omitempty"`
 	Status  *bool          `json:"status,omitempty"`
@@ -477,7 +477,7 @@ func (r DeleteKeypairResponse) StatusCode() int {
 type UpdateKeypairNameResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *UpdateKeypairNameResponse
+	JSON200      *UpdatedKeypairNameResponseAPIObject
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 	JSON404      *ErrorResponseModel
@@ -526,7 +526,7 @@ func (r RetrieveUserKeypairsResponse) StatusCode() int {
 type ImportKeypairResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *ImportKeypairResponse
+	JSON200      *ImportedKeypairResponseAPIObject
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 	JSON404      *ErrorResponseModel
@@ -663,7 +663,7 @@ func ParseUpdateKeypairNameResponse(rsp *http.Response) (*UpdateKeypairNameRespo
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest UpdateKeypairNameResponse
+		var dest UpdatedKeypairNameResponseAPIObject
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -750,7 +750,7 @@ func ParseImportKeypairResponse(rsp *http.Response) (*ImportKeypairResponse, err
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest ImportKeypairResponse
+		var dest ImportedKeypairResponseAPIObject
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
