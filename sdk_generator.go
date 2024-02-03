@@ -118,9 +118,27 @@ func main() {
 			}
 
 			switch apiPath {
+			case "/core/flavors":
+				if opName == "get" {
+					for i, param := range op.Parameters {
+						if param.Name == "region" {
+							op.Parameters[i].Schema.Type = "string"
+						}
+					}
+				}
+			case "/core/images":
+				if opName == "get" {
+					for i, param := range op.Parameters {
+						if param.Name == "region" {
+							op.Parameters[i].Schema.Type = "string"
+						}
+					}
+				}
 			case "/core/virtual-machines":
 				if opName == "get" {
 					spec.Components["schemas"].(nMap)["Instance Flavor Fields"].(nMap)["properties"].(nMap)["ram"].(nMap)["type"] = "number"
+					spec.Components["schemas"].(nMap)["Flavor Fields"].(nMap)["properties"].(nMap)["ram"].(nMap)["type"] = "number"
+
 				}
 			}
 

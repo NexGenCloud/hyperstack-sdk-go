@@ -50,7 +50,7 @@ type Images struct {
 
 // RetrieveImagesParams defines parameters for RetrieveImages.
 type RetrieveImagesParams struct {
-	Region *interface{} `form:"region,omitempty" json:"region,omitempty"`
+	Region *string `form:"region,omitempty" json:"region,omitempty"`
 }
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
