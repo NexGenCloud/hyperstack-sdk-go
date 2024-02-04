@@ -23,7 +23,7 @@ jobs:
 
     # Get dependencies
     - name: Get dependencies
-      run: make install
+      run: make init
       
     # Pull latest spec
     - name: Pull latest spec
