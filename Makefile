@@ -1,43 +1,43 @@
-# Makefile
-
-# Variable for the package name
-PACKAGE=gosdk
-TIME_PACKAGE=time
-
-# Variable for the OpenAPI file
-SPEC=api.json
-PROJECT=github.com\/nexgen
-
-# go get subcommands
-GET_DEPS=  github.com/deepmap/oapi-codegen/cmd/oapi-codegen
 
 
-install: # Install all the necessary dependencies
-	go get ${GET_DEPS}
-	go install ${GET_DEPS}
+# Variables
+DIR_ARTIFACTS := $(shell pwd)/artifacts
+DIR_DATA := $(shell pwd)/data
+API_JSON_PATH := $(DIR_ARTIFACTS)/api.json
+LIB_DIR := lib
+DIR_PACKAGE := $(shell pwd)/$(LIB_DIR)
+SPEC_PATH := https://infrahub-api-doc.nexgencloud.com/api.json
+PROJECT := github.com\/nexgen\/hyperstack-sdk-go
+TIME_PACKAGE := time
+DEPS := github.com/deepmap/oapi-codegen/cmd/oapi-codegen
 
-pull:  # Pulls the latest api.json from the server
+# Environment variables (set these in your environment or here directly)
+export HYPERSTACK_STAGING := true
+# export HYPERSTACK_API_KEY :=
+
+# Targets
+init: # Install all the necessary dependencies
+	go get $(DEPS)
+	go install $(DEPS)
+
+pull-api: # Pulls the latest api.json from the server
 	@echo "Pulling the latest swagger spec and generating Go SDK..."
-	curl "https://infrahub-api-doc.nexgencloud.com/${SPEC}" | python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.stdin.read()))" > "${SPEC}"
+	curl "$(SPEC_PATH)" | python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.stdin.read()))" > "$(API_JSON_PATH)"
+	sed -i '' 's/Update Keypair name response/UpdatedKeypairNameResponseAPIObject/g' "$(API_JSON_PATH)"
+	sed -i '' 's/Import Keypair Response/ImportedKeypairResponseAPIObject/g' "$(API_JSON_PATH)"
 
-generate: # Generates go sdk file from api.json
-	#old & boring :
-	#oapi-codegen -package ${PACKAGE} -generate "types,client" ${SPEC} > ${PACKAGE}/${PACKAGE}.go
-	#new & stylish
-	@echo "Generating Go SDK..."
-	if [ -d "./api" ]; then rm -Rf ./api; fi
-	if [ -d "./${PACKAGE}" ]; then rm -Rf ./${PACKAGE}; fi
-	if [ -d "./${TIME_PACKAGE}" ]; then rm -Rf ./${TIME_PACKAGE}; fi
+build: # Generates go sdk file from api.json
+	@echo -n "Generating Go SDK... "
 	go run sdk_generator.go
-	mkdir ${PACKAGE}/${TIME_PACKAGE}
-	find ./${PACKAGE} -name "*.go" -exec echo sed -i -e "s/*time.Time/*${TIME_PACKAGE}.CustomTime/g" {} \;
-	find ./${PACKAGE} -name "*.go" -exec sed -i -e 's/"time"/"${PROJECT}\/${PACKAGE}\/${PACKAGE}\/${TIME_PACKAGE}"/g' {} \;
-	sed 's/package-replace-location/'$(TIME_PACKAGE)'/g' CustomTime.stub > ${PACKAGE}/${TIME_PACKAGE}/CustomTime.go
+	mkdir -p "$(DIR_PACKAGE)/$(TIME_PACKAGE)"
+	find "$(DIR_PACKAGE)" -name "*.go" -exec sed -i -e "s/*time.Time/*$(TIME_PACKAGE).CustomTime/g" {} \;
+	find "$(DIR_PACKAGE)" -name "*.go" -exec sed -i -e 's/"time"/"$(PROJECT)\/$(LIB_DIR)\/$(TIME_PACKAGE)"/g' {} \;
+	sed 's/PACKAGE_REPLACE/$(TIME_PACKAGE)/g' "$(DIR_DATA)/CustomTime.go" > "$(DIR_PACKAGE)/$(TIME_PACKAGE)/CustomTime.go"
+	@echo "done"
 
-test:
+test: # Runs tests
 	go test -v sdk_generator_test.go
 
-all: pull install generate test
+all: pull-api init build test
 
-# The `.PHONY` rule keeps Make from doing something with a file named clean
-.PHONY: install pull generate test
+.PHONY: init pull-api build test all

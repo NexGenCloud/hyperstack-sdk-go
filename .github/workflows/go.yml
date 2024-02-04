@@ -32,8 +32,6 @@ jobs:
     # Generate SDK
     - name: Generate SDK
       run: make generate
-      env:
-        DIR_PACKAGE: ${{ github.workspace }}/lib
 
     # Run tests 
     - name: Run tests
