@@ -27,11 +27,11 @@ jobs:
       
     # Pull latest spec
     - name: Pull latest spec
-      run: make pull
+      run: make pull-api
 
     # Generate SDK
     - name: Generate SDK
-      run: make generate
+      run: make build
 
     # Run tests 
     - name: Run tests
