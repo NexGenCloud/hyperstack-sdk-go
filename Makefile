@@ -26,10 +26,10 @@ pull-api: # Pulls the latest api.json from the server
 	sed 's/Update Keypair name response/UpdatedKeypairNameResponseAPIObject/g' "$(API_JSON_PATH)"
 	sed 's/Import Keypair Response/ImportedKeypairResponseAPIObject/g' "$(API_JSON_PATH)"
 
+build:	export DIR_PACKAGE=$(shell pwd)/$(LIB_DIR)
+build:	export DIR_ARTIFACTS=$(shell pwd)/artifacts
 build: # Generates go sdk file from api.json
 	@echo -n "Generating Go SDK... "
-	export DIR_PACKAGE=$(shell pwd)/$(LIB_DIR)
-	export DIR_ARTIFACTS=$(shell pwd)/artifacts
 	go run sdk_generator.go
 	mkdir -p "$(DIR_PACKAGE)/$(TIME_PACKAGE)"
 	find "$(DIR_PACKAGE)" -name "*.go" -exec sed -i -e "s/*time.Time/*$(TIME_PACKAGE).CustomTime/g" {} \;
