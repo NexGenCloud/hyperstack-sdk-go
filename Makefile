@@ -28,6 +28,8 @@ pull-api: # Pulls the latest api.json from the server
 
 build: # Generates go sdk file from api.json
 	@echo -n "Generating Go SDK... "
+	export DIR_PACKAGE := $(shell pwd)/$(LIB_DIR)
+	export DIR_ARTIFACTS := $(shell pwd)/artifacts
 	go run sdk_generator.go
 	mkdir -p "$(DIR_PACKAGE)/$(TIME_PACKAGE)"
 	find "$(DIR_PACKAGE)" -name "*.go" -exec sed -i -e "s/*time.Time/*$(TIME_PACKAGE).CustomTime/g" {} \;
