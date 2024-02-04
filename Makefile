@@ -23,8 +23,8 @@ init: # Install all the necessary dependencies
 pull-api: # Pulls the latest api.json from the server
 	@echo "Pulling the latest swagger spec and generating Go SDK..."
 	curl "$(SPEC_PATH)" | python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.stdin.read()))" > "$(API_JSON_PATH)"
-	sed -i '' 's/Update Keypair name response/UpdatedKeypairNameResponseAPIObject/g' "$(API_JSON_PATH)"
-	sed -i '' 's/Import Keypair Response/ImportedKeypairResponseAPIObject/g' "$(API_JSON_PATH)"
+	sed 's/Update Keypair name response/UpdatedKeypairNameResponseAPIObject/g' "$(API_JSON_PATH)"
+	sed 's/Import Keypair Response/ImportedKeypairResponseAPIObject/g' "$(API_JSON_PATH)"
 
 build: # Generates go sdk file from api.json
 	@echo -n "Generating Go SDK... "
