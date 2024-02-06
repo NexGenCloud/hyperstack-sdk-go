@@ -7,11 +7,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/nexgen/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/nexgen/hyperstack-sdk-go/lib/time"
 
 	"github.com/oapi-codegen/runtime"
 )
@@ -25,16 +25,16 @@ type ErrorResponseModel struct {
 
 // FlavorFields defines model for Flavor Fields.
 type FlavorFields struct {
-	Cpu            *int             `json:"cpu,omitempty"`
+	Cpu            *int       `json:"cpu,omitempty"`
 	CreatedAt      *time.CustomTime `json:"created_at,omitempty"`
-	Disk           *int             `json:"disk,omitempty"`
-	Gpu            *string          `json:"gpu,omitempty"`
-	GpuCount       *int             `json:"gpu_count,omitempty"`
-	Id             *int             `json:"id,omitempty"`
-	Name           *string          `json:"name,omitempty"`
-	Ram            *float32         `json:"ram,omitempty"`
-	RegionName     *string          `json:"region_name,omitempty"`
-	StockAvailable *bool            `json:"stock_available,omitempty"`
+	Disk           *int       `json:"disk,omitempty"`
+	Gpu            *string    `json:"gpu,omitempty"`
+	GpuCount       *int       `json:"gpu_count,omitempty"`
+	Id             *int       `json:"id,omitempty"`
+	Name           *string    `json:"name,omitempty"`
+	Ram            *float32   `json:"ram,omitempty"`
+	RegionName     *string    `json:"region_name,omitempty"`
+	StockAvailable *bool      `json:"stock_available,omitempty"`
 }
 
 // FlavorItemGetResponse defines model for Flavor Item Get Response.
