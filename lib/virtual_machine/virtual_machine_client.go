@@ -38,6 +38,8 @@ type CreateInstancesPayload struct {
 type CreateSecurityRulePayload struct {
 	Direction      string `json:"direction"`
 	Ethertype      string `json:"ethertype"`
+	PortRangeMax   *int   `json:"port_range_max,omitempty"`
+	PortRangeMin   *int   `json:"port_range_min,omitempty"`
 	Protocol       string `json:"protocol"`
 	RemoteIpPrefix string `json:"remote_ip_prefix"`
 }

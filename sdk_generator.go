@@ -87,6 +87,7 @@ func main() {
 	tags := make(map[string]*openAPISpec, 0)
 
 	type nMap = map[interface{}]interface{}
+	type nReq = []interface{}
 
 	for apiPath, item := range spec.Paths {
 		operations := map[string]*operation{
@@ -138,6 +139,22 @@ func main() {
 				if opName == "get" {
 					spec.Components["schemas"].(nMap)["Instance Flavor Fields"].(nMap)["properties"].(nMap)["ram"].(nMap)["type"] = "number"
 					spec.Components["schemas"].(nMap)["Flavor Fields"].(nMap)["properties"].(nMap)["ram"].(nMap)["type"] = "number"
+
+				}
+			case "/core/virtual-machines/{id}/sg-rules":
+				if opName == "post" {
+					// TODO: not needed, just for reference
+					//spec.Components["schemas"].(nMap)["Create Security Rule Payload"].(nMap)["required"] = append(
+					//	spec.Components["schemas"].(nMap)["Create Security Rule Payload"].(nMap)["required"].(nReq),
+					//	"port_range_min",
+					//	"port_range_max",
+					//)
+					spec.Components["schemas"].(nMap)["Create Security Rule Payload"].(nMap)["properties"].(nMap)["port_range_min"] = nMap{
+						"type": "integer",
+					}
+					spec.Components["schemas"].(nMap)["Create Security Rule Payload"].(nMap)["properties"].(nMap)["port_range_max"] = nMap{
+						"type": "integer",
+					}
 
 				}
 			}
