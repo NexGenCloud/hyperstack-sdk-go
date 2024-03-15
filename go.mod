@@ -1,4 +1,4 @@
-module github.com/nexgen/hyperstack-sdk-go
+module github.com/NexGenCloud/hyperstack-sdk-go
 
 go 1.21
 
