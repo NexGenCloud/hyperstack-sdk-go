@@ -51,7 +51,7 @@ tasks:
       SPEC_PATH: |-
         https://infrahub-api-doc.nexgencloud.com/api.json
       # TODO: from go.mod
-      PROJECT: "github.com\\/nexgen\\/hyperstack-sdk-go"
+      PROJECT: "github.com\\/NexGenCloud\\/hyperstack-sdk-go"
       TIME_PACKAGE: "time"
     env:
       DIR_ARTIFACTS: "{{.DIR_ARTIFACTS}}"

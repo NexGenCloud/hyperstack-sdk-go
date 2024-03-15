@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-	"github.com/nexgen/hyperstack-sdk-go/lib/time"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 )
 
 // BillingMetricesFields defines model for Billing metrices fields.
