@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/nexgen/hyperstack-sdk-go/lib/auth"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/auth"
 	"io/ioutil"
 	"log"
 	"net/http"
