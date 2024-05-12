@@ -63,7 +63,7 @@ type VolumeFields struct {
 	Id          *int                        `json:"id,omitempty"`
 	ImageId     *int                        `json:"image_id,omitempty"`
 	Name        *string                     `json:"name,omitempty"`
-	Size        *string                     `json:"size,omitempty"`
+	Size        *int                        `json:"size,omitempty"`
 	Status      *string                     `json:"status,omitempty"`
 	UpdatedAt   *time.CustomTime                  `json:"updated_at,omitempty"`
 	VolumeType  *string                     `json:"volume_type,omitempty"`
