@@ -13,23 +13,9 @@ import (
 	"strings"
 )
 
-// APIKey defines model for API Key.
-type APIKey struct {
-	ApiKey  *APIKeyFields `json:"api_key,omitempty"`
-	Message *string       `json:"message,omitempty"`
-	Status  *bool         `json:"status,omitempty"`
-}
-
-// APIKeyFields defines model for API Key Fields.
-type APIKeyFields struct {
+// ApiKeyFields defines model for ApiKeyFields.
+type ApiKeyFields struct {
 	Key *string `json:"key,omitempty"`
-}
-
-// APIKeyGeneration defines model for API Key generation.
-type APIKeyGeneration struct {
-	ApiKey  *string `json:"api_key,omitempty"`
-	Message *string `json:"message,omitempty"`
-	Status  *bool   `json:"status,omitempty"`
 }
 
 // ErrorResponseModel defines model for ErrorResponseModel.
@@ -37,6 +23,20 @@ type ErrorResponseModel struct {
 	ErrorReason *string `json:"error_reason,omitempty"`
 	Message     *string `json:"message,omitempty"`
 	Status      *bool   `json:"status,omitempty"`
+}
+
+// GenerateApiKeyResponseModel defines model for GenerateApiKeyResponseModel.
+type GenerateApiKeyResponseModel struct {
+	ApiKey  *string `json:"api_key,omitempty"`
+	Message *string `json:"message,omitempty"`
+	Status  *bool   `json:"status,omitempty"`
+}
+
+// GetApiKeyResponseModel defines model for GetApiKeyResponseModel.
+type GetApiKeyResponseModel struct {
+	ApiKey  *ApiKeyFields `json:"api_key,omitempty"`
+	Message *string       `json:"message,omitempty"`
+	Status  *bool         `json:"status,omitempty"`
 }
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
@@ -250,7 +250,7 @@ type ClientWithResponsesInterface interface {
 type GetAPIKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *APIKey
+	JSON200      *GetApiKeyResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 }
@@ -274,7 +274,7 @@ func (r GetAPIKeyResponse) StatusCode() int {
 type GenerateAPIKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *APIKeyGeneration
+	JSON200      *GenerateApiKeyResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 }
@@ -328,7 +328,7 @@ func ParseGetAPIKeyResponse(rsp *http.Response) (*GetAPIKeyResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest APIKey
+		var dest GetApiKeyResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -368,7 +368,7 @@ func ParseGenerateAPIKeyResponse(rsp *http.Response) (*GenerateAPIKeyResponse, e
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest APIKeyGeneration
+		var dest GenerateApiKeyResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

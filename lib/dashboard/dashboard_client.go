@@ -132,12 +132,12 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// GetInstancesContainersAndVolumesOverview request
-	GetInstancesContainersAndVolumesOverview(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RetrieveDashboard request
+	RetrieveDashboard(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) GetInstancesContainersAndVolumesOverview(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetInstancesContainersAndVolumesOverviewRequest(c.Server)
+func (c *Client) RetrieveDashboard(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveDashboardRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -148,8 +148,8 @@ func (c *Client) GetInstancesContainersAndVolumesOverview(ctx context.Context, r
 	return c.Client.Do(req)
 }
 
-// NewGetInstancesContainersAndVolumesOverviewRequest generates requests for GetInstancesContainersAndVolumesOverview
-func NewGetInstancesContainersAndVolumesOverviewRequest(server string) (*http.Request, error) {
+// NewRetrieveDashboardRequest generates requests for RetrieveDashboard
+func NewRetrieveDashboardRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -218,11 +218,11 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// GetInstancesContainersAndVolumesOverviewWithResponse request
-	GetInstancesContainersAndVolumesOverviewWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetInstancesContainersAndVolumesOverviewResponse, error)
+	// RetrieveDashboardWithResponse request
+	RetrieveDashboardWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveDashboardResponse, error)
 }
 
-type GetInstancesContainersAndVolumesOverviewResponse struct {
+type RetrieveDashboardResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *DashboardInfoResponse
@@ -231,7 +231,7 @@ type GetInstancesContainersAndVolumesOverviewResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetInstancesContainersAndVolumesOverviewResponse) Status() string {
+func (r RetrieveDashboardResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -239,31 +239,31 @@ func (r GetInstancesContainersAndVolumesOverviewResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetInstancesContainersAndVolumesOverviewResponse) StatusCode() int {
+func (r RetrieveDashboardResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// GetInstancesContainersAndVolumesOverviewWithResponse request returning *GetInstancesContainersAndVolumesOverviewResponse
-func (c *ClientWithResponses) GetInstancesContainersAndVolumesOverviewWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetInstancesContainersAndVolumesOverviewResponse, error) {
-	rsp, err := c.GetInstancesContainersAndVolumesOverview(ctx, reqEditors...)
+// RetrieveDashboardWithResponse request returning *RetrieveDashboardResponse
+func (c *ClientWithResponses) RetrieveDashboardWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveDashboardResponse, error) {
+	rsp, err := c.RetrieveDashboard(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetInstancesContainersAndVolumesOverviewResponse(rsp)
+	return ParseRetrieveDashboardResponse(rsp)
 }
 
-// ParseGetInstancesContainersAndVolumesOverviewResponse parses an HTTP response from a GetInstancesContainersAndVolumesOverviewWithResponse call
-func ParseGetInstancesContainersAndVolumesOverviewResponse(rsp *http.Response) (*GetInstancesContainersAndVolumesOverviewResponse, error) {
+// ParseRetrieveDashboardResponse parses an HTTP response from a RetrieveDashboardWithResponse call
+func ParseRetrieveDashboardResponse(rsp *http.Response) (*RetrieveDashboardResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetInstancesContainersAndVolumesOverviewResponse{
+	response := &RetrieveDashboardResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

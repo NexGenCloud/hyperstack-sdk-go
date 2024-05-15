@@ -14,26 +14,26 @@ import (
 	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 )
 
-// ErrorResponseModel defines model for ErrorResponseModel.
-type ErrorResponseModel struct {
-	ErrorReason *string `json:"error_reason,omitempty"`
-	Message     *string `json:"message,omitempty"`
-	Status      *bool   `json:"status,omitempty"`
-}
-
-// UserFields defines model for User Fields.
-type UserFields struct {
+// AuthUserFields defines model for AuthUserFields.
+type AuthUserFields struct {
 	CreatedAt *time.CustomTime `json:"created_at,omitempty"`
 	Email     *string    `json:"email,omitempty"`
 	Name      *string    `json:"name,omitempty"`
 	Username  *string    `json:"username,omitempty"`
 }
 
-// UserInfoResponse defines model for User Info Response.
-type UserInfoResponse struct {
-	Message *string     `json:"message,omitempty"`
-	Status  *bool       `json:"status,omitempty"`
-	User    *UserFields `json:"user,omitempty"`
+// AuthUserInfoResponseModel defines model for AuthUserInfoResponseModel.
+type AuthUserInfoResponseModel struct {
+	Message *string         `json:"message,omitempty"`
+	Status  *bool           `json:"status,omitempty"`
+	User    *AuthUserFields `json:"user,omitempty"`
+}
+
+// ErrorResponseModel defines model for ErrorResponseModel.
+type ErrorResponseModel struct {
+	ErrorReason *string `json:"error_reason,omitempty"`
+	Message     *string `json:"message,omitempty"`
+	Status      *bool   `json:"status,omitempty"`
 }
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
@@ -202,7 +202,7 @@ type ClientWithResponsesInterface interface {
 type AuthUserInformationResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *UserInfoResponse
+	JSON200      *AuthUserInfoResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 }
@@ -247,7 +247,7 @@ func ParseAuthUserInformationResponse(rsp *http.Response) (*AuthUserInformationR
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest UserInfoResponse
+		var dest AuthUserInfoResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

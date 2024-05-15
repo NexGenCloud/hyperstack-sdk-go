@@ -19,7 +19,10 @@ import (
 
 // CreateEnvironment defines model for Create Environment.
 type CreateEnvironment struct {
-	Name   string `json:"name"`
+	// Name The name of the environment being created.
+	Name string `json:"name"`
+
+	// Region The geographic location of the data center where the environment is being created. To learn more about regions, [**click here**](https://infrahub-doc.nexgencloud.com/docs/features/regions).
 	Region string `json:"region"`
 }
 
@@ -60,14 +63,15 @@ type ResponseModel struct {
 
 // UpdateEnvironment defines model for Update Environment.
 type UpdateEnvironment struct {
+	// Name The new name of the environment.
 	Name string `json:"name"`
 }
 
 // CreateEnvironmentJSONRequestBody defines body for CreateEnvironment for application/json ContentType.
 type CreateEnvironmentJSONRequestBody = CreateEnvironment
 
-// UpdateAnEnvironmentJSONRequestBody defines body for UpdateAnEnvironment for application/json ContentType.
-type UpdateAnEnvironmentJSONRequestBody = UpdateEnvironment
+// UpdateEnvironmentJSONRequestBody defines body for UpdateEnvironment for application/json ContentType.
+type UpdateEnvironmentJSONRequestBody = UpdateEnvironment
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -150,16 +154,16 @@ type ClientInterface interface {
 
 	CreateEnvironment(ctx context.Context, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteAnEnvironment request
-	DeleteAnEnvironment(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteEnvironment request
+	DeleteEnvironment(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetAnEnvironmentDetails request
-	GetAnEnvironmentDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RetrieveEnvironment request
+	RetrieveEnvironment(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateAnEnvironmentWithBody request with any body
-	UpdateAnEnvironmentWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdateEnvironmentWithBody request with any body
+	UpdateEnvironmentWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateAnEnvironment(ctx context.Context, id int, body UpdateAnEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateEnvironment(ctx context.Context, id int, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) ListEnvironments(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -198,8 +202,8 @@ func (c *Client) CreateEnvironment(ctx context.Context, body CreateEnvironmentJS
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteAnEnvironment(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteAnEnvironmentRequest(c.Server, id)
+func (c *Client) DeleteEnvironment(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteEnvironmentRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -210,8 +214,8 @@ func (c *Client) DeleteAnEnvironment(ctx context.Context, id int, reqEditors ...
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetAnEnvironmentDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetAnEnvironmentDetailsRequest(c.Server, id)
+func (c *Client) RetrieveEnvironment(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveEnvironmentRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -222,8 +226,8 @@ func (c *Client) GetAnEnvironmentDetails(ctx context.Context, id int, reqEditors
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateAnEnvironmentWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateAnEnvironmentRequestWithBody(c.Server, id, contentType, body)
+func (c *Client) UpdateEnvironmentWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEnvironmentRequestWithBody(c.Server, id, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -234,8 +238,8 @@ func (c *Client) UpdateAnEnvironmentWithBody(ctx context.Context, id int, conten
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateAnEnvironment(ctx context.Context, id int, body UpdateAnEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateAnEnvironmentRequest(c.Server, id, body)
+func (c *Client) UpdateEnvironment(ctx context.Context, id int, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEnvironmentRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -313,8 +317,8 @@ func NewCreateEnvironmentRequestWithBody(server string, contentType string, body
 	return req, nil
 }
 
-// NewDeleteAnEnvironmentRequest generates requests for DeleteAnEnvironment
-func NewDeleteAnEnvironmentRequest(server string, id int) (*http.Request, error) {
+// NewDeleteEnvironmentRequest generates requests for DeleteEnvironment
+func NewDeleteEnvironmentRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -347,8 +351,8 @@ func NewDeleteAnEnvironmentRequest(server string, id int) (*http.Request, error)
 	return req, nil
 }
 
-// NewGetAnEnvironmentDetailsRequest generates requests for GetAnEnvironmentDetails
-func NewGetAnEnvironmentDetailsRequest(server string, id int) (*http.Request, error) {
+// NewRetrieveEnvironmentRequest generates requests for RetrieveEnvironment
+func NewRetrieveEnvironmentRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -381,19 +385,19 @@ func NewGetAnEnvironmentDetailsRequest(server string, id int) (*http.Request, er
 	return req, nil
 }
 
-// NewUpdateAnEnvironmentRequest calls the generic UpdateAnEnvironment builder with application/json body
-func NewUpdateAnEnvironmentRequest(server string, id int, body UpdateAnEnvironmentJSONRequestBody) (*http.Request, error) {
+// NewUpdateEnvironmentRequest calls the generic UpdateEnvironment builder with application/json body
+func NewUpdateEnvironmentRequest(server string, id int, body UpdateEnvironmentJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUpdateAnEnvironmentRequestWithBody(server, id, "application/json", bodyReader)
+	return NewUpdateEnvironmentRequestWithBody(server, id, "application/json", bodyReader)
 }
 
-// NewUpdateAnEnvironmentRequestWithBody generates requests for UpdateAnEnvironment with any type of body
-func NewUpdateAnEnvironmentRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
+// NewUpdateEnvironmentRequestWithBody generates requests for UpdateEnvironment with any type of body
+func NewUpdateEnvironmentRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -479,16 +483,16 @@ type ClientWithResponsesInterface interface {
 
 	CreateEnvironmentWithResponse(ctx context.Context, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateEnvironmentResponse, error)
 
-	// DeleteAnEnvironmentWithResponse request
-	DeleteAnEnvironmentWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteAnEnvironmentResponse, error)
+	// DeleteEnvironmentWithResponse request
+	DeleteEnvironmentWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteEnvironmentResponse, error)
 
-	// GetAnEnvironmentDetailsWithResponse request
-	GetAnEnvironmentDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*GetAnEnvironmentDetailsResponse, error)
+	// RetrieveEnvironmentWithResponse request
+	RetrieveEnvironmentWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveEnvironmentResponse, error)
 
-	// UpdateAnEnvironmentWithBodyWithResponse request with any body
-	UpdateAnEnvironmentWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAnEnvironmentResponse, error)
+	// UpdateEnvironmentWithBodyWithResponse request with any body
+	UpdateEnvironmentWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error)
 
-	UpdateAnEnvironmentWithResponse(ctx context.Context, id int, body UpdateAnEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAnEnvironmentResponse, error)
+	UpdateEnvironmentWithResponse(ctx context.Context, id int, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error)
 }
 
 type ListEnvironmentsResponse struct {
@@ -541,7 +545,7 @@ func (r CreateEnvironmentResponse) StatusCode() int {
 	return 0
 }
 
-type DeleteAnEnvironmentResponse struct {
+type DeleteEnvironmentResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -551,7 +555,7 @@ type DeleteAnEnvironmentResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteAnEnvironmentResponse) Status() string {
+func (r DeleteEnvironmentResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -559,14 +563,14 @@ func (r DeleteAnEnvironmentResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteAnEnvironmentResponse) StatusCode() int {
+func (r DeleteEnvironmentResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetAnEnvironmentDetailsResponse struct {
+type RetrieveEnvironmentResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Environment
@@ -576,7 +580,7 @@ type GetAnEnvironmentDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetAnEnvironmentDetailsResponse) Status() string {
+func (r RetrieveEnvironmentResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -584,14 +588,14 @@ func (r GetAnEnvironmentDetailsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetAnEnvironmentDetailsResponse) StatusCode() int {
+func (r RetrieveEnvironmentResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type UpdateAnEnvironmentResponse struct {
+type UpdateEnvironmentResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Environment
@@ -601,7 +605,7 @@ type UpdateAnEnvironmentResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r UpdateAnEnvironmentResponse) Status() string {
+func (r UpdateEnvironmentResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -609,7 +613,7 @@ func (r UpdateAnEnvironmentResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r UpdateAnEnvironmentResponse) StatusCode() int {
+func (r UpdateEnvironmentResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -642,39 +646,39 @@ func (c *ClientWithResponses) CreateEnvironmentWithResponse(ctx context.Context,
 	return ParseCreateEnvironmentResponse(rsp)
 }
 
-// DeleteAnEnvironmentWithResponse request returning *DeleteAnEnvironmentResponse
-func (c *ClientWithResponses) DeleteAnEnvironmentWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteAnEnvironmentResponse, error) {
-	rsp, err := c.DeleteAnEnvironment(ctx, id, reqEditors...)
+// DeleteEnvironmentWithResponse request returning *DeleteEnvironmentResponse
+func (c *ClientWithResponses) DeleteEnvironmentWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteEnvironmentResponse, error) {
+	rsp, err := c.DeleteEnvironment(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteAnEnvironmentResponse(rsp)
+	return ParseDeleteEnvironmentResponse(rsp)
 }
 
-// GetAnEnvironmentDetailsWithResponse request returning *GetAnEnvironmentDetailsResponse
-func (c *ClientWithResponses) GetAnEnvironmentDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*GetAnEnvironmentDetailsResponse, error) {
-	rsp, err := c.GetAnEnvironmentDetails(ctx, id, reqEditors...)
+// RetrieveEnvironmentWithResponse request returning *RetrieveEnvironmentResponse
+func (c *ClientWithResponses) RetrieveEnvironmentWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveEnvironmentResponse, error) {
+	rsp, err := c.RetrieveEnvironment(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetAnEnvironmentDetailsResponse(rsp)
+	return ParseRetrieveEnvironmentResponse(rsp)
 }
 
-// UpdateAnEnvironmentWithBodyWithResponse request with arbitrary body returning *UpdateAnEnvironmentResponse
-func (c *ClientWithResponses) UpdateAnEnvironmentWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAnEnvironmentResponse, error) {
-	rsp, err := c.UpdateAnEnvironmentWithBody(ctx, id, contentType, body, reqEditors...)
+// UpdateEnvironmentWithBodyWithResponse request with arbitrary body returning *UpdateEnvironmentResponse
+func (c *ClientWithResponses) UpdateEnvironmentWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error) {
+	rsp, err := c.UpdateEnvironmentWithBody(ctx, id, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUpdateAnEnvironmentResponse(rsp)
+	return ParseUpdateEnvironmentResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateAnEnvironmentWithResponse(ctx context.Context, id int, body UpdateAnEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAnEnvironmentResponse, error) {
-	rsp, err := c.UpdateAnEnvironment(ctx, id, body, reqEditors...)
+func (c *ClientWithResponses) UpdateEnvironmentWithResponse(ctx context.Context, id int, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error) {
+	rsp, err := c.UpdateEnvironment(ctx, id, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUpdateAnEnvironmentResponse(rsp)
+	return ParseUpdateEnvironmentResponse(rsp)
 }
 
 // ParseListEnvironmentsResponse parses an HTTP response from a ListEnvironmentsWithResponse call
@@ -771,15 +775,15 @@ func ParseCreateEnvironmentResponse(rsp *http.Response) (*CreateEnvironmentRespo
 	return response, nil
 }
 
-// ParseDeleteAnEnvironmentResponse parses an HTTP response from a DeleteAnEnvironmentWithResponse call
-func ParseDeleteAnEnvironmentResponse(rsp *http.Response) (*DeleteAnEnvironmentResponse, error) {
+// ParseDeleteEnvironmentResponse parses an HTTP response from a DeleteEnvironmentWithResponse call
+func ParseDeleteEnvironmentResponse(rsp *http.Response) (*DeleteEnvironmentResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteAnEnvironmentResponse{
+	response := &DeleteEnvironmentResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -818,15 +822,15 @@ func ParseDeleteAnEnvironmentResponse(rsp *http.Response) (*DeleteAnEnvironmentR
 	return response, nil
 }
 
-// ParseGetAnEnvironmentDetailsResponse parses an HTTP response from a GetAnEnvironmentDetailsWithResponse call
-func ParseGetAnEnvironmentDetailsResponse(rsp *http.Response) (*GetAnEnvironmentDetailsResponse, error) {
+// ParseRetrieveEnvironmentResponse parses an HTTP response from a RetrieveEnvironmentWithResponse call
+func ParseRetrieveEnvironmentResponse(rsp *http.Response) (*RetrieveEnvironmentResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetAnEnvironmentDetailsResponse{
+	response := &RetrieveEnvironmentResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -865,15 +869,15 @@ func ParseGetAnEnvironmentDetailsResponse(rsp *http.Response) (*GetAnEnvironment
 	return response, nil
 }
 
-// ParseUpdateAnEnvironmentResponse parses an HTTP response from a UpdateAnEnvironmentWithResponse call
-func ParseUpdateAnEnvironmentResponse(rsp *http.Response) (*UpdateAnEnvironmentResponse, error) {
+// ParseUpdateEnvironmentResponse parses an HTTP response from a UpdateEnvironmentWithResponse call
+func ParseUpdateEnvironmentResponse(rsp *http.Response) (*UpdateEnvironmentResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &UpdateAnEnvironmentResponse{
+	response := &UpdateEnvironmentResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

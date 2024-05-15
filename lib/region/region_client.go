@@ -107,12 +107,12 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// GettingRegions request
-	GettingRegions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListRegions request
+	ListRegions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) GettingRegions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGettingRegionsRequest(c.Server)
+func (c *Client) ListRegions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListRegionsRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -123,8 +123,8 @@ func (c *Client) GettingRegions(ctx context.Context, reqEditors ...RequestEditor
 	return c.Client.Do(req)
 }
 
-// NewGettingRegionsRequest generates requests for GettingRegions
-func NewGettingRegionsRequest(server string) (*http.Request, error) {
+// NewListRegionsRequest generates requests for ListRegions
+func NewListRegionsRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -193,11 +193,11 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// GettingRegionsWithResponse request
-	GettingRegionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GettingRegionsResponse, error)
+	// ListRegionsWithResponse request
+	ListRegionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListRegionsResponse, error)
 }
 
-type GettingRegionsResponse struct {
+type ListRegionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Regions
@@ -206,7 +206,7 @@ type GettingRegionsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GettingRegionsResponse) Status() string {
+func (r ListRegionsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -214,31 +214,31 @@ func (r GettingRegionsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GettingRegionsResponse) StatusCode() int {
+func (r ListRegionsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// GettingRegionsWithResponse request returning *GettingRegionsResponse
-func (c *ClientWithResponses) GettingRegionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GettingRegionsResponse, error) {
-	rsp, err := c.GettingRegions(ctx, reqEditors...)
+// ListRegionsWithResponse request returning *ListRegionsResponse
+func (c *ClientWithResponses) ListRegionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListRegionsResponse, error) {
+	rsp, err := c.ListRegions(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGettingRegionsResponse(rsp)
+	return ParseListRegionsResponse(rsp)
 }
 
-// ParseGettingRegionsResponse parses an HTTP response from a GettingRegionsWithResponse call
-func ParseGettingRegionsResponse(rsp *http.Response) (*GettingRegionsResponse, error) {
+// ParseListRegionsResponse parses an HTTP response from a ListRegionsWithResponse call
+func ParseListRegionsResponse(rsp *http.Response) (*ListRegionsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GettingRegionsResponse{
+	response := &ListRegionsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

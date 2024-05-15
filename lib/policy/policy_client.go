@@ -21,14 +21,14 @@ type ErrorResponseModel struct {
 	Status      *bool   `json:"status,omitempty"`
 }
 
-// Policies defines model for Policies.
-type Policies struct {
+// GetPoliciesResponseModel defines model for GetPoliciesResponseModel.
+type GetPoliciesResponseModel struct {
 	Message  *string         `json:"message,omitempty"`
 	Policies *[]PolicyFields `json:"policies,omitempty"`
 	Status   *bool           `json:"status,omitempty"`
 }
 
-// PolicyFields defines model for Policy Fields.
+// PolicyFields defines model for PolicyFields.
 type PolicyFields struct {
 	CreatedAt   *time.CustomTime                `json:"created_at,omitempty"`
 	Description *string                   `json:"description,omitempty"`
@@ -37,7 +37,7 @@ type PolicyFields struct {
 	Permissions *[]PolicyPermissionFields `json:"permissions,omitempty"`
 }
 
-// PolicyPermissionFields defines model for Policy Permission Fields.
+// PolicyPermissionFields defines model for PolicyPermissionFields.
 type PolicyPermissionFields struct {
 	Id         *int    `json:"id,omitempty"`
 	Permission *string `json:"permission,omitempty"`
@@ -210,7 +210,7 @@ type ClientWithResponsesInterface interface {
 type ListPoliciesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *Policies
+	JSON200      *GetPoliciesResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 }
@@ -255,7 +255,7 @@ func ParseListPoliciesResponse(rsp *http.Response) (*ListPoliciesResponse, error
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Policies
+		var dest GetPoliciesResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

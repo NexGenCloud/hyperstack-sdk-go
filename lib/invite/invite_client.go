@@ -17,6 +17,12 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// CommonResponseModel defines model for CommonResponseModel.
+type CommonResponseModel struct {
+	Message *string `json:"message,omitempty"`
+	Status  *bool   `json:"status,omitempty"`
+}
+
 // ErrorResponseModel defines model for ErrorResponseModel.
 type ErrorResponseModel struct {
 	ErrorReason *string `json:"error_reason,omitempty"`
@@ -24,14 +30,14 @@ type ErrorResponseModel struct {
 	Status      *bool   `json:"status,omitempty"`
 }
 
-// Invite defines model for Invite.
-type Invite struct {
-	Invite  *InviteFields `json:"invite,omitempty"`
-	Message *string       `json:"message,omitempty"`
-	Status  *bool         `json:"status,omitempty"`
+// GetInvitesResponseModel defines model for GetInvitesResponseModel.
+type GetInvitesResponseModel struct {
+	Invites *[]InviteFields `json:"invites,omitempty"`
+	Message *string         `json:"message,omitempty"`
+	Status  *bool           `json:"status,omitempty"`
 }
 
-// InviteFields defines model for Invite Fields.
+// InviteFields defines model for InviteFields.
 type InviteFields struct {
 	CreatedAt *time.CustomTime `json:"created_at,omitempty"`
 	Email     *string    `json:"email,omitempty"`
@@ -39,26 +45,20 @@ type InviteFields struct {
 	Status    *string    `json:"status,omitempty"`
 }
 
-// InviteUser defines model for Invite User.
-type InviteUser struct {
+// InviteUserPayload defines model for InviteUserPayload.
+type InviteUserPayload struct {
 	Email string `json:"email"`
 }
 
-// Invites defines model for Invites.
-type Invites struct {
-	Invites *[]InviteFields `json:"invites,omitempty"`
-	Message *string         `json:"message,omitempty"`
-	Status  *bool           `json:"status,omitempty"`
-}
-
-// ResponseModel defines model for ResponseModel.
-type ResponseModel struct {
-	Message *string `json:"message,omitempty"`
-	Status  *bool   `json:"status,omitempty"`
+// InviteUserResponseModel defines model for InviteUserResponseModel.
+type InviteUserResponseModel struct {
+	Invite  *InviteFields `json:"invite,omitempty"`
+	Message *string       `json:"message,omitempty"`
+	Status  *bool         `json:"status,omitempty"`
 }
 
 // InviteAnUserToOrganizationJSONRequestBody defines body for InviteAnUserToOrganization for application/json ContentType.
-type InviteAnUserToOrganizationJSONRequestBody = InviteUser
+type InviteAnUserToOrganizationJSONRequestBody = InviteUserPayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -352,7 +352,7 @@ type ClientWithResponsesInterface interface {
 type ListInvitesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *Invites
+	JSON200      *GetInvitesResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 }
@@ -376,7 +376,7 @@ func (r ListInvitesResponse) StatusCode() int {
 type InviteAnUserToOrganizationResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON201      *Invite
+	JSON201      *InviteUserResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 	JSON409      *ErrorResponseModel
@@ -401,7 +401,7 @@ func (r InviteAnUserToOrganizationResponse) StatusCode() int {
 type DeleteInviteResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *ResponseModel
+	JSON200      *CommonResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 	JSON404      *ErrorResponseModel
@@ -473,7 +473,7 @@ func ParseListInvitesResponse(rsp *http.Response) (*ListInvitesResponse, error) 
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Invites
+		var dest GetInvitesResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -513,7 +513,7 @@ func ParseInviteAnUserToOrganizationResponse(rsp *http.Response) (*InviteAnUserT
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest Invite
+		var dest InviteUserResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -560,7 +560,7 @@ func ParseDeleteInviteResponse(rsp *http.Response) (*DeleteInviteResponse, error
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest ResponseModel
+		var dest CommonResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

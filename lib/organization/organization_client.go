@@ -22,51 +22,72 @@ type ErrorResponseModel struct {
 	Status      *bool   `json:"status,omitempty"`
 }
 
-// OrganizationInfoModel defines model for Organization Info Model.
-type OrganizationInfoModel struct {
-	CreatedAt *time.CustomTime               `json:"created_at,omitempty"`
-	Id        int                      `json:"id"`
-	Name      string                   `json:"name"`
-	Users     *[]OrganizationUserModel `json:"users,omitempty"`
+// GetOrganizationResponseModel defines model for GetOrganizationResponseModel.
+type GetOrganizationResponseModel struct {
+	Message      *string             `json:"message,omitempty"`
+	Organization *OrganizationFields `json:"organization,omitempty"`
+	Status       *bool               `json:"status,omitempty"`
 }
 
-// OrganizationModel defines model for Organization Model.
-type OrganizationModel struct {
-	Message      *string                `json:"message,omitempty"`
-	Organization *OrganizationInfoModel `json:"organization,omitempty"`
-	Status       *bool                  `json:"status,omitempty"`
+// OrganizationFields defines model for OrganizationFields.
+type OrganizationFields struct {
+	CreatedAt       *time.CustomTime                       `json:"created_at,omitempty"`
+	Credit          *int                             `json:"credit,omitempty"`
+	Id              int                              `json:"id"`
+	Name            string                           `json:"name"`
+	Threshold       *int                             `json:"threshold,omitempty"`
+	TotalClusters   *int                             `json:"total_clusters,omitempty"`
+	TotalContainers *int                             `json:"total_containers,omitempty"`
+	TotalInstances  *int                             `json:"total_instances,omitempty"`
+	TotalVolumes    *int                             `json:"total_volumes,omitempty"`
+	Users           *[]OrganizationUserResponseModel `json:"users,omitempty"`
 }
 
-// OrganizationUserModel defines model for Organization User Model.
-type OrganizationUserModel struct {
-	Email     *string                         `json:"email,omitempty"`
-	Id        *int                            `json:"id,omitempty"`
-	JoinedAt  *time.CustomTime                      `json:"joined_at,omitempty"`
-	Name      *string                         `json:"name,omitempty"`
-	RbacRoles *[]RBACRoleFieldForOrganization `json:"rbac_roles,omitempty"`
-	Role      *string                         `json:"role,omitempty"`
-	Sub       *string                         `json:"sub,omitempty"`
-	Username  *string                         `json:"username,omitempty"`
+// OrganizationUserResponseModel defines model for OrganizationUserResponseModel.
+type OrganizationUserResponseModel struct {
+	Email     *string          `json:"email,omitempty"`
+	Id        *int             `json:"id,omitempty"`
+	JoinedAt  *time.CustomTime       `json:"joined_at,omitempty"`
+	LastLogin *time.CustomTime       `json:"last_login,omitempty"`
+	Name      *string          `json:"name,omitempty"`
+	RbacRoles *[]RbacRoleField `json:"rbac_roles,omitempty"`
+	Role      *string          `json:"role,omitempty"`
+	Sub       *string          `json:"sub,omitempty"`
+	Username  *string          `json:"username,omitempty"`
 }
 
-// RBACRoleFieldForOrganization defines model for RBAC Role Field for Organization.
-type RBACRoleFieldForOrganization struct {
+// RbacRoleField defines model for RbacRoleField.
+type RbacRoleField struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// RemoveMemberResponse defines model for Remove Member Response.
-type RemoveMemberResponse struct {
+// RemoveMemberFromOrganizationResponseModel defines model for RemoveMemberFromOrganizationResponseModel.
+type RemoveMemberFromOrganizationResponseModel struct {
 	Message *string `json:"message,omitempty"`
 	Status  *bool   `json:"status,omitempty"`
 }
 
-// RemoveMember defines model for Remove member.
-type RemoveMember struct {
+// RemoveMemberPayload defines model for RemoveMemberPayload.
+type RemoveMemberPayload struct {
 	Email string `json:"email"`
 }
 
+// UpdateOrganizationPayload defines model for UpdateOrganizationPayload.
+type UpdateOrganizationPayload struct {
+	Name string `json:"name"`
+}
+
+// UpdateOrganizationResponseModel defines model for UpdateOrganizationResponseModel.
+type UpdateOrganizationResponseModel struct {
+	Message *string `json:"message,omitempty"`
+	Status  *bool   `json:"status,omitempty"`
+}
+
 // RemoveAMemberFromOrganizationJSONRequestBody defines body for RemoveAMemberFromOrganization for application/json ContentType.
-type RemoveAMemberFromOrganizationJSONRequestBody = RemoveMember
+type RemoveAMemberFromOrganizationJSONRequestBody = RemoveMemberPayload
+
+// UpdateOrganizationInfoJSONRequestBody defines body for UpdateOrganizationInfo for application/json ContentType.
+type UpdateOrganizationInfoJSONRequestBody = UpdateOrganizationPayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -148,6 +169,11 @@ type ClientInterface interface {
 	RemoveAMemberFromOrganizationWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	RemoveAMemberFromOrganization(ctx context.Context, body RemoveAMemberFromOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateOrganizationInfoWithBody request with any body
+	UpdateOrganizationInfoWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateOrganizationInfo(ctx context.Context, body UpdateOrganizationInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) GetOrganizationInfo(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -176,6 +202,30 @@ func (c *Client) RemoveAMemberFromOrganizationWithBody(ctx context.Context, cont
 
 func (c *Client) RemoveAMemberFromOrganization(ctx context.Context, body RemoveAMemberFromOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRemoveAMemberFromOrganizationRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateOrganizationInfoWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateOrganizationInfoRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateOrganizationInfo(ctx context.Context, body UpdateOrganizationInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateOrganizationInfoRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -253,6 +303,46 @@ func NewRemoveAMemberFromOrganizationRequestWithBody(server string, contentType 
 	return req, nil
 }
 
+// NewUpdateOrganizationInfoRequest calls the generic UpdateOrganizationInfo builder with application/json body
+func NewUpdateOrganizationInfoRequest(server string, body UpdateOrganizationInfoJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateOrganizationInfoRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewUpdateOrganizationInfoRequestWithBody generates requests for UpdateOrganizationInfo with any type of body
+func NewUpdateOrganizationInfoRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/auth/organizations/update")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -303,12 +393,17 @@ type ClientWithResponsesInterface interface {
 	RemoveAMemberFromOrganizationWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RemoveAMemberFromOrganizationResponse, error)
 
 	RemoveAMemberFromOrganizationWithResponse(ctx context.Context, body RemoveAMemberFromOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*RemoveAMemberFromOrganizationResponse, error)
+
+	// UpdateOrganizationInfoWithBodyWithResponse request with any body
+	UpdateOrganizationInfoWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateOrganizationInfoResponse, error)
+
+	UpdateOrganizationInfoWithResponse(ctx context.Context, body UpdateOrganizationInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateOrganizationInfoResponse, error)
 }
 
 type GetOrganizationInfoResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *OrganizationModel
+	JSON200      *GetOrganizationResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 }
@@ -332,7 +427,7 @@ func (r GetOrganizationInfoResponse) StatusCode() int {
 type RemoveAMemberFromOrganizationResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *RemoveMemberResponse
+	JSON200      *RemoveMemberFromOrganizationResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 }
@@ -347,6 +442,30 @@ func (r RemoveAMemberFromOrganizationResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r RemoveAMemberFromOrganizationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateOrganizationInfoResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *UpdateOrganizationResponseModel
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateOrganizationInfoResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateOrganizationInfoResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -379,6 +498,23 @@ func (c *ClientWithResponses) RemoveAMemberFromOrganizationWithResponse(ctx cont
 	return ParseRemoveAMemberFromOrganizationResponse(rsp)
 }
 
+// UpdateOrganizationInfoWithBodyWithResponse request with arbitrary body returning *UpdateOrganizationInfoResponse
+func (c *ClientWithResponses) UpdateOrganizationInfoWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateOrganizationInfoResponse, error) {
+	rsp, err := c.UpdateOrganizationInfoWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateOrganizationInfoResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateOrganizationInfoWithResponse(ctx context.Context, body UpdateOrganizationInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateOrganizationInfoResponse, error) {
+	rsp, err := c.UpdateOrganizationInfo(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateOrganizationInfoResponse(rsp)
+}
+
 // ParseGetOrganizationInfoResponse parses an HTTP response from a GetOrganizationInfoWithResponse call
 func ParseGetOrganizationInfoResponse(rsp *http.Response) (*GetOrganizationInfoResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -394,7 +530,7 @@ func ParseGetOrganizationInfoResponse(rsp *http.Response) (*GetOrganizationInfoR
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest OrganizationModel
+		var dest GetOrganizationResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -434,7 +570,47 @@ func ParseRemoveAMemberFromOrganizationResponse(rsp *http.Response) (*RemoveAMem
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest RemoveMemberResponse
+		var dest RemoveMemberFromOrganizationResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateOrganizationInfoResponse parses an HTTP response from a UpdateOrganizationInfoWithResponse call
+func ParseUpdateOrganizationInfoResponse(rsp *http.Response) (*UpdateOrganizationInfoResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateOrganizationInfoResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest UpdateOrganizationResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

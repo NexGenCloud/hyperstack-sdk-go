@@ -117,12 +117,12 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// GetGPUList request
-	GetGPUList(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListGPUs request
+	ListGPUs(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) GetGPUList(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetGPUListRequest(c.Server)
+func (c *Client) ListGPUs(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListGPUsRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -133,8 +133,8 @@ func (c *Client) GetGPUList(ctx context.Context, reqEditors ...RequestEditorFn) 
 	return c.Client.Do(req)
 }
 
-// NewGetGPUListRequest generates requests for GetGPUList
-func NewGetGPUListRequest(server string) (*http.Request, error) {
+// NewListGPUsRequest generates requests for ListGPUs
+func NewListGPUsRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -203,11 +203,11 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// GetGPUListWithResponse request
-	GetGPUListWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetGPUListResponse, error)
+	// ListGPUsWithResponse request
+	ListGPUsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListGPUsResponse, error)
 }
 
-type GetGPUListResponse struct {
+type ListGPUsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *GPUList
@@ -216,7 +216,7 @@ type GetGPUListResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetGPUListResponse) Status() string {
+func (r ListGPUsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -224,31 +224,31 @@ func (r GetGPUListResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetGPUListResponse) StatusCode() int {
+func (r ListGPUsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// GetGPUListWithResponse request returning *GetGPUListResponse
-func (c *ClientWithResponses) GetGPUListWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetGPUListResponse, error) {
-	rsp, err := c.GetGPUList(ctx, reqEditors...)
+// ListGPUsWithResponse request returning *ListGPUsResponse
+func (c *ClientWithResponses) ListGPUsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListGPUsResponse, error) {
+	rsp, err := c.ListGPUs(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetGPUListResponse(rsp)
+	return ParseListGPUsResponse(rsp)
 }
 
-// ParseGetGPUListResponse parses an HTTP response from a GetGPUListWithResponse call
-func ParseGetGPUListResponse(rsp *http.Response) (*GetGPUListResponse, error) {
+// ParseListGPUsResponse parses an HTTP response from a ListGPUsWithResponse call
+func ParseListGPUsResponse(rsp *http.Response) (*ListGPUsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetGPUListResponse{
+	response := &ListGPUsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
