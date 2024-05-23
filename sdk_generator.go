@@ -109,7 +109,7 @@ func main() {
 			switch apiPath {
 			case "/auth/roles/{id}":
 				if opName == "get" {
-					spec.Components["schemas"].(nMap)["RBACRoleTMPGet"] = CopyableMap(spec.Components["schemas"].(nMap)["RBAC Role"].(nMap)).DeepCopy()
+					spec.Components["schemas"].(nMap)["RBACRoleTMPGet"] = CopyableMap(spec.Components["schemas"].(nMap)["RbacRoleDetailResponseModel"].(nMap)).DeepCopy()
 
 					spec.Components["schemas"].(nMap)["RBACRoleTMPGet"].(nMap)["properties"].(nMap)["roles"] = spec.Components["schemas"].(nMap)["RBACRoleTMPGet"].(nMap)["properties"].(nMap)["role"]
 					delete(spec.Components["schemas"].(nMap)["RBACRoleTMPGet"].(nMap)["properties"].(nMap), "role")

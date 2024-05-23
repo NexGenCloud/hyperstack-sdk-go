@@ -124,12 +124,12 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// RetrieveStocks request
-	RetrieveStocks(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RetrieveGPUStocks request
+	RetrieveGPUStocks(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) RetrieveStocks(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveStocksRequest(c.Server)
+func (c *Client) RetrieveGPUStocks(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveGPUStocksRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -140,8 +140,8 @@ func (c *Client) RetrieveStocks(ctx context.Context, reqEditors ...RequestEditor
 	return c.Client.Do(req)
 }
 
-// NewRetrieveStocksRequest generates requests for RetrieveStocks
-func NewRetrieveStocksRequest(server string) (*http.Request, error) {
+// NewRetrieveGPUStocksRequest generates requests for RetrieveGPUStocks
+func NewRetrieveGPUStocksRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -210,11 +210,11 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// RetrieveStocksWithResponse request
-	RetrieveStocksWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveStocksResponse, error)
+	// RetrieveGPUStocksWithResponse request
+	RetrieveGPUStocksWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveGPUStocksResponse, error)
 }
 
-type RetrieveStocksResponse struct {
+type RetrieveGPUStocksResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *NewStockRetriveResponse
@@ -222,7 +222,7 @@ type RetrieveStocksResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrieveStocksResponse) Status() string {
+func (r RetrieveGPUStocksResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -230,31 +230,31 @@ func (r RetrieveStocksResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrieveStocksResponse) StatusCode() int {
+func (r RetrieveGPUStocksResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// RetrieveStocksWithResponse request returning *RetrieveStocksResponse
-func (c *ClientWithResponses) RetrieveStocksWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveStocksResponse, error) {
-	rsp, err := c.RetrieveStocks(ctx, reqEditors...)
+// RetrieveGPUStocksWithResponse request returning *RetrieveGPUStocksResponse
+func (c *ClientWithResponses) RetrieveGPUStocksWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveGPUStocksResponse, error) {
+	rsp, err := c.RetrieveGPUStocks(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveStocksResponse(rsp)
+	return ParseRetrieveGPUStocksResponse(rsp)
 }
 
-// ParseRetrieveStocksResponse parses an HTTP response from a RetrieveStocksWithResponse call
-func ParseRetrieveStocksResponse(rsp *http.Response) (*RetrieveStocksResponse, error) {
+// ParseRetrieveGPUStocksResponse parses an HTTP response from a RetrieveGPUStocksWithResponse call
+func ParseRetrieveGPUStocksResponse(rsp *http.Response) (*RetrieveGPUStocksResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrieveStocksResponse{
+	response := &RetrieveGPUStocksResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

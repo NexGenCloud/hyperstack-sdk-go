@@ -28,6 +28,7 @@ type FlavorFields struct {
 	Cpu            *int       `json:"cpu,omitempty"`
 	CreatedAt      *time.CustomTime `json:"created_at,omitempty"`
 	Disk           *int       `json:"disk,omitempty"`
+	Ephemeral      *int       `json:"ephemeral,omitempty"`
 	Gpu            *string    `json:"gpu,omitempty"`
 	GpuCount       *int       `json:"gpu_count,omitempty"`
 	Id             *int       `json:"id,omitempty"`
@@ -51,8 +52,8 @@ type FlavorListResponse struct {
 	Status  *bool                    `json:"status,omitempty"`
 }
 
-// RetrieveFlavorsParams defines parameters for RetrieveFlavors.
-type RetrieveFlavorsParams struct {
+// ListFlavorsParams defines parameters for ListFlavors.
+type ListFlavorsParams struct {
 	Region *string `form:"region,omitempty" json:"region,omitempty"`
 }
 
@@ -129,12 +130,12 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// RetrieveFlavors request
-	RetrieveFlavors(ctx context.Context, params *RetrieveFlavorsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListFlavors request
+	ListFlavors(ctx context.Context, params *ListFlavorsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) RetrieveFlavors(ctx context.Context, params *RetrieveFlavorsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveFlavorsRequest(c.Server, params)
+func (c *Client) ListFlavors(ctx context.Context, params *ListFlavorsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListFlavorsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -145,8 +146,8 @@ func (c *Client) RetrieveFlavors(ctx context.Context, params *RetrieveFlavorsPar
 	return c.Client.Do(req)
 }
 
-// NewRetrieveFlavorsRequest generates requests for RetrieveFlavors
-func NewRetrieveFlavorsRequest(server string, params *RetrieveFlavorsParams) (*http.Request, error) {
+// NewListFlavorsRequest generates requests for ListFlavors
+func NewListFlavorsRequest(server string, params *ListFlavorsParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -237,11 +238,11 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// RetrieveFlavorsWithResponse request
-	RetrieveFlavorsWithResponse(ctx context.Context, params *RetrieveFlavorsParams, reqEditors ...RequestEditorFn) (*RetrieveFlavorsResponse, error)
+	// ListFlavorsWithResponse request
+	ListFlavorsWithResponse(ctx context.Context, params *ListFlavorsParams, reqEditors ...RequestEditorFn) (*ListFlavorsResponse, error)
 }
 
-type RetrieveFlavorsResponse struct {
+type ListFlavorsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *FlavorListResponse
@@ -251,7 +252,7 @@ type RetrieveFlavorsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrieveFlavorsResponse) Status() string {
+func (r ListFlavorsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -259,31 +260,31 @@ func (r RetrieveFlavorsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrieveFlavorsResponse) StatusCode() int {
+func (r ListFlavorsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// RetrieveFlavorsWithResponse request returning *RetrieveFlavorsResponse
-func (c *ClientWithResponses) RetrieveFlavorsWithResponse(ctx context.Context, params *RetrieveFlavorsParams, reqEditors ...RequestEditorFn) (*RetrieveFlavorsResponse, error) {
-	rsp, err := c.RetrieveFlavors(ctx, params, reqEditors...)
+// ListFlavorsWithResponse request returning *ListFlavorsResponse
+func (c *ClientWithResponses) ListFlavorsWithResponse(ctx context.Context, params *ListFlavorsParams, reqEditors ...RequestEditorFn) (*ListFlavorsResponse, error) {
+	rsp, err := c.ListFlavors(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveFlavorsResponse(rsp)
+	return ParseListFlavorsResponse(rsp)
 }
 
-// ParseRetrieveFlavorsResponse parses an HTTP response from a RetrieveFlavorsWithResponse call
-func ParseRetrieveFlavorsResponse(rsp *http.Response) (*RetrieveFlavorsResponse, error) {
+// ParseListFlavorsResponse parses an HTTP response from a ListFlavorsWithResponse call
+func ParseListFlavorsResponse(rsp *http.Response) (*ListFlavorsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrieveFlavorsResponse{
+	response := &ListFlavorsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

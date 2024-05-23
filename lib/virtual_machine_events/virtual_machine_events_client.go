@@ -115,12 +115,12 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// FetchAllOfTheInstanceEvents request
-	FetchAllOfTheInstanceEvents(ctx context.Context, virtualMachineId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListVirtualMachineEvents request
+	ListVirtualMachineEvents(ctx context.Context, virtualMachineId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) FetchAllOfTheInstanceEvents(ctx context.Context, virtualMachineId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFetchAllOfTheInstanceEventsRequest(c.Server, virtualMachineId)
+func (c *Client) ListVirtualMachineEvents(ctx context.Context, virtualMachineId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListVirtualMachineEventsRequest(c.Server, virtualMachineId)
 	if err != nil {
 		return nil, err
 	}
@@ -131,8 +131,8 @@ func (c *Client) FetchAllOfTheInstanceEvents(ctx context.Context, virtualMachine
 	return c.Client.Do(req)
 }
 
-// NewFetchAllOfTheInstanceEventsRequest generates requests for FetchAllOfTheInstanceEvents
-func NewFetchAllOfTheInstanceEventsRequest(server string, virtualMachineId string) (*http.Request, error) {
+// NewListVirtualMachineEventsRequest generates requests for ListVirtualMachineEvents
+func NewListVirtualMachineEventsRequest(server string, virtualMachineId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -208,11 +208,11 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// FetchAllOfTheInstanceEventsWithResponse request
-	FetchAllOfTheInstanceEventsWithResponse(ctx context.Context, virtualMachineId string, reqEditors ...RequestEditorFn) (*FetchAllOfTheInstanceEventsResponse, error)
+	// ListVirtualMachineEventsWithResponse request
+	ListVirtualMachineEventsWithResponse(ctx context.Context, virtualMachineId string, reqEditors ...RequestEditorFn) (*ListVirtualMachineEventsResponse, error)
 }
 
-type FetchAllOfTheInstanceEventsResponse struct {
+type ListVirtualMachineEventsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *InstanceEvents
@@ -222,7 +222,7 @@ type FetchAllOfTheInstanceEventsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r FetchAllOfTheInstanceEventsResponse) Status() string {
+func (r ListVirtualMachineEventsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -230,31 +230,31 @@ func (r FetchAllOfTheInstanceEventsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r FetchAllOfTheInstanceEventsResponse) StatusCode() int {
+func (r ListVirtualMachineEventsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// FetchAllOfTheInstanceEventsWithResponse request returning *FetchAllOfTheInstanceEventsResponse
-func (c *ClientWithResponses) FetchAllOfTheInstanceEventsWithResponse(ctx context.Context, virtualMachineId string, reqEditors ...RequestEditorFn) (*FetchAllOfTheInstanceEventsResponse, error) {
-	rsp, err := c.FetchAllOfTheInstanceEvents(ctx, virtualMachineId, reqEditors...)
+// ListVirtualMachineEventsWithResponse request returning *ListVirtualMachineEventsResponse
+func (c *ClientWithResponses) ListVirtualMachineEventsWithResponse(ctx context.Context, virtualMachineId string, reqEditors ...RequestEditorFn) (*ListVirtualMachineEventsResponse, error) {
+	rsp, err := c.ListVirtualMachineEvents(ctx, virtualMachineId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseFetchAllOfTheInstanceEventsResponse(rsp)
+	return ParseListVirtualMachineEventsResponse(rsp)
 }
 
-// ParseFetchAllOfTheInstanceEventsResponse parses an HTTP response from a FetchAllOfTheInstanceEventsWithResponse call
-func ParseFetchAllOfTheInstanceEventsResponse(rsp *http.Response) (*FetchAllOfTheInstanceEventsResponse, error) {
+// ParseListVirtualMachineEventsResponse parses an HTTP response from a ListVirtualMachineEventsWithResponse call
+func ParseListVirtualMachineEventsResponse(rsp *http.Response) (*ListVirtualMachineEventsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &FetchAllOfTheInstanceEventsResponse{
+	response := &ListVirtualMachineEventsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

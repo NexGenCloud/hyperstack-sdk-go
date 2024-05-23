@@ -17,6 +17,20 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// CommonResponseModel defines model for CommonResponseModel.
+type CommonResponseModel struct {
+	Message *string `json:"message,omitempty"`
+	Status  *bool   `json:"status,omitempty"`
+}
+
+// CreateUpdateRbacRolePayload defines model for CreateUpdateRbacRolePayload.
+type CreateUpdateRbacRolePayload struct {
+	Description string `json:"description"`
+	Name        string `json:"name"`
+	Permissions *[]int `json:"permissions,omitempty"`
+	Policies    *[]int `json:"policies,omitempty"`
+}
+
 // ErrorResponseModel defines model for ErrorResponseModel.
 type ErrorResponseModel struct {
 	ErrorReason *string `json:"error_reason,omitempty"`
@@ -24,15 +38,29 @@ type ErrorResponseModel struct {
 	Status      *bool   `json:"status,omitempty"`
 }
 
-// RBACRole defines model for RBAC Role.
-type RBACRole struct {
+// GetRbacRolesResponseModel defines model for GetRbacRolesResponseModel.
+type GetRbacRolesResponseModel struct {
+	Message *string           `json:"message,omitempty"`
+	Roles   *[]RbacRoleFields `json:"roles,omitempty"`
+	Status  *bool             `json:"status,omitempty"`
+}
+
+// RBACRoleTMPGet defines model for RBACRoleTMPGet.
+type RBACRoleTMPGet struct {
 	Message *string         `json:"message,omitempty"`
-	Role    *RBACRoleFields `json:"role,omitempty"`
+	Roles   *RbacRoleFields `json:"roles,omitempty"`
 	Status  *bool           `json:"status,omitempty"`
 }
 
-// RBACRoleFields defines model for RBAC Role Fields.
-type RBACRoleFields struct {
+// RbacRoleDetailResponseModel defines model for RbacRoleDetailResponseModel.
+type RbacRoleDetailResponseModel struct {
+	Message *string         `json:"message,omitempty"`
+	Role    *RbacRoleFields `json:"role,omitempty"`
+	Status  *bool           `json:"status,omitempty"`
+}
+
+// RbacRoleFields defines model for RbacRoleFields.
+type RbacRoleFields struct {
 	CreatedAt   *time.CustomTime              `json:"created_at,omitempty"`
 	Description *string                 `json:"description,omitempty"`
 	Id          *int                    `json:"id,omitempty"`
@@ -41,42 +69,14 @@ type RBACRoleFields struct {
 	Policies    *[]RolePolicyFields     `json:"policies,omitempty"`
 }
 
-// RBACRolePayload defines model for RBAC Role Payload.
-type RBACRolePayload struct {
-	Description string `json:"description"`
-	Name        string `json:"name"`
-	Permissions *[]int `json:"permissions,omitempty"`
-	Policies    *[]int `json:"policies,omitempty"`
-}
-
-// RBACRoles defines model for RBAC Roles.
-type RBACRoles struct {
-	Message *string           `json:"message,omitempty"`
-	Roles   *[]RBACRoleFields `json:"roles,omitempty"`
-	Status  *bool             `json:"status,omitempty"`
-}
-
-// RBACRoleTMPGet defines model for RBACRoleTMPGet.
-type RBACRoleTMPGet struct {
-	Message *string         `json:"message,omitempty"`
-	Roles   *RBACRoleFields `json:"roles,omitempty"`
-	Status  *bool           `json:"status,omitempty"`
-}
-
-// ResponseModel defines model for ResponseModel.
-type ResponseModel struct {
-	Message *string `json:"message,omitempty"`
-	Status  *bool   `json:"status,omitempty"`
-}
-
-// RolePermissionFields defines model for Role Permission Fields.
+// RolePermissionFields defines model for RolePermissionFields.
 type RolePermissionFields struct {
 	Id         *int    `json:"id,omitempty"`
 	Permission *string `json:"permission,omitempty"`
 	Resource   *string `json:"resource,omitempty"`
 }
 
-// RolePolicyFields defines model for Role Policy Fields.
+// RolePolicyFields defines model for RolePolicyFields.
 type RolePolicyFields struct {
 	Description *string `json:"description,omitempty"`
 	Id          *int    `json:"id,omitempty"`
@@ -84,10 +84,10 @@ type RolePolicyFields struct {
 }
 
 // CreateRBACRoleJSONRequestBody defines body for CreateRBACRole for application/json ContentType.
-type CreateRBACRoleJSONRequestBody = RBACRolePayload
+type CreateRBACRoleJSONRequestBody = CreateUpdateRbacRolePayload
 
 // UpdateARBACRoleJSONRequestBody defines body for UpdateARBACRole for application/json ContentType.
-type UpdateARBACRoleJSONRequestBody = RBACRolePayload
+type UpdateARBACRoleJSONRequestBody = CreateUpdateRbacRolePayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -514,7 +514,7 @@ type ClientWithResponsesInterface interface {
 type ListRBACRolesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *RBACRoles
+	JSON200      *GetRbacRolesResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 }
@@ -538,7 +538,7 @@ func (r ListRBACRolesResponse) StatusCode() int {
 type CreateRBACRoleResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON201      *RBACRole
+	JSON201      *RbacRoleDetailResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 	JSON409      *ErrorResponseModel
@@ -563,7 +563,7 @@ func (r CreateRBACRoleResponse) StatusCode() int {
 type DeleteARBACRoleResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *ResponseModel
+	JSON200      *CommonResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 	JSON404      *ErrorResponseModel
@@ -613,7 +613,7 @@ func (r GetARBACRoleDetailResponse) StatusCode() int {
 type UpdateARBACRoleResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *RBACRole
+	JSON200      *RbacRoleDetailResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 	JSON404      *ErrorResponseModel
@@ -711,7 +711,7 @@ func ParseListRBACRolesResponse(rsp *http.Response) (*ListRBACRolesResponse, err
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest RBACRoles
+		var dest GetRbacRolesResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -751,7 +751,7 @@ func ParseCreateRBACRoleResponse(rsp *http.Response) (*CreateRBACRoleResponse, e
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest RBACRole
+		var dest RbacRoleDetailResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -798,7 +798,7 @@ func ParseDeleteARBACRoleResponse(rsp *http.Response) (*DeleteARBACRoleResponse,
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest ResponseModel
+		var dest CommonResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -892,7 +892,7 @@ func ParseUpdateARBACRoleResponse(rsp *http.Response) (*UpdateARBACRoleResponse,
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest RBACRole
+		var dest RbacRoleDetailResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

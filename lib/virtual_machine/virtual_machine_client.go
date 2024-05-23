@@ -17,31 +17,121 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// Defines values for CreateSecurityRulePayloadProtocol.
+const (
+	Ah        CreateSecurityRulePayloadProtocol = "ah"
+	Any       CreateSecurityRulePayloadProtocol = "any"
+	Dccp      CreateSecurityRulePayloadProtocol = "dccp"
+	Egp       CreateSecurityRulePayloadProtocol = "egp"
+	Esp       CreateSecurityRulePayloadProtocol = "esp"
+	Gre       CreateSecurityRulePayloadProtocol = "gre"
+	Hopopt    CreateSecurityRulePayloadProtocol = "hopopt"
+	Icmp      CreateSecurityRulePayloadProtocol = "icmp"
+	Icmpv6    CreateSecurityRulePayloadProtocol = "icmpv6"
+	Igmp      CreateSecurityRulePayloadProtocol = "igmp"
+	Ip        CreateSecurityRulePayloadProtocol = "ip"
+	Ipip      CreateSecurityRulePayloadProtocol = "ipip"
+	Ipv6Encap CreateSecurityRulePayloadProtocol = "ipv6-encap"
+	Ipv6Frag  CreateSecurityRulePayloadProtocol = "ipv6-frag"
+	Ipv6Icmp  CreateSecurityRulePayloadProtocol = "ipv6-icmp"
+	Ipv6Nonxt CreateSecurityRulePayloadProtocol = "ipv6-nonxt"
+	Ipv6Opts  CreateSecurityRulePayloadProtocol = "ipv6-opts"
+	Ipv6Route CreateSecurityRulePayloadProtocol = "ipv6-route"
+	Ospf      CreateSecurityRulePayloadProtocol = "ospf"
+	Pgm       CreateSecurityRulePayloadProtocol = "pgm"
+	Rsvp      CreateSecurityRulePayloadProtocol = "rsvp"
+	Sctp      CreateSecurityRulePayloadProtocol = "sctp"
+	Tcp       CreateSecurityRulePayloadProtocol = "tcp"
+	Udp       CreateSecurityRulePayloadProtocol = "udp"
+	Udplite   CreateSecurityRulePayloadProtocol = "udplite"
+	Vrrp      CreateSecurityRulePayloadProtocol = "vrrp"
+)
+
+// AttachFirewallsToVMPayload defines model for AttachFirewallsToVMPayload.
+type AttachFirewallsToVMPayload struct {
+	Firewalls []int `json:"firewalls"`
+}
+
+// ContractInstanceFields defines model for ContractInstanceFields.
+type ContractInstanceFields struct {
+	CreatedAt  *time.CustomTime `json:"created_at,omitempty"`
+	FlavorName *string    `json:"flavor_name,omitempty"`
+	GpuCount   *int       `json:"gpu_count,omitempty"`
+	Id         *int       `json:"id,omitempty"`
+	Name       *string    `json:"name,omitempty"`
+	Status     *string    `json:"status,omitempty"`
+}
+
+// ContractInstancesResponse defines model for ContractInstancesResponse.
+type ContractInstancesResponse struct {
+	Instances *[]ContractInstanceFields `json:"instances,omitempty"`
+	Message   *string                   `json:"message,omitempty"`
+	Status    *bool                     `json:"status,omitempty"`
+}
+
 // CreateInstancesPayload defines model for Create Instances Payload.
 type CreateInstancesPayload struct {
-	AssignFloatingIp     *bool                `json:"assign_floating_ip,omitempty"`
-	CallbackUrl          *string              `json:"callback_url,omitempty"`
-	Count                int                  `json:"count"`
-	CreateBootableVolume *bool                `json:"create_bootable_volume,omitempty"`
-	EnvironmentName      string               `json:"environment_name"`
-	Flavor               *FlavorObjectFields  `json:"flavor,omitempty"`
-	FlavorName           *string              `json:"flavor_name,omitempty"`
-	ImageName            *string              `json:"image_name,omitempty"`
-	KeyName              string               `json:"key_name"`
-	Name                 string               `json:"name"`
-	Profile              *ProfileObjectFields `json:"profile,omitempty"`
-	UserData             *string              `json:"user_data,omitempty"`
-	VolumeName           *string              `json:"volume_name,omitempty"`
+	// AssignFloatingIp When this field is set to `true`, it attaches a [public IP address](https://infrahub-doc.nexgencloud.com/docs/virtual-machines/public-ip) to the virtual machine, enabling internet accessibility.
+	AssignFloatingIp *bool `json:"assign_floating_ip,omitempty"`
+
+	// CallbackUrl An optional URL where actions performed on the virtual machine will be sent. For additional information on event callbacks, [**click here**](https://infrahub-doc.nexgencloud.com/docs/features/webhooks-callbacks).
+	CallbackUrl *string `json:"callback_url,omitempty"`
+
+	// Count The number of virtual machines to be created.
+	Count int `json:"count"`
+
+	// CreateBootableVolume Indicates whether to create a bootable volume for the virtual machine. When set to `true`, a bootable volume will be created; the default value is `false`.
+	CreateBootableVolume *bool `json:"create_bootable_volume,omitempty"`
+
+	// EnvironmentName The name of the [environment](https://infrahub-doc.nexgencloud.com/docs/features/environments-available-features) in which the virtual machine is to be created.
+	EnvironmentName string              `json:"environment_name"`
+	Flavor          *FlavorObjectFields `json:"flavor,omitempty"`
+
+	// FlavorName The name of the GPU hardware configuration ([flavor](https://infrahub-doc.nexgencloud.com/docs/hardware/flavors)) for the virtual machines being created.
+	FlavorName string `json:"flavor_name"`
+
+	// ImageName The [operating system (OS) image](https://infrahub-doc.nexgencloud.com/docs/virtual-machines/images) name designated for installation on the virtual machine.
+	ImageName *string `json:"image_name,omitempty"`
+
+	// KeyName The name of the existing SSH key pair to be used for secure access to the virtual machine. For additional information on SSH key pairs, [**click here**](https://infrahub-doc.nexgencloud.com/docs/getting-started/create-keypair).
+	KeyName string    `json:"key_name"`
+	Labels  *[]string `json:"labels,omitempty"`
+
+	// Name The name of the virtual machine being created.
+	Name          string                       `json:"name"`
+	Profile       *ProfileObjectFields         `json:"profile,omitempty"`
+	SecurityRules *[]CreateSecurityRulePayload `json:"security_rules,omitempty"`
+
+	// UserData Optional initialization configuration commands to manage the configuration of a virtual machine at launch using cloud-init scripts. For more information about custom VM configuration using cloud-init, [**click here**](https://infrahub-doc.nexgencloud.com/docs/virtual-machines/initialization-configuration).
+	UserData *string `json:"user_data,omitempty"`
+
+	// VolumeName The names of the volume(s) to be attached to the virtual machine being created.
+	VolumeName *string `json:"volume_name,omitempty"`
 }
 
 // CreateSecurityRulePayload defines model for Create Security Rule Payload.
 type CreateSecurityRulePayload struct {
-	Direction      string `json:"direction"`
-	Ethertype      string `json:"ethertype"`
-	PortRangeMax   *int   `json:"port_range_max,omitempty"`
-	PortRangeMin   *int   `json:"port_range_min,omitempty"`
-	Protocol       string `json:"protocol"`
+	// Direction The direction of traffic that the firewall rule applies to.
+	Direction string `json:"direction"`
+
+	// Ethertype The Ethernet type associated with the rule.
+	Ethertype    string `json:"ethertype"`
+	PortRangeMax *int   `json:"port_range_max,omitempty"`
+	PortRangeMin *int   `json:"port_range_min,omitempty"`
+
+	// Protocol The network protocol associated with the rule. Call the [`GET /core/sg-rules-protocols`](https://infrahub-api-doc.nexgencloud.com/#get-/core/sg-rules-protocols) endpoint to retrieve a list of permitted network protocols.
+	Protocol CreateSecurityRulePayloadProtocol `json:"protocol"`
+
+	// RemoteIpPrefix The IP address range that is allowed to access the specified port. Use "0.0.0.0/0" to allow any IP address.
 	RemoteIpPrefix string `json:"remote_ip_prefix"`
+}
+
+// CreateSecurityRulePayloadProtocol The network protocol associated with the rule. Call the [`GET /core/sg-rules-protocols`](https://infrahub-api-doc.nexgencloud.com/#get-/core/sg-rules-protocols) endpoint to retrieve a list of permitted network protocols.
+type CreateSecurityRulePayloadProtocol string
+
+// EditLabelOfAnExistingVMPayload defines model for Edit label of an existing VM Payload.
+type EditLabelOfAnExistingVMPayload struct {
+	Labels *[]string `json:"labels,omitempty"`
 }
 
 // ErrorResponseModel defines model for ErrorResponseModel.
@@ -62,13 +152,22 @@ type FlavorObjectFields struct {
 
 // Instance defines model for Instance.
 type Instance struct {
-	Instance *InstanceAdminFields `json:"instance,omitempty"`
-	Message  *string              `json:"message,omitempty"`
-	Status   *bool                `json:"status,omitempty"`
+	Instance *InstanceFields `json:"instance,omitempty"`
+	Message  *string         `json:"message,omitempty"`
+	Status   *bool           `json:"status,omitempty"`
 }
 
-// InstanceAdminFields defines model for Instance Admin Fields.
-type InstanceAdminFields struct {
+// InstanceEnvironmentFields defines model for Instance Environment Fields.
+type InstanceEnvironmentFields struct {
+	Id     *int    `json:"id,omitempty"`
+	Name   *string `json:"name,omitempty"`
+	OrgId  *int    `json:"org_id,omitempty"`
+	Region *string `json:"region,omitempty"`
+}
+
+// InstanceFields defines model for Instance Fields.
+type InstanceFields struct {
+	ContractId        *int                              `json:"contract_id,omitempty"`
 	CreatedAt         *time.CustomTime                        `json:"created_at,omitempty"`
 	Environment       *InstanceEnvironmentFields        `json:"environment,omitempty"`
 	FixedIp           *string                           `json:"fixed_ip,omitempty"`
@@ -78,8 +177,10 @@ type InstanceAdminFields struct {
 	Id                *int                              `json:"id,omitempty"`
 	Image             *InstanceImageFields              `json:"image,omitempty"`
 	Keypair           *InstanceKeypairFields            `json:"keypair,omitempty"`
+	Labels            *[]string                         `json:"labels,omitempty"`
+	Locked            *bool                             `json:"locked,omitempty"`
 	Name              *string                           `json:"name,omitempty"`
-	OpenstackId       *string                           `json:"openstack_id,omitempty"`
+	Os                *string                           `json:"os,omitempty"`
 	PowerState        *string                           `json:"power_state,omitempty"`
 	SecurityRules     *[]SecurityRulesFieldsForInstance `json:"security_rules,omitempty"`
 	Status            *string                           `json:"status,omitempty"`
@@ -87,22 +188,16 @@ type InstanceAdminFields struct {
 	VolumeAttachments *[]VolumeAttachmentFields         `json:"volume_attachments,omitempty"`
 }
 
-// InstanceEnvironmentFields defines model for Instance Environment Fields.
-type InstanceEnvironmentFields struct {
-	Name   *string `json:"name,omitempty"`
-	OrgId  *int    `json:"org_id,omitempty"`
-	Region *string `json:"region,omitempty"`
-}
-
 // InstanceFlavorFields defines model for Instance Flavor Fields.
 type InstanceFlavorFields struct {
-	Cpu      *int     `json:"cpu,omitempty"`
-	Disk     *int     `json:"disk,omitempty"`
-	Gpu      *string  `json:"gpu,omitempty"`
-	GpuCount *int     `json:"gpu_count,omitempty"`
-	Id       *int     `json:"id,omitempty"`
-	Name     *string  `json:"name,omitempty"`
-	Ram      *float32 `json:"ram,omitempty"`
+	Cpu       *int     `json:"cpu,omitempty"`
+	Disk      *int     `json:"disk,omitempty"`
+	Ephemeral *int     `json:"ephemeral,omitempty"`
+	Gpu       *string  `json:"gpu,omitempty"`
+	GpuCount  *int     `json:"gpu_count,omitempty"`
+	Id        *int     `json:"id,omitempty"`
+	Name      *string  `json:"name,omitempty"`
+	Ram       *float32 `json:"ram,omitempty"`
 }
 
 // InstanceImageFields defines model for Instance Image Fields.
@@ -123,10 +218,26 @@ type InstanceResizePayload struct {
 
 // Instances defines model for Instances.
 type Instances struct {
-	InstanceCount *int                   `json:"instance_count,omitempty"`
-	Instances     *[]InstanceAdminFields `json:"instances,omitempty"`
-	Message       *string                `json:"message,omitempty"`
-	Status        *bool                  `json:"status,omitempty"`
+	Instances *[]InstanceFields `json:"instances,omitempty"`
+	Message   *string           `json:"message,omitempty"`
+	Status    *bool             `json:"status,omitempty"`
+}
+
+// MetricItemFields defines model for MetricItemFields.
+type MetricItemFields struct {
+	Columns *[]string                   `json:"columns,omitempty"`
+	Data    *[][]map[string]interface{} `json:"data,omitempty"`
+	Unit    *string                     `json:"unit,omitempty"`
+}
+
+// MetricsFields defines model for MetricsFields.
+type MetricsFields struct {
+	Cpu          *MetricItemFields `json:"cpu,omitempty"`
+	DiskRead     *MetricItemFields `json:"disk.read,omitempty"`
+	DiskWrite    *MetricItemFields `json:"disk.write,omitempty"`
+	MemoryUsages *MetricItemFields `json:"memory.usages,omitempty"`
+	NetworkIn    *MetricItemFields `json:"network.in,omitempty"`
+	NetworkOut   *MetricItemFields `json:"network.out,omitempty"`
 }
 
 // ProfileObjectFields defines model for Profile Object Fields.
@@ -191,19 +302,25 @@ type VolumeFieldsForInstance struct {
 	VolumeType  *string `json:"volume_type,omitempty"`
 }
 
-// RetrievedMetricsSuccessfullyParams defines parameters for RetrievedMetricsSuccessfully.
-type RetrievedMetricsSuccessfullyParams struct {
+// RetrieveVirtualMachinePerformanceMetricsParams defines parameters for RetrieveVirtualMachinePerformanceMetrics.
+type RetrieveVirtualMachinePerformanceMetricsParams struct {
 	Duration *string `form:"duration,omitempty" json:"duration,omitempty"`
 }
 
-// CreateInstancesJSONRequestBody defines body for CreateInstances for application/json ContentType.
-type CreateInstancesJSONRequestBody = CreateInstancesPayload
+// CreateVirtualMachineJSONRequestBody defines body for CreateVirtualMachine for application/json ContentType.
+type CreateVirtualMachineJSONRequestBody = CreateInstancesPayload
 
-// AddSecurityRuleJSONRequestBody defines body for AddSecurityRule for application/json ContentType.
-type AddSecurityRuleJSONRequestBody = CreateSecurityRulePayload
+// AddFirewallRuleToVirtualMachineJSONRequestBody defines body for AddFirewallRuleToVirtualMachine for application/json ContentType.
+type AddFirewallRuleToVirtualMachineJSONRequestBody = CreateSecurityRulePayload
+
+// EditLabelsOfAnExistingVMJSONRequestBody defines body for EditLabelsOfAnExistingVM for application/json ContentType.
+type EditLabelsOfAnExistingVMJSONRequestBody = EditLabelOfAnExistingVMPayload
 
 // ResizeVirtualMachineJSONRequestBody defines body for ResizeVirtualMachine for application/json ContentType.
 type ResizeVirtualMachineJSONRequestBody = InstanceResizePayload
+
+// AttachFirewallsToAVMJSONRequestBody defines body for AttachFirewallsToAVM for application/json ContentType.
+type AttachFirewallsToAVMJSONRequestBody = AttachFirewallsToVMPayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -278,54 +395,67 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// ListInstances request
-	ListInstances(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListVirtualMachines request
+	ListVirtualMachines(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateInstancesWithBody request with any body
-	CreateInstancesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateVirtualMachineWithBody request with any body
+	CreateVirtualMachineWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	CreateInstances(ctx context.Context, body CreateInstancesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateVirtualMachine(ctx context.Context, body CreateVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteAnInstance request
-	DeleteAnInstance(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RetrieveVirtualMachinesAssociatedWithAContract request
+	RetrieveVirtualMachinesAssociatedWithAContract(ctx context.Context, contractId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetAnInstanceDetails request
-	GetAnInstanceDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteVirtualMachine request
+	DeleteVirtualMachine(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// HardRebootInstance request
-	HardRebootInstance(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RetrieveVirtualMachineDetails request
+	RetrieveVirtualMachineDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// AddSecurityRuleWithBody request with any body
-	AddSecurityRuleWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// HardRebootVirtualMachine request
+	HardRebootVirtualMachine(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	AddSecurityRule(ctx context.Context, id int, body AddSecurityRuleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// AddFirewallRuleToVirtualMachineWithBody request with any body
+	AddFirewallRuleToVirtualMachineWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// StartInstance request
-	StartInstance(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	AddFirewallRuleToVirtualMachine(ctx context.Context, id int, body AddFirewallRuleToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// StopInstance request
-	StopInstance(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// StartVirtualMachine request
+	StartVirtualMachine(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// HibernateInstance request
-	HibernateInstance(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// StopVirtualMachine request
+	StopVirtualMachine(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RestoreInstanceFromHibernation request
-	RestoreInstanceFromHibernation(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// HibernateVirtualMachine request
+	HibernateVirtualMachine(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RetrievedMetricsSuccessfully request
-	RetrievedMetricsSuccessfully(ctx context.Context, virtualMachineId int, params *RetrievedMetricsSuccessfullyParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RestoreVirtualMachineFromHibernation request
+	RestoreVirtualMachineFromHibernation(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// EditLabelsOfAnExistingVMWithBody request with any body
+	EditLabelsOfAnExistingVMWithBody(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	EditLabelsOfAnExistingVM(ctx context.Context, virtualMachineId int, body EditLabelsOfAnExistingVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RetrieveVirtualMachinePerformanceMetrics request
+	RetrieveVirtualMachinePerformanceMetrics(ctx context.Context, virtualMachineId int, params *RetrieveVirtualMachinePerformanceMetricsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ResizeVirtualMachineWithBody request with any body
 	ResizeVirtualMachineWithBody(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	ResizeVirtualMachine(ctx context.Context, virtualMachineId int, body ResizeVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteASecurityRule request
-	DeleteASecurityRule(ctx context.Context, virtualMachineId int, sgRuleId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteFirewallRuleFromVirtualMachine request
+	DeleteFirewallRuleFromVirtualMachine(ctx context.Context, virtualMachineId int, sgRuleId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AttachFirewallsToAVMWithBody request with any body
+	AttachFirewallsToAVMWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AttachFirewallsToAVM(ctx context.Context, vmId int, body AttachFirewallsToAVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) ListInstances(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListInstancesRequest(c.Server)
+func (c *Client) ListVirtualMachines(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListVirtualMachinesRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -336,8 +466,8 @@ func (c *Client) ListInstances(ctx context.Context, reqEditors ...RequestEditorF
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateInstancesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateInstancesRequestWithBody(c.Server, contentType, body)
+func (c *Client) CreateVirtualMachineWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualMachineRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -348,8 +478,8 @@ func (c *Client) CreateInstancesWithBody(ctx context.Context, contentType string
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateInstances(ctx context.Context, body CreateInstancesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateInstancesRequest(c.Server, body)
+func (c *Client) CreateVirtualMachine(ctx context.Context, body CreateVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualMachineRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -360,8 +490,8 @@ func (c *Client) CreateInstances(ctx context.Context, body CreateInstancesJSONRe
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteAnInstance(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteAnInstanceRequest(c.Server, id)
+func (c *Client) RetrieveVirtualMachinesAssociatedWithAContract(ctx context.Context, contractId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveVirtualMachinesAssociatedWithAContractRequest(c.Server, contractId)
 	if err != nil {
 		return nil, err
 	}
@@ -372,8 +502,8 @@ func (c *Client) DeleteAnInstance(ctx context.Context, id int, reqEditors ...Req
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetAnInstanceDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetAnInstanceDetailsRequest(c.Server, id)
+func (c *Client) DeleteVirtualMachine(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteVirtualMachineRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -384,8 +514,8 @@ func (c *Client) GetAnInstanceDetails(ctx context.Context, id int, reqEditors ..
 	return c.Client.Do(req)
 }
 
-func (c *Client) HardRebootInstance(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewHardRebootInstanceRequest(c.Server, id)
+func (c *Client) RetrieveVirtualMachineDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveVirtualMachineDetailsRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -396,8 +526,8 @@ func (c *Client) HardRebootInstance(ctx context.Context, id int, reqEditors ...R
 	return c.Client.Do(req)
 }
 
-func (c *Client) AddSecurityRuleWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAddSecurityRuleRequestWithBody(c.Server, id, contentType, body)
+func (c *Client) HardRebootVirtualMachine(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewHardRebootVirtualMachineRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -408,8 +538,8 @@ func (c *Client) AddSecurityRuleWithBody(ctx context.Context, id int, contentTyp
 	return c.Client.Do(req)
 }
 
-func (c *Client) AddSecurityRule(ctx context.Context, id int, body AddSecurityRuleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAddSecurityRuleRequest(c.Server, id, body)
+func (c *Client) AddFirewallRuleToVirtualMachineWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddFirewallRuleToVirtualMachineRequestWithBody(c.Server, id, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -420,8 +550,8 @@ func (c *Client) AddSecurityRule(ctx context.Context, id int, body AddSecurityRu
 	return c.Client.Do(req)
 }
 
-func (c *Client) StartInstance(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewStartInstanceRequest(c.Server, id)
+func (c *Client) AddFirewallRuleToVirtualMachine(ctx context.Context, id int, body AddFirewallRuleToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddFirewallRuleToVirtualMachineRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -432,8 +562,8 @@ func (c *Client) StartInstance(ctx context.Context, id int, reqEditors ...Reques
 	return c.Client.Do(req)
 }
 
-func (c *Client) StopInstance(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewStopInstanceRequest(c.Server, id)
+func (c *Client) StartVirtualMachine(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStartVirtualMachineRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -444,8 +574,8 @@ func (c *Client) StopInstance(ctx context.Context, id int, reqEditors ...Request
 	return c.Client.Do(req)
 }
 
-func (c *Client) HibernateInstance(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewHibernateInstanceRequest(c.Server, virtualMachineId)
+func (c *Client) StopVirtualMachine(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStopVirtualMachineRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -456,8 +586,8 @@ func (c *Client) HibernateInstance(ctx context.Context, virtualMachineId int, re
 	return c.Client.Do(req)
 }
 
-func (c *Client) RestoreInstanceFromHibernation(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRestoreInstanceFromHibernationRequest(c.Server, virtualMachineId)
+func (c *Client) HibernateVirtualMachine(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewHibernateVirtualMachineRequest(c.Server, virtualMachineId)
 	if err != nil {
 		return nil, err
 	}
@@ -468,8 +598,44 @@ func (c *Client) RestoreInstanceFromHibernation(ctx context.Context, virtualMach
 	return c.Client.Do(req)
 }
 
-func (c *Client) RetrievedMetricsSuccessfully(ctx context.Context, virtualMachineId int, params *RetrievedMetricsSuccessfullyParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrievedMetricsSuccessfullyRequest(c.Server, virtualMachineId, params)
+func (c *Client) RestoreVirtualMachineFromHibernation(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRestoreVirtualMachineFromHibernationRequest(c.Server, virtualMachineId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) EditLabelsOfAnExistingVMWithBody(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEditLabelsOfAnExistingVMRequestWithBody(c.Server, virtualMachineId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) EditLabelsOfAnExistingVM(ctx context.Context, virtualMachineId int, body EditLabelsOfAnExistingVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEditLabelsOfAnExistingVMRequest(c.Server, virtualMachineId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RetrieveVirtualMachinePerformanceMetrics(ctx context.Context, virtualMachineId int, params *RetrieveVirtualMachinePerformanceMetricsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveVirtualMachinePerformanceMetricsRequest(c.Server, virtualMachineId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -504,8 +670,8 @@ func (c *Client) ResizeVirtualMachine(ctx context.Context, virtualMachineId int,
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteASecurityRule(ctx context.Context, virtualMachineId int, sgRuleId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteASecurityRuleRequest(c.Server, virtualMachineId, sgRuleId)
+func (c *Client) DeleteFirewallRuleFromVirtualMachine(ctx context.Context, virtualMachineId int, sgRuleId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteFirewallRuleFromVirtualMachineRequest(c.Server, virtualMachineId, sgRuleId)
 	if err != nil {
 		return nil, err
 	}
@@ -516,8 +682,32 @@ func (c *Client) DeleteASecurityRule(ctx context.Context, virtualMachineId int, 
 	return c.Client.Do(req)
 }
 
-// NewListInstancesRequest generates requests for ListInstances
-func NewListInstancesRequest(server string) (*http.Request, error) {
+func (c *Client) AttachFirewallsToAVMWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachFirewallsToAVMRequestWithBody(c.Server, vmId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AttachFirewallsToAVM(ctx context.Context, vmId int, body AttachFirewallsToAVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachFirewallsToAVMRequest(c.Server, vmId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// NewListVirtualMachinesRequest generates requests for ListVirtualMachines
+func NewListVirtualMachinesRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -543,19 +733,19 @@ func NewListInstancesRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewCreateInstancesRequest calls the generic CreateInstances builder with application/json body
-func NewCreateInstancesRequest(server string, body CreateInstancesJSONRequestBody) (*http.Request, error) {
+// NewCreateVirtualMachineRequest calls the generic CreateVirtualMachine builder with application/json body
+func NewCreateVirtualMachineRequest(server string, body CreateVirtualMachineJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewCreateInstancesRequestWithBody(server, "application/json", bodyReader)
+	return NewCreateVirtualMachineRequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewCreateInstancesRequestWithBody generates requests for CreateInstances with any type of body
-func NewCreateInstancesRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewCreateVirtualMachineRequestWithBody generates requests for CreateVirtualMachine with any type of body
+func NewCreateVirtualMachineRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -583,8 +773,42 @@ func NewCreateInstancesRequestWithBody(server string, contentType string, body i
 	return req, nil
 }
 
-// NewDeleteAnInstanceRequest generates requests for DeleteAnInstance
-func NewDeleteAnInstanceRequest(server string, id int) (*http.Request, error) {
+// NewRetrieveVirtualMachinesAssociatedWithAContractRequest generates requests for RetrieveVirtualMachinesAssociatedWithAContract
+func NewRetrieveVirtualMachinesAssociatedWithAContractRequest(server string, contractId int) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "contract_id", runtime.ParamLocationPath, contractId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/virtual-machines/contract/%s/virtual-machines", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteVirtualMachineRequest generates requests for DeleteVirtualMachine
+func NewDeleteVirtualMachineRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -617,8 +841,8 @@ func NewDeleteAnInstanceRequest(server string, id int) (*http.Request, error) {
 	return req, nil
 }
 
-// NewGetAnInstanceDetailsRequest generates requests for GetAnInstanceDetails
-func NewGetAnInstanceDetailsRequest(server string, id int) (*http.Request, error) {
+// NewRetrieveVirtualMachineDetailsRequest generates requests for RetrieveVirtualMachineDetails
+func NewRetrieveVirtualMachineDetailsRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -651,8 +875,8 @@ func NewGetAnInstanceDetailsRequest(server string, id int) (*http.Request, error
 	return req, nil
 }
 
-// NewHardRebootInstanceRequest generates requests for HardRebootInstance
-func NewHardRebootInstanceRequest(server string, id int) (*http.Request, error) {
+// NewHardRebootVirtualMachineRequest generates requests for HardRebootVirtualMachine
+func NewHardRebootVirtualMachineRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -685,19 +909,19 @@ func NewHardRebootInstanceRequest(server string, id int) (*http.Request, error) 
 	return req, nil
 }
 
-// NewAddSecurityRuleRequest calls the generic AddSecurityRule builder with application/json body
-func NewAddSecurityRuleRequest(server string, id int, body AddSecurityRuleJSONRequestBody) (*http.Request, error) {
+// NewAddFirewallRuleToVirtualMachineRequest calls the generic AddFirewallRuleToVirtualMachine builder with application/json body
+func NewAddFirewallRuleToVirtualMachineRequest(server string, id int, body AddFirewallRuleToVirtualMachineJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewAddSecurityRuleRequestWithBody(server, id, "application/json", bodyReader)
+	return NewAddFirewallRuleToVirtualMachineRequestWithBody(server, id, "application/json", bodyReader)
 }
 
-// NewAddSecurityRuleRequestWithBody generates requests for AddSecurityRule with any type of body
-func NewAddSecurityRuleRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
+// NewAddFirewallRuleToVirtualMachineRequestWithBody generates requests for AddFirewallRuleToVirtualMachine with any type of body
+func NewAddFirewallRuleToVirtualMachineRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -732,8 +956,8 @@ func NewAddSecurityRuleRequestWithBody(server string, id int, contentType string
 	return req, nil
 }
 
-// NewStartInstanceRequest generates requests for StartInstance
-func NewStartInstanceRequest(server string, id int) (*http.Request, error) {
+// NewStartVirtualMachineRequest generates requests for StartVirtualMachine
+func NewStartVirtualMachineRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -766,8 +990,8 @@ func NewStartInstanceRequest(server string, id int) (*http.Request, error) {
 	return req, nil
 }
 
-// NewStopInstanceRequest generates requests for StopInstance
-func NewStopInstanceRequest(server string, id int) (*http.Request, error) {
+// NewStopVirtualMachineRequest generates requests for StopVirtualMachine
+func NewStopVirtualMachineRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -800,8 +1024,8 @@ func NewStopInstanceRequest(server string, id int) (*http.Request, error) {
 	return req, nil
 }
 
-// NewHibernateInstanceRequest generates requests for HibernateInstance
-func NewHibernateInstanceRequest(server string, virtualMachineId int) (*http.Request, error) {
+// NewHibernateVirtualMachineRequest generates requests for HibernateVirtualMachine
+func NewHibernateVirtualMachineRequest(server string, virtualMachineId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -834,8 +1058,8 @@ func NewHibernateInstanceRequest(server string, virtualMachineId int) (*http.Req
 	return req, nil
 }
 
-// NewRestoreInstanceFromHibernationRequest generates requests for RestoreInstanceFromHibernation
-func NewRestoreInstanceFromHibernationRequest(server string, virtualMachineId int) (*http.Request, error) {
+// NewRestoreVirtualMachineFromHibernationRequest generates requests for RestoreVirtualMachineFromHibernation
+func NewRestoreVirtualMachineFromHibernationRequest(server string, virtualMachineId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -868,8 +1092,55 @@ func NewRestoreInstanceFromHibernationRequest(server string, virtualMachineId in
 	return req, nil
 }
 
-// NewRetrievedMetricsSuccessfullyRequest generates requests for RetrievedMetricsSuccessfully
-func NewRetrievedMetricsSuccessfullyRequest(server string, virtualMachineId int, params *RetrievedMetricsSuccessfullyParams) (*http.Request, error) {
+// NewEditLabelsOfAnExistingVMRequest calls the generic EditLabelsOfAnExistingVM builder with application/json body
+func NewEditLabelsOfAnExistingVMRequest(server string, virtualMachineId int, body EditLabelsOfAnExistingVMJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewEditLabelsOfAnExistingVMRequestWithBody(server, virtualMachineId, "application/json", bodyReader)
+}
+
+// NewEditLabelsOfAnExistingVMRequestWithBody generates requests for EditLabelsOfAnExistingVM with any type of body
+func NewEditLabelsOfAnExistingVMRequestWithBody(server string, virtualMachineId int, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "virtual_machine_id", runtime.ParamLocationPath, virtualMachineId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/virtual-machines/%s/label", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewRetrieveVirtualMachinePerformanceMetricsRequest generates requests for RetrieveVirtualMachinePerformanceMetrics
+func NewRetrieveVirtualMachinePerformanceMetricsRequest(server string, virtualMachineId int, params *RetrieveVirtualMachinePerformanceMetricsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -971,8 +1242,8 @@ func NewResizeVirtualMachineRequestWithBody(server string, virtualMachineId int,
 	return req, nil
 }
 
-// NewDeleteASecurityRuleRequest generates requests for DeleteASecurityRule
-func NewDeleteASecurityRuleRequest(server string, virtualMachineId int, sgRuleId int) (*http.Request, error) {
+// NewDeleteFirewallRuleFromVirtualMachineRequest generates requests for DeleteFirewallRuleFromVirtualMachine
+func NewDeleteFirewallRuleFromVirtualMachineRequest(server string, virtualMachineId int, sgRuleId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1008,6 +1279,53 @@ func NewDeleteASecurityRuleRequest(server string, virtualMachineId int, sgRuleId
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewAttachFirewallsToAVMRequest calls the generic AttachFirewallsToAVM builder with application/json body
+func NewAttachFirewallsToAVMRequest(server string, vmId int, body AttachFirewallsToAVMJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAttachFirewallsToAVMRequestWithBody(server, vmId, "application/json", bodyReader)
+}
+
+// NewAttachFirewallsToAVMRequestWithBody generates requests for AttachFirewallsToAVM with any type of body
+func NewAttachFirewallsToAVMRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "vm_id", runtime.ParamLocationPath, vmId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/virtual-machines/%s/attach-firewalls", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -1055,53 +1373,66 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// ListInstancesWithResponse request
-	ListInstancesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListInstancesResponse, error)
+	// ListVirtualMachinesWithResponse request
+	ListVirtualMachinesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListVirtualMachinesResponse, error)
 
-	// CreateInstancesWithBodyWithResponse request with any body
-	CreateInstancesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateInstancesResponse, error)
+	// CreateVirtualMachineWithBodyWithResponse request with any body
+	CreateVirtualMachineWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualMachineResponse, error)
 
-	CreateInstancesWithResponse(ctx context.Context, body CreateInstancesJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateInstancesResponse, error)
+	CreateVirtualMachineWithResponse(ctx context.Context, body CreateVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualMachineResponse, error)
 
-	// DeleteAnInstanceWithResponse request
-	DeleteAnInstanceWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteAnInstanceResponse, error)
+	// RetrieveVirtualMachinesAssociatedWithAContractWithResponse request
+	RetrieveVirtualMachinesAssociatedWithAContractWithResponse(ctx context.Context, contractId int, reqEditors ...RequestEditorFn) (*RetrieveVirtualMachinesAssociatedWithAContractResponse, error)
 
-	// GetAnInstanceDetailsWithResponse request
-	GetAnInstanceDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*GetAnInstanceDetailsResponse, error)
+	// DeleteVirtualMachineWithResponse request
+	DeleteVirtualMachineWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteVirtualMachineResponse, error)
 
-	// HardRebootInstanceWithResponse request
-	HardRebootInstanceWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*HardRebootInstanceResponse, error)
+	// RetrieveVirtualMachineDetailsWithResponse request
+	RetrieveVirtualMachineDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveVirtualMachineDetailsResponse, error)
 
-	// AddSecurityRuleWithBodyWithResponse request with any body
-	AddSecurityRuleWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddSecurityRuleResponse, error)
+	// HardRebootVirtualMachineWithResponse request
+	HardRebootVirtualMachineWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*HardRebootVirtualMachineResponse, error)
 
-	AddSecurityRuleWithResponse(ctx context.Context, id int, body AddSecurityRuleJSONRequestBody, reqEditors ...RequestEditorFn) (*AddSecurityRuleResponse, error)
+	// AddFirewallRuleToVirtualMachineWithBodyWithResponse request with any body
+	AddFirewallRuleToVirtualMachineWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddFirewallRuleToVirtualMachineResponse, error)
 
-	// StartInstanceWithResponse request
-	StartInstanceWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*StartInstanceResponse, error)
+	AddFirewallRuleToVirtualMachineWithResponse(ctx context.Context, id int, body AddFirewallRuleToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*AddFirewallRuleToVirtualMachineResponse, error)
 
-	// StopInstanceWithResponse request
-	StopInstanceWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*StopInstanceResponse, error)
+	// StartVirtualMachineWithResponse request
+	StartVirtualMachineWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*StartVirtualMachineResponse, error)
 
-	// HibernateInstanceWithResponse request
-	HibernateInstanceWithResponse(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*HibernateInstanceResponse, error)
+	// StopVirtualMachineWithResponse request
+	StopVirtualMachineWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*StopVirtualMachineResponse, error)
 
-	// RestoreInstanceFromHibernationWithResponse request
-	RestoreInstanceFromHibernationWithResponse(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*RestoreInstanceFromHibernationResponse, error)
+	// HibernateVirtualMachineWithResponse request
+	HibernateVirtualMachineWithResponse(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*HibernateVirtualMachineResponse, error)
 
-	// RetrievedMetricsSuccessfullyWithResponse request
-	RetrievedMetricsSuccessfullyWithResponse(ctx context.Context, virtualMachineId int, params *RetrievedMetricsSuccessfullyParams, reqEditors ...RequestEditorFn) (*RetrievedMetricsSuccessfullyResponse, error)
+	// RestoreVirtualMachineFromHibernationWithResponse request
+	RestoreVirtualMachineFromHibernationWithResponse(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*RestoreVirtualMachineFromHibernationResponse, error)
+
+	// EditLabelsOfAnExistingVMWithBodyWithResponse request with any body
+	EditLabelsOfAnExistingVMWithBodyWithResponse(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditLabelsOfAnExistingVMResponse, error)
+
+	EditLabelsOfAnExistingVMWithResponse(ctx context.Context, virtualMachineId int, body EditLabelsOfAnExistingVMJSONRequestBody, reqEditors ...RequestEditorFn) (*EditLabelsOfAnExistingVMResponse, error)
+
+	// RetrieveVirtualMachinePerformanceMetricsWithResponse request
+	RetrieveVirtualMachinePerformanceMetricsWithResponse(ctx context.Context, virtualMachineId int, params *RetrieveVirtualMachinePerformanceMetricsParams, reqEditors ...RequestEditorFn) (*RetrieveVirtualMachinePerformanceMetricsResponse, error)
 
 	// ResizeVirtualMachineWithBodyWithResponse request with any body
 	ResizeVirtualMachineWithBodyWithResponse(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ResizeVirtualMachineResponse, error)
 
 	ResizeVirtualMachineWithResponse(ctx context.Context, virtualMachineId int, body ResizeVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*ResizeVirtualMachineResponse, error)
 
-	// DeleteASecurityRuleWithResponse request
-	DeleteASecurityRuleWithResponse(ctx context.Context, virtualMachineId int, sgRuleId int, reqEditors ...RequestEditorFn) (*DeleteASecurityRuleResponse, error)
+	// DeleteFirewallRuleFromVirtualMachineWithResponse request
+	DeleteFirewallRuleFromVirtualMachineWithResponse(ctx context.Context, virtualMachineId int, sgRuleId int, reqEditors ...RequestEditorFn) (*DeleteFirewallRuleFromVirtualMachineResponse, error)
+
+	// AttachFirewallsToAVMWithBodyWithResponse request with any body
+	AttachFirewallsToAVMWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachFirewallsToAVMResponse, error)
+
+	AttachFirewallsToAVMWithResponse(ctx context.Context, vmId int, body AttachFirewallsToAVMJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachFirewallsToAVMResponse, error)
 }
 
-type ListInstancesResponse struct {
+type ListVirtualMachinesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Instances
@@ -1110,7 +1441,7 @@ type ListInstancesResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ListInstancesResponse) Status() string {
+func (r ListVirtualMachinesResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1118,14 +1449,14 @@ func (r ListInstancesResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ListInstancesResponse) StatusCode() int {
+func (r ListVirtualMachinesResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type CreateInstancesResponse struct {
+type CreateVirtualMachineResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Instances
@@ -1137,7 +1468,7 @@ type CreateInstancesResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r CreateInstancesResponse) Status() string {
+func (r CreateVirtualMachineResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1145,24 +1476,49 @@ func (r CreateInstancesResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CreateInstancesResponse) StatusCode() int {
+func (r CreateVirtualMachineResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type DeleteAnInstanceResponse struct {
+type RetrieveVirtualMachinesAssociatedWithAContractResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ContractInstancesResponse
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r RetrieveVirtualMachinesAssociatedWithAContractResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetrieveVirtualMachinesAssociatedWithAContractResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteVirtualMachineResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 	JSON404      *ErrorResponseModel
+	JSON409      *ErrorResponseModel
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteAnInstanceResponse) Status() string {
+func (r DeleteVirtualMachineResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1170,14 +1526,14 @@ func (r DeleteAnInstanceResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteAnInstanceResponse) StatusCode() int {
+func (r DeleteVirtualMachineResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetAnInstanceDetailsResponse struct {
+type RetrieveVirtualMachineDetailsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Instance
@@ -1187,7 +1543,7 @@ type GetAnInstanceDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetAnInstanceDetailsResponse) Status() string {
+func (r RetrieveVirtualMachineDetailsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1195,14 +1551,14 @@ func (r GetAnInstanceDetailsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetAnInstanceDetailsResponse) StatusCode() int {
+func (r RetrieveVirtualMachineDetailsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type HardRebootInstanceResponse struct {
+type HardRebootVirtualMachineResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -1212,7 +1568,7 @@ type HardRebootInstanceResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r HardRebootInstanceResponse) Status() string {
+func (r HardRebootVirtualMachineResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1220,14 +1576,14 @@ func (r HardRebootInstanceResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r HardRebootInstanceResponse) StatusCode() int {
+func (r HardRebootVirtualMachineResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type AddSecurityRuleResponse struct {
+type AddFirewallRuleToVirtualMachineResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SecurityGroupRule
@@ -1238,7 +1594,7 @@ type AddSecurityRuleResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r AddSecurityRuleResponse) Status() string {
+func (r AddFirewallRuleToVirtualMachineResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1246,14 +1602,14 @@ func (r AddSecurityRuleResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r AddSecurityRuleResponse) StatusCode() int {
+func (r AddFirewallRuleToVirtualMachineResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type StartInstanceResponse struct {
+type StartVirtualMachineResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -1263,7 +1619,7 @@ type StartInstanceResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r StartInstanceResponse) Status() string {
+func (r StartVirtualMachineResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1271,14 +1627,14 @@ func (r StartInstanceResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r StartInstanceResponse) StatusCode() int {
+func (r StartVirtualMachineResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type StopInstanceResponse struct {
+type StopVirtualMachineResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -1288,7 +1644,7 @@ type StopInstanceResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r StopInstanceResponse) Status() string {
+func (r StopVirtualMachineResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1296,14 +1652,14 @@ func (r StopInstanceResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r StopInstanceResponse) StatusCode() int {
+func (r StopVirtualMachineResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type HibernateInstanceResponse struct {
+type HibernateVirtualMachineResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -1313,7 +1669,7 @@ type HibernateInstanceResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r HibernateInstanceResponse) Status() string {
+func (r HibernateVirtualMachineResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1321,14 +1677,14 @@ func (r HibernateInstanceResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r HibernateInstanceResponse) StatusCode() int {
+func (r HibernateVirtualMachineResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type RestoreInstanceFromHibernationResponse struct {
+type RestoreVirtualMachineFromHibernationResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -1338,7 +1694,7 @@ type RestoreInstanceFromHibernationResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RestoreInstanceFromHibernationResponse) Status() string {
+func (r RestoreVirtualMachineFromHibernationResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1346,17 +1702,43 @@ func (r RestoreInstanceFromHibernationResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RestoreInstanceFromHibernationResponse) StatusCode() int {
+func (r RestoreVirtualMachineFromHibernationResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type RetrievedMetricsSuccessfullyResponse struct {
+type EditLabelsOfAnExistingVMResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+	JSON409      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r EditLabelsOfAnExistingVMResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r EditLabelsOfAnExistingVMResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RetrieveVirtualMachinePerformanceMetricsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *MetricsFields
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 	JSON404      *ErrorResponseModel
@@ -1364,7 +1746,7 @@ type RetrievedMetricsSuccessfullyResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrievedMetricsSuccessfullyResponse) Status() string {
+func (r RetrieveVirtualMachinePerformanceMetricsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1372,7 +1754,7 @@ func (r RetrievedMetricsSuccessfullyResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrievedMetricsSuccessfullyResponse) StatusCode() int {
+func (r RetrieveVirtualMachinePerformanceMetricsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1405,7 +1787,7 @@ func (r ResizeVirtualMachineResponse) StatusCode() int {
 	return 0
 }
 
-type DeleteASecurityRuleResponse struct {
+type DeleteFirewallRuleFromVirtualMachineResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -1415,7 +1797,7 @@ type DeleteASecurityRuleResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteASecurityRuleResponse) Status() string {
+func (r DeleteFirewallRuleFromVirtualMachineResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1423,126 +1805,177 @@ func (r DeleteASecurityRuleResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteASecurityRuleResponse) StatusCode() int {
+func (r DeleteFirewallRuleFromVirtualMachineResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// ListInstancesWithResponse request returning *ListInstancesResponse
-func (c *ClientWithResponses) ListInstancesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListInstancesResponse, error) {
-	rsp, err := c.ListInstances(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseListInstancesResponse(rsp)
+type AttachFirewallsToAVMResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ResponseModel
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
 }
 
-// CreateInstancesWithBodyWithResponse request with arbitrary body returning *CreateInstancesResponse
-func (c *ClientWithResponses) CreateInstancesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateInstancesResponse, error) {
-	rsp, err := c.CreateInstancesWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
+// Status returns HTTPResponse.Status
+func (r AttachFirewallsToAVMResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
 	}
-	return ParseCreateInstancesResponse(rsp)
+	return http.StatusText(0)
 }
 
-func (c *ClientWithResponses) CreateInstancesWithResponse(ctx context.Context, body CreateInstancesJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateInstancesResponse, error) {
-	rsp, err := c.CreateInstances(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
+// StatusCode returns HTTPResponse.StatusCode
+func (r AttachFirewallsToAVMResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
 	}
-	return ParseCreateInstancesResponse(rsp)
+	return 0
 }
 
-// DeleteAnInstanceWithResponse request returning *DeleteAnInstanceResponse
-func (c *ClientWithResponses) DeleteAnInstanceWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteAnInstanceResponse, error) {
-	rsp, err := c.DeleteAnInstance(ctx, id, reqEditors...)
+// ListVirtualMachinesWithResponse request returning *ListVirtualMachinesResponse
+func (c *ClientWithResponses) ListVirtualMachinesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListVirtualMachinesResponse, error) {
+	rsp, err := c.ListVirtualMachines(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteAnInstanceResponse(rsp)
+	return ParseListVirtualMachinesResponse(rsp)
 }
 
-// GetAnInstanceDetailsWithResponse request returning *GetAnInstanceDetailsResponse
-func (c *ClientWithResponses) GetAnInstanceDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*GetAnInstanceDetailsResponse, error) {
-	rsp, err := c.GetAnInstanceDetails(ctx, id, reqEditors...)
+// CreateVirtualMachineWithBodyWithResponse request with arbitrary body returning *CreateVirtualMachineResponse
+func (c *ClientWithResponses) CreateVirtualMachineWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualMachineResponse, error) {
+	rsp, err := c.CreateVirtualMachineWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetAnInstanceDetailsResponse(rsp)
+	return ParseCreateVirtualMachineResponse(rsp)
 }
 
-// HardRebootInstanceWithResponse request returning *HardRebootInstanceResponse
-func (c *ClientWithResponses) HardRebootInstanceWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*HardRebootInstanceResponse, error) {
-	rsp, err := c.HardRebootInstance(ctx, id, reqEditors...)
+func (c *ClientWithResponses) CreateVirtualMachineWithResponse(ctx context.Context, body CreateVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualMachineResponse, error) {
+	rsp, err := c.CreateVirtualMachine(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseHardRebootInstanceResponse(rsp)
+	return ParseCreateVirtualMachineResponse(rsp)
 }
 
-// AddSecurityRuleWithBodyWithResponse request with arbitrary body returning *AddSecurityRuleResponse
-func (c *ClientWithResponses) AddSecurityRuleWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddSecurityRuleResponse, error) {
-	rsp, err := c.AddSecurityRuleWithBody(ctx, id, contentType, body, reqEditors...)
+// RetrieveVirtualMachinesAssociatedWithAContractWithResponse request returning *RetrieveVirtualMachinesAssociatedWithAContractResponse
+func (c *ClientWithResponses) RetrieveVirtualMachinesAssociatedWithAContractWithResponse(ctx context.Context, contractId int, reqEditors ...RequestEditorFn) (*RetrieveVirtualMachinesAssociatedWithAContractResponse, error) {
+	rsp, err := c.RetrieveVirtualMachinesAssociatedWithAContract(ctx, contractId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseAddSecurityRuleResponse(rsp)
+	return ParseRetrieveVirtualMachinesAssociatedWithAContractResponse(rsp)
 }
 
-func (c *ClientWithResponses) AddSecurityRuleWithResponse(ctx context.Context, id int, body AddSecurityRuleJSONRequestBody, reqEditors ...RequestEditorFn) (*AddSecurityRuleResponse, error) {
-	rsp, err := c.AddSecurityRule(ctx, id, body, reqEditors...)
+// DeleteVirtualMachineWithResponse request returning *DeleteVirtualMachineResponse
+func (c *ClientWithResponses) DeleteVirtualMachineWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteVirtualMachineResponse, error) {
+	rsp, err := c.DeleteVirtualMachine(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseAddSecurityRuleResponse(rsp)
+	return ParseDeleteVirtualMachineResponse(rsp)
 }
 
-// StartInstanceWithResponse request returning *StartInstanceResponse
-func (c *ClientWithResponses) StartInstanceWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*StartInstanceResponse, error) {
-	rsp, err := c.StartInstance(ctx, id, reqEditors...)
+// RetrieveVirtualMachineDetailsWithResponse request returning *RetrieveVirtualMachineDetailsResponse
+func (c *ClientWithResponses) RetrieveVirtualMachineDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveVirtualMachineDetailsResponse, error) {
+	rsp, err := c.RetrieveVirtualMachineDetails(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseStartInstanceResponse(rsp)
+	return ParseRetrieveVirtualMachineDetailsResponse(rsp)
 }
 
-// StopInstanceWithResponse request returning *StopInstanceResponse
-func (c *ClientWithResponses) StopInstanceWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*StopInstanceResponse, error) {
-	rsp, err := c.StopInstance(ctx, id, reqEditors...)
+// HardRebootVirtualMachineWithResponse request returning *HardRebootVirtualMachineResponse
+func (c *ClientWithResponses) HardRebootVirtualMachineWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*HardRebootVirtualMachineResponse, error) {
+	rsp, err := c.HardRebootVirtualMachine(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseStopInstanceResponse(rsp)
+	return ParseHardRebootVirtualMachineResponse(rsp)
 }
 
-// HibernateInstanceWithResponse request returning *HibernateInstanceResponse
-func (c *ClientWithResponses) HibernateInstanceWithResponse(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*HibernateInstanceResponse, error) {
-	rsp, err := c.HibernateInstance(ctx, virtualMachineId, reqEditors...)
+// AddFirewallRuleToVirtualMachineWithBodyWithResponse request with arbitrary body returning *AddFirewallRuleToVirtualMachineResponse
+func (c *ClientWithResponses) AddFirewallRuleToVirtualMachineWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddFirewallRuleToVirtualMachineResponse, error) {
+	rsp, err := c.AddFirewallRuleToVirtualMachineWithBody(ctx, id, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseHibernateInstanceResponse(rsp)
+	return ParseAddFirewallRuleToVirtualMachineResponse(rsp)
 }
 
-// RestoreInstanceFromHibernationWithResponse request returning *RestoreInstanceFromHibernationResponse
-func (c *ClientWithResponses) RestoreInstanceFromHibernationWithResponse(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*RestoreInstanceFromHibernationResponse, error) {
-	rsp, err := c.RestoreInstanceFromHibernation(ctx, virtualMachineId, reqEditors...)
+func (c *ClientWithResponses) AddFirewallRuleToVirtualMachineWithResponse(ctx context.Context, id int, body AddFirewallRuleToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*AddFirewallRuleToVirtualMachineResponse, error) {
+	rsp, err := c.AddFirewallRuleToVirtualMachine(ctx, id, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRestoreInstanceFromHibernationResponse(rsp)
+	return ParseAddFirewallRuleToVirtualMachineResponse(rsp)
 }
 
-// RetrievedMetricsSuccessfullyWithResponse request returning *RetrievedMetricsSuccessfullyResponse
-func (c *ClientWithResponses) RetrievedMetricsSuccessfullyWithResponse(ctx context.Context, virtualMachineId int, params *RetrievedMetricsSuccessfullyParams, reqEditors ...RequestEditorFn) (*RetrievedMetricsSuccessfullyResponse, error) {
-	rsp, err := c.RetrievedMetricsSuccessfully(ctx, virtualMachineId, params, reqEditors...)
+// StartVirtualMachineWithResponse request returning *StartVirtualMachineResponse
+func (c *ClientWithResponses) StartVirtualMachineWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*StartVirtualMachineResponse, error) {
+	rsp, err := c.StartVirtualMachine(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrievedMetricsSuccessfullyResponse(rsp)
+	return ParseStartVirtualMachineResponse(rsp)
+}
+
+// StopVirtualMachineWithResponse request returning *StopVirtualMachineResponse
+func (c *ClientWithResponses) StopVirtualMachineWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*StopVirtualMachineResponse, error) {
+	rsp, err := c.StopVirtualMachine(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStopVirtualMachineResponse(rsp)
+}
+
+// HibernateVirtualMachineWithResponse request returning *HibernateVirtualMachineResponse
+func (c *ClientWithResponses) HibernateVirtualMachineWithResponse(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*HibernateVirtualMachineResponse, error) {
+	rsp, err := c.HibernateVirtualMachine(ctx, virtualMachineId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseHibernateVirtualMachineResponse(rsp)
+}
+
+// RestoreVirtualMachineFromHibernationWithResponse request returning *RestoreVirtualMachineFromHibernationResponse
+func (c *ClientWithResponses) RestoreVirtualMachineFromHibernationWithResponse(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*RestoreVirtualMachineFromHibernationResponse, error) {
+	rsp, err := c.RestoreVirtualMachineFromHibernation(ctx, virtualMachineId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRestoreVirtualMachineFromHibernationResponse(rsp)
+}
+
+// EditLabelsOfAnExistingVMWithBodyWithResponse request with arbitrary body returning *EditLabelsOfAnExistingVMResponse
+func (c *ClientWithResponses) EditLabelsOfAnExistingVMWithBodyWithResponse(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditLabelsOfAnExistingVMResponse, error) {
+	rsp, err := c.EditLabelsOfAnExistingVMWithBody(ctx, virtualMachineId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEditLabelsOfAnExistingVMResponse(rsp)
+}
+
+func (c *ClientWithResponses) EditLabelsOfAnExistingVMWithResponse(ctx context.Context, virtualMachineId int, body EditLabelsOfAnExistingVMJSONRequestBody, reqEditors ...RequestEditorFn) (*EditLabelsOfAnExistingVMResponse, error) {
+	rsp, err := c.EditLabelsOfAnExistingVM(ctx, virtualMachineId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEditLabelsOfAnExistingVMResponse(rsp)
+}
+
+// RetrieveVirtualMachinePerformanceMetricsWithResponse request returning *RetrieveVirtualMachinePerformanceMetricsResponse
+func (c *ClientWithResponses) RetrieveVirtualMachinePerformanceMetricsWithResponse(ctx context.Context, virtualMachineId int, params *RetrieveVirtualMachinePerformanceMetricsParams, reqEditors ...RequestEditorFn) (*RetrieveVirtualMachinePerformanceMetricsResponse, error) {
+	rsp, err := c.RetrieveVirtualMachinePerformanceMetrics(ctx, virtualMachineId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetrieveVirtualMachinePerformanceMetricsResponse(rsp)
 }
 
 // ResizeVirtualMachineWithBodyWithResponse request with arbitrary body returning *ResizeVirtualMachineResponse
@@ -1562,24 +1995,41 @@ func (c *ClientWithResponses) ResizeVirtualMachineWithResponse(ctx context.Conte
 	return ParseResizeVirtualMachineResponse(rsp)
 }
 
-// DeleteASecurityRuleWithResponse request returning *DeleteASecurityRuleResponse
-func (c *ClientWithResponses) DeleteASecurityRuleWithResponse(ctx context.Context, virtualMachineId int, sgRuleId int, reqEditors ...RequestEditorFn) (*DeleteASecurityRuleResponse, error) {
-	rsp, err := c.DeleteASecurityRule(ctx, virtualMachineId, sgRuleId, reqEditors...)
+// DeleteFirewallRuleFromVirtualMachineWithResponse request returning *DeleteFirewallRuleFromVirtualMachineResponse
+func (c *ClientWithResponses) DeleteFirewallRuleFromVirtualMachineWithResponse(ctx context.Context, virtualMachineId int, sgRuleId int, reqEditors ...RequestEditorFn) (*DeleteFirewallRuleFromVirtualMachineResponse, error) {
+	rsp, err := c.DeleteFirewallRuleFromVirtualMachine(ctx, virtualMachineId, sgRuleId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteASecurityRuleResponse(rsp)
+	return ParseDeleteFirewallRuleFromVirtualMachineResponse(rsp)
 }
 
-// ParseListInstancesResponse parses an HTTP response from a ListInstancesWithResponse call
-func ParseListInstancesResponse(rsp *http.Response) (*ListInstancesResponse, error) {
+// AttachFirewallsToAVMWithBodyWithResponse request with arbitrary body returning *AttachFirewallsToAVMResponse
+func (c *ClientWithResponses) AttachFirewallsToAVMWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachFirewallsToAVMResponse, error) {
+	rsp, err := c.AttachFirewallsToAVMWithBody(ctx, vmId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAttachFirewallsToAVMResponse(rsp)
+}
+
+func (c *ClientWithResponses) AttachFirewallsToAVMWithResponse(ctx context.Context, vmId int, body AttachFirewallsToAVMJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachFirewallsToAVMResponse, error) {
+	rsp, err := c.AttachFirewallsToAVM(ctx, vmId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAttachFirewallsToAVMResponse(rsp)
+}
+
+// ParseListVirtualMachinesResponse parses an HTTP response from a ListVirtualMachinesWithResponse call
+func ParseListVirtualMachinesResponse(rsp *http.Response) (*ListVirtualMachinesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ListInstancesResponse{
+	response := &ListVirtualMachinesResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1611,15 +2061,15 @@ func ParseListInstancesResponse(rsp *http.Response) (*ListInstancesResponse, err
 	return response, nil
 }
 
-// ParseCreateInstancesResponse parses an HTTP response from a CreateInstancesWithResponse call
-func ParseCreateInstancesResponse(rsp *http.Response) (*CreateInstancesResponse, error) {
+// ParseCreateVirtualMachineResponse parses an HTTP response from a CreateVirtualMachineWithResponse call
+func ParseCreateVirtualMachineResponse(rsp *http.Response) (*CreateVirtualMachineResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CreateInstancesResponse{
+	response := &CreateVirtualMachineResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1672,15 +2122,55 @@ func ParseCreateInstancesResponse(rsp *http.Response) (*CreateInstancesResponse,
 	return response, nil
 }
 
-// ParseDeleteAnInstanceResponse parses an HTTP response from a DeleteAnInstanceWithResponse call
-func ParseDeleteAnInstanceResponse(rsp *http.Response) (*DeleteAnInstanceResponse, error) {
+// ParseRetrieveVirtualMachinesAssociatedWithAContractResponse parses an HTTP response from a RetrieveVirtualMachinesAssociatedWithAContractWithResponse call
+func ParseRetrieveVirtualMachinesAssociatedWithAContractResponse(rsp *http.Response) (*RetrieveVirtualMachinesAssociatedWithAContractResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteAnInstanceResponse{
+	response := &RetrieveVirtualMachinesAssociatedWithAContractResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ContractInstancesResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteVirtualMachineResponse parses an HTTP response from a DeleteVirtualMachineWithResponse call
+func ParseDeleteVirtualMachineResponse(rsp *http.Response) (*DeleteVirtualMachineResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteVirtualMachineResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1714,20 +2204,27 @@ func ParseDeleteAnInstanceResponse(rsp *http.Response) (*DeleteAnInstanceRespons
 		}
 		response.JSON404 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
 	}
 
 	return response, nil
 }
 
-// ParseGetAnInstanceDetailsResponse parses an HTTP response from a GetAnInstanceDetailsWithResponse call
-func ParseGetAnInstanceDetailsResponse(rsp *http.Response) (*GetAnInstanceDetailsResponse, error) {
+// ParseRetrieveVirtualMachineDetailsResponse parses an HTTP response from a RetrieveVirtualMachineDetailsWithResponse call
+func ParseRetrieveVirtualMachineDetailsResponse(rsp *http.Response) (*RetrieveVirtualMachineDetailsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetAnInstanceDetailsResponse{
+	response := &RetrieveVirtualMachineDetailsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1766,15 +2263,15 @@ func ParseGetAnInstanceDetailsResponse(rsp *http.Response) (*GetAnInstanceDetail
 	return response, nil
 }
 
-// ParseHardRebootInstanceResponse parses an HTTP response from a HardRebootInstanceWithResponse call
-func ParseHardRebootInstanceResponse(rsp *http.Response) (*HardRebootInstanceResponse, error) {
+// ParseHardRebootVirtualMachineResponse parses an HTTP response from a HardRebootVirtualMachineWithResponse call
+func ParseHardRebootVirtualMachineResponse(rsp *http.Response) (*HardRebootVirtualMachineResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &HardRebootInstanceResponse{
+	response := &HardRebootVirtualMachineResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1813,15 +2310,15 @@ func ParseHardRebootInstanceResponse(rsp *http.Response) (*HardRebootInstanceRes
 	return response, nil
 }
 
-// ParseAddSecurityRuleResponse parses an HTTP response from a AddSecurityRuleWithResponse call
-func ParseAddSecurityRuleResponse(rsp *http.Response) (*AddSecurityRuleResponse, error) {
+// ParseAddFirewallRuleToVirtualMachineResponse parses an HTTP response from a AddFirewallRuleToVirtualMachineWithResponse call
+func ParseAddFirewallRuleToVirtualMachineResponse(rsp *http.Response) (*AddFirewallRuleToVirtualMachineResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &AddSecurityRuleResponse{
+	response := &AddFirewallRuleToVirtualMachineResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1867,15 +2364,15 @@ func ParseAddSecurityRuleResponse(rsp *http.Response) (*AddSecurityRuleResponse,
 	return response, nil
 }
 
-// ParseStartInstanceResponse parses an HTTP response from a StartInstanceWithResponse call
-func ParseStartInstanceResponse(rsp *http.Response) (*StartInstanceResponse, error) {
+// ParseStartVirtualMachineResponse parses an HTTP response from a StartVirtualMachineWithResponse call
+func ParseStartVirtualMachineResponse(rsp *http.Response) (*StartVirtualMachineResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &StartInstanceResponse{
+	response := &StartVirtualMachineResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1914,15 +2411,15 @@ func ParseStartInstanceResponse(rsp *http.Response) (*StartInstanceResponse, err
 	return response, nil
 }
 
-// ParseStopInstanceResponse parses an HTTP response from a StopInstanceWithResponse call
-func ParseStopInstanceResponse(rsp *http.Response) (*StopInstanceResponse, error) {
+// ParseStopVirtualMachineResponse parses an HTTP response from a StopVirtualMachineWithResponse call
+func ParseStopVirtualMachineResponse(rsp *http.Response) (*StopVirtualMachineResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &StopInstanceResponse{
+	response := &StopVirtualMachineResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1961,15 +2458,15 @@ func ParseStopInstanceResponse(rsp *http.Response) (*StopInstanceResponse, error
 	return response, nil
 }
 
-// ParseHibernateInstanceResponse parses an HTTP response from a HibernateInstanceWithResponse call
-func ParseHibernateInstanceResponse(rsp *http.Response) (*HibernateInstanceResponse, error) {
+// ParseHibernateVirtualMachineResponse parses an HTTP response from a HibernateVirtualMachineWithResponse call
+func ParseHibernateVirtualMachineResponse(rsp *http.Response) (*HibernateVirtualMachineResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &HibernateInstanceResponse{
+	response := &HibernateVirtualMachineResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2008,15 +2505,15 @@ func ParseHibernateInstanceResponse(rsp *http.Response) (*HibernateInstanceRespo
 	return response, nil
 }
 
-// ParseRestoreInstanceFromHibernationResponse parses an HTTP response from a RestoreInstanceFromHibernationWithResponse call
-func ParseRestoreInstanceFromHibernationResponse(rsp *http.Response) (*RestoreInstanceFromHibernationResponse, error) {
+// ParseRestoreVirtualMachineFromHibernationResponse parses an HTTP response from a RestoreVirtualMachineFromHibernationWithResponse call
+func ParseRestoreVirtualMachineFromHibernationResponse(rsp *http.Response) (*RestoreVirtualMachineFromHibernationResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RestoreInstanceFromHibernationResponse{
+	response := &RestoreVirtualMachineFromHibernationResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2055,15 +2552,15 @@ func ParseRestoreInstanceFromHibernationResponse(rsp *http.Response) (*RestoreIn
 	return response, nil
 }
 
-// ParseRetrievedMetricsSuccessfullyResponse parses an HTTP response from a RetrievedMetricsSuccessfullyWithResponse call
-func ParseRetrievedMetricsSuccessfullyResponse(rsp *http.Response) (*RetrievedMetricsSuccessfullyResponse, error) {
+// ParseEditLabelsOfAnExistingVMResponse parses an HTTP response from a EditLabelsOfAnExistingVMWithResponse call
+func ParseEditLabelsOfAnExistingVMResponse(rsp *http.Response) (*EditLabelsOfAnExistingVMResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrievedMetricsSuccessfullyResponse{
+	response := &EditLabelsOfAnExistingVMResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2071,6 +2568,60 @@ func ParseRetrievedMetricsSuccessfullyResponse(rsp *http.Response) (*RetrievedMe
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest ResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRetrieveVirtualMachinePerformanceMetricsResponse parses an HTTP response from a RetrieveVirtualMachinePerformanceMetricsWithResponse call
+func ParseRetrieveVirtualMachinePerformanceMetricsResponse(rsp *http.Response) (*RetrieveVirtualMachinePerformanceMetricsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RetrieveVirtualMachinePerformanceMetricsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MetricsFields
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -2163,15 +2714,62 @@ func ParseResizeVirtualMachineResponse(rsp *http.Response) (*ResizeVirtualMachin
 	return response, nil
 }
 
-// ParseDeleteASecurityRuleResponse parses an HTTP response from a DeleteASecurityRuleWithResponse call
-func ParseDeleteASecurityRuleResponse(rsp *http.Response) (*DeleteASecurityRuleResponse, error) {
+// ParseDeleteFirewallRuleFromVirtualMachineResponse parses an HTTP response from a DeleteFirewallRuleFromVirtualMachineWithResponse call
+func ParseDeleteFirewallRuleFromVirtualMachineResponse(rsp *http.Response) (*DeleteFirewallRuleFromVirtualMachineResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteASecurityRuleResponse{
+	response := &DeleteFirewallRuleFromVirtualMachineResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAttachFirewallsToAVMResponse parses an HTTP response from a AttachFirewallsToAVMWithResponse call
+func ParseAttachFirewallsToAVMResponse(rsp *http.Response) (*AttachFirewallsToAVMResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AttachFirewallsToAVMResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

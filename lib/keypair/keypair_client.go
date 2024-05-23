@@ -26,9 +26,14 @@ type ErrorResponseModel struct {
 
 // ImportKeypairPayload defines model for Import Keypair Payload.
 type ImportKeypairPayload struct {
+	// EnvironmentName The name of the environment where the key pair is being created.
 	EnvironmentName string `json:"environment_name"`
-	Name            string `json:"name"`
-	PublicKey       string `json:"public_key"`
+
+	// Name The name of the key pair that is being created.
+	Name string `json:"name"`
+
+	// PublicKey The public key that is being used to import an SSH key pair.
+	PublicKey string `json:"public_key"`
 }
 
 // ImportedKeypairResponseAPIObject defines model for ImportedKeypairResponseAPIObject.
@@ -63,6 +68,7 @@ type ResponseModel struct {
 
 // UpdateKeypairName defines model for Update Keypair Name.
 type UpdateKeypairName struct {
+	// Name The new key pair name.
 	Name string `json:"name"`
 }
 
@@ -73,11 +79,11 @@ type UpdatedKeypairNameResponseAPIObject struct {
 	Status  *bool          `json:"status,omitempty"`
 }
 
-// UpdateKeypairNameJSONRequestBody defines body for UpdateKeypairName for application/json ContentType.
-type UpdateKeypairNameJSONRequestBody = UpdateKeypairName
+// UpdateKeyPairNameJSONRequestBody defines body for UpdateKeyPairName for application/json ContentType.
+type UpdateKeyPairNameJSONRequestBody = UpdateKeypairName
 
-// ImportKeypairJSONRequestBody defines body for ImportKeypair for application/json ContentType.
-type ImportKeypairJSONRequestBody = ImportKeypairPayload
+// ImportKeyPairJSONRequestBody defines body for ImportKeyPair for application/json ContentType.
+type ImportKeyPairJSONRequestBody = ImportKeypairPayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -152,25 +158,25 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// DeleteKeypair request
-	DeleteKeypair(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteKeyPair request
+	DeleteKeyPair(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateKeypairNameWithBody request with any body
-	UpdateKeypairNameWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdateKeyPairNameWithBody request with any body
+	UpdateKeyPairNameWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateKeypairName(ctx context.Context, id int, body UpdateKeypairNameJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateKeyPairName(ctx context.Context, id int, body UpdateKeyPairNameJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RetrieveUserKeypairs request
-	RetrieveUserKeypairs(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListKeyPairs request
+	ListKeyPairs(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ImportKeypairWithBody request with any body
-	ImportKeypairWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ImportKeyPairWithBody request with any body
+	ImportKeyPairWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	ImportKeypair(ctx context.Context, body ImportKeypairJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ImportKeyPair(ctx context.Context, body ImportKeyPairJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) DeleteKeypair(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteKeypairRequest(c.Server, id)
+func (c *Client) DeleteKeyPair(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteKeyPairRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -181,8 +187,8 @@ func (c *Client) DeleteKeypair(ctx context.Context, id int, reqEditors ...Reques
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateKeypairNameWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateKeypairNameRequestWithBody(c.Server, id, contentType, body)
+func (c *Client) UpdateKeyPairNameWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateKeyPairNameRequestWithBody(c.Server, id, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -193,8 +199,8 @@ func (c *Client) UpdateKeypairNameWithBody(ctx context.Context, id int, contentT
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateKeypairName(ctx context.Context, id int, body UpdateKeypairNameJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateKeypairNameRequest(c.Server, id, body)
+func (c *Client) UpdateKeyPairName(ctx context.Context, id int, body UpdateKeyPairNameJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateKeyPairNameRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -205,8 +211,8 @@ func (c *Client) UpdateKeypairName(ctx context.Context, id int, body UpdateKeypa
 	return c.Client.Do(req)
 }
 
-func (c *Client) RetrieveUserKeypairs(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveUserKeypairsRequest(c.Server)
+func (c *Client) ListKeyPairs(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListKeyPairsRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -217,8 +223,8 @@ func (c *Client) RetrieveUserKeypairs(ctx context.Context, reqEditors ...Request
 	return c.Client.Do(req)
 }
 
-func (c *Client) ImportKeypairWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewImportKeypairRequestWithBody(c.Server, contentType, body)
+func (c *Client) ImportKeyPairWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewImportKeyPairRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -229,8 +235,8 @@ func (c *Client) ImportKeypairWithBody(ctx context.Context, contentType string, 
 	return c.Client.Do(req)
 }
 
-func (c *Client) ImportKeypair(ctx context.Context, body ImportKeypairJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewImportKeypairRequest(c.Server, body)
+func (c *Client) ImportKeyPair(ctx context.Context, body ImportKeyPairJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewImportKeyPairRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -241,8 +247,8 @@ func (c *Client) ImportKeypair(ctx context.Context, body ImportKeypairJSONReques
 	return c.Client.Do(req)
 }
 
-// NewDeleteKeypairRequest generates requests for DeleteKeypair
-func NewDeleteKeypairRequest(server string, id int) (*http.Request, error) {
+// NewDeleteKeyPairRequest generates requests for DeleteKeyPair
+func NewDeleteKeyPairRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -275,19 +281,19 @@ func NewDeleteKeypairRequest(server string, id int) (*http.Request, error) {
 	return req, nil
 }
 
-// NewUpdateKeypairNameRequest calls the generic UpdateKeypairName builder with application/json body
-func NewUpdateKeypairNameRequest(server string, id int, body UpdateKeypairNameJSONRequestBody) (*http.Request, error) {
+// NewUpdateKeyPairNameRequest calls the generic UpdateKeyPairName builder with application/json body
+func NewUpdateKeyPairNameRequest(server string, id int, body UpdateKeyPairNameJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUpdateKeypairNameRequestWithBody(server, id, "application/json", bodyReader)
+	return NewUpdateKeyPairNameRequestWithBody(server, id, "application/json", bodyReader)
 }
 
-// NewUpdateKeypairNameRequestWithBody generates requests for UpdateKeypairName with any type of body
-func NewUpdateKeypairNameRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
+// NewUpdateKeyPairNameRequestWithBody generates requests for UpdateKeyPairName with any type of body
+func NewUpdateKeyPairNameRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -322,8 +328,8 @@ func NewUpdateKeypairNameRequestWithBody(server string, id int, contentType stri
 	return req, nil
 }
 
-// NewRetrieveUserKeypairsRequest generates requests for RetrieveUserKeypairs
-func NewRetrieveUserKeypairsRequest(server string) (*http.Request, error) {
+// NewListKeyPairsRequest generates requests for ListKeyPairs
+func NewListKeyPairsRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -349,19 +355,19 @@ func NewRetrieveUserKeypairsRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewImportKeypairRequest calls the generic ImportKeypair builder with application/json body
-func NewImportKeypairRequest(server string, body ImportKeypairJSONRequestBody) (*http.Request, error) {
+// NewImportKeyPairRequest calls the generic ImportKeyPair builder with application/json body
+func NewImportKeyPairRequest(server string, body ImportKeyPairJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewImportKeypairRequestWithBody(server, "application/json", bodyReader)
+	return NewImportKeyPairRequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewImportKeypairRequestWithBody generates requests for ImportKeypair with any type of body
-func NewImportKeypairRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewImportKeyPairRequestWithBody generates requests for ImportKeyPair with any type of body
+func NewImportKeyPairRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -432,24 +438,24 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// DeleteKeypairWithResponse request
-	DeleteKeypairWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteKeypairResponse, error)
+	// DeleteKeyPairWithResponse request
+	DeleteKeyPairWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteKeyPairResponse, error)
 
-	// UpdateKeypairNameWithBodyWithResponse request with any body
-	UpdateKeypairNameWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateKeypairNameResponse, error)
+	// UpdateKeyPairNameWithBodyWithResponse request with any body
+	UpdateKeyPairNameWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateKeyPairNameResponse, error)
 
-	UpdateKeypairNameWithResponse(ctx context.Context, id int, body UpdateKeypairNameJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateKeypairNameResponse, error)
+	UpdateKeyPairNameWithResponse(ctx context.Context, id int, body UpdateKeyPairNameJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateKeyPairNameResponse, error)
 
-	// RetrieveUserKeypairsWithResponse request
-	RetrieveUserKeypairsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveUserKeypairsResponse, error)
+	// ListKeyPairsWithResponse request
+	ListKeyPairsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListKeyPairsResponse, error)
 
-	// ImportKeypairWithBodyWithResponse request with any body
-	ImportKeypairWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ImportKeypairResponse, error)
+	// ImportKeyPairWithBodyWithResponse request with any body
+	ImportKeyPairWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ImportKeyPairResponse, error)
 
-	ImportKeypairWithResponse(ctx context.Context, body ImportKeypairJSONRequestBody, reqEditors ...RequestEditorFn) (*ImportKeypairResponse, error)
+	ImportKeyPairWithResponse(ctx context.Context, body ImportKeyPairJSONRequestBody, reqEditors ...RequestEditorFn) (*ImportKeyPairResponse, error)
 }
 
-type DeleteKeypairResponse struct {
+type DeleteKeyPairResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -459,7 +465,7 @@ type DeleteKeypairResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteKeypairResponse) Status() string {
+func (r DeleteKeyPairResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -467,14 +473,14 @@ func (r DeleteKeypairResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteKeypairResponse) StatusCode() int {
+func (r DeleteKeyPairResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type UpdateKeypairNameResponse struct {
+type UpdateKeyPairNameResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *UpdatedKeypairNameResponseAPIObject
@@ -484,7 +490,7 @@ type UpdateKeypairNameResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r UpdateKeypairNameResponse) Status() string {
+func (r UpdateKeyPairNameResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -492,14 +498,14 @@ func (r UpdateKeypairNameResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r UpdateKeypairNameResponse) StatusCode() int {
+func (r UpdateKeyPairNameResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type RetrieveUserKeypairsResponse struct {
+type ListKeyPairsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Keypairs
@@ -508,7 +514,7 @@ type RetrieveUserKeypairsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrieveUserKeypairsResponse) Status() string {
+func (r ListKeyPairsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -516,14 +522,14 @@ func (r RetrieveUserKeypairsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrieveUserKeypairsResponse) StatusCode() int {
+func (r ListKeyPairsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type ImportKeypairResponse struct {
+type ImportKeyPairResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ImportedKeypairResponseAPIObject
@@ -534,7 +540,7 @@ type ImportKeypairResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ImportKeypairResponse) Status() string {
+func (r ImportKeyPairResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -542,74 +548,74 @@ func (r ImportKeypairResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ImportKeypairResponse) StatusCode() int {
+func (r ImportKeyPairResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// DeleteKeypairWithResponse request returning *DeleteKeypairResponse
-func (c *ClientWithResponses) DeleteKeypairWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteKeypairResponse, error) {
-	rsp, err := c.DeleteKeypair(ctx, id, reqEditors...)
+// DeleteKeyPairWithResponse request returning *DeleteKeyPairResponse
+func (c *ClientWithResponses) DeleteKeyPairWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteKeyPairResponse, error) {
+	rsp, err := c.DeleteKeyPair(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteKeypairResponse(rsp)
+	return ParseDeleteKeyPairResponse(rsp)
 }
 
-// UpdateKeypairNameWithBodyWithResponse request with arbitrary body returning *UpdateKeypairNameResponse
-func (c *ClientWithResponses) UpdateKeypairNameWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateKeypairNameResponse, error) {
-	rsp, err := c.UpdateKeypairNameWithBody(ctx, id, contentType, body, reqEditors...)
+// UpdateKeyPairNameWithBodyWithResponse request with arbitrary body returning *UpdateKeyPairNameResponse
+func (c *ClientWithResponses) UpdateKeyPairNameWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateKeyPairNameResponse, error) {
+	rsp, err := c.UpdateKeyPairNameWithBody(ctx, id, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUpdateKeypairNameResponse(rsp)
+	return ParseUpdateKeyPairNameResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateKeypairNameWithResponse(ctx context.Context, id int, body UpdateKeypairNameJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateKeypairNameResponse, error) {
-	rsp, err := c.UpdateKeypairName(ctx, id, body, reqEditors...)
+func (c *ClientWithResponses) UpdateKeyPairNameWithResponse(ctx context.Context, id int, body UpdateKeyPairNameJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateKeyPairNameResponse, error) {
+	rsp, err := c.UpdateKeyPairName(ctx, id, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUpdateKeypairNameResponse(rsp)
+	return ParseUpdateKeyPairNameResponse(rsp)
 }
 
-// RetrieveUserKeypairsWithResponse request returning *RetrieveUserKeypairsResponse
-func (c *ClientWithResponses) RetrieveUserKeypairsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveUserKeypairsResponse, error) {
-	rsp, err := c.RetrieveUserKeypairs(ctx, reqEditors...)
+// ListKeyPairsWithResponse request returning *ListKeyPairsResponse
+func (c *ClientWithResponses) ListKeyPairsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListKeyPairsResponse, error) {
+	rsp, err := c.ListKeyPairs(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveUserKeypairsResponse(rsp)
+	return ParseListKeyPairsResponse(rsp)
 }
 
-// ImportKeypairWithBodyWithResponse request with arbitrary body returning *ImportKeypairResponse
-func (c *ClientWithResponses) ImportKeypairWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ImportKeypairResponse, error) {
-	rsp, err := c.ImportKeypairWithBody(ctx, contentType, body, reqEditors...)
+// ImportKeyPairWithBodyWithResponse request with arbitrary body returning *ImportKeyPairResponse
+func (c *ClientWithResponses) ImportKeyPairWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ImportKeyPairResponse, error) {
+	rsp, err := c.ImportKeyPairWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseImportKeypairResponse(rsp)
+	return ParseImportKeyPairResponse(rsp)
 }
 
-func (c *ClientWithResponses) ImportKeypairWithResponse(ctx context.Context, body ImportKeypairJSONRequestBody, reqEditors ...RequestEditorFn) (*ImportKeypairResponse, error) {
-	rsp, err := c.ImportKeypair(ctx, body, reqEditors...)
+func (c *ClientWithResponses) ImportKeyPairWithResponse(ctx context.Context, body ImportKeyPairJSONRequestBody, reqEditors ...RequestEditorFn) (*ImportKeyPairResponse, error) {
+	rsp, err := c.ImportKeyPair(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseImportKeypairResponse(rsp)
+	return ParseImportKeyPairResponse(rsp)
 }
 
-// ParseDeleteKeypairResponse parses an HTTP response from a DeleteKeypairWithResponse call
-func ParseDeleteKeypairResponse(rsp *http.Response) (*DeleteKeypairResponse, error) {
+// ParseDeleteKeyPairResponse parses an HTTP response from a DeleteKeyPairWithResponse call
+func ParseDeleteKeyPairResponse(rsp *http.Response) (*DeleteKeyPairResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteKeypairResponse{
+	response := &DeleteKeyPairResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -648,15 +654,15 @@ func ParseDeleteKeypairResponse(rsp *http.Response) (*DeleteKeypairResponse, err
 	return response, nil
 }
 
-// ParseUpdateKeypairNameResponse parses an HTTP response from a UpdateKeypairNameWithResponse call
-func ParseUpdateKeypairNameResponse(rsp *http.Response) (*UpdateKeypairNameResponse, error) {
+// ParseUpdateKeyPairNameResponse parses an HTTP response from a UpdateKeyPairNameWithResponse call
+func ParseUpdateKeyPairNameResponse(rsp *http.Response) (*UpdateKeyPairNameResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &UpdateKeypairNameResponse{
+	response := &UpdateKeyPairNameResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -695,15 +701,15 @@ func ParseUpdateKeypairNameResponse(rsp *http.Response) (*UpdateKeypairNameRespo
 	return response, nil
 }
 
-// ParseRetrieveUserKeypairsResponse parses an HTTP response from a RetrieveUserKeypairsWithResponse call
-func ParseRetrieveUserKeypairsResponse(rsp *http.Response) (*RetrieveUserKeypairsResponse, error) {
+// ParseListKeyPairsResponse parses an HTTP response from a ListKeyPairsWithResponse call
+func ParseListKeyPairsResponse(rsp *http.Response) (*ListKeyPairsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrieveUserKeypairsResponse{
+	response := &ListKeyPairsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -735,15 +741,15 @@ func ParseRetrieveUserKeypairsResponse(rsp *http.Response) (*RetrieveUserKeypair
 	return response, nil
 }
 
-// ParseImportKeypairResponse parses an HTTP response from a ImportKeypairWithResponse call
-func ParseImportKeypairResponse(rsp *http.Response) (*ImportKeypairResponse, error) {
+// ParseImportKeyPairResponse parses an HTTP response from a ImportKeyPairWithResponse call
+func ParseImportKeyPairResponse(rsp *http.Response) (*ImportKeyPairResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ImportKeypairResponse{
+	response := &ImportKeyPairResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

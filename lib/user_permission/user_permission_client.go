@@ -22,18 +22,18 @@ type ErrorResponseModel struct {
 	Status      *bool   `json:"status,omitempty"`
 }
 
-// PermissionFieldsForUserPermission defines model for Permission Fields for UserPermission.
-type PermissionFieldsForUserPermission struct {
+// GetUserPermissionsResponseModel defines model for GetUserPermissionsResponseModel.
+type GetUserPermissionsResponseModel struct {
+	Message     *string                 `json:"message,omitempty"`
+	Permissions *[]UserPermissionFields `json:"permissions,omitempty"`
+	Status      *bool                   `json:"status,omitempty"`
+}
+
+// UserPermissionFields defines model for UserPermissionFields.
+type UserPermissionFields struct {
 	Id         *int    `json:"id,omitempty"`
 	Permission *string `json:"permission,omitempty"`
 	Resource   *string `json:"resource,omitempty"`
-}
-
-// PermissionsForUserPermission defines model for Permissions for UserPermission.
-type PermissionsForUserPermission struct {
-	Message     *string                              `json:"message,omitempty"`
-	Permissions *[]PermissionFieldsForUserPermission `json:"permissions,omitempty"`
-	Status      *bool                                `json:"status,omitempty"`
 }
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
@@ -254,7 +254,7 @@ type ClientWithResponsesInterface interface {
 type ListCurrentUserPermissionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *PermissionsForUserPermission
+	JSON200      *GetUserPermissionsResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 }
@@ -278,7 +278,7 @@ func (r ListCurrentUserPermissionsResponse) StatusCode() int {
 type ListUserPermissionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *PermissionsForUserPermission
+	JSON200      *GetUserPermissionsResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 	JSON405      *ErrorResponseModel
@@ -333,7 +333,7 @@ func ParseListCurrentUserPermissionsResponse(rsp *http.Response) (*ListCurrentUs
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest PermissionsForUserPermission
+		var dest GetUserPermissionsResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -373,7 +373,7 @@ func ParseListUserPermissionsResponse(rsp *http.Response) (*ListUserPermissionsR
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest PermissionsForUserPermission
+		var dest GetUserPermissionsResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

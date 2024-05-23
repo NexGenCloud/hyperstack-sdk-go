@@ -100,12 +100,12 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// RetrieveSecurityRuleProtocols request
-	RetrieveSecurityRuleProtocols(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListFirewallRuleProtocols request
+	ListFirewallRuleProtocols(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) RetrieveSecurityRuleProtocols(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveSecurityRuleProtocolsRequest(c.Server)
+func (c *Client) ListFirewallRuleProtocols(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListFirewallRuleProtocolsRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -116,8 +116,8 @@ func (c *Client) RetrieveSecurityRuleProtocols(ctx context.Context, reqEditors .
 	return c.Client.Do(req)
 }
 
-// NewRetrieveSecurityRuleProtocolsRequest generates requests for RetrieveSecurityRuleProtocols
-func NewRetrieveSecurityRuleProtocolsRequest(server string) (*http.Request, error) {
+// NewListFirewallRuleProtocolsRequest generates requests for ListFirewallRuleProtocols
+func NewListFirewallRuleProtocolsRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -186,11 +186,11 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// RetrieveSecurityRuleProtocolsWithResponse request
-	RetrieveSecurityRuleProtocolsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveSecurityRuleProtocolsResponse, error)
+	// ListFirewallRuleProtocolsWithResponse request
+	ListFirewallRuleProtocolsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListFirewallRuleProtocolsResponse, error)
 }
 
-type RetrieveSecurityRuleProtocolsResponse struct {
+type ListFirewallRuleProtocolsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SecurityRulesProtocolFields
@@ -199,7 +199,7 @@ type RetrieveSecurityRuleProtocolsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrieveSecurityRuleProtocolsResponse) Status() string {
+func (r ListFirewallRuleProtocolsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -207,31 +207,31 @@ func (r RetrieveSecurityRuleProtocolsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrieveSecurityRuleProtocolsResponse) StatusCode() int {
+func (r ListFirewallRuleProtocolsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// RetrieveSecurityRuleProtocolsWithResponse request returning *RetrieveSecurityRuleProtocolsResponse
-func (c *ClientWithResponses) RetrieveSecurityRuleProtocolsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveSecurityRuleProtocolsResponse, error) {
-	rsp, err := c.RetrieveSecurityRuleProtocols(ctx, reqEditors...)
+// ListFirewallRuleProtocolsWithResponse request returning *ListFirewallRuleProtocolsResponse
+func (c *ClientWithResponses) ListFirewallRuleProtocolsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListFirewallRuleProtocolsResponse, error) {
+	rsp, err := c.ListFirewallRuleProtocols(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveSecurityRuleProtocolsResponse(rsp)
+	return ParseListFirewallRuleProtocolsResponse(rsp)
 }
 
-// ParseRetrieveSecurityRuleProtocolsResponse parses an HTTP response from a RetrieveSecurityRuleProtocolsWithResponse call
-func ParseRetrieveSecurityRuleProtocolsResponse(rsp *http.Response) (*RetrieveSecurityRuleProtocolsResponse, error) {
+// ParseListFirewallRuleProtocolsResponse parses an HTTP response from a ListFirewallRuleProtocolsWithResponse call
+func ParseListFirewallRuleProtocolsResponse(rsp *http.Response) (*ListFirewallRuleProtocolsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrieveSecurityRuleProtocolsResponse{
+	response := &ListFirewallRuleProtocolsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

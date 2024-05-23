@@ -21,7 +21,7 @@ type ErrorResponseModel struct {
 	Status      *bool   `json:"status,omitempty"`
 }
 
-// PricebookModel defines model for Pricebook Model.
+// PricebookModel defines model for PricebookModel.
 type PricebookModel struct {
 	DiscountApplied *bool      `json:"discount_applied,omitempty"`
 	EndTime         *time.CustomTime `json:"end_time,omitempty"`

@@ -167,11 +167,11 @@ type ClientInterface interface {
 	// CreateTemplateWithBody request with any body
 	CreateTemplateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteATemplate request
-	DeleteATemplate(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteTemplate request
+	DeleteTemplate(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DetailsOfATemplateByID request
-	DetailsOfATemplateByID(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RetrieveTemplateDetails request
+	RetrieveTemplateDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateTemplateWithBody request with any body
 	UpdateTemplateWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -203,8 +203,8 @@ func (c *Client) CreateTemplateWithBody(ctx context.Context, contentType string,
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteATemplate(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteATemplateRequest(c.Server, id)
+func (c *Client) DeleteTemplate(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteTemplateRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -215,8 +215,8 @@ func (c *Client) DeleteATemplate(ctx context.Context, id int, reqEditors ...Requ
 	return c.Client.Do(req)
 }
 
-func (c *Client) DetailsOfATemplateByID(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDetailsOfATemplateByIDRequest(c.Server, id)
+func (c *Client) RetrieveTemplateDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveTemplateDetailsRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -329,8 +329,8 @@ func NewCreateTemplateRequestWithBody(server string, contentType string, body io
 	return req, nil
 }
 
-// NewDeleteATemplateRequest generates requests for DeleteATemplate
-func NewDeleteATemplateRequest(server string, id int) (*http.Request, error) {
+// NewDeleteTemplateRequest generates requests for DeleteTemplate
+func NewDeleteTemplateRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -363,8 +363,8 @@ func NewDeleteATemplateRequest(server string, id int) (*http.Request, error) {
 	return req, nil
 }
 
-// NewDetailsOfATemplateByIDRequest generates requests for DetailsOfATemplateByID
-func NewDetailsOfATemplateByIDRequest(server string, id int) (*http.Request, error) {
+// NewRetrieveTemplateDetailsRequest generates requests for RetrieveTemplateDetails
+func NewRetrieveTemplateDetailsRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -493,11 +493,11 @@ type ClientWithResponsesInterface interface {
 	// CreateTemplateWithBodyWithResponse request with any body
 	CreateTemplateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTemplateResponse, error)
 
-	// DeleteATemplateWithResponse request
-	DeleteATemplateWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteATemplateResponse, error)
+	// DeleteTemplateWithResponse request
+	DeleteTemplateWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteTemplateResponse, error)
 
-	// DetailsOfATemplateByIDWithResponse request
-	DetailsOfATemplateByIDWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DetailsOfATemplateByIDResponse, error)
+	// RetrieveTemplateDetailsWithResponse request
+	RetrieveTemplateDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveTemplateDetailsResponse, error)
 
 	// UpdateTemplateWithBodyWithResponse request with any body
 	UpdateTemplateWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateTemplateResponse, error)
@@ -554,7 +554,7 @@ func (r CreateTemplateResponse) StatusCode() int {
 	return 0
 }
 
-type DeleteATemplateResponse struct {
+type DeleteTemplateResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -564,7 +564,7 @@ type DeleteATemplateResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteATemplateResponse) Status() string {
+func (r DeleteTemplateResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -572,14 +572,14 @@ func (r DeleteATemplateResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteATemplateResponse) StatusCode() int {
+func (r DeleteTemplateResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type DetailsOfATemplateByIDResponse struct {
+type RetrieveTemplateDetailsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Template
@@ -589,7 +589,7 @@ type DetailsOfATemplateByIDResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DetailsOfATemplateByIDResponse) Status() string {
+func (r RetrieveTemplateDetailsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -597,7 +597,7 @@ func (r DetailsOfATemplateByIDResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DetailsOfATemplateByIDResponse) StatusCode() int {
+func (r RetrieveTemplateDetailsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -647,22 +647,22 @@ func (c *ClientWithResponses) CreateTemplateWithBodyWithResponse(ctx context.Con
 	return ParseCreateTemplateResponse(rsp)
 }
 
-// DeleteATemplateWithResponse request returning *DeleteATemplateResponse
-func (c *ClientWithResponses) DeleteATemplateWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteATemplateResponse, error) {
-	rsp, err := c.DeleteATemplate(ctx, id, reqEditors...)
+// DeleteTemplateWithResponse request returning *DeleteTemplateResponse
+func (c *ClientWithResponses) DeleteTemplateWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteTemplateResponse, error) {
+	rsp, err := c.DeleteTemplate(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteATemplateResponse(rsp)
+	return ParseDeleteTemplateResponse(rsp)
 }
 
-// DetailsOfATemplateByIDWithResponse request returning *DetailsOfATemplateByIDResponse
-func (c *ClientWithResponses) DetailsOfATemplateByIDWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DetailsOfATemplateByIDResponse, error) {
-	rsp, err := c.DetailsOfATemplateByID(ctx, id, reqEditors...)
+// RetrieveTemplateDetailsWithResponse request returning *RetrieveTemplateDetailsResponse
+func (c *ClientWithResponses) RetrieveTemplateDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveTemplateDetailsResponse, error) {
+	rsp, err := c.RetrieveTemplateDetails(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDetailsOfATemplateByIDResponse(rsp)
+	return ParseRetrieveTemplateDetailsResponse(rsp)
 }
 
 // UpdateTemplateWithBodyWithResponse request with arbitrary body returning *UpdateTemplateResponse
@@ -769,15 +769,15 @@ func ParseCreateTemplateResponse(rsp *http.Response) (*CreateTemplateResponse, e
 	return response, nil
 }
 
-// ParseDeleteATemplateResponse parses an HTTP response from a DeleteATemplateWithResponse call
-func ParseDeleteATemplateResponse(rsp *http.Response) (*DeleteATemplateResponse, error) {
+// ParseDeleteTemplateResponse parses an HTTP response from a DeleteTemplateWithResponse call
+func ParseDeleteTemplateResponse(rsp *http.Response) (*DeleteTemplateResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteATemplateResponse{
+	response := &DeleteTemplateResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -816,15 +816,15 @@ func ParseDeleteATemplateResponse(rsp *http.Response) (*DeleteATemplateResponse,
 	return response, nil
 }
 
-// ParseDetailsOfATemplateByIDResponse parses an HTTP response from a DetailsOfATemplateByIDWithResponse call
-func ParseDetailsOfATemplateByIDResponse(rsp *http.Response) (*DetailsOfATemplateByIDResponse, error) {
+// ParseRetrieveTemplateDetailsResponse parses an HTTP response from a RetrieveTemplateDetailsWithResponse call
+func ParseRetrieveTemplateDetailsResponse(rsp *http.Response) (*RetrieveTemplateDetailsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DetailsOfATemplateByIDResponse{
+	response := &RetrieveTemplateDetailsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

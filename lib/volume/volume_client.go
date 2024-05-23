@@ -19,13 +19,26 @@ import (
 
 // CreateVolumePayload defines model for Create Volume Payload.
 type CreateVolumePayload struct {
-	CallbackUrl     *string `json:"callback_url,omitempty"`
-	Description     *string `json:"description,omitempty"`
-	EnvironmentName *string `json:"environment_name,omitempty"`
-	ImageId         *int    `json:"image_id,omitempty"`
-	Name            *string `json:"name,omitempty"`
-	Size            *int    `json:"size,omitempty"`
-	VolumeType      *string `json:"volume_type,omitempty"`
+	// CallbackUrl A URL that can be attached to the volume you are creating. This `callback_url` will post any action events that occur to your volume to the provided URL.
+	CallbackUrl *string `json:"callback_url,omitempty"`
+
+	// Description A brief description or comment about the volume.
+	Description string `json:"description"`
+
+	// EnvironmentName The name of the [environment](https://infrahub-doc.nexgencloud.com/docs/features/environments-available-features) within which the volume is being created.
+	EnvironmentName string `json:"environment_name"`
+
+	// ImageId The ID of the operating system image that will be associated with the volume. By providing an `image_id` in the create volume request, you will create a bootable volume.
+	ImageId *int `json:"image_id,omitempty"`
+
+	// Name The name of the volume being created.
+	Name string `json:"name"`
+
+	// Size The size of the volume in GB. 1048576GB storage capacity per volume.
+	Size int `json:"size"`
+
+	// VolumeType Specifies the type of volume being created, which determines the storage technology it will use. Call the "[List volume types](https://infrahub-api-doc.nexgencloud.com/#get-/core/volumes)" endpoint to retrieve a list of available volume model types.
+	VolumeType string `json:"volume_type"`
 }
 
 // EnvironmentFieldsForVolume defines model for Environment Fields for Volume.
@@ -159,8 +172,8 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// GetVolumeTypes request
-	GetVolumeTypes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListVolumeTypes request
+	ListVolumeTypes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListVolumes request
 	ListVolumes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -174,8 +187,8 @@ type ClientInterface interface {
 	DeleteVolume(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) GetVolumeTypes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetVolumeTypesRequest(c.Server)
+func (c *Client) ListVolumeTypes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListVolumeTypesRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -234,8 +247,8 @@ func (c *Client) DeleteVolume(ctx context.Context, id int, reqEditors ...Request
 	return c.Client.Do(req)
 }
 
-// NewGetVolumeTypesRequest generates requests for GetVolumeTypes
-func NewGetVolumeTypesRequest(server string) (*http.Request, error) {
+// NewListVolumeTypesRequest generates requests for ListVolumeTypes
+func NewListVolumeTypesRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -405,8 +418,8 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// GetVolumeTypesWithResponse request
-	GetVolumeTypesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetVolumeTypesResponse, error)
+	// ListVolumeTypesWithResponse request
+	ListVolumeTypesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListVolumeTypesResponse, error)
 
 	// ListVolumesWithResponse request
 	ListVolumesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListVolumesResponse, error)
@@ -420,7 +433,7 @@ type ClientWithResponsesInterface interface {
 	DeleteVolumeWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteVolumeResponse, error)
 }
 
-type GetVolumeTypesResponse struct {
+type ListVolumeTypesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *VolumeTypes
@@ -429,7 +442,7 @@ type GetVolumeTypesResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetVolumeTypesResponse) Status() string {
+func (r ListVolumeTypesResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -437,7 +450,7 @@ func (r GetVolumeTypesResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetVolumeTypesResponse) StatusCode() int {
+func (r ListVolumeTypesResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -520,13 +533,13 @@ func (r DeleteVolumeResponse) StatusCode() int {
 	return 0
 }
 
-// GetVolumeTypesWithResponse request returning *GetVolumeTypesResponse
-func (c *ClientWithResponses) GetVolumeTypesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetVolumeTypesResponse, error) {
-	rsp, err := c.GetVolumeTypes(ctx, reqEditors...)
+// ListVolumeTypesWithResponse request returning *ListVolumeTypesResponse
+func (c *ClientWithResponses) ListVolumeTypesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListVolumeTypesResponse, error) {
+	rsp, err := c.ListVolumeTypes(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetVolumeTypesResponse(rsp)
+	return ParseListVolumeTypesResponse(rsp)
 }
 
 // ListVolumesWithResponse request returning *ListVolumesResponse
@@ -564,15 +577,15 @@ func (c *ClientWithResponses) DeleteVolumeWithResponse(ctx context.Context, id i
 	return ParseDeleteVolumeResponse(rsp)
 }
 
-// ParseGetVolumeTypesResponse parses an HTTP response from a GetVolumeTypesWithResponse call
-func ParseGetVolumeTypesResponse(rsp *http.Response) (*GetVolumeTypesResponse, error) {
+// ParseListVolumeTypesResponse parses an HTTP response from a ListVolumeTypesWithResponse call
+func ParseListVolumeTypesResponse(rsp *http.Response) (*ListVolumeTypesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetVolumeTypesResponse{
+	response := &ListVolumeTypesResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

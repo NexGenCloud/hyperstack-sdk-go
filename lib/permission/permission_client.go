@@ -21,7 +21,14 @@ type ErrorResponseModel struct {
 	Status      *bool   `json:"status,omitempty"`
 }
 
-// PermissionFields defines model for Permission Fields.
+// GetPermissionsResponseModel defines model for GetPermissionsResponseModel.
+type GetPermissionsResponseModel struct {
+	Message     *string             `json:"message,omitempty"`
+	Permissions *[]PermissionFields `json:"permissions,omitempty"`
+	Status      *bool               `json:"status,omitempty"`
+}
+
+// PermissionFields defines model for PermissionFields.
 type PermissionFields struct {
 	CreatedAt  *time.CustomTime `json:"created_at,omitempty"`
 	Endpoint   *string    `json:"endpoint,omitempty"`
@@ -29,13 +36,6 @@ type PermissionFields struct {
 	Method     *string    `json:"method,omitempty"`
 	Permission *string    `json:"permission,omitempty"`
 	Resource   *string    `json:"resource,omitempty"`
-}
-
-// Permissions defines model for Permissions.
-type Permissions struct {
-	Message     *string             `json:"message,omitempty"`
-	Permissions *[]PermissionFields `json:"permissions,omitempty"`
-	Status      *bool               `json:"status,omitempty"`
 }
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
@@ -204,7 +204,7 @@ type ClientWithResponsesInterface interface {
 type ListPermissionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *Permissions
+	JSON200      *GetPermissionsResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 }
@@ -249,7 +249,7 @@ func ParseListPermissionsResponse(rsp *http.Response) (*ListPermissionsResponse,
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Permissions
+		var dest GetPermissionsResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
