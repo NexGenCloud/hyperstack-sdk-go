@@ -5,13 +5,17 @@ silent: true
 vars:
   DIR_ARTIFACTS: "{{.ROOT_DIR}}/artifacts"
   DIR_DATA: "{{.ROOT_DIR}}/data"
-  API_JSON_PATH: "{{.DIR_ARTIFACTS}}/api.json"
+  API_SPEC_PATH: "{{.DIR_ARTIFACTS}}/api.json"
   LIB_DIR: "lib"
   DIR_PACKAGE: "{{.ROOT_DIR}}/{{.LIB_DIR}}"
+  HYPERSTACK_API_ADDRESS: "https://infrahub-api.nexgencloud.com/v1"
 
 env:
   HYPERSTACK_STAGING: "true"
+
   HYPERSTACK_API_KEY: ~
+  HYPERSTACK_API_ADDRESS: "{{.HYPERSTACK_API_ADDRESS}}"
+  HYPERSTACK_API_SPEC_ADDRESS: "https://infrahub-api-doc.nexgencloud.com/api.json"
 
 tasks:
   init:
@@ -27,22 +31,6 @@ tasks:
         # go install
         go get {{.DEPS}}
         go install {{.DEPS}}
-
-  pull-api:
-    desc: |
-      Pulls the latest api.json from the server
-    vars:
-      SPEC_PATH: |-
-        https://infrahub-api-doc.nexgencloud.com/api.json
-    cmds:
-      # language=bash
-      - |
-        echo "Pulling the latest swagger spec and generating Go SDK..."
-        curl "{{.SPEC_PATH}}"  | \
-          python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.stdin.read()))" \
-            > "{{.API_JSON_PATH}}"
-        sed -i 's/Update Keypair name response/UpdatedKeypairNameResponseAPIObject/g' "{{.API_JSON_PATH}}"
-        sed -i 's/Import Keypair Response/ImportedKeypairResponseAPIObject/g' "{{.API_JSON_PATH}}"
 
   build:
     desc: |
@@ -64,12 +52,33 @@ tasks:
         mkdir -p "{{.DIR_PACKAGE}}/{{.TIME_PACKAGE}}"
         find "{{.DIR_PACKAGE}}" \
           -name "*.go" \
-          -exec sed -i -e "s/*time.Time/*{{.TIME_PACKAGE}}.CustomTime/g" {} \;
+          -exec bash -c 'sed -i.tmp -e "s/*time.Time/*{{.TIME_PACKAGE}}.CustomTime/g" {} &&
+            rm {}.tmp' \;
         find "{{.DIR_PACKAGE}}" \
           -name "*.go" \
-          -exec sed -i -e 's/"time"/"{{.PROJECT}}\/{{.LIB_DIR}}\/{{.TIME_PACKAGE}}"/g' {} \;
+          -exec bash -c 'sed -i.tmp -e '"'"'s/"time"/"{{.PROJECT}}\/{{.LIB_DIR}}\/{{.TIME_PACKAGE}}"/g'"'"' {} &&
+            rm {}.tmp' \;
         sed 's/PACKAGE_REPLACE/{{.TIME_PACKAGE}}/g' "{{.DIR_DATA}}/CustomTime.go" \
           > "{{.DIR_PACKAGE}}/{{.TIME_PACKAGE}}/CustomTime.go"
+        echo "done"
+
+  build-api-spec:
+    desc: |
+      Pulls the latest api.json from the server
+    dotenv: [ '.env' ]
+    vars:
+      SCRIPTS_DIR: "scripts"
+      SORT_SCHEMAS: "{{.SCRIPTS_DIR}}/sort_schemas.py"
+      FIX_API_SPEC: "{{.SCRIPTS_DIR}}/fix_api_spec.py"
+    cmds:
+      # language=bash
+      - |
+        echo -n "Pulling the latest OpenAPI spec... "
+        curl -s "${HYPERSTACK_API_SPEC_ADDRESS}" > "{{.API_SPEC_PATH}}"
+        echo "done"
+        echo -n "Fixing api spec... "
+        python3.11 "{{.SORT_SCHEMAS}}" "{{.API_SPEC_PATH}}"
+        python3.11 "{{.FIX_API_SPEC}}" "{{.API_SPEC_PATH}}"
         echo "done"
 
   test:
