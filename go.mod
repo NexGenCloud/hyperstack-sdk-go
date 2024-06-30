@@ -1,6 +1,6 @@
 module github.com/NexGenCloud/hyperstack-sdk-go
 
-go 1.21
+go 1.22
 
 require (
 	github.com/oapi-codegen/runtime v1.1.1

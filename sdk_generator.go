@@ -101,62 +101,9 @@ func main() {
 			"trace":   item.Trace,
 		}
 
-		for opName, op := range operations {
+		for _, op := range operations {
 			if op == nil {
 				continue
-			}
-
-			switch apiPath {
-			case "/auth/roles/{id}":
-				if opName == "get" {
-					spec.Components["schemas"].(nMap)["RBACRoleTMPGet"] = CopyableMap(spec.Components["schemas"].(nMap)["RbacRoleDetailResponseModel"].(nMap)).DeepCopy()
-
-					spec.Components["schemas"].(nMap)["RBACRoleTMPGet"].(nMap)["properties"].(nMap)["roles"] = spec.Components["schemas"].(nMap)["RBACRoleTMPGet"].(nMap)["properties"].(nMap)["role"]
-					delete(spec.Components["schemas"].(nMap)["RBACRoleTMPGet"].(nMap)["properties"].(nMap), "role")
-
-					op.Responses.(nMap)["200"].(nMap)["content"].(nMap)["application/json"].(nMap)["schema"].(nMap)["$ref"] = "#/components/schemas/RBACRoleTMPGet"
-				}
-			}
-
-			switch apiPath {
-			case "/core/flavors":
-				if opName == "get" {
-					for i, param := range op.Parameters {
-						if param.Name == "region" {
-							op.Parameters[i].Schema.Type = "string"
-						}
-					}
-				}
-			case "/core/images":
-				if opName == "get" {
-					for i, param := range op.Parameters {
-						if param.Name == "region" {
-							op.Parameters[i].Schema.Type = "string"
-						}
-					}
-				}
-			case "/core/virtual-machines":
-				if opName == "get" {
-					spec.Components["schemas"].(nMap)["Instance Flavor Fields"].(nMap)["properties"].(nMap)["ram"].(nMap)["type"] = "number"
-					spec.Components["schemas"].(nMap)["Flavor Fields"].(nMap)["properties"].(nMap)["ram"].(nMap)["type"] = "number"
-
-				}
-			case "/core/virtual-machines/{id}/sg-rules":
-				if opName == "post" {
-					// TODO: not needed, just for reference
-					//spec.Components["schemas"].(nMap)["Create Security Rule Payload"].(nMap)["required"] = append(
-					//	spec.Components["schemas"].(nMap)["Create Security Rule Payload"].(nMap)["required"].(nReq),
-					//	"port_range_min",
-					//	"port_range_max",
-					//)
-					spec.Components["schemas"].(nMap)["Create Security Rule Payload"].(nMap)["properties"].(nMap)["port_range_min"] = nMap{
-						"type": "integer",
-					}
-					spec.Components["schemas"].(nMap)["Create Security Rule Payload"].(nMap)["properties"].(nMap)["port_range_max"] = nMap{
-						"type": "integer",
-					}
-
-				}
 			}
 
 			appendTaggedSpecs(op, apiPath, item, &spec, tags)
@@ -189,8 +136,9 @@ func main() {
 		cmdOutput, err := cmd.CombinedOutput()
 		if err != nil {
 			fmt.Printf(
-				"Failed to generate client code for the tag '%s'. oapi-codegen output: \n%s\n",
+				"Failed to generate client code for the tag '%s': %v. oapi-codegen output: \n%s\n",
 				tag,
+				err,
 				string(cmdOutput),
 			)
 			continue

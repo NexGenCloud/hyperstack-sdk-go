@@ -8,7 +8,14 @@ Hyperstack Go SDK (gosdk) is a package that allows users to interact with the In
 
 ### Dependencies
 
-The SDK uses a few dependencies which can be installed using the `task init` command. These dependencies include package(s) like `github.com/deepmap/oapi-codegen/cmd/oapi-codegen` that helps with the SDK auto-generation.
+The SDK uses a few dependencies which can be installed using the `task init` command.
+
+There are also CLI dependencies that are installed vith Go:
+
+- [OAPI-CodeGen](https://goreleaser.com/)
+  ````bash
+  go install github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
+  ````
 
 ### Updating the SDK
 
