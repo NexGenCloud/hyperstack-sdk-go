@@ -151,6 +151,10 @@ def attr_fix_components(data: AttrType) -> None:
     "type": "integer",
   }
 
+  schemas["ClusterFields"]["properties"]["kube_config"] = {
+    "type": "string"
+  }
+
   # TODO: UNSYNCED see tf provider
   # Fix digit-prefixed keys
   #props = schemas["NewConfigurationsResponse"]["properties"]
