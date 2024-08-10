@@ -13,7 +13,6 @@ release:
     ## Welcome to the Release {{ .Tag }} of our Go SDK.
     Thank you for using our SDK. Below you'll find the changelog and assets for this release.
     
-    # Optionally add a footer
   footer: |
     ---
     We hope you enjoy using our SDK. Please report any issues on our GitHub page.
