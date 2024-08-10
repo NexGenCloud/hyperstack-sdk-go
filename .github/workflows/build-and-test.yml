@@ -13,7 +13,7 @@ on:
         description: 'Trigger a release?'
         required: true
         type: boolean
-        default: false # Allows manual triggering of the workflow
+        default: 'false'
 
 jobs:
   build-and-release:
@@ -84,7 +84,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: GoReleaser - Release
-        if: ${{ github.event.inputs.trigger_release == true }}
+        if: ${{ github.event.inputs.trigger_release == 'true' }}
         uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
@@ -94,7 +94,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: GoReleaser - Release
-        if: ${{ github.event.inputs.trigger_release == false }}
+        if: ${{ github.event.inputs.trigger_release == 'false' }}
         uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
