@@ -7,11 +7,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 
 	"github.com/oapi-codegen/runtime"
 )
@@ -25,14 +25,14 @@ type CustomerContractDetailResponseModel struct {
 
 // CustomerContractFields defines model for CustomerContractFields.
 type CustomerContractFields struct {
-	CreatedAt        *time.CustomTime      `json:"created_at,omitempty"`
+	CreatedAt        *time.CustomTime            `json:"created_at,omitempty"`
 	Description      *string               `json:"description,omitempty"`
 	Discounts        *[]DiscountPlanFields `json:"discounts,omitempty"`
-	EndDate          *time.CustomTime      `json:"end_date,omitempty"`
+	EndDate          *time.CustomTime            `json:"end_date,omitempty"`
 	ExpirationPolicy *int                  `json:"expiration_policy,omitempty"`
 	Id               *int                  `json:"id,omitempty"`
 	OrgId            *int                  `json:"org_id,omitempty"`
-	StartDate        *time.CustomTime      `json:"start_date,omitempty"`
+	StartDate        *time.CustomTime            `json:"start_date,omitempty"`
 	Status           *string               `json:"status,omitempty"`
 }
 

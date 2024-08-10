@@ -8,11 +8,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 
 	"github.com/oapi-codegen/runtime"
 )
@@ -20,22 +20,22 @@ import (
 // DeploymentFields defines model for DeploymentFields.
 type DeploymentFields struct {
 	CreatedAt   *time.CustomTime `json:"created_at,omitempty"`
-	Description *string          `json:"description,omitempty"`
-	Id          *int             `json:"id,omitempty"`
-	Name        *string          `json:"name,omitempty"`
-	Status      *string          `json:"status,omitempty"`
-	Template    *string          `json:"template,omitempty"`
+	Description *string    `json:"description,omitempty"`
+	Id          *int       `json:"id,omitempty"`
+	Name        *string    `json:"name,omitempty"`
+	Status      *string    `json:"status,omitempty"`
+	Template    *string    `json:"template,omitempty"`
 }
 
 // DeploymentFieldsforstartdeployments defines model for DeploymentFieldsforstartdeployments.
 type DeploymentFieldsforstartdeployments struct {
 	CreatedAt   *time.CustomTime `json:"created_at,omitempty"`
-	Description *string          `json:"description,omitempty"`
-	Id          *int             `json:"id,omitempty"`
-	Name        *string          `json:"name,omitempty"`
-	Status      *string          `json:"status,omitempty"`
-	Template    *string          `json:"template,omitempty"`
-	Variables   *string          `json:"variables,omitempty"`
+	Description *string    `json:"description,omitempty"`
+	Id          *int       `json:"id,omitempty"`
+	Name        *string    `json:"name,omitempty"`
+	Status      *string    `json:"status,omitempty"`
+	Template    *string    `json:"template,omitempty"`
+	Variables   *string    `json:"variables,omitempty"`
 }
 
 // Deployments defines model for Deployments.

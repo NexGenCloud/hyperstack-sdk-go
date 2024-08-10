@@ -8,11 +8,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 
 	"github.com/oapi-codegen/runtime"
 )
@@ -55,11 +55,11 @@ type AttachFirewallsToVMPayload struct {
 // ContractInstanceFields defines model for ContractInstanceFields.
 type ContractInstanceFields struct {
 	CreatedAt  *time.CustomTime `json:"created_at,omitempty"`
-	FlavorName *string          `json:"flavor_name,omitempty"`
-	GpuCount   *int             `json:"gpu_count,omitempty"`
-	Id         *int             `json:"id,omitempty"`
-	Name       *string          `json:"name,omitempty"`
-	Status     *string          `json:"status,omitempty"`
+	FlavorName *string    `json:"flavor_name,omitempty"`
+	GpuCount   *int       `json:"gpu_count,omitempty"`
+	Id         *int       `json:"id,omitempty"`
+	Name       *string    `json:"name,omitempty"`
+	Status     *string    `json:"status,omitempty"`
 }
 
 // ContractInstancesResponse defines model for ContractInstancesResponse.
@@ -175,7 +175,7 @@ type InstanceEnvironmentFields struct {
 // InstanceFields defines model for InstanceFields.
 type InstanceFields struct {
 	ContractId        *int                              `json:"contract_id,omitempty"`
-	CreatedAt         *time.CustomTime                  `json:"created_at,omitempty"`
+	CreatedAt         *time.CustomTime                        `json:"created_at,omitempty"`
 	Environment       *InstanceEnvironmentFields        `json:"environment,omitempty"`
 	FixedIp           *string                           `json:"fixed_ip,omitempty"`
 	Flavor            *InstanceFlavorFields             `json:"flavor,omitempty"`
@@ -272,32 +272,32 @@ type SecurityGroupRule struct {
 // SecurityGroupRuleFields defines model for SecurityGroupRuleFields.
 type SecurityGroupRuleFields struct {
 	CreatedAt      *time.CustomTime `json:"created_at,omitempty"`
-	Direction      *string          `json:"direction,omitempty"`
-	Ethertype      *string          `json:"ethertype,omitempty"`
-	Id             *int             `json:"id,omitempty"`
-	PortRangeMax   *int             `json:"port_range_max,omitempty"`
-	PortRangeMin   *int             `json:"port_range_min,omitempty"`
-	Protocol       *string          `json:"protocol,omitempty"`
-	RemoteIpPrefix *string          `json:"remote_ip_prefix,omitempty"`
-	Status         *string          `json:"status,omitempty"`
+	Direction      *string    `json:"direction,omitempty"`
+	Ethertype      *string    `json:"ethertype,omitempty"`
+	Id             *int       `json:"id,omitempty"`
+	PortRangeMax   *int       `json:"port_range_max,omitempty"`
+	PortRangeMin   *int       `json:"port_range_min,omitempty"`
+	Protocol       *string    `json:"protocol,omitempty"`
+	RemoteIpPrefix *string    `json:"remote_ip_prefix,omitempty"`
+	Status         *string    `json:"status,omitempty"`
 }
 
 // SecurityRulesFieldsforInstance defines model for SecurityRulesFieldsforInstance.
 type SecurityRulesFieldsforInstance struct {
 	CreatedAt      *time.CustomTime `json:"created_at,omitempty"`
-	Direction      *string          `json:"direction,omitempty"`
-	Ethertype      *string          `json:"ethertype,omitempty"`
-	Id             *int             `json:"id,omitempty"`
-	PortRangeMax   *int             `json:"port_range_max,omitempty"`
-	PortRangeMin   *int             `json:"port_range_min,omitempty"`
-	Protocol       *string          `json:"protocol,omitempty"`
-	RemoteIpPrefix *string          `json:"remote_ip_prefix,omitempty"`
-	Status         *string          `json:"status,omitempty"`
+	Direction      *string    `json:"direction,omitempty"`
+	Ethertype      *string    `json:"ethertype,omitempty"`
+	Id             *int       `json:"id,omitempty"`
+	PortRangeMax   *int       `json:"port_range_max,omitempty"`
+	PortRangeMin   *int       `json:"port_range_min,omitempty"`
+	Protocol       *string    `json:"protocol,omitempty"`
+	RemoteIpPrefix *string    `json:"remote_ip_prefix,omitempty"`
+	Status         *string    `json:"status,omitempty"`
 }
 
 // VolumeAttachmentFields defines model for VolumeAttachmentFields.
 type VolumeAttachmentFields struct {
-	CreatedAt *time.CustomTime         `json:"created_at,omitempty"`
+	CreatedAt *time.CustomTime               `json:"created_at,omitempty"`
 	Device    *string                  `json:"device,omitempty"`
 	Status    *string                  `json:"status,omitempty"`
 	Volume    *VolumeFieldsforInstance `json:"volume,omitempty"`

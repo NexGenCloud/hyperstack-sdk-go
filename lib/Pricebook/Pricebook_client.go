@@ -7,11 +7,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 )
 
 // ErrorResponseModel defines model for ErrorResponseModel.
@@ -23,13 +23,13 @@ type ErrorResponseModel struct {
 
 // PricebookModel defines model for PricebookModel.
 type PricebookModel struct {
-	DiscountApplied *bool            `json:"discount_applied,omitempty"`
+	DiscountApplied *bool      `json:"discount_applied,omitempty"`
 	EndTime         *time.CustomTime `json:"end_time,omitempty"`
-	Id              *int             `json:"id,omitempty"`
-	Name            *string          `json:"name,omitempty"`
-	OriginalValue   *float32         `json:"original_value,omitempty"`
+	Id              *int       `json:"id,omitempty"`
+	Name            *string    `json:"name,omitempty"`
+	OriginalValue   *float32   `json:"original_value,omitempty"`
 	StartTime       *time.CustomTime `json:"start_time,omitempty"`
-	Value           *float32         `json:"value,omitempty"`
+	Value           *float32   `json:"value,omitempty"`
 }
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function

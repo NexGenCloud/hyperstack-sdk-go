@@ -7,11 +7,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 )
 
 // ErrorResponseModel defines model for ErrorResponseModel.
@@ -23,12 +23,12 @@ type ErrorResponseModel struct {
 
 // GPUFields defines model for GPUFields.
 type GPUFields struct {
-	CreatedAt       *time.CustomTime   `json:"created_at,omitempty"`
+	CreatedAt       *time.CustomTime         `json:"created_at,omitempty"`
 	ExampleMetadata *string            `json:"example_metadata,omitempty"`
 	Id              *int               `json:"id,omitempty"`
 	Name            *string            `json:"name,omitempty"`
 	Regions         *[]GPURegionFields `json:"regions,omitempty"`
-	UpdatedAt       *time.CustomTime   `json:"updated_at,omitempty"`
+	UpdatedAt       *time.CustomTime         `json:"updated_at,omitempty"`
 }
 
 // GPUList defines model for GPUList.

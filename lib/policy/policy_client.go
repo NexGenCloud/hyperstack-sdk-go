@@ -7,11 +7,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 )
 
 // ErrorResponseModel defines model for ErrorResponseModel.
@@ -30,7 +30,7 @@ type GetPoliciesResponseModel struct {
 
 // PolicyFields defines model for PolicyFields.
 type PolicyFields struct {
-	CreatedAt   *time.CustomTime          `json:"created_at,omitempty"`
+	CreatedAt   *time.CustomTime                `json:"created_at,omitempty"`
 	Description *string                   `json:"description,omitempty"`
 	Id          *int                      `json:"id,omitempty"`
 	Name        *string                   `json:"name,omitempty"`

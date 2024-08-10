@@ -7,19 +7,19 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 )
 
 // AuthUserFields defines model for AuthUserFields.
 type AuthUserFields struct {
 	CreatedAt *time.CustomTime `json:"created_at,omitempty"`
-	Email     *string          `json:"email,omitempty"`
-	Name      *string          `json:"name,omitempty"`
-	Username  *string          `json:"username,omitempty"`
+	Email     *string    `json:"email,omitempty"`
+	Name      *string    `json:"name,omitempty"`
+	Username  *string    `json:"username,omitempty"`
 }
 
 // AuthUserInfoResponseModel defines model for AuthUserInfoResponseModel.

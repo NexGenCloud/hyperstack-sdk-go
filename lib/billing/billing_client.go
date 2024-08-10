@@ -7,28 +7,28 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 
 	"github.com/oapi-codegen/runtime"
 )
 
 // Billingmetricesfields defines model for Billingmetricesfields.
 type Billingmetricesfields struct {
-	Active         *bool            `json:"active,omitempty"`
-	BillPerMinute  *float32         `json:"bill_per_minute,omitempty"`
+	Active         *bool      `json:"active,omitempty"`
+	BillPerMinute  *float32   `json:"bill_per_minute,omitempty"`
 	CreateTime     *time.CustomTime `json:"create_time,omitempty"`
-	ExcludeBilling *bool            `json:"exclude_billing,omitempty"`
-	Name           *string          `json:"name,omitempty"`
-	OrganizationId *int             `json:"organization_id,omitempty"`
-	ResourceId     *int             `json:"resource_id,omitempty"`
-	ResourceType   *string          `json:"resource_type,omitempty"`
+	ExcludeBilling *bool      `json:"exclude_billing,omitempty"`
+	Name           *string    `json:"name,omitempty"`
+	OrganizationId *int       `json:"organization_id,omitempty"`
+	ResourceId     *int       `json:"resource_id,omitempty"`
+	ResourceType   *string    `json:"resource_type,omitempty"`
 	TerminateTime  *time.CustomTime `json:"terminate_time,omitempty"`
-	TotalBill      *float32         `json:"total_bill,omitempty"`
-	TotalUpTime    *float32         `json:"total_up_time,omitempty"`
+	TotalBill      *float32   `json:"total_bill,omitempty"`
+	TotalUpTime    *float32   `json:"total_up_time,omitempty"`
 }
 
 // Billingmetricesresponse defines model for Billingmetricesresponse.

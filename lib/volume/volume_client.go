@@ -8,11 +8,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 
 	"github.com/oapi-codegen/runtime"
 )
@@ -70,7 +70,7 @@ type Volume struct {
 type VolumeFields struct {
 	Bootable    *bool                       `json:"bootable,omitempty"`
 	CallbackUrl *string                     `json:"callback_url,omitempty"`
-	CreatedAt   *time.CustomTime            `json:"created_at,omitempty"`
+	CreatedAt   *time.CustomTime                  `json:"created_at,omitempty"`
 	Description *string                     `json:"description,omitempty"`
 	Environment *EnvironmentFieldsforVolume `json:"environment,omitempty"`
 	Id          *int                        `json:"id,omitempty"`
@@ -78,7 +78,7 @@ type VolumeFields struct {
 	Name        *string                     `json:"name,omitempty"`
 	Size        *int                        `json:"size,omitempty"`
 	Status      *string                     `json:"status,omitempty"`
-	UpdatedAt   *time.CustomTime            `json:"updated_at,omitempty"`
+	UpdatedAt   *time.CustomTime                  `json:"updated_at,omitempty"`
 	VolumeType  *string                     `json:"volume_type,omitempty"`
 }
 

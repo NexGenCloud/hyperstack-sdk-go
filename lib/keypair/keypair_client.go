@@ -8,11 +8,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 
 	"github.com/oapi-codegen/runtime"
 )
@@ -46,11 +46,11 @@ type ImportKeypairResponse struct {
 // KeypairFields defines model for KeypairFields.
 type KeypairFields struct {
 	CreatedAt   *time.CustomTime `json:"created_at,omitempty"`
-	Environment *string          `json:"environment,omitempty"`
-	Fingerprint *string          `json:"fingerprint,omitempty"`
-	Id          *int             `json:"id,omitempty"`
-	Name        *string          `json:"name,omitempty"`
-	PublicKey   *string          `json:"public_key,omitempty"`
+	Environment *string    `json:"environment,omitempty"`
+	Fingerprint *string    `json:"fingerprint,omitempty"`
+	Id          *int       `json:"id,omitempty"`
+	Name        *string    `json:"name,omitempty"`
+	PublicKey   *string    `json:"public_key,omitempty"`
 }
 
 // Keypairs defines model for Keypairs.

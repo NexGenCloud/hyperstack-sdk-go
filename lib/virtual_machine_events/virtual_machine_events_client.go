@@ -7,11 +7,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 
 	"github.com/oapi-codegen/runtime"
 )
@@ -32,14 +32,14 @@ type InstanceEvents struct {
 
 // InstanceEventsFields defines model for InstanceEventsFields.
 type InstanceEventsFields struct {
-	InstanceId *int             `json:"instance_id,omitempty"`
-	Message    *string          `json:"message,omitempty"`
-	Object     *string          `json:"object,omitempty"`
-	OrgId      *int             `json:"org_id,omitempty"`
-	Reason     *string          `json:"reason,omitempty"`
+	InstanceId *int       `json:"instance_id,omitempty"`
+	Message    *string    `json:"message,omitempty"`
+	Object     *string    `json:"object,omitempty"`
+	OrgId      *int       `json:"org_id,omitempty"`
+	Reason     *string    `json:"reason,omitempty"`
 	Time       *time.CustomTime `json:"time,omitempty"`
-	Type       *string          `json:"type,omitempty"`
-	UserId     *int             `json:"user_id,omitempty"`
+	Type       *string    `json:"type,omitempty"`
+	UserId     *int       `json:"user_id,omitempty"`
 }
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function

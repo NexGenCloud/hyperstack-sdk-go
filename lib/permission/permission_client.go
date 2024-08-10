@@ -7,11 +7,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 )
 
 // ErrorResponseModel defines model for ErrorResponseModel.
@@ -31,11 +31,11 @@ type GetPermissionsResponseModel struct {
 // PermissionFields defines model for PermissionFields.
 type PermissionFields struct {
 	CreatedAt  *time.CustomTime `json:"created_at,omitempty"`
-	Endpoint   *string          `json:"endpoint,omitempty"`
-	Id         *int             `json:"id,omitempty"`
-	Method     *string          `json:"method,omitempty"`
-	Permission *string          `json:"permission,omitempty"`
-	Resource   *string          `json:"resource,omitempty"`
+	Endpoint   *string    `json:"endpoint,omitempty"`
+	Id         *int       `json:"id,omitempty"`
+	Method     *string    `json:"method,omitempty"`
+	Permission *string    `json:"permission,omitempty"`
+	Resource   *string    `json:"resource,omitempty"`
 }
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function

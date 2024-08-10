@@ -8,11 +8,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 
 	"github.com/oapi-codegen/runtime"
 )
@@ -64,7 +64,7 @@ type RbacRoleDetailResponseModelFixed struct {
 
 // RbacRoleFields defines model for RbacRoleFields.
 type RbacRoleFields struct {
-	CreatedAt   *time.CustomTime        `json:"created_at,omitempty"`
+	CreatedAt   *time.CustomTime              `json:"created_at,omitempty"`
 	Description *string                 `json:"description,omitempty"`
 	Id          *int                    `json:"id,omitempty"`
 	Name        *string                 `json:"name,omitempty"`

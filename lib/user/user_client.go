@@ -8,11 +8,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 )
 
 // AddUserInfoSuccessResponseModel defines model for AddUserInfoSuccessResponseModel.
@@ -46,20 +46,20 @@ type Userinfopostpayload struct {
 
 // UsersInfoFields defines model for UsersInfoFields.
 type UsersInfoFields struct {
-	BillingAddress1 *string          `json:"billing_address1,omitempty"`
-	BillingAddress2 *string          `json:"billing_address2,omitempty"`
-	Business        *bool            `json:"business,omitempty"`
-	CompanyName     *string          `json:"company_name,omitempty"`
-	Country         *string          `json:"country,omitempty"`
+	BillingAddress1 *string    `json:"billing_address1,omitempty"`
+	BillingAddress2 *string    `json:"billing_address2,omitempty"`
+	Business        *bool      `json:"business,omitempty"`
+	CompanyName     *string    `json:"company_name,omitempty"`
+	Country         *string    `json:"country,omitempty"`
 	CreatedAt       *time.CustomTime `json:"created_at,omitempty"`
-	Email           *string          `json:"email,omitempty"`
-	Id              *int             `json:"id,omitempty"`
-	Name            *string          `json:"name,omitempty"`
-	OrganizationId  *int             `json:"organization_id,omitempty"`
-	Phone           *string          `json:"phone,omitempty"`
-	State           *string          `json:"state,omitempty"`
-	VatNumber       *string          `json:"vat_number,omitempty"`
-	ZipCode         *string          `json:"zip_code,omitempty"`
+	Email           *string    `json:"email,omitempty"`
+	Id              *int       `json:"id,omitempty"`
+	Name            *string    `json:"name,omitempty"`
+	OrganizationId  *int       `json:"organization_id,omitempty"`
+	Phone           *string    `json:"phone,omitempty"`
+	State           *string    `json:"state,omitempty"`
+	VatNumber       *string    `json:"vat_number,omitempty"`
+	ZipCode         *string    `json:"zip_code,omitempty"`
 }
 
 // UsersInfoListResponse defines model for UsersInfoListResponse.

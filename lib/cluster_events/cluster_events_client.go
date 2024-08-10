@@ -7,11 +7,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 
 	"github.com/oapi-codegen/runtime"
 )
@@ -25,15 +25,15 @@ type ClusterEvents struct {
 
 // ClusterEventsFields defines model for ClusterEventsFields.
 type ClusterEventsFields struct {
-	ClusterId *int             `json:"cluster_id,omitempty"`
-	Id        *int             `json:"id,omitempty"`
-	Message   *string          `json:"message,omitempty"`
-	Object    *string          `json:"object,omitempty"`
-	OrgId     *int             `json:"org_id,omitempty"`
-	Reason    *string          `json:"reason,omitempty"`
+	ClusterId *int       `json:"cluster_id,omitempty"`
+	Id        *int       `json:"id,omitempty"`
+	Message   *string    `json:"message,omitempty"`
+	Object    *string    `json:"object,omitempty"`
+	OrgId     *int       `json:"org_id,omitempty"`
+	Reason    *string    `json:"reason,omitempty"`
 	Time      *time.CustomTime `json:"time,omitempty"`
-	Type      *string          `json:"type,omitempty"`
-	UserId    *int             `json:"user_id,omitempty"`
+	Type      *string    `json:"type,omitempty"`
+	UserId    *int       `json:"user_id,omitempty"`
 }
 
 // ErrorResponseModel defines model for ErrorResponseModel.

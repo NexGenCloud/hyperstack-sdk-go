@@ -8,11 +8,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 
 	"github.com/oapi-codegen/runtime"
 )
@@ -20,7 +20,7 @@ import (
 // ClusterFields defines model for ClusterFields.
 type ClusterFields struct {
 	ApiAddress        *string               `json:"api_address,omitempty"`
-	CreatedAt         *time.CustomTime      `json:"created_at,omitempty"`
+	CreatedAt         *time.CustomTime            `json:"created_at,omitempty"`
 	EnvironmentName   *string               `json:"environment_name,omitempty"`
 	Id                *int                  `json:"id,omitempty"`
 	KeypairName       *string               `json:"keypair_name,omitempty"`

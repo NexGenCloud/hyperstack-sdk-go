@@ -8,11 +8,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 
 	"github.com/oapi-codegen/runtime"
 )
@@ -43,7 +43,7 @@ type ErrorResponseModel struct {
 
 // FirewallAttachmentModel defines model for FirewallAttachmentModel.
 type FirewallAttachmentModel struct {
-	CreatedAt *time.CustomTime           `json:"created_at,omitempty"`
+	CreatedAt *time.CustomTime                 `json:"created_at,omitempty"`
 	Id        *int                       `json:"id,omitempty"`
 	Status    *string                    `json:"status,omitempty"`
 	Vm        *FirewallAttachmentVMModel `json:"vm,omitempty"`
@@ -52,17 +52,17 @@ type FirewallAttachmentModel struct {
 // FirewallAttachmentVMModel defines model for FirewallAttachmentVMModel.
 type FirewallAttachmentVMModel struct {
 	CreatedAt   *time.CustomTime `json:"created_at,omitempty"`
-	Environment *string          `json:"environment,omitempty"`
-	Flavor      *string          `json:"flavor,omitempty"`
-	Id          *int             `json:"id,omitempty"`
-	Name        *string          `json:"name,omitempty"`
-	Status      *string          `json:"status,omitempty"`
+	Environment *string    `json:"environment,omitempty"`
+	Flavor      *string    `json:"flavor,omitempty"`
+	Id          *int       `json:"id,omitempty"`
+	Name        *string    `json:"name,omitempty"`
+	Status      *string    `json:"status,omitempty"`
 }
 
 // FirewallDetailFields defines model for FirewallDetailFields.
 type FirewallDetailFields struct {
 	Attachments *[]FirewallAttachmentModel `json:"attachments,omitempty"`
-	CreatedAt   *time.CustomTime           `json:"created_at,omitempty"`
+	CreatedAt   *time.CustomTime                 `json:"created_at,omitempty"`
 	Description *string                    `json:"description,omitempty"`
 	Environment *FirewallEnvironmentFields `json:"environment,omitempty"`
 	Id          *int                       `json:"id,omitempty"`
@@ -87,7 +87,7 @@ type FirewallEnvironmentFields struct {
 
 // FirewallFields defines model for FirewallFields.
 type FirewallFields struct {
-	CreatedAt   *time.CustomTime           `json:"created_at,omitempty"`
+	CreatedAt   *time.CustomTime                 `json:"created_at,omitempty"`
 	Description *string                    `json:"description,omitempty"`
 	Environment *FirewallEnvironmentFields `json:"environment,omitempty"`
 	Id          *int                       `json:"id,omitempty"`
@@ -128,14 +128,14 @@ type ResponseModel struct {
 // SecurityGroupRuleFields defines model for SecurityGroupRuleFields.
 type SecurityGroupRuleFields struct {
 	CreatedAt      *time.CustomTime `json:"created_at,omitempty"`
-	Direction      *string          `json:"direction,omitempty"`
-	Ethertype      *string          `json:"ethertype,omitempty"`
-	Id             *int             `json:"id,omitempty"`
-	PortRangeMax   *int             `json:"port_range_max,omitempty"`
-	PortRangeMin   *int             `json:"port_range_min,omitempty"`
-	Protocol       *string          `json:"protocol,omitempty"`
-	RemoteIpPrefix *string          `json:"remote_ip_prefix,omitempty"`
-	Status         *string          `json:"status,omitempty"`
+	Direction      *string    `json:"direction,omitempty"`
+	Ethertype      *string    `json:"ethertype,omitempty"`
+	Id             *int       `json:"id,omitempty"`
+	PortRangeMax   *int       `json:"port_range_max,omitempty"`
+	PortRangeMin   *int       `json:"port_range_min,omitempty"`
+	Protocol       *string    `json:"protocol,omitempty"`
+	RemoteIpPrefix *string    `json:"remote_ip_prefix,omitempty"`
+	Status         *string    `json:"status,omitempty"`
 }
 
 // RetrieveFirewallsParams defines parameters for RetrieveFirewalls.

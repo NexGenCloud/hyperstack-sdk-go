@@ -8,11 +8,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 
 	"github.com/oapi-codegen/runtime"
 )
@@ -20,10 +20,10 @@ import (
 // ApiKeyFields defines model for ApiKeyFields.
 type ApiKeyFields struct {
 	CreatedAt   *time.CustomTime `json:"created_at,omitempty"`
-	Description *string          `json:"description,omitempty"`
-	Id          *int             `json:"id,omitempty"`
-	Key         *string          `json:"key,omitempty"`
-	Name        *string          `json:"name,omitempty"`
+	Description *string    `json:"description,omitempty"`
+	Id          *int       `json:"id,omitempty"`
+	Key         *string    `json:"key,omitempty"`
+	Name        *string    `json:"name,omitempty"`
 }
 
 // CommonResponseModel defines model for CommonResponseModel.

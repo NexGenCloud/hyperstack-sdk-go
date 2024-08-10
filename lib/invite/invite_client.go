@@ -8,11 +8,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 
 	"github.com/oapi-codegen/runtime"
 )
@@ -40,9 +40,9 @@ type GetInvitesResponseModel struct {
 // InviteFields defines model for InviteFields.
 type InviteFields struct {
 	CreatedAt *time.CustomTime `json:"created_at,omitempty"`
-	Email     *string          `json:"email,omitempty"`
-	Id        *int             `json:"id,omitempty"`
-	Status    *string          `json:"status,omitempty"`
+	Email     *string    `json:"email,omitempty"`
+	Id        *int       `json:"id,omitempty"`
+	Status    *string    `json:"status,omitempty"`
 }
 
 // InviteUserPayload defines model for InviteUserPayload.

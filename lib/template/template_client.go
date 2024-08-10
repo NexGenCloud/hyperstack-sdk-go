@@ -8,11 +8,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 
 	"github.com/oapi-codegen/runtime"
 	openapi_types "github.com/oapi-codegen/runtime/types"
@@ -40,12 +40,12 @@ type Template struct {
 
 // TemplateFields defines model for TemplateFields.
 type TemplateFields struct {
-	Content     *string          `json:"content,omitempty"`
+	Content     *string    `json:"content,omitempty"`
 	CreatedAt   *time.CustomTime `json:"created_at,omitempty"`
-	Description *string          `json:"description,omitempty"`
-	Id          *int             `json:"id,omitempty"`
-	IsPublic    *bool            `json:"is_public,omitempty"`
-	Name        *string          `json:"name,omitempty"`
+	Description *string    `json:"description,omitempty"`
+	Id          *int       `json:"id,omitempty"`
+	IsPublic    *bool      `json:"is_public,omitempty"`
+	Name        *string    `json:"name,omitempty"`
 }
 
 // Templates defines model for Templates.

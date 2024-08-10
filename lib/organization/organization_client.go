@@ -8,11 +8,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 )
 
 // ErrorResponseModel defines model for ErrorResponseModel.
@@ -31,7 +31,7 @@ type GetOrganizationResponseModel struct {
 
 // OrganizationFields defines model for OrganizationFields.
 type OrganizationFields struct {
-	CreatedAt       *time.CustomTime                 `json:"created_at,omitempty"`
+	CreatedAt       *time.CustomTime                       `json:"created_at,omitempty"`
 	Credit          *int                             `json:"credit,omitempty"`
 	Id              int                              `json:"id"`
 	Name            string                           `json:"name"`
@@ -47,8 +47,8 @@ type OrganizationFields struct {
 type OrganizationUserResponseModel struct {
 	Email     *string          `json:"email,omitempty"`
 	Id        *int             `json:"id,omitempty"`
-	JoinedAt  *time.CustomTime `json:"joined_at,omitempty"`
-	LastLogin *time.CustomTime `json:"last_login,omitempty"`
+	JoinedAt  *time.CustomTime       `json:"joined_at,omitempty"`
+	LastLogin *time.CustomTime       `json:"last_login,omitempty"`
 	Name      *string          `json:"name,omitempty"`
 	RbacRoles *[]RbacRoleField `json:"rbac_roles,omitempty"`
 	Role      *string          `json:"role,omitempty"`
