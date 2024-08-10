@@ -1,0 +1,104 @@
+name: Build and Release SDK
+
+# Triggers:
+# - On push to tags matching the pattern v*.*.*-*, e.g., v1.0.0-stage, v1.0.0-poc
+# - Manually via workflow dispatch
+on:
+  push:
+    tags:
+      - 'v*.*.*-*'
+  workflow_dispatch:
+    inputs:
+      trigger_release:
+        description: 'Trigger a release?'
+        required: true
+        type: boolean
+        default: false # Allows manual triggering of the workflow
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        # Check out the code from the repository
+      
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'
+        # Set up the Go
+      
+      - name: Install Task
+        run: |
+          sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b $(go env GOPATH)/bin
+          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+        # Install Task
+      
+      
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'
+        # Set up the Python, specifically Python 3.11
+      
+      - name: Install pip & dependencies for Python
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        # Install pip & dependencies from requirements.txt
+      
+      
+      - name: Install dependencies using Task
+        run: task init
+        # Install dependencies using Task & taskfile.yaml target : ../../Taskfile.yaml:tasks.init
+      
+      - name: Iterate over API URLs and Build SDK via task build-api-spec and task build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          API_SPEC_URLS: ${{ secrets.API_SPEC_URLS }}
+          PUBLISH_ARTIFACTS: ${{ env.PUBLISH_ARTIFACTS}}
+        run: |
+          IFS=',' read -ra URLS <<< "$API_SPEC_URLS"
+          for URL in "${URLS[@]}"; do
+          echo "Processing URL: $URL"
+          export HYPERSTACK_API_SPEC_ADDRESS=$URL
+          task build-api-spec
+          task build
+          
+          # Extract environment from URL for naming purposes
+          ENV_SUFFIX=$(echo $URL | sed 's#.*/\([^/]*\)/api\.json#\1#')
+          echo "ENV_SUFFIX: $ENV_SUFFIX"
+          
+          done
+      
+      - name: GoReleaser - Check
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: '~> v2'
+          args: check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: GoReleaser - Release
+        if: ${{ github.event.inputs.trigger_release == true }}
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: '~> v2'
+          args: 'release --clean'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: GoReleaser - Release
+        if: ${{ github.event.inputs.trigger_release == false }}
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: '~> v2'
+          args: 'release --clean --skip=publish'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
