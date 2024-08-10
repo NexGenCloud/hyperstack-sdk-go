@@ -96,7 +96,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: GoReleaser - Release
-        if: ${{ github.event.inputs.trigger_release == 'false' }}
+        if: ${{ github.event.inputs.trigger_release != 'true' }}
         uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
