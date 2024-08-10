@@ -83,7 +83,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Log Trigger Release Value
-        run:
+        run: |
           echo "Trigger release: ${{ github.event.inputs.trigger_release }}"
       - name: GoReleaser - Release
         if: ${{ github.event.inputs.trigger_release == 'true' }}
