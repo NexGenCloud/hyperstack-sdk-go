@@ -13,7 +13,7 @@ on:
         description: 'Trigger a release?'
         required: true
         type: boolean
-        default: 'false'
+        default: false
 
 jobs:
   build-and-release:
