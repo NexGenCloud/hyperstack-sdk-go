@@ -1,3 +1,3 @@
 --container-architecture linux/amd64
--s API_SPEC_URLS=https://infrahub-api-stg.ngbackend.cloud/v1/docs/api.json
+-s API_SPEC_URLS=https://infrahub-api-doc.nexgencloud.com/api.json
 -s GITHUB_TOKEN=SET_TOKEN_TO_PUBLISH

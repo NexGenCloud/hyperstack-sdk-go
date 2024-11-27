@@ -8,12 +8,12 @@ vars:
   API_SPEC_PATH: "{{.DIR_ARTIFACTS}}/api.json"
   LIB_DIR: "lib"
   DIR_PACKAGE: "{{.ROOT_DIR}}/{{.LIB_DIR}}"
-  HYPERSTACK_API_ADDRESS: "https://infrahub-api-stg.ngbackend.cloud/v1"
+  HYPERSTACK_API_ADDRESS: "https://infrahub-api.nexgencloud.com/v1"
 
 env:
   HYPERSTACK_API_KEY: ~
   HYPERSTACK_API_ADDRESS: "{{.HYPERSTACK_API_ADDRESS}}"
-  HYPERSTACK_API_SPEC_ADDRESS: "https://infrahub-api-stg.ngbackend.cloud/v1/docs/api.json"
+  HYPERSTACK_API_SPEC_ADDRESS: "https://infrahub-api-doc.nexgencloud.com/api.json"
 
 tasks:
   init:
