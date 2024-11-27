@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 silent: true
 
@@ -11,8 +11,6 @@ vars:
   HYPERSTACK_API_ADDRESS: "https://infrahub-api-stg.ngbackend.cloud/v1"
 
 env:
-  HYPERSTACK_STAGING: "true"
-
   HYPERSTACK_API_KEY: ~
   HYPERSTACK_API_ADDRESS: "{{.HYPERSTACK_API_ADDRESS}}"
   HYPERSTACK_API_SPEC_ADDRESS: "https://infrahub-api-stg.ngbackend.cloud/v1/docs/api.json"
@@ -65,7 +63,7 @@ tasks:
   build-api-spec:
     desc: |
       Pulls the latest api.json from the server
-    dotenv: [ '.env' ]
+    dotenv: [".env"]
     vars:
       SCRIPTS_DIR: "scripts"
       SORT_SCHEMAS: "{{.SCRIPTS_DIR}}/sort_schemas.py"
