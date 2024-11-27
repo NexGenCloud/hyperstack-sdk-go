@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/auth"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -11,11 +10,12 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/auth"
 )
 
 var (
 	API_SERVER         = "https://infrahub-api.nexgencloud.com/v1"
-	API_SERVER_STAGING = "https://infrahub-api-stg.ngbackend.cloud/v1"
 )
 
 type CustomTime struct {
@@ -51,12 +51,8 @@ type UserFields struct {
 
 func createAuthClient() (*auth.ClientWithResponses, error) {
 	apiKey := os.Getenv("HYPERSTACK_API_KEY")
-	staging := os.Getenv("HYPERSTACK_STAGING") == "true"
 
 	apiServer := API_SERVER
-	if staging {
-		apiServer = API_SERVER_STAGING
-	}
 
 	addHeaders := func(ctx context.Context, req *http.Request) error {
 		req.Header.Add("api_key", apiKey)
