@@ -19,25 +19,28 @@ var _ MappedNullable = &InstanceFields{}
 
 // InstanceFields struct for InstanceFields
 type InstanceFields struct {
-	ContractId        *int32                           `json:"contract_id,omitempty"`
-	CreatedAt         *CustomTime                      `json:"created_at,omitempty"`
-	Environment       *InstanceEnvironmentFields       `json:"environment,omitempty"`
-	FixedIp           *string                          `json:"fixed_ip,omitempty"`
-	Flavor            *InstanceFlavorFields            `json:"flavor,omitempty"`
-	FloatingIp        *string                          `json:"floating_ip,omitempty"`
-	FloatingIpStatus  *string                          `json:"floating_ip_status,omitempty"`
-	Id                *int32                           `json:"id,omitempty"`
-	Image             *InstanceImageFields             `json:"image,omitempty"`
-	Keypair           *InstanceKeypairFields           `json:"keypair,omitempty"`
-	Labels            []string                         `json:"labels,omitempty"`
-	Locked            *bool                            `json:"locked,omitempty"`
-	Name              *string                          `json:"name,omitempty"`
-	Os                *string                          `json:"os,omitempty"`
-	PowerState        *string                          `json:"power_state,omitempty"`
-	SecurityRules     []SecurityRulesFieldsforInstance `json:"security_rules,omitempty"`
-	Status            *string                          `json:"status,omitempty"`
-	VmState           *string                          `json:"vm_state,omitempty"`
-	VolumeAttachments []VolumeAttachmentFields         `json:"volume_attachments,omitempty"`
+	CallbackUrl             *string                          `json:"callback_url,omitempty"`
+	ContractId              *int32                           `json:"contract_id,omitempty"`
+	CreatedAt               *CustomTime                      `json:"created_at,omitempty"`
+	Environment             *InstanceEnvironmentFields       `json:"environment,omitempty"`
+	FixedIp                 *string                          `json:"fixed_ip,omitempty"`
+	Flavor                  *InstanceFlavorFields            `json:"flavor,omitempty"`
+	FloatingIp              *string                          `json:"floating_ip,omitempty"`
+	FloatingIpStatus        *string                          `json:"floating_ip_status,omitempty"`
+	Id                      *int32                           `json:"id,omitempty"`
+	Image                   *InstanceImageFields             `json:"image,omitempty"`
+	Keypair                 *InstanceKeypairFields           `json:"keypair,omitempty"`
+	Labels                  []string                         `json:"labels,omitempty"`
+	Locked                  *bool                            `json:"locked,omitempty"`
+	Name                    *string                          `json:"name,omitempty"`
+	Os                      *string                          `json:"os,omitempty"`
+	PortRandomization       *bool                            `json:"port_randomization,omitempty"`
+	PortRandomizationStatus *string                          `json:"port_randomization_status,omitempty"`
+	PowerState              *string                          `json:"power_state,omitempty"`
+	SecurityRules           []SecurityRulesFieldsforInstance `json:"security_rules,omitempty"`
+	Status                  *string                          `json:"status,omitempty"`
+	VmState                 *string                          `json:"vm_state,omitempty"`
+	VolumeAttachments       []VolumeAttachmentFields         `json:"volume_attachments,omitempty"`
 }
 
 // NewInstanceFields instantiates a new InstanceFields object
@@ -55,6 +58,38 @@ func NewInstanceFields() *InstanceFields {
 func NewInstanceFieldsWithDefaults() *InstanceFields {
 	this := InstanceFields{}
 	return &this
+}
+
+// GetCallbackUrl returns the CallbackUrl field value if set, zero value otherwise.
+func (o *InstanceFields) GetCallbackUrl() string {
+	if o == nil || IsNil(o.CallbackUrl) {
+		var ret string
+		return ret
+	}
+	return *o.CallbackUrl
+}
+
+// GetCallbackUrlOk returns a tuple with the CallbackUrl field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *InstanceFields) GetCallbackUrlOk() (*string, bool) {
+	if o == nil || IsNil(o.CallbackUrl) {
+		return nil, false
+	}
+	return o.CallbackUrl, true
+}
+
+// HasCallbackUrl returns a boolean if a field has been set.
+func (o *InstanceFields) HasCallbackUrl() bool {
+	if o != nil && !IsNil(o.CallbackUrl) {
+		return true
+	}
+
+	return false
+}
+
+// SetCallbackUrl gets a reference to the given string and assigns it to the CallbackUrl field.
+func (o *InstanceFields) SetCallbackUrl(v string) {
+	o.CallbackUrl = &v
 }
 
 // GetContractId returns the ContractId field value if set, zero value otherwise.
@@ -505,6 +540,70 @@ func (o *InstanceFields) SetOs(v string) {
 	o.Os = &v
 }
 
+// GetPortRandomization returns the PortRandomization field value if set, zero value otherwise.
+func (o *InstanceFields) GetPortRandomization() bool {
+	if o == nil || IsNil(o.PortRandomization) {
+		var ret bool
+		return ret
+	}
+	return *o.PortRandomization
+}
+
+// GetPortRandomizationOk returns a tuple with the PortRandomization field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *InstanceFields) GetPortRandomizationOk() (*bool, bool) {
+	if o == nil || IsNil(o.PortRandomization) {
+		return nil, false
+	}
+	return o.PortRandomization, true
+}
+
+// HasPortRandomization returns a boolean if a field has been set.
+func (o *InstanceFields) HasPortRandomization() bool {
+	if o != nil && !IsNil(o.PortRandomization) {
+		return true
+	}
+
+	return false
+}
+
+// SetPortRandomization gets a reference to the given bool and assigns it to the PortRandomization field.
+func (o *InstanceFields) SetPortRandomization(v bool) {
+	o.PortRandomization = &v
+}
+
+// GetPortRandomizationStatus returns the PortRandomizationStatus field value if set, zero value otherwise.
+func (o *InstanceFields) GetPortRandomizationStatus() string {
+	if o == nil || IsNil(o.PortRandomizationStatus) {
+		var ret string
+		return ret
+	}
+	return *o.PortRandomizationStatus
+}
+
+// GetPortRandomizationStatusOk returns a tuple with the PortRandomizationStatus field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *InstanceFields) GetPortRandomizationStatusOk() (*string, bool) {
+	if o == nil || IsNil(o.PortRandomizationStatus) {
+		return nil, false
+	}
+	return o.PortRandomizationStatus, true
+}
+
+// HasPortRandomizationStatus returns a boolean if a field has been set.
+func (o *InstanceFields) HasPortRandomizationStatus() bool {
+	if o != nil && !IsNil(o.PortRandomizationStatus) {
+		return true
+	}
+
+	return false
+}
+
+// SetPortRandomizationStatus gets a reference to the given string and assigns it to the PortRandomizationStatus field.
+func (o *InstanceFields) SetPortRandomizationStatus(v string) {
+	o.PortRandomizationStatus = &v
+}
+
 // GetPowerState returns the PowerState field value if set, zero value otherwise.
 func (o *InstanceFields) GetPowerState() string {
 	if o == nil || IsNil(o.PowerState) {
@@ -675,6 +774,9 @@ func (o InstanceFields) MarshalJSON() ([]byte, error) {
 
 func (o InstanceFields) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.CallbackUrl) {
+		toSerialize["callback_url"] = o.CallbackUrl
+	}
 	if !IsNil(o.ContractId) {
 		toSerialize["contract_id"] = o.ContractId
 	}
@@ -716,6 +818,12 @@ func (o InstanceFields) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Os) {
 		toSerialize["os"] = o.Os
+	}
+	if !IsNil(o.PortRandomization) {
+		toSerialize["port_randomization"] = o.PortRandomization
+	}
+	if !IsNil(o.PortRandomizationStatus) {
+		toSerialize["port_randomization_status"] = o.PortRandomizationStatus
 	}
 	if !IsNil(o.PowerState) {
 		toSerialize["power_state"] = o.PowerState

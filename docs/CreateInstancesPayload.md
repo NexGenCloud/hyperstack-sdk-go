@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **CallbackUrl** | Pointer to **string** | An optional URL where actions performed on the virtual machine will be sent. For additional information on event callbacks, [**click here**](https://infrahub-doc.nexgencloud.com/docs/features/webhooks-callbacks). | [optional] 
 **Count** | **int32** | The number of virtual machines to be created. | 
 **CreateBootableVolume** | Pointer to **bool** | Indicates whether to create a bootable volume for the virtual machine. When set to &#x60;true&#x60;, a bootable volume will be created; the default value is &#x60;false&#x60;. | [optional] 
+**EnablePortRandomization** | Pointer to **bool** | Indicates whether to enable port randomization.This setting is only effective if &#39;assign_floating_ip&#39; is true. Defaults to true. | [optional] [default to true]
 **EnvironmentName** | **string** | The name of the [environment](https://infrahub-doc.nexgencloud.com/docs/features/environments-available-features) in which the virtual machine is to be created. | 
 **Flavor** | Pointer to [**FlavorObjectFields**](FlavorObjectFields.md) |  | [optional] 
 **FlavorName** | **string** | The name of the GPU hardware configuration ([flavor](https://infrahub-doc.nexgencloud.com/docs/hardware/flavors)) for the virtual machines being created. | 
@@ -133,6 +134,31 @@ SetCreateBootableVolume sets CreateBootableVolume field to given value.
 `func (o *CreateInstancesPayload) HasCreateBootableVolume() bool`
 
 HasCreateBootableVolume returns a boolean if a field has been set.
+
+### GetEnablePortRandomization
+
+`func (o *CreateInstancesPayload) GetEnablePortRandomization() bool`
+
+GetEnablePortRandomization returns the EnablePortRandomization field if non-nil, zero value otherwise.
+
+### GetEnablePortRandomizationOk
+
+`func (o *CreateInstancesPayload) GetEnablePortRandomizationOk() (*bool, bool)`
+
+GetEnablePortRandomizationOk returns a tuple with the EnablePortRandomization field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEnablePortRandomization
+
+`func (o *CreateInstancesPayload) SetEnablePortRandomization(v bool)`
+
+SetEnablePortRandomization sets EnablePortRandomization field to given value.
+
+### HasEnablePortRandomization
+
+`func (o *CreateInstancesPayload) HasEnablePortRandomization() bool`
+
+HasEnablePortRandomization returns a boolean if a field has been set.
 
 ### GetEnvironmentName
 

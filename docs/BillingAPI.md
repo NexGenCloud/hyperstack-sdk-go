@@ -8,9 +8,9 @@ Method | HTTP request | Description
 [**GetBillingUsage**](BillingAPI.md#GetBillingUsage) | **Get** /billing/billing/usage | GET: Billing usage
 [**GetLastDayCost**](BillingAPI.md#GetLastDayCost) | **Get** /billing/billing/last-day-cost | GET: Last Day Cost
 [**RetrieveBillingHistoryForASpecificBillingCycle**](BillingAPI.md#RetrieveBillingHistoryForASpecificBillingCycle) | **Get** /billing/billing/history | Retrieve Billing History for a specific Billing Cycle
+[**RetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycle**](BillingAPI.md#RetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycle) | **Get** /billing/billing/history/snapshot/{snapshot_id} | Retrieve Billing History of a Specific Snapshot for a specific Billing Cycle
 [**RetrieveBillingHistoryOfASpecificVirtualMachineForASpecificBillingCycle**](BillingAPI.md#RetrieveBillingHistoryOfASpecificVirtualMachineForASpecificBillingCycle) | **Get** /billing/billing/history/virtual-machine/{vm_id} | Retrieve Billing History of a Specific Virtual Machine for a specific Billing Cycle
-[**RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle**](BillingAPI.md#RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle) | **Get** /billing/billing/history/snapshot/{snapshot_id} | Retrieve Billing History of a Specific Volume for a specific Billing Cycle
-[**RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0**](BillingAPI.md#RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0) | **Get** /billing/billing/history/volume/{volume_id} | Retrieve Billing History of a Specific Volume for a specific Billing Cycle
+[**RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle**](BillingAPI.md#RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle) | **Get** /billing/billing/history/volume/{volume_id} | Retrieve Billing History of a Specific Volume for a specific Billing Cycle
 [**RetrieveBillingHistoryOfContractForASpecificBillingCycle**](BillingAPI.md#RetrieveBillingHistoryOfContractForASpecificBillingCycle) | **Get** /billing/billing/history/contract | Retrieve Billing History of Contract for a specific Billing Cycle
 [**RetrieveBillingHistoryOfSnapshotForASpecificBillingCycle**](BillingAPI.md#RetrieveBillingHistoryOfSnapshotForASpecificBillingCycle) | **Get** /billing/billing/history/snapshot | Retrieve Billing History of Snapshot for a specific Billing Cycle
 [**RetrieveBillingHistoryOfVirtualMachineForASpecificBillingCycle**](BillingAPI.md#RetrieveBillingHistoryOfVirtualMachineForASpecificBillingCycle) | **Get** /billing/billing/history/virtual-machine | Retrieve Billing History of Virtual Machine for a specific Billing Cycle
@@ -286,6 +286,80 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## RetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycle
+
+> ResourceLevelVolumeBillingDetailsResponseModel RetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycle(ctx, snapshotId).StartDate(startDate).EndDate(endDate).Execute()
+
+Retrieve Billing History of a Specific Snapshot for a specific Billing Cycle
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	snapshotId := int32(56) // int32 | 
+	startDate := "startDate_example" // string | Datetime should be formatted in YYYY-MM-DDTHH:MM:SS (optional)
+	endDate := "endDate_example" // string | Datetime should be formatted in YYYY-MM-DDTHH:MM:SS (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.BillingAPI.RetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycle(context.Background(), snapshotId).StartDate(startDate).EndDate(endDate).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `BillingAPI.RetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycle``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `RetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycle`: ResourceLevelVolumeBillingDetailsResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `BillingAPI.RetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycle`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**snapshotId** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycleRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **startDate** | **string** | Datetime should be formatted in YYYY-MM-DDTHH:MM:SS | 
+ **endDate** | **string** | Datetime should be formatted in YYYY-MM-DDTHH:MM:SS | 
+
+### Return type
+
+[**ResourceLevelVolumeBillingDetailsResponseModel**](ResourceLevelVolumeBillingDetailsResponseModel.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## RetrieveBillingHistoryOfASpecificVirtualMachineForASpecificBillingCycle
 
 > ResourceLevelVMBillingDetailsResponseModel RetrieveBillingHistoryOfASpecificVirtualMachineForASpecificBillingCycle(ctx, vmId).StartDate(startDate).EndDate(endDate).Execute()
@@ -362,81 +436,7 @@ Name | Type | Description  | Notes
 
 ## RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle
 
-> ResourceLevelVolumeBillingDetailsResponseModel RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle(ctx, snapshotId).StartDate(startDate).EndDate(endDate).Execute()
-
-Retrieve Billing History of a Specific Volume for a specific Billing Cycle
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-	snapshotId := int32(56) // int32 | 
-	startDate := "startDate_example" // string | Datetime should be formatted in YYYY-MM-DDTHH:MM:SS (optional)
-	endDate := "endDate_example" // string | Datetime should be formatted in YYYY-MM-DDTHH:MM:SS (optional)
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.BillingAPI.RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle(context.Background(), snapshotId).StartDate(startDate).EndDate(endDate).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `BillingAPI.RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle`: ResourceLevelVolumeBillingDetailsResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `BillingAPI.RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**snapshotId** | **int32** |  | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycleRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **startDate** | **string** | Datetime should be formatted in YYYY-MM-DDTHH:MM:SS | 
- **endDate** | **string** | Datetime should be formatted in YYYY-MM-DDTHH:MM:SS | 
-
-### Return type
-
-[**ResourceLevelVolumeBillingDetailsResponseModel**](ResourceLevelVolumeBillingDetailsResponseModel.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0
-
-> ResourceLevelVolumeBillingDetailsResponseModel RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0(ctx, volumeId).StartDate(startDate).EndDate(endDate).Execute()
+> ResourceLevelVolumeBillingDetailsResponseModel RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle(ctx, volumeId).StartDate(startDate).EndDate(endDate).Execute()
 
 Retrieve Billing History of a Specific Volume for a specific Billing Cycle
 
@@ -461,13 +461,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.BillingAPI.RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0(context.Background(), volumeId).StartDate(startDate).EndDate(endDate).Execute()
+	resp, r, err := apiClient.BillingAPI.RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle(context.Background(), volumeId).StartDate(startDate).EndDate(endDate).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `BillingAPI.RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `BillingAPI.RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0`: ResourceLevelVolumeBillingDetailsResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `BillingAPI.RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0`: %v\n", resp)
+	// response from `RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle`: ResourceLevelVolumeBillingDetailsResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `BillingAPI.RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle`: %v\n", resp)
 }
 ```
 
@@ -481,7 +481,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_1Request struct via the builder pattern
+Other parameters are passed through a pointer to a apiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycleRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes

@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**CallbackUrl** | Pointer to **string** |  | [optional] 
 **ContractId** | Pointer to **int32** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **Environment** | Pointer to [**InstanceEnvironmentFields**](InstanceEnvironmentFields.md) |  | [optional] 
@@ -18,6 +19,8 @@ Name | Type | Description | Notes
 **Locked** | Pointer to **bool** |  | [optional] 
 **Name** | Pointer to **string** |  | [optional] 
 **Os** | Pointer to **string** |  | [optional] 
+**PortRandomization** | Pointer to **bool** |  | [optional] 
+**PortRandomizationStatus** | Pointer to **string** |  | [optional] 
 **PowerState** | Pointer to **string** |  | [optional] 
 **SecurityRules** | Pointer to [**[]SecurityRulesFieldsforInstance**](SecurityRulesFieldsforInstance.md) |  | [optional] 
 **Status** | Pointer to **string** |  | [optional] 
@@ -42,6 +45,31 @@ will change when the set of required properties is changed
 NewInstanceFieldsWithDefaults instantiates a new InstanceFields object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetCallbackUrl
+
+`func (o *InstanceFields) GetCallbackUrl() string`
+
+GetCallbackUrl returns the CallbackUrl field if non-nil, zero value otherwise.
+
+### GetCallbackUrlOk
+
+`func (o *InstanceFields) GetCallbackUrlOk() (*string, bool)`
+
+GetCallbackUrlOk returns a tuple with the CallbackUrl field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCallbackUrl
+
+`func (o *InstanceFields) SetCallbackUrl(v string)`
+
+SetCallbackUrl sets CallbackUrl field to given value.
+
+### HasCallbackUrl
+
+`func (o *InstanceFields) HasCallbackUrl() bool`
+
+HasCallbackUrl returns a boolean if a field has been set.
 
 ### GetContractId
 
@@ -392,6 +420,56 @@ SetOs sets Os field to given value.
 `func (o *InstanceFields) HasOs() bool`
 
 HasOs returns a boolean if a field has been set.
+
+### GetPortRandomization
+
+`func (o *InstanceFields) GetPortRandomization() bool`
+
+GetPortRandomization returns the PortRandomization field if non-nil, zero value otherwise.
+
+### GetPortRandomizationOk
+
+`func (o *InstanceFields) GetPortRandomizationOk() (*bool, bool)`
+
+GetPortRandomizationOk returns a tuple with the PortRandomization field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPortRandomization
+
+`func (o *InstanceFields) SetPortRandomization(v bool)`
+
+SetPortRandomization sets PortRandomization field to given value.
+
+### HasPortRandomization
+
+`func (o *InstanceFields) HasPortRandomization() bool`
+
+HasPortRandomization returns a boolean if a field has been set.
+
+### GetPortRandomizationStatus
+
+`func (o *InstanceFields) GetPortRandomizationStatus() string`
+
+GetPortRandomizationStatus returns the PortRandomizationStatus field if non-nil, zero value otherwise.
+
+### GetPortRandomizationStatusOk
+
+`func (o *InstanceFields) GetPortRandomizationStatusOk() (*string, bool)`
+
+GetPortRandomizationStatusOk returns a tuple with the PortRandomizationStatus field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPortRandomizationStatus
+
+`func (o *InstanceFields) SetPortRandomizationStatus(v string)`
+
+SetPortRandomizationStatus sets PortRandomizationStatus field to given value.
+
+### HasPortRandomizationStatus
+
+`func (o *InstanceFields) HasPortRandomizationStatus() bool`
+
+HasPortRandomizationStatus returns a boolean if a field has been set.
 
 ### GetPowerState
 

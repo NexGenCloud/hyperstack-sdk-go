@@ -1294,7 +1294,7 @@ paths:
       description: "Retrieve billing history of a specific Snapshot for the specified\
         \ billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour',\
         \ 'incurred_bill', 'usage_time', 'non_discounted_price_per_hour', 'non_discounted_bill'."
-      operationId: RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle
+      operationId: RetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycle
       parameters:
       - explode: false
         in: path
@@ -1356,7 +1356,7 @@ paths:
       security:
       - accessToken: []
       - apiKey: []
-      summary: Retrieve Billing History of a Specific Volume for a specific Billing
+      summary: Retrieve Billing History of a Specific Snapshot for a specific Billing
         Cycle
       tags:
       - billing
@@ -8697,6 +8697,7 @@ components:
           labels:
           - labels
           - labels
+          callback_url: callback_url
           flavor:
             disk: 5
             gpu_count: 2
@@ -8714,6 +8715,7 @@ components:
             name: name
             id: 6
             region: region
+          port_randomization_status: port_randomization_status
           floating_ip: floating_ip
           name: name
           fixed_ip: fixed_ip
@@ -8759,6 +8761,7 @@ components:
             direction: direction
             port_range_min: 7
             status: status
+          port_randomization: true
           status: status
         - image:
             name: name
@@ -8772,6 +8775,7 @@ components:
           labels:
           - labels
           - labels
+          callback_url: callback_url
           flavor:
             disk: 5
             gpu_count: 2
@@ -8789,6 +8793,7 @@ components:
             name: name
             id: 6
             region: region
+          port_randomization_status: port_randomization_status
           floating_ip: floating_ip
           name: name
           fixed_ip: fixed_ip
@@ -8834,6 +8839,7 @@ components:
             direction: direction
             port_range_min: 7
             status: status
+          port_randomization: true
           status: status
         message: message
         status: true
@@ -10440,6 +10446,7 @@ components:
           labels:
           - labels
           - labels
+          callback_url: callback_url
           flavor:
             disk: 5
             gpu_count: 2
@@ -10457,6 +10464,7 @@ components:
             name: name
             id: 6
             region: region
+          port_randomization_status: port_randomization_status
           floating_ip: floating_ip
           name: name
           fixed_ip: fixed_ip
@@ -10502,6 +10510,7 @@ components:
             direction: direction
             port_range_min: 7
             status: status
+          port_randomization: true
           status: status
         message: message
         status: true
@@ -10603,6 +10612,7 @@ components:
           labels:
           - labels
           - labels
+          callback_url: callback_url
           flavor:
             disk: 5
             gpu_count: 2
@@ -10620,6 +10630,7 @@ components:
             name: name
             id: 6
             region: region
+          port_randomization_status: port_randomization_status
           floating_ip: floating_ip
           name: name
           fixed_ip: fixed_ip
@@ -10665,6 +10676,7 @@ components:
             direction: direction
             port_range_min: 7
             status: status
+          port_randomization: true
           status: status
         - image:
             name: name
@@ -10678,6 +10690,7 @@ components:
           labels:
           - labels
           - labels
+          callback_url: callback_url
           flavor:
             disk: 5
             gpu_count: 2
@@ -10695,6 +10708,7 @@ components:
             name: name
             id: 6
             region: region
+          port_randomization_status: port_randomization_status
           floating_ip: floating_ip
           name: name
           fixed_ip: fixed_ip
@@ -10740,6 +10754,7 @@ components:
             direction: direction
             port_range_min: 7
             status: status
+          port_randomization: true
           status: status
         count: 0
         page: 6
@@ -13815,6 +13830,7 @@ components:
         - labels
         - labels
         callback_url: callback_url
+        enable_port_randomization: true
         flavor:
           disk: 1
           gpu_count: 5
@@ -13859,6 +13875,11 @@ components:
           description: "Indicates whether to create a bootable volume for the virtual\
             \ machine. When set to `true`, a bootable volume will be created; the\
             \ default value is `false`."
+          type: boolean
+        enable_port_randomization:
+          default: true
+          description: Indicates whether to enable port randomization.This setting
+            is only effective if 'assign_floating_ip' is true. Defaults to true.
           type: boolean
         environment_name:
           description: "The name of the [environment](https://infrahub-doc.nexgencloud.com/docs/features/environments-available-features)\
@@ -14918,6 +14939,7 @@ components:
         labels:
         - labels
         - labels
+        callback_url: callback_url
         flavor:
           disk: 5
           gpu_count: 2
@@ -14935,6 +14957,7 @@ components:
           name: name
           id: 6
           region: region
+        port_randomization_status: port_randomization_status
         floating_ip: floating_ip
         name: name
         fixed_ip: fixed_ip
@@ -14980,8 +15003,11 @@ components:
           direction: direction
           port_range_min: 7
           status: status
+        port_randomization: true
         status: status
       properties:
+        callback_url:
+          type: string
         contract_id:
           type: integer
         created_at:
@@ -15012,6 +15038,10 @@ components:
         name:
           type: string
         os:
+          type: string
+        port_randomization:
+          type: boolean
+        port_randomization_status:
           type: string
         power_state:
           type: string

@@ -760,6 +760,202 @@ func (a *BillingAPIService) RetrieveBillingHistoryForASpecificBillingCycleExecut
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiRetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycleRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	snapshotId int32
+	startDate  *string
+	endDate    *string
+}
+
+// Datetime should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiRetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycleRequest) StartDate(startDate string) ApiRetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycleRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Datetime should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiRetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycleRequest) EndDate(endDate string) ApiRetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycleRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiRetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycleRequest) Execute() (*ResourceLevelVolumeBillingDetailsResponseModel, *http.Response, error) {
+	return r.ApiService.RetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycleExecute(r)
+}
+
+/*
+RetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycle Retrieve Billing History of a Specific Snapshot for a specific Billing Cycle
+
+Retrieve billing history of a specific Snapshot for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour', 'incurred_bill', 'usage_time', 'non_discounted_price_per_hour', 'non_discounted_bill'.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param snapshotId
+	@return ApiRetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycleRequest
+*/
+func (a *BillingAPIService) RetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycle(ctx context.Context, snapshotId int32) ApiRetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycleRequest {
+	return ApiRetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycleRequest{
+		ApiService: a,
+		ctx:        ctx,
+		snapshotId: snapshotId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ResourceLevelVolumeBillingDetailsResponseModel
+func (a *BillingAPIService) RetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycleExecute(r ApiRetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycleRequest) (*ResourceLevelVolumeBillingDetailsResponseModel, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceLevelVolumeBillingDetailsResponseModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.RetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycle")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/snapshot/{snapshot_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"snapshot_id"+"}", url.PathEscape(parameterValueToString(r.snapshotId, "snapshotId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["accessToken"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiRetrieveBillingHistoryOfASpecificVirtualMachineForASpecificBillingCycleRequest struct {
 	ctx        context.Context
 	ApiService *BillingAPIService
@@ -959,18 +1155,18 @@ func (a *BillingAPIService) RetrieveBillingHistoryOfASpecificVirtualMachineForAS
 type ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycleRequest struct {
 	ctx        context.Context
 	ApiService *BillingAPIService
-	snapshotId int32
+	volumeId   int32
 	startDate  *string
 	endDate    *string
 }
 
-// Datetime should be formatted in YYYY-MM-DDTHH:MM:SS
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
 func (r ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycleRequest) StartDate(startDate string) ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycleRequest {
 	r.startDate = &startDate
 	return r
 }
 
-// Datetime should be formatted in YYYY-MM-DDTHH:MM:SS
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
 func (r ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycleRequest) EndDate(endDate string) ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycleRequest {
 	r.endDate = &endDate
 	return r
@@ -983,17 +1179,17 @@ func (r ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycleReques
 /*
 RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle Retrieve Billing History of a Specific Volume for a specific Billing Cycle
 
-Retrieve billing history of a specific Snapshot for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour', 'incurred_bill', 'usage_time', 'non_discounted_price_per_hour', 'non_discounted_bill'.
+Retrieve billing history of a specific Volume for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour', 'incurred_bill', 'usage_time', 'non_discounted_price_per_hour', 'non_discounted_bill'.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param snapshotId
+	@param volumeId
 	@return ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycleRequest
 */
-func (a *BillingAPIService) RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle(ctx context.Context, snapshotId int32) ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycleRequest {
+func (a *BillingAPIService) RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle(ctx context.Context, volumeId int32) ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycleRequest {
 	return ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycleRequest{
 		ApiService: a,
 		ctx:        ctx,
-		snapshotId: snapshotId,
+		volumeId:   volumeId,
 	}
 }
 
@@ -1009,202 +1205,6 @@ func (a *BillingAPIService) RetrieveBillingHistoryOfASpecificVolumeForASpecificB
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/snapshot/{snapshot_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"snapshot_id"+"}", url.PathEscape(parameterValueToString(r.snapshotId, "snapshotId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0Request struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	volumeId   int32
-	startDate  *string
-	endDate    *string
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0Request) StartDate(startDate string) ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0Request {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0Request) EndDate(endDate string) ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0Request {
-	r.endDate = &endDate
-	return r
-}
-
-func (r ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0Request) Execute() (*ResourceLevelVolumeBillingDetailsResponseModel, *http.Response, error) {
-	return r.ApiService.RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_1Execute(r)
-}
-
-/*
-RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0 Retrieve Billing History of a Specific Volume for a specific Billing Cycle
-
-Retrieve billing history of a specific Volume for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour', 'incurred_bill', 'usage_time', 'non_discounted_price_per_hour', 'non_discounted_bill'.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param volumeId
-	@return ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0Request
-*/
-func (a *BillingAPIService) RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_1(ctx context.Context, volumeId int32) ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0Request {
-	return ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0Request{
-		ApiService: a,
-		ctx:        ctx,
-		volumeId:   volumeId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ResourceLevelVolumeBillingDetailsResponseModel
-func (a *BillingAPIService) RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_1Execute(r ApiRetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_0Request) (*ResourceLevelVolumeBillingDetailsResponseModel, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ResourceLevelVolumeBillingDetailsResponseModel
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle_1")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

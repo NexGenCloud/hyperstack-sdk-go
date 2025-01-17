@@ -29,6 +29,8 @@ type CreateInstancesPayload struct {
 	Count int32 `json:"count"`
 	// Indicates whether to create a bootable volume for the virtual machine. When set to `true`, a bootable volume will be created; the default value is `false`.
 	CreateBootableVolume *bool `json:"create_bootable_volume,omitempty"`
+	// Indicates whether to enable port randomization.This setting is only effective if 'assign_floating_ip' is true. Defaults to true.
+	EnablePortRandomization *bool `json:"enable_port_randomization,omitempty"`
 	// The name of the [environment](https://infrahub-doc.nexgencloud.com/docs/features/environments-available-features) in which the virtual machine is to be created.
 	EnvironmentName string              `json:"environment_name"`
 	Flavor          *FlavorObjectFields `json:"flavor,omitempty"`
@@ -58,6 +60,8 @@ type _CreateInstancesPayload CreateInstancesPayload
 func NewCreateInstancesPayload(count int32, environmentName string, flavorName string, keyName string, name string) *CreateInstancesPayload {
 	this := CreateInstancesPayload{}
 	this.Count = count
+	var enablePortRandomization bool = true
+	this.EnablePortRandomization = &enablePortRandomization
 	this.EnvironmentName = environmentName
 	this.FlavorName = flavorName
 	this.KeyName = keyName
@@ -70,6 +74,8 @@ func NewCreateInstancesPayload(count int32, environmentName string, flavorName s
 // but it doesn't guarantee that properties required by API are set
 func NewCreateInstancesPayloadWithDefaults() *CreateInstancesPayload {
 	this := CreateInstancesPayload{}
+	var enablePortRandomization bool = true
+	this.EnablePortRandomization = &enablePortRandomization
 	return &this
 }
 
@@ -191,6 +197,38 @@ func (o *CreateInstancesPayload) HasCreateBootableVolume() bool {
 // SetCreateBootableVolume gets a reference to the given bool and assigns it to the CreateBootableVolume field.
 func (o *CreateInstancesPayload) SetCreateBootableVolume(v bool) {
 	o.CreateBootableVolume = &v
+}
+
+// GetEnablePortRandomization returns the EnablePortRandomization field value if set, zero value otherwise.
+func (o *CreateInstancesPayload) GetEnablePortRandomization() bool {
+	if o == nil || IsNil(o.EnablePortRandomization) {
+		var ret bool
+		return ret
+	}
+	return *o.EnablePortRandomization
+}
+
+// GetEnablePortRandomizationOk returns a tuple with the EnablePortRandomization field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CreateInstancesPayload) GetEnablePortRandomizationOk() (*bool, bool) {
+	if o == nil || IsNil(o.EnablePortRandomization) {
+		return nil, false
+	}
+	return o.EnablePortRandomization, true
+}
+
+// HasEnablePortRandomization returns a boolean if a field has been set.
+func (o *CreateInstancesPayload) HasEnablePortRandomization() bool {
+	if o != nil && !IsNil(o.EnablePortRandomization) {
+		return true
+	}
+
+	return false
+}
+
+// SetEnablePortRandomization gets a reference to the given bool and assigns it to the EnablePortRandomization field.
+func (o *CreateInstancesPayload) SetEnablePortRandomization(v bool) {
+	o.EnablePortRandomization = &v
 }
 
 // GetEnvironmentName returns the EnvironmentName field value
@@ -532,6 +570,9 @@ func (o CreateInstancesPayload) ToMap() (map[string]interface{}, error) {
 	toSerialize["count"] = o.Count
 	if !IsNil(o.CreateBootableVolume) {
 		toSerialize["create_bootable_volume"] = o.CreateBootableVolume
+	}
+	if !IsNil(o.EnablePortRandomization) {
+		toSerialize["enable_port_randomization"] = o.EnablePortRandomization
 	}
 	toSerialize["environment_name"] = o.EnvironmentName
 	if !IsNil(o.Flavor) {
