@@ -115,15 +115,15 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// RequestConsole request
-	RequestConsole(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RequestInstanceConsole request
+	RequestInstanceConsole(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetVNCConsoleLink request
-	GetVNCConsoleLink(ctx context.Context, virtualMachineId int, jobId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetVncConsoleLink request
+	GetVncConsoleLink(ctx context.Context, virtualMachineId int, jobId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) RequestConsole(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRequestConsoleRequest(c.Server, id)
+func (c *Client) RequestInstanceConsole(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRequestInstanceConsoleRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -134,8 +134,8 @@ func (c *Client) RequestConsole(ctx context.Context, id int, reqEditors ...Reque
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetVNCConsoleLink(ctx context.Context, virtualMachineId int, jobId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetVNCConsoleLinkRequest(c.Server, virtualMachineId, jobId)
+func (c *Client) GetVncConsoleLink(ctx context.Context, virtualMachineId int, jobId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVncConsoleLinkRequest(c.Server, virtualMachineId, jobId)
 	if err != nil {
 		return nil, err
 	}
@@ -146,8 +146,8 @@ func (c *Client) GetVNCConsoleLink(ctx context.Context, virtualMachineId int, jo
 	return c.Client.Do(req)
 }
 
-// NewRequestConsoleRequest generates requests for RequestConsole
-func NewRequestConsoleRequest(server string, id int) (*http.Request, error) {
+// NewRequestInstanceConsoleRequest generates requests for RequestInstanceConsole
+func NewRequestInstanceConsoleRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -180,8 +180,8 @@ func NewRequestConsoleRequest(server string, id int) (*http.Request, error) {
 	return req, nil
 }
 
-// NewGetVNCConsoleLinkRequest generates requests for GetVNCConsoleLink
-func NewGetVNCConsoleLinkRequest(server string, virtualMachineId int, jobId int) (*http.Request, error) {
+// NewGetVncConsoleLinkRequest generates requests for GetVncConsoleLink
+func NewGetVncConsoleLinkRequest(server string, virtualMachineId int, jobId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -264,14 +264,14 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// RequestConsoleWithResponse request
-	RequestConsoleWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RequestConsoleResponse, error)
+	// RequestInstanceConsoleWithResponse request
+	RequestInstanceConsoleWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RequestInstanceConsoleResponse, error)
 
-	// GetVNCConsoleLinkWithResponse request
-	GetVNCConsoleLinkWithResponse(ctx context.Context, virtualMachineId int, jobId int, reqEditors ...RequestEditorFn) (*GetVNCConsoleLinkResponse, error)
+	// GetVncConsoleLinkWithResponse request
+	GetVncConsoleLinkWithResponse(ctx context.Context, virtualMachineId int, jobId int, reqEditors ...RequestEditorFn) (*GetVncConsoleLinkResponse, error)
 }
 
-type RequestConsoleResponse struct {
+type RequestInstanceConsoleResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *RequestConsole
@@ -281,7 +281,7 @@ type RequestConsoleResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RequestConsoleResponse) Status() string {
+func (r RequestInstanceConsoleResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -289,14 +289,14 @@ func (r RequestConsoleResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RequestConsoleResponse) StatusCode() int {
+func (r RequestInstanceConsoleResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetVNCConsoleLinkResponse struct {
+type GetVncConsoleLinkResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *VNCURL
@@ -306,7 +306,7 @@ type GetVNCConsoleLinkResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetVNCConsoleLinkResponse) Status() string {
+func (r GetVncConsoleLinkResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -314,40 +314,40 @@ func (r GetVNCConsoleLinkResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetVNCConsoleLinkResponse) StatusCode() int {
+func (r GetVncConsoleLinkResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// RequestConsoleWithResponse request returning *RequestConsoleResponse
-func (c *ClientWithResponses) RequestConsoleWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RequestConsoleResponse, error) {
-	rsp, err := c.RequestConsole(ctx, id, reqEditors...)
+// RequestInstanceConsoleWithResponse request returning *RequestInstanceConsoleResponse
+func (c *ClientWithResponses) RequestInstanceConsoleWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RequestInstanceConsoleResponse, error) {
+	rsp, err := c.RequestInstanceConsole(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRequestConsoleResponse(rsp)
+	return ParseRequestInstanceConsoleResponse(rsp)
 }
 
-// GetVNCConsoleLinkWithResponse request returning *GetVNCConsoleLinkResponse
-func (c *ClientWithResponses) GetVNCConsoleLinkWithResponse(ctx context.Context, virtualMachineId int, jobId int, reqEditors ...RequestEditorFn) (*GetVNCConsoleLinkResponse, error) {
-	rsp, err := c.GetVNCConsoleLink(ctx, virtualMachineId, jobId, reqEditors...)
+// GetVncConsoleLinkWithResponse request returning *GetVncConsoleLinkResponse
+func (c *ClientWithResponses) GetVncConsoleLinkWithResponse(ctx context.Context, virtualMachineId int, jobId int, reqEditors ...RequestEditorFn) (*GetVncConsoleLinkResponse, error) {
+	rsp, err := c.GetVncConsoleLink(ctx, virtualMachineId, jobId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetVNCConsoleLinkResponse(rsp)
+	return ParseGetVncConsoleLinkResponse(rsp)
 }
 
-// ParseRequestConsoleResponse parses an HTTP response from a RequestConsoleWithResponse call
-func ParseRequestConsoleResponse(rsp *http.Response) (*RequestConsoleResponse, error) {
+// ParseRequestInstanceConsoleResponse parses an HTTP response from a RequestInstanceConsoleWithResponse call
+func ParseRequestInstanceConsoleResponse(rsp *http.Response) (*RequestInstanceConsoleResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RequestConsoleResponse{
+	response := &RequestInstanceConsoleResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -386,15 +386,15 @@ func ParseRequestConsoleResponse(rsp *http.Response) (*RequestConsoleResponse, e
 	return response, nil
 }
 
-// ParseGetVNCConsoleLinkResponse parses an HTTP response from a GetVNCConsoleLinkWithResponse call
-func ParseGetVNCConsoleLinkResponse(rsp *http.Response) (*GetVNCConsoleLinkResponse, error) {
+// ParseGetVncConsoleLinkResponse parses an HTTP response from a GetVncConsoleLinkWithResponse call
+func ParseGetVncConsoleLinkResponse(rsp *http.Response) (*GetVncConsoleLinkResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetVNCConsoleLinkResponse{
+	response := &GetVncConsoleLinkResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

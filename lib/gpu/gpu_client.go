@@ -117,12 +117,12 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// ListGPUs request
-	ListGPUs(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListGpus request
+	ListGpus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) ListGPUs(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListGPUsRequest(c.Server)
+func (c *Client) ListGpus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListGpusRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -133,8 +133,8 @@ func (c *Client) ListGPUs(ctx context.Context, reqEditors ...RequestEditorFn) (*
 	return c.Client.Do(req)
 }
 
-// NewListGPUsRequest generates requests for ListGPUs
-func NewListGPUsRequest(server string) (*http.Request, error) {
+// NewListGpusRequest generates requests for ListGpus
+func NewListGpusRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -203,11 +203,11 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// ListGPUsWithResponse request
-	ListGPUsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListGPUsResponse, error)
+	// ListGpusWithResponse request
+	ListGpusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListGpusResponse, error)
 }
 
-type ListGPUsResponse struct {
+type ListGpusResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *GPUList
@@ -216,7 +216,7 @@ type ListGPUsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ListGPUsResponse) Status() string {
+func (r ListGpusResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -224,31 +224,31 @@ func (r ListGPUsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ListGPUsResponse) StatusCode() int {
+func (r ListGpusResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// ListGPUsWithResponse request returning *ListGPUsResponse
-func (c *ClientWithResponses) ListGPUsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListGPUsResponse, error) {
-	rsp, err := c.ListGPUs(ctx, reqEditors...)
+// ListGpusWithResponse request returning *ListGpusResponse
+func (c *ClientWithResponses) ListGpusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListGpusResponse, error) {
+	rsp, err := c.ListGpus(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseListGPUsResponse(rsp)
+	return ParseListGpusResponse(rsp)
 }
 
-// ParseListGPUsResponse parses an HTTP response from a ListGPUsWithResponse call
-func ParseListGPUsResponse(rsp *http.Response) (*ListGPUsResponse, error) {
+// ParseListGpusResponse parses an HTTP response from a ListGpusWithResponse call
+func ParseListGpusResponse(rsp *http.Response) (*ListGpusResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ListGPUsResponse{
+	response := &ListGpusResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

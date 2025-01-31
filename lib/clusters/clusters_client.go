@@ -21,14 +21,12 @@ import (
 type ClusterFields struct {
 	ApiAddress        *string               `json:"api_address,omitempty"`
 	CreatedAt         *time.CustomTime            `json:"created_at,omitempty"`
-	EnablePublicIp    *bool                 `json:"enable_public_ip,omitempty"`
 	EnvironmentName   *string               `json:"environment_name,omitempty"`
 	Id                *int                  `json:"id,omitempty"`
 	KeypairName       *string               `json:"keypair_name,omitempty"`
 	KubeConfig        *string               `json:"kube_config,omitempty"`
 	KubernetesVersion *string               `json:"kubernetes_version,omitempty"`
 	Name              *string               `json:"name,omitempty"`
-	NodeAddresses     *[]string             `json:"node_addresses,omitempty"`
 	NodeCount         *int                  `json:"node_count,omitempty"`
 	NodeFlavor        *InstanceFlavorFields `json:"node_flavor,omitempty"`
 	Status            *string               `json:"status,omitempty"`
@@ -58,7 +56,6 @@ type ClusterVersions struct {
 
 // CreateClusterPayload defines model for CreateClusterPayload.
 type CreateClusterPayload struct {
-	EnablePublicIp    *bool  `json:"enable_public_ip,omitempty"`
 	EnvironmentName   string `json:"environment_name"`
 	ImageName         string `json:"image_name"`
 	KeypairName       string `json:"keypair_name"`
@@ -86,6 +83,13 @@ type InstanceFlavorFields struct {
 	Id        *int     `json:"id,omitempty"`
 	Name      *string  `json:"name,omitempty"`
 	Ram       *float32 `json:"ram,omitempty"`
+}
+
+// NameAvailableModel defines model for NameAvailableModel.
+type NameAvailableModel struct {
+	Available *bool   `json:"available,omitempty"`
+	Message   *string `json:"message,omitempty"`
+	Name      *string `json:"name,omitempty"`
 }
 
 // ResponseModel defines model for ResponseModel.
@@ -178,6 +182,9 @@ type ClientInterface interface {
 
 	CreateCluster(ctx context.Context, body CreateClusterJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// FetchClusterNameAvailability request
+	FetchClusterNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetClusterVersions request
 	GetClusterVersions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -214,6 +221,18 @@ func (c *Client) CreateClusterWithBody(ctx context.Context, contentType string, 
 
 func (c *Client) CreateCluster(ctx context.Context, body CreateClusterJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateClusterRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FetchClusterNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFetchClusterNameAvailabilityRequest(c.Server, name)
 	if err != nil {
 		return nil, err
 	}
@@ -323,6 +342,40 @@ func NewCreateClusterRequestWithBody(server string, contentType string, body io.
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewFetchClusterNameAvailabilityRequest generates requests for FetchClusterNameAvailability
+func NewFetchClusterNameAvailabilityRequest(server string, name string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "name", runtime.ParamLocationPath, name)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/clusters/name-availability/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -473,6 +526,9 @@ type ClientWithResponsesInterface interface {
 
 	CreateClusterWithResponse(ctx context.Context, body CreateClusterJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateClusterResponse, error)
 
+	// FetchClusterNameAvailabilityWithResponse request
+	FetchClusterNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*FetchClusterNameAvailabilityResponse, error)
+
 	// GetClusterVersionsWithResponse request
 	GetClusterVersionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetClusterVersionsResponse, error)
 
@@ -527,6 +583,31 @@ func (r CreateClusterResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r CreateClusterResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FetchClusterNameAvailabilityResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *NameAvailableModel
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r FetchClusterNameAvailabilityResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FetchClusterNameAvailabilityResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -631,6 +712,15 @@ func (c *ClientWithResponses) CreateClusterWithResponse(ctx context.Context, bod
 		return nil, err
 	}
 	return ParseCreateClusterResponse(rsp)
+}
+
+// FetchClusterNameAvailabilityWithResponse request returning *FetchClusterNameAvailabilityResponse
+func (c *ClientWithResponses) FetchClusterNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*FetchClusterNameAvailabilityResponse, error) {
+	rsp, err := c.FetchClusterNameAvailability(ctx, name, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFetchClusterNameAvailabilityResponse(rsp)
 }
 
 // GetClusterVersionsWithResponse request returning *GetClusterVersionsResponse
@@ -748,6 +838,53 @@ func ParseCreateClusterResponse(rsp *http.Response) (*CreateClusterResponse, err
 			return nil, err
 		}
 		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFetchClusterNameAvailabilityResponse parses an HTTP response from a FetchClusterNameAvailabilityWithResponse call
+func ParseFetchClusterNameAvailabilityResponse(rsp *http.Response) (*FetchClusterNameAvailabilityResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FetchClusterNameAvailabilityResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest NameAvailableModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	}
 

@@ -17,22 +17,71 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// Defines values for CreateFirewallRulePayloadProtocol.
+const (
+	Ah        CreateFirewallRulePayloadProtocol = "ah"
+	Any       CreateFirewallRulePayloadProtocol = "any"
+	Dccp      CreateFirewallRulePayloadProtocol = "dccp"
+	Egp       CreateFirewallRulePayloadProtocol = "egp"
+	Esp       CreateFirewallRulePayloadProtocol = "esp"
+	Gre       CreateFirewallRulePayloadProtocol = "gre"
+	Hopopt    CreateFirewallRulePayloadProtocol = "hopopt"
+	Icmp      CreateFirewallRulePayloadProtocol = "icmp"
+	Icmpv6    CreateFirewallRulePayloadProtocol = "icmpv6"
+	Igmp      CreateFirewallRulePayloadProtocol = "igmp"
+	Ip        CreateFirewallRulePayloadProtocol = "ip"
+	Ipip      CreateFirewallRulePayloadProtocol = "ipip"
+	Ipv6Encap CreateFirewallRulePayloadProtocol = "ipv6-encap"
+	Ipv6Frag  CreateFirewallRulePayloadProtocol = "ipv6-frag"
+	Ipv6Icmp  CreateFirewallRulePayloadProtocol = "ipv6-icmp"
+	Ipv6Nonxt CreateFirewallRulePayloadProtocol = "ipv6-nonxt"
+	Ipv6Opts  CreateFirewallRulePayloadProtocol = "ipv6-opts"
+	Ipv6Route CreateFirewallRulePayloadProtocol = "ipv6-route"
+	Ospf      CreateFirewallRulePayloadProtocol = "ospf"
+	Pgm       CreateFirewallRulePayloadProtocol = "pgm"
+	Rsvp      CreateFirewallRulePayloadProtocol = "rsvp"
+	Sctp      CreateFirewallRulePayloadProtocol = "sctp"
+	Tcp       CreateFirewallRulePayloadProtocol = "tcp"
+	Udp       CreateFirewallRulePayloadProtocol = "udp"
+	Udplite   CreateFirewallRulePayloadProtocol = "udplite"
+	Vrrp      CreateFirewallRulePayloadProtocol = "vrrp"
+)
+
 // CreateFirewallPayload defines model for CreateFirewallPayload.
 type CreateFirewallPayload struct {
-	Description   *string `json:"description,omitempty"`
-	EnvironmentId int     `json:"environment_id"`
-	Name          string  `json:"name"`
+	// Description Description of the firewall.
+	Description *string `json:"description,omitempty"`
+
+	// EnvironmentId ID of the environment.
+	EnvironmentId int `json:"environment_id"`
+
+	// Name Name of the firewall.
+	Name string `json:"name"`
 }
 
 // CreateFirewallRulePayload defines model for CreateFirewallRulePayload.
 type CreateFirewallRulePayload struct {
-	Direction      string `json:"direction"`
-	Ethertype      string `json:"ethertype"`
-	PortRangeMax   *int   `json:"port_range_max,omitempty"`
-	PortRangeMin   *int   `json:"port_range_min,omitempty"`
-	Protocol       string `json:"protocol"`
+	// Direction The direction of traffic that the firewall rule applies to.
+	Direction string `json:"direction"`
+
+	// Ethertype The Ethernet type associated with the rule.
+	Ethertype string `json:"ethertype"`
+
+	// PortRangeMax The maximum port number in the range of ports to be allowed by the firewall rule.
+	PortRangeMax *int `json:"port_range_max,omitempty"`
+
+	// PortRangeMin The minimum port number in the range of ports to be allowed by the firewall rule.
+	PortRangeMin *int `json:"port_range_min,omitempty"`
+
+	// Protocol The network protocol associated with the rule. Call the [`GET /core/sg-rules-protocols`](https://infrahub-api-doc.nexgencloud.com/#get-/core/sg-rules-protocols) endpoint to retrieve a list of permitted network protocols.
+	Protocol CreateFirewallRulePayloadProtocol `json:"protocol"`
+
+	// RemoteIpPrefix The IP address range that is allowed to access the specified port. Use "0.0.0.0/0" to allow any IP address.
 	RemoteIpPrefix string `json:"remote_ip_prefix"`
 }
+
+// CreateFirewallRulePayloadProtocol The network protocol associated with the rule. Call the [`GET /core/sg-rules-protocols`](https://infrahub-api-doc.nexgencloud.com/#get-/core/sg-rules-protocols) endpoint to retrieve a list of permitted network protocols.
+type CreateFirewallRulePayloadProtocol string
 
 // ErrorResponseModel defines model for ErrorResponseModel.
 type ErrorResponseModel struct {
@@ -138,18 +187,19 @@ type SecurityGroupRuleFields struct {
 	Status         *string    `json:"status,omitempty"`
 }
 
-// RetrieveFirewallsParams defines parameters for RetrieveFirewalls.
-type RetrieveFirewallsParams struct {
-	Page     *int    `form:"page,omitempty" json:"page,omitempty"`
-	PageSize *int    `form:"pageSize,omitempty" json:"pageSize,omitempty"`
-	Search   *string `form:"search,omitempty" json:"search,omitempty"`
+// ListFirewallsParams defines parameters for ListFirewalls.
+type ListFirewallsParams struct {
+	Page        *int    `form:"page,omitempty" json:"page,omitempty"`
+	PageSize    *int    `form:"pageSize,omitempty" json:"pageSize,omitempty"`
+	Search      *string `form:"search,omitempty" json:"search,omitempty"`
+	Environment *string `form:"environment,omitempty" json:"environment,omitempty"`
 }
 
 // CreateFirewallJSONRequestBody defines body for CreateFirewall for application/json ContentType.
 type CreateFirewallJSONRequestBody = CreateFirewallPayload
 
-// AddRulesToFirewallJSONRequestBody defines body for AddRulesToFirewall for application/json ContentType.
-type AddRulesToFirewallJSONRequestBody = CreateFirewallRulePayload
+// AddFirewallRuleToFirewallJSONRequestBody defines body for AddFirewallRuleToFirewall for application/json ContentType.
+type AddFirewallRuleToFirewallJSONRequestBody = CreateFirewallRulePayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -224,18 +274,18 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// RetrieveFirewalls request
-	RetrieveFirewalls(ctx context.Context, params *RetrieveFirewallsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListFirewalls request
+	ListFirewalls(ctx context.Context, params *ListFirewallsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateFirewallWithBody request with any body
 	CreateFirewallWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateFirewall(ctx context.Context, body CreateFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// AddRulesToFirewallWithBody request with any body
-	AddRulesToFirewallWithBody(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// AddFirewallRuleToFirewallWithBody request with any body
+	AddFirewallRuleToFirewallWithBody(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	AddRulesToFirewall(ctx context.Context, firewallId int, body AddRulesToFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	AddFirewallRuleToFirewall(ctx context.Context, firewallId int, body AddFirewallRuleToFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteFirewallRulesFromFirewall request
 	DeleteFirewallRulesFromFirewall(ctx context.Context, firewallId int, firewallRuleId int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -243,12 +293,12 @@ type ClientInterface interface {
 	// DeleteFirewall request
 	DeleteFirewall(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DetailsOfFirewallByID request
-	DetailsOfFirewallByID(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RetrieveFirewallDetails request
+	RetrieveFirewallDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) RetrieveFirewalls(ctx context.Context, params *RetrieveFirewallsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveFirewallsRequest(c.Server, params)
+func (c *Client) ListFirewalls(ctx context.Context, params *ListFirewallsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListFirewallsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -283,8 +333,8 @@ func (c *Client) CreateFirewall(ctx context.Context, body CreateFirewallJSONRequ
 	return c.Client.Do(req)
 }
 
-func (c *Client) AddRulesToFirewallWithBody(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAddRulesToFirewallRequestWithBody(c.Server, firewallId, contentType, body)
+func (c *Client) AddFirewallRuleToFirewallWithBody(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddFirewallRuleToFirewallRequestWithBody(c.Server, firewallId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -295,8 +345,8 @@ func (c *Client) AddRulesToFirewallWithBody(ctx context.Context, firewallId int,
 	return c.Client.Do(req)
 }
 
-func (c *Client) AddRulesToFirewall(ctx context.Context, firewallId int, body AddRulesToFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAddRulesToFirewallRequest(c.Server, firewallId, body)
+func (c *Client) AddFirewallRuleToFirewall(ctx context.Context, firewallId int, body AddFirewallRuleToFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddFirewallRuleToFirewallRequest(c.Server, firewallId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -331,8 +381,8 @@ func (c *Client) DeleteFirewall(ctx context.Context, id int, reqEditors ...Reque
 	return c.Client.Do(req)
 }
 
-func (c *Client) DetailsOfFirewallByID(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDetailsOfFirewallByIDRequest(c.Server, id)
+func (c *Client) RetrieveFirewallDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveFirewallDetailsRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -343,8 +393,8 @@ func (c *Client) DetailsOfFirewallByID(ctx context.Context, id int, reqEditors .
 	return c.Client.Do(req)
 }
 
-// NewRetrieveFirewallsRequest generates requests for RetrieveFirewalls
-func NewRetrieveFirewallsRequest(server string, params *RetrieveFirewallsParams) (*http.Request, error) {
+// NewListFirewallsRequest generates requests for ListFirewalls
+func NewListFirewallsRequest(server string, params *ListFirewallsParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -413,6 +463,22 @@ func NewRetrieveFirewallsRequest(server string, params *RetrieveFirewallsParams)
 
 		}
 
+		if params.Environment != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "environment", runtime.ParamLocationQuery, *params.Environment); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		queryURL.RawQuery = queryValues.Encode()
 	}
 
@@ -464,19 +530,19 @@ func NewCreateFirewallRequestWithBody(server string, contentType string, body io
 	return req, nil
 }
 
-// NewAddRulesToFirewallRequest calls the generic AddRulesToFirewall builder with application/json body
-func NewAddRulesToFirewallRequest(server string, firewallId int, body AddRulesToFirewallJSONRequestBody) (*http.Request, error) {
+// NewAddFirewallRuleToFirewallRequest calls the generic AddFirewallRuleToFirewall builder with application/json body
+func NewAddFirewallRuleToFirewallRequest(server string, firewallId int, body AddFirewallRuleToFirewallJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewAddRulesToFirewallRequestWithBody(server, firewallId, "application/json", bodyReader)
+	return NewAddFirewallRuleToFirewallRequestWithBody(server, firewallId, "application/json", bodyReader)
 }
 
-// NewAddRulesToFirewallRequestWithBody generates requests for AddRulesToFirewall with any type of body
-func NewAddRulesToFirewallRequestWithBody(server string, firewallId int, contentType string, body io.Reader) (*http.Request, error) {
+// NewAddFirewallRuleToFirewallRequestWithBody generates requests for AddFirewallRuleToFirewall with any type of body
+func NewAddFirewallRuleToFirewallRequestWithBody(server string, firewallId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -586,8 +652,8 @@ func NewDeleteFirewallRequest(server string, id int) (*http.Request, error) {
 	return req, nil
 }
 
-// NewDetailsOfFirewallByIDRequest generates requests for DetailsOfFirewallByID
-func NewDetailsOfFirewallByIDRequest(server string, id int) (*http.Request, error) {
+// NewRetrieveFirewallDetailsRequest generates requests for RetrieveFirewallDetails
+func NewRetrieveFirewallDetailsRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -663,18 +729,18 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// RetrieveFirewallsWithResponse request
-	RetrieveFirewallsWithResponse(ctx context.Context, params *RetrieveFirewallsParams, reqEditors ...RequestEditorFn) (*RetrieveFirewallsResponse, error)
+	// ListFirewallsWithResponse request
+	ListFirewallsWithResponse(ctx context.Context, params *ListFirewallsParams, reqEditors ...RequestEditorFn) (*ListFirewallsResponse, error)
 
 	// CreateFirewallWithBodyWithResponse request with any body
 	CreateFirewallWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateFirewallResponse, error)
 
 	CreateFirewallWithResponse(ctx context.Context, body CreateFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateFirewallResponse, error)
 
-	// AddRulesToFirewallWithBodyWithResponse request with any body
-	AddRulesToFirewallWithBodyWithResponse(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddRulesToFirewallResponse, error)
+	// AddFirewallRuleToFirewallWithBodyWithResponse request with any body
+	AddFirewallRuleToFirewallWithBodyWithResponse(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddFirewallRuleToFirewallResponse, error)
 
-	AddRulesToFirewallWithResponse(ctx context.Context, firewallId int, body AddRulesToFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*AddRulesToFirewallResponse, error)
+	AddFirewallRuleToFirewallWithResponse(ctx context.Context, firewallId int, body AddFirewallRuleToFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*AddFirewallRuleToFirewallResponse, error)
 
 	// DeleteFirewallRulesFromFirewallWithResponse request
 	DeleteFirewallRulesFromFirewallWithResponse(ctx context.Context, firewallId int, firewallRuleId int, reqEditors ...RequestEditorFn) (*DeleteFirewallRulesFromFirewallResponse, error)
@@ -682,11 +748,11 @@ type ClientWithResponsesInterface interface {
 	// DeleteFirewallWithResponse request
 	DeleteFirewallWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteFirewallResponse, error)
 
-	// DetailsOfFirewallByIDWithResponse request
-	DetailsOfFirewallByIDWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DetailsOfFirewallByIDResponse, error)
+	// RetrieveFirewallDetailsWithResponse request
+	RetrieveFirewallDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveFirewallDetailsResponse, error)
 }
 
-type RetrieveFirewallsResponse struct {
+type ListFirewallsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *FirewallsListResponse
@@ -696,7 +762,7 @@ type RetrieveFirewallsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrieveFirewallsResponse) Status() string {
+func (r ListFirewallsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -704,7 +770,7 @@ func (r RetrieveFirewallsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrieveFirewallsResponse) StatusCode() int {
+func (r ListFirewallsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -738,7 +804,7 @@ func (r CreateFirewallResponse) StatusCode() int {
 	return 0
 }
 
-type AddRulesToFirewallResponse struct {
+type AddFirewallRuleToFirewallResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *FirewallRule
@@ -748,7 +814,7 @@ type AddRulesToFirewallResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r AddRulesToFirewallResponse) Status() string {
+func (r AddFirewallRuleToFirewallResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -756,7 +822,7 @@ func (r AddRulesToFirewallResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r AddRulesToFirewallResponse) StatusCode() int {
+func (r AddFirewallRuleToFirewallResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -817,7 +883,7 @@ func (r DeleteFirewallResponse) StatusCode() int {
 	return 0
 }
 
-type DetailsOfFirewallByIDResponse struct {
+type RetrieveFirewallDetailsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *FirewallDetailResponse
@@ -828,7 +894,7 @@ type DetailsOfFirewallByIDResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DetailsOfFirewallByIDResponse) Status() string {
+func (r RetrieveFirewallDetailsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -836,20 +902,20 @@ func (r DetailsOfFirewallByIDResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DetailsOfFirewallByIDResponse) StatusCode() int {
+func (r RetrieveFirewallDetailsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// RetrieveFirewallsWithResponse request returning *RetrieveFirewallsResponse
-func (c *ClientWithResponses) RetrieveFirewallsWithResponse(ctx context.Context, params *RetrieveFirewallsParams, reqEditors ...RequestEditorFn) (*RetrieveFirewallsResponse, error) {
-	rsp, err := c.RetrieveFirewalls(ctx, params, reqEditors...)
+// ListFirewallsWithResponse request returning *ListFirewallsResponse
+func (c *ClientWithResponses) ListFirewallsWithResponse(ctx context.Context, params *ListFirewallsParams, reqEditors ...RequestEditorFn) (*ListFirewallsResponse, error) {
+	rsp, err := c.ListFirewalls(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveFirewallsResponse(rsp)
+	return ParseListFirewallsResponse(rsp)
 }
 
 // CreateFirewallWithBodyWithResponse request with arbitrary body returning *CreateFirewallResponse
@@ -869,21 +935,21 @@ func (c *ClientWithResponses) CreateFirewallWithResponse(ctx context.Context, bo
 	return ParseCreateFirewallResponse(rsp)
 }
 
-// AddRulesToFirewallWithBodyWithResponse request with arbitrary body returning *AddRulesToFirewallResponse
-func (c *ClientWithResponses) AddRulesToFirewallWithBodyWithResponse(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddRulesToFirewallResponse, error) {
-	rsp, err := c.AddRulesToFirewallWithBody(ctx, firewallId, contentType, body, reqEditors...)
+// AddFirewallRuleToFirewallWithBodyWithResponse request with arbitrary body returning *AddFirewallRuleToFirewallResponse
+func (c *ClientWithResponses) AddFirewallRuleToFirewallWithBodyWithResponse(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddFirewallRuleToFirewallResponse, error) {
+	rsp, err := c.AddFirewallRuleToFirewallWithBody(ctx, firewallId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseAddRulesToFirewallResponse(rsp)
+	return ParseAddFirewallRuleToFirewallResponse(rsp)
 }
 
-func (c *ClientWithResponses) AddRulesToFirewallWithResponse(ctx context.Context, firewallId int, body AddRulesToFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*AddRulesToFirewallResponse, error) {
-	rsp, err := c.AddRulesToFirewall(ctx, firewallId, body, reqEditors...)
+func (c *ClientWithResponses) AddFirewallRuleToFirewallWithResponse(ctx context.Context, firewallId int, body AddFirewallRuleToFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*AddFirewallRuleToFirewallResponse, error) {
+	rsp, err := c.AddFirewallRuleToFirewall(ctx, firewallId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseAddRulesToFirewallResponse(rsp)
+	return ParseAddFirewallRuleToFirewallResponse(rsp)
 }
 
 // DeleteFirewallRulesFromFirewallWithResponse request returning *DeleteFirewallRulesFromFirewallResponse
@@ -904,24 +970,24 @@ func (c *ClientWithResponses) DeleteFirewallWithResponse(ctx context.Context, id
 	return ParseDeleteFirewallResponse(rsp)
 }
 
-// DetailsOfFirewallByIDWithResponse request returning *DetailsOfFirewallByIDResponse
-func (c *ClientWithResponses) DetailsOfFirewallByIDWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DetailsOfFirewallByIDResponse, error) {
-	rsp, err := c.DetailsOfFirewallByID(ctx, id, reqEditors...)
+// RetrieveFirewallDetailsWithResponse request returning *RetrieveFirewallDetailsResponse
+func (c *ClientWithResponses) RetrieveFirewallDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveFirewallDetailsResponse, error) {
+	rsp, err := c.RetrieveFirewallDetails(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDetailsOfFirewallByIDResponse(rsp)
+	return ParseRetrieveFirewallDetailsResponse(rsp)
 }
 
-// ParseRetrieveFirewallsResponse parses an HTTP response from a RetrieveFirewallsWithResponse call
-func ParseRetrieveFirewallsResponse(rsp *http.Response) (*RetrieveFirewallsResponse, error) {
+// ParseListFirewallsResponse parses an HTTP response from a ListFirewallsWithResponse call
+func ParseListFirewallsResponse(rsp *http.Response) (*ListFirewallsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrieveFirewallsResponse{
+	response := &ListFirewallsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1021,15 +1087,15 @@ func ParseCreateFirewallResponse(rsp *http.Response) (*CreateFirewallResponse, e
 	return response, nil
 }
 
-// ParseAddRulesToFirewallResponse parses an HTTP response from a AddRulesToFirewallWithResponse call
-func ParseAddRulesToFirewallResponse(rsp *http.Response) (*AddRulesToFirewallResponse, error) {
+// ParseAddFirewallRuleToFirewallResponse parses an HTTP response from a AddFirewallRuleToFirewallWithResponse call
+func ParseAddFirewallRuleToFirewallResponse(rsp *http.Response) (*AddFirewallRuleToFirewallResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &AddRulesToFirewallResponse{
+	response := &AddFirewallRuleToFirewallResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1190,15 +1256,15 @@ func ParseDeleteFirewallResponse(rsp *http.Response) (*DeleteFirewallResponse, e
 	return response, nil
 }
 
-// ParseDetailsOfFirewallByIDResponse parses an HTTP response from a DetailsOfFirewallByIDWithResponse call
-func ParseDetailsOfFirewallByIDResponse(rsp *http.Response) (*DetailsOfFirewallByIDResponse, error) {
+// ParseRetrieveFirewallDetailsResponse parses an HTTP response from a RetrieveFirewallDetailsWithResponse call
+func ParseRetrieveFirewallDetailsResponse(rsp *http.Response) (*RetrieveFirewallDetailsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DetailsOfFirewallByIDResponse{
+	response := &RetrieveFirewallDetailsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

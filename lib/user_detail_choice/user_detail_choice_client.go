@@ -22,11 +22,9 @@ type ErrorResponseModel struct {
 
 // UserDefaultChoiceForUserFields defines model for UserDefaultChoiceForUserFields.
 type UserDefaultChoiceForUserFields struct {
-	EnvironmentId *int `json:"environment_id,omitempty"`
-	FlavorId      *int `json:"flavor_id,omitempty"`
-	ImageId       *int `json:"image_id,omitempty"`
-	KeypairId     *int `json:"keypair_id,omitempty"`
-	RegionId      *int `json:"region_id,omitempty"`
+	FlavorId  *int `json:"flavor_id,omitempty"`
+	ImageId   *int `json:"image_id,omitempty"`
+	KeypairId *int `json:"keypair_id,omitempty"`
 }
 
 // UserDefaultChoicesForUserResponse defines model for UserDefaultChoicesForUserResponse.

@@ -66,8 +66,8 @@ type RolePolicyFields struct {
 	Name        *string `json:"name,omitempty"`
 }
 
-// AssignRBACRoleToUserJSONRequestBody defines body for AssignRBACRoleToUser for application/json ContentType.
-type AssignRBACRoleToUserJSONRequestBody = AssignRbacRolePayload
+// AssignRbacRoleJSONRequestBody defines body for AssignRbacRole for application/json ContentType.
+type AssignRbacRoleJSONRequestBody = AssignRbacRolePayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -142,17 +142,17 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// AssignRBACRoleToUserWithBody request with any body
-	AssignRBACRoleToUserWithBody(ctx context.Context, userId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// AssignRbacRoleWithBody request with any body
+	AssignRbacRoleWithBody(ctx context.Context, userId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	AssignRBACRoleToUser(ctx context.Context, userId int, body AssignRBACRoleToUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	AssignRbacRole(ctx context.Context, userId int, body AssignRbacRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RemoveRBACRoleFromUser request
-	RemoveRBACRoleFromUser(ctx context.Context, userId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RemoveRbacRoleFromUser request
+	RemoveRbacRoleFromUser(ctx context.Context, userId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) AssignRBACRoleToUserWithBody(ctx context.Context, userId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAssignRBACRoleToUserRequestWithBody(c.Server, userId, contentType, body)
+func (c *Client) AssignRbacRoleWithBody(ctx context.Context, userId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAssignRbacRoleRequestWithBody(c.Server, userId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -163,8 +163,8 @@ func (c *Client) AssignRBACRoleToUserWithBody(ctx context.Context, userId int, c
 	return c.Client.Do(req)
 }
 
-func (c *Client) AssignRBACRoleToUser(ctx context.Context, userId int, body AssignRBACRoleToUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAssignRBACRoleToUserRequest(c.Server, userId, body)
+func (c *Client) AssignRbacRole(ctx context.Context, userId int, body AssignRbacRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAssignRbacRoleRequest(c.Server, userId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -175,8 +175,8 @@ func (c *Client) AssignRBACRoleToUser(ctx context.Context, userId int, body Assi
 	return c.Client.Do(req)
 }
 
-func (c *Client) RemoveRBACRoleFromUser(ctx context.Context, userId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRemoveRBACRoleFromUserRequest(c.Server, userId)
+func (c *Client) RemoveRbacRoleFromUser(ctx context.Context, userId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRemoveRbacRoleFromUserRequest(c.Server, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -187,19 +187,19 @@ func (c *Client) RemoveRBACRoleFromUser(ctx context.Context, userId int, reqEdit
 	return c.Client.Do(req)
 }
 
-// NewAssignRBACRoleToUserRequest calls the generic AssignRBACRoleToUser builder with application/json body
-func NewAssignRBACRoleToUserRequest(server string, userId int, body AssignRBACRoleToUserJSONRequestBody) (*http.Request, error) {
+// NewAssignRbacRoleRequest calls the generic AssignRbacRole builder with application/json body
+func NewAssignRbacRoleRequest(server string, userId int, body AssignRbacRoleJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewAssignRBACRoleToUserRequestWithBody(server, userId, "application/json", bodyReader)
+	return NewAssignRbacRoleRequestWithBody(server, userId, "application/json", bodyReader)
 }
 
-// NewAssignRBACRoleToUserRequestWithBody generates requests for AssignRBACRoleToUser with any type of body
-func NewAssignRBACRoleToUserRequestWithBody(server string, userId int, contentType string, body io.Reader) (*http.Request, error) {
+// NewAssignRbacRoleRequestWithBody generates requests for AssignRbacRole with any type of body
+func NewAssignRbacRoleRequestWithBody(server string, userId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -234,8 +234,8 @@ func NewAssignRBACRoleToUserRequestWithBody(server string, userId int, contentTy
 	return req, nil
 }
 
-// NewRemoveRBACRoleFromUserRequest generates requests for RemoveRBACRoleFromUser
-func NewRemoveRBACRoleFromUserRequest(server string, userId int) (*http.Request, error) {
+// NewRemoveRbacRoleFromUserRequest generates requests for RemoveRbacRoleFromUser
+func NewRemoveRbacRoleFromUserRequest(server string, userId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -311,16 +311,16 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// AssignRBACRoleToUserWithBodyWithResponse request with any body
-	AssignRBACRoleToUserWithBodyWithResponse(ctx context.Context, userId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AssignRBACRoleToUserResponse, error)
+	// AssignRbacRoleWithBodyWithResponse request with any body
+	AssignRbacRoleWithBodyWithResponse(ctx context.Context, userId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AssignRbacRoleResponse, error)
 
-	AssignRBACRoleToUserWithResponse(ctx context.Context, userId int, body AssignRBACRoleToUserJSONRequestBody, reqEditors ...RequestEditorFn) (*AssignRBACRoleToUserResponse, error)
+	AssignRbacRoleWithResponse(ctx context.Context, userId int, body AssignRbacRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*AssignRbacRoleResponse, error)
 
-	// RemoveRBACRoleFromUserWithResponse request
-	RemoveRBACRoleFromUserWithResponse(ctx context.Context, userId int, reqEditors ...RequestEditorFn) (*RemoveRBACRoleFromUserResponse, error)
+	// RemoveRbacRoleFromUserWithResponse request
+	RemoveRbacRoleFromUserWithResponse(ctx context.Context, userId int, reqEditors ...RequestEditorFn) (*RemoveRbacRoleFromUserResponse, error)
 }
 
-type AssignRBACRoleToUserResponse struct {
+type AssignRbacRoleResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *RbacRoleDetailResponseModel
@@ -330,7 +330,7 @@ type AssignRBACRoleToUserResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r AssignRBACRoleToUserResponse) Status() string {
+func (r AssignRbacRoleResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -338,14 +338,14 @@ func (r AssignRBACRoleToUserResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r AssignRBACRoleToUserResponse) StatusCode() int {
+func (r AssignRbacRoleResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type RemoveRBACRoleFromUserResponse struct {
+type RemoveRbacRoleFromUserResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *CommonResponseModel
@@ -355,7 +355,7 @@ type RemoveRBACRoleFromUserResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RemoveRBACRoleFromUserResponse) Status() string {
+func (r RemoveRbacRoleFromUserResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -363,48 +363,48 @@ func (r RemoveRBACRoleFromUserResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RemoveRBACRoleFromUserResponse) StatusCode() int {
+func (r RemoveRbacRoleFromUserResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// AssignRBACRoleToUserWithBodyWithResponse request with arbitrary body returning *AssignRBACRoleToUserResponse
-func (c *ClientWithResponses) AssignRBACRoleToUserWithBodyWithResponse(ctx context.Context, userId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AssignRBACRoleToUserResponse, error) {
-	rsp, err := c.AssignRBACRoleToUserWithBody(ctx, userId, contentType, body, reqEditors...)
+// AssignRbacRoleWithBodyWithResponse request with arbitrary body returning *AssignRbacRoleResponse
+func (c *ClientWithResponses) AssignRbacRoleWithBodyWithResponse(ctx context.Context, userId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AssignRbacRoleResponse, error) {
+	rsp, err := c.AssignRbacRoleWithBody(ctx, userId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseAssignRBACRoleToUserResponse(rsp)
+	return ParseAssignRbacRoleResponse(rsp)
 }
 
-func (c *ClientWithResponses) AssignRBACRoleToUserWithResponse(ctx context.Context, userId int, body AssignRBACRoleToUserJSONRequestBody, reqEditors ...RequestEditorFn) (*AssignRBACRoleToUserResponse, error) {
-	rsp, err := c.AssignRBACRoleToUser(ctx, userId, body, reqEditors...)
+func (c *ClientWithResponses) AssignRbacRoleWithResponse(ctx context.Context, userId int, body AssignRbacRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*AssignRbacRoleResponse, error) {
+	rsp, err := c.AssignRbacRole(ctx, userId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseAssignRBACRoleToUserResponse(rsp)
+	return ParseAssignRbacRoleResponse(rsp)
 }
 
-// RemoveRBACRoleFromUserWithResponse request returning *RemoveRBACRoleFromUserResponse
-func (c *ClientWithResponses) RemoveRBACRoleFromUserWithResponse(ctx context.Context, userId int, reqEditors ...RequestEditorFn) (*RemoveRBACRoleFromUserResponse, error) {
-	rsp, err := c.RemoveRBACRoleFromUser(ctx, userId, reqEditors...)
+// RemoveRbacRoleFromUserWithResponse request returning *RemoveRbacRoleFromUserResponse
+func (c *ClientWithResponses) RemoveRbacRoleFromUserWithResponse(ctx context.Context, userId int, reqEditors ...RequestEditorFn) (*RemoveRbacRoleFromUserResponse, error) {
+	rsp, err := c.RemoveRbacRoleFromUser(ctx, userId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRemoveRBACRoleFromUserResponse(rsp)
+	return ParseRemoveRbacRoleFromUserResponse(rsp)
 }
 
-// ParseAssignRBACRoleToUserResponse parses an HTTP response from a AssignRBACRoleToUserWithResponse call
-func ParseAssignRBACRoleToUserResponse(rsp *http.Response) (*AssignRBACRoleToUserResponse, error) {
+// ParseAssignRbacRoleResponse parses an HTTP response from a AssignRbacRoleWithResponse call
+func ParseAssignRbacRoleResponse(rsp *http.Response) (*AssignRbacRoleResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &AssignRBACRoleToUserResponse{
+	response := &AssignRbacRoleResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -443,15 +443,15 @@ func ParseAssignRBACRoleToUserResponse(rsp *http.Response) (*AssignRBACRoleToUse
 	return response, nil
 }
 
-// ParseRemoveRBACRoleFromUserResponse parses an HTTP response from a RemoveRBACRoleFromUserWithResponse call
-func ParseRemoveRBACRoleFromUserResponse(rsp *http.Response) (*RemoveRBACRoleFromUserResponse, error) {
+// ParseRemoveRbacRoleFromUserResponse parses an HTTP response from a RemoveRbacRoleFromUserWithResponse call
+func ParseRemoveRbacRoleFromUserResponse(rsp *http.Response) (*RemoveRbacRoleFromUserResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RemoveRBACRoleFromUserResponse{
+	response := &RemoveRbacRoleFromUserResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

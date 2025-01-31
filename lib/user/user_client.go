@@ -69,11 +69,11 @@ type UsersInfoListResponse struct {
 	UsersInfo *UsersInfoFields `json:"users_info,omitempty"`
 }
 
-// PostUserJSONRequestBody defines body for PostUser for application/json ContentType.
-type PostUserJSONRequestBody = Userinfopostpayload
+// PostInsertUserInfoJSONRequestBody defines body for PostInsertUserInfo for application/json ContentType.
+type PostInsertUserInfoJSONRequestBody = Userinfopostpayload
 
-// UpdateUserInfoJSONRequestBody defines body for UpdateUserInfo for application/json ContentType.
-type UpdateUserInfoJSONRequestBody = Userinfopostpayload
+// PutUpdateUserInfoJSONRequestBody defines body for PutUpdateUserInfo for application/json ContentType.
+type PutUpdateUserInfoJSONRequestBody = Userinfopostpayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -148,22 +148,22 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// GetUser request
-	GetUser(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetFetchUserInfo request
+	GetFetchUserInfo(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostUserWithBody request with any body
-	PostUserWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// PostInsertUserInfoWithBody request with any body
+	PostInsertUserInfoWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PostUser(ctx context.Context, body PostUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	PostInsertUserInfo(ctx context.Context, body PostInsertUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateUserInfoWithBody request with any body
-	UpdateUserInfoWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// PutUpdateUserInfoWithBody request with any body
+	PutUpdateUserInfoWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateUserInfo(ctx context.Context, body UpdateUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	PutUpdateUserInfo(ctx context.Context, body PutUpdateUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) GetUser(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserRequest(c.Server)
+func (c *Client) GetFetchUserInfo(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetFetchUserInfoRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -174,8 +174,8 @@ func (c *Client) GetUser(ctx context.Context, reqEditors ...RequestEditorFn) (*h
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostUserWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostUserRequestWithBody(c.Server, contentType, body)
+func (c *Client) PostInsertUserInfoWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostInsertUserInfoRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -186,8 +186,8 @@ func (c *Client) PostUserWithBody(ctx context.Context, contentType string, body 
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostUser(ctx context.Context, body PostUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostUserRequest(c.Server, body)
+func (c *Client) PostInsertUserInfo(ctx context.Context, body PostInsertUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostInsertUserInfoRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -198,8 +198,8 @@ func (c *Client) PostUser(ctx context.Context, body PostUserJSONRequestBody, req
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateUserInfoWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateUserInfoRequestWithBody(c.Server, contentType, body)
+func (c *Client) PutUpdateUserInfoWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutUpdateUserInfoRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -210,8 +210,8 @@ func (c *Client) UpdateUserInfoWithBody(ctx context.Context, contentType string,
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateUserInfo(ctx context.Context, body UpdateUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateUserInfoRequest(c.Server, body)
+func (c *Client) PutUpdateUserInfo(ctx context.Context, body PutUpdateUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutUpdateUserInfoRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -222,8 +222,8 @@ func (c *Client) UpdateUserInfo(ctx context.Context, body UpdateUserInfoJSONRequ
 	return c.Client.Do(req)
 }
 
-// NewGetUserRequest generates requests for GetUser
-func NewGetUserRequest(server string) (*http.Request, error) {
+// NewGetFetchUserInfoRequest generates requests for GetFetchUserInfo
+func NewGetFetchUserInfoRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -249,19 +249,19 @@ func NewGetUserRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewPostUserRequest calls the generic PostUser builder with application/json body
-func NewPostUserRequest(server string, body PostUserJSONRequestBody) (*http.Request, error) {
+// NewPostInsertUserInfoRequest calls the generic PostInsertUserInfo builder with application/json body
+func NewPostInsertUserInfoRequest(server string, body PostInsertUserInfoJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPostUserRequestWithBody(server, "application/json", bodyReader)
+	return NewPostInsertUserInfoRequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewPostUserRequestWithBody generates requests for PostUser with any type of body
-func NewPostUserRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewPostInsertUserInfoRequestWithBody generates requests for PostInsertUserInfo with any type of body
+func NewPostInsertUserInfoRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -289,19 +289,19 @@ func NewPostUserRequestWithBody(server string, contentType string, body io.Reade
 	return req, nil
 }
 
-// NewUpdateUserInfoRequest calls the generic UpdateUserInfo builder with application/json body
-func NewUpdateUserInfoRequest(server string, body UpdateUserInfoJSONRequestBody) (*http.Request, error) {
+// NewPutUpdateUserInfoRequest calls the generic PutUpdateUserInfo builder with application/json body
+func NewPutUpdateUserInfoRequest(server string, body PutUpdateUserInfoJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUpdateUserInfoRequestWithBody(server, "application/json", bodyReader)
+	return NewPutUpdateUserInfoRequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewUpdateUserInfoRequestWithBody generates requests for UpdateUserInfo with any type of body
-func NewUpdateUserInfoRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewPutUpdateUserInfoRequestWithBody generates requests for PutUpdateUserInfo with any type of body
+func NewPutUpdateUserInfoRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -372,21 +372,21 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// GetUserWithResponse request
-	GetUserWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetUserResponse, error)
+	// GetFetchUserInfoWithResponse request
+	GetFetchUserInfoWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetFetchUserInfoResponse, error)
 
-	// PostUserWithBodyWithResponse request with any body
-	PostUserWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostUserResponse, error)
+	// PostInsertUserInfoWithBodyWithResponse request with any body
+	PostInsertUserInfoWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostInsertUserInfoResponse, error)
 
-	PostUserWithResponse(ctx context.Context, body PostUserJSONRequestBody, reqEditors ...RequestEditorFn) (*PostUserResponse, error)
+	PostInsertUserInfoWithResponse(ctx context.Context, body PostInsertUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*PostInsertUserInfoResponse, error)
 
-	// UpdateUserInfoWithBodyWithResponse request with any body
-	UpdateUserInfoWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateUserInfoResponse, error)
+	// PutUpdateUserInfoWithBodyWithResponse request with any body
+	PutUpdateUserInfoWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutUpdateUserInfoResponse, error)
 
-	UpdateUserInfoWithResponse(ctx context.Context, body UpdateUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateUserInfoResponse, error)
+	PutUpdateUserInfoWithResponse(ctx context.Context, body PutUpdateUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*PutUpdateUserInfoResponse, error)
 }
 
-type GetUserResponse struct {
+type GetFetchUserInfoResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *UsersInfoListResponse
@@ -397,7 +397,7 @@ type GetUserResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserResponse) Status() string {
+func (r GetFetchUserInfoResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -405,14 +405,14 @@ func (r GetUserResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserResponse) StatusCode() int {
+func (r GetFetchUserInfoResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PostUserResponse struct {
+type PostInsertUserInfoResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *AddUserInfoSuccessResponseModel
@@ -423,7 +423,7 @@ type PostUserResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostUserResponse) Status() string {
+func (r PostInsertUserInfoResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -431,14 +431,14 @@ func (r PostUserResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostUserResponse) StatusCode() int {
+func (r PostInsertUserInfoResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type UpdateUserInfoResponse struct {
+type PutUpdateUserInfoResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *AddUserInfoSuccessResponseModel
@@ -449,7 +449,7 @@ type UpdateUserInfoResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r UpdateUserInfoResponse) Status() string {
+func (r PutUpdateUserInfoResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -457,65 +457,65 @@ func (r UpdateUserInfoResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r UpdateUserInfoResponse) StatusCode() int {
+func (r PutUpdateUserInfoResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// GetUserWithResponse request returning *GetUserResponse
-func (c *ClientWithResponses) GetUserWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetUserResponse, error) {
-	rsp, err := c.GetUser(ctx, reqEditors...)
+// GetFetchUserInfoWithResponse request returning *GetFetchUserInfoResponse
+func (c *ClientWithResponses) GetFetchUserInfoWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetFetchUserInfoResponse, error) {
+	rsp, err := c.GetFetchUserInfo(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserResponse(rsp)
+	return ParseGetFetchUserInfoResponse(rsp)
 }
 
-// PostUserWithBodyWithResponse request with arbitrary body returning *PostUserResponse
-func (c *ClientWithResponses) PostUserWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostUserResponse, error) {
-	rsp, err := c.PostUserWithBody(ctx, contentType, body, reqEditors...)
+// PostInsertUserInfoWithBodyWithResponse request with arbitrary body returning *PostInsertUserInfoResponse
+func (c *ClientWithResponses) PostInsertUserInfoWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostInsertUserInfoResponse, error) {
+	rsp, err := c.PostInsertUserInfoWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostUserResponse(rsp)
+	return ParsePostInsertUserInfoResponse(rsp)
 }
 
-func (c *ClientWithResponses) PostUserWithResponse(ctx context.Context, body PostUserJSONRequestBody, reqEditors ...RequestEditorFn) (*PostUserResponse, error) {
-	rsp, err := c.PostUser(ctx, body, reqEditors...)
+func (c *ClientWithResponses) PostInsertUserInfoWithResponse(ctx context.Context, body PostInsertUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*PostInsertUserInfoResponse, error) {
+	rsp, err := c.PostInsertUserInfo(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostUserResponse(rsp)
+	return ParsePostInsertUserInfoResponse(rsp)
 }
 
-// UpdateUserInfoWithBodyWithResponse request with arbitrary body returning *UpdateUserInfoResponse
-func (c *ClientWithResponses) UpdateUserInfoWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateUserInfoResponse, error) {
-	rsp, err := c.UpdateUserInfoWithBody(ctx, contentType, body, reqEditors...)
+// PutUpdateUserInfoWithBodyWithResponse request with arbitrary body returning *PutUpdateUserInfoResponse
+func (c *ClientWithResponses) PutUpdateUserInfoWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutUpdateUserInfoResponse, error) {
+	rsp, err := c.PutUpdateUserInfoWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUpdateUserInfoResponse(rsp)
+	return ParsePutUpdateUserInfoResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateUserInfoWithResponse(ctx context.Context, body UpdateUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateUserInfoResponse, error) {
-	rsp, err := c.UpdateUserInfo(ctx, body, reqEditors...)
+func (c *ClientWithResponses) PutUpdateUserInfoWithResponse(ctx context.Context, body PutUpdateUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*PutUpdateUserInfoResponse, error) {
+	rsp, err := c.PutUpdateUserInfo(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUpdateUserInfoResponse(rsp)
+	return ParsePutUpdateUserInfoResponse(rsp)
 }
 
-// ParseGetUserResponse parses an HTTP response from a GetUserWithResponse call
-func ParseGetUserResponse(rsp *http.Response) (*GetUserResponse, error) {
+// ParseGetFetchUserInfoResponse parses an HTTP response from a GetFetchUserInfoWithResponse call
+func ParseGetFetchUserInfoResponse(rsp *http.Response) (*GetFetchUserInfoResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserResponse{
+	response := &GetFetchUserInfoResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -561,15 +561,15 @@ func ParseGetUserResponse(rsp *http.Response) (*GetUserResponse, error) {
 	return response, nil
 }
 
-// ParsePostUserResponse parses an HTTP response from a PostUserWithResponse call
-func ParsePostUserResponse(rsp *http.Response) (*PostUserResponse, error) {
+// ParsePostInsertUserInfoResponse parses an HTTP response from a PostInsertUserInfoWithResponse call
+func ParsePostInsertUserInfoResponse(rsp *http.Response) (*PostInsertUserInfoResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostUserResponse{
+	response := &PostInsertUserInfoResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -615,15 +615,15 @@ func ParsePostUserResponse(rsp *http.Response) (*PostUserResponse, error) {
 	return response, nil
 }
 
-// ParseUpdateUserInfoResponse parses an HTTP response from a UpdateUserInfoWithResponse call
-func ParseUpdateUserInfoResponse(rsp *http.Response) (*UpdateUserInfoResponse, error) {
+// ParsePutUpdateUserInfoResponse parses an HTTP response from a PutUpdateUserInfoWithResponse call
+func ParsePutUpdateUserInfoResponse(rsp *http.Response) (*PutUpdateUserInfoResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &UpdateUserInfoResponse{
+	response := &PutUpdateUserInfoResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

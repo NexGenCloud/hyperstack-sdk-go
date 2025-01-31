@@ -49,17 +49,20 @@ const (
 
 // AttachFirewallsToVMPayload defines model for AttachFirewallsToVMPayload.
 type AttachFirewallsToVMPayload struct {
+	// Firewalls Ids of the firewalls to be attached with a virtual machine.
 	Firewalls []int `json:"firewalls"`
 }
 
 // ContractInstanceFields defines model for ContractInstanceFields.
 type ContractInstanceFields struct {
-	CreatedAt  *time.CustomTime `json:"created_at,omitempty"`
-	FlavorName *string    `json:"flavor_name,omitempty"`
-	GpuCount   *int       `json:"gpu_count,omitempty"`
-	Id         *int       `json:"id,omitempty"`
-	Name       *string    `json:"name,omitempty"`
-	Status     *string    `json:"status,omitempty"`
+	CreatedAt       *time.CustomTime `json:"created_at,omitempty"`
+	FlavorName      *string    `json:"flavor_name,omitempty"`
+	GpuCount        *int       `json:"gpu_count,omitempty"`
+	Id              *int       `json:"id,omitempty"`
+	Name            *string    `json:"name,omitempty"`
+	Status          *string    `json:"status,omitempty"`
+	TerminationTime *time.CustomTime `json:"termination_time,omitempty"`
+	TotalUsageTime  *int       `json:"total_usage_time,omitempty"`
 }
 
 // ContractInstancesResponse defines model for ContractInstancesResponse.
@@ -71,7 +74,7 @@ type ContractInstancesResponse struct {
 
 // CreateInstancesPayload defines model for CreateInstancesPayload.
 type CreateInstancesPayload struct {
-	// AssignFloatingIp When this field is set to `true`, it attaches a [public IP address](https://infrahub-doc.nexgencloud.com/docs/virtual-machines/public-ip) to the virtual machine, enabling internet accessibility.
+	// AssignFloatingIp When this field is set to `true`, it attaches a [public IP address](https://infrahub-doc.nexgencloud.com/docs/virtual-machines/public-ip)to the virtual machine, enabling internet accessibility.
 	AssignFloatingIp *bool `json:"assign_floating_ip,omitempty"`
 
 	// CallbackUrl An optional URL where actions performed on the virtual machine will be sent. For additional information on event callbacks, [**click here**](https://infrahub-doc.nexgencloud.com/docs/features/webhooks-callbacks).
@@ -83,6 +86,9 @@ type CreateInstancesPayload struct {
 	// CreateBootableVolume Indicates whether to create a bootable volume for the virtual machine. When set to `true`, a bootable volume will be created; the default value is `false`.
 	CreateBootableVolume *bool `json:"create_bootable_volume,omitempty"`
 
+	// EnablePortRandomization Indicates whether to enable port randomization.This setting is only effective if 'assign_floating_ip' is true. Defaults to true.
+	EnablePortRandomization *bool `json:"enable_port_randomization,omitempty"`
+
 	// EnvironmentName The name of the [environment](https://infrahub-doc.nexgencloud.com/docs/features/environments-available-features) in which the virtual machine is to be created.
 	EnvironmentName string              `json:"environment_name"`
 	Flavor          *FlavorObjectFields `json:"flavor,omitempty"`
@@ -90,7 +96,7 @@ type CreateInstancesPayload struct {
 	// FlavorName The name of the GPU hardware configuration ([flavor](https://infrahub-doc.nexgencloud.com/docs/hardware/flavors)) for the virtual machines being created.
 	FlavorName string `json:"flavor_name"`
 
-	// ImageName The [operating system (OS) image](https://infrahub-doc.nexgencloud.com/docs/virtual-machines/images) name designated for installation on the virtual machine.
+	// ImageName The [operating system (OS) image](https://infrahub-doc.nexgencloud.com/docs/virtual-machines/images) name designated for installation on the virtual machine.It also accepts custom, private images, created from [existing snapshots](https://infrahub-doc.nexgencloud.com/docs/virtual-machines/custom-images).
 	ImageName *string `json:"image_name,omitempty"`
 
 	// KeyName The name of the existing SSH key pair to be used for secure access to the virtual machine. For additional information on SSH key pairs, [**click here**](https://infrahub-doc.nexgencloud.com/docs/getting-started/create-keypair).
@@ -136,9 +142,37 @@ type CreateSecurityRulePayload struct {
 // CreateSecurityRulePayloadProtocol The network protocol associated with the rule. Call the [`GET /core/sg-rules-protocols`](https://infrahub-api-doc.nexgencloud.com/#get-/core/sg-rules-protocols) endpoint to retrieve a list of permitted network protocols.
 type CreateSecurityRulePayloadProtocol string
 
+// CreateSnapshotPayload defines model for CreateSnapshotPayload.
+type CreateSnapshotPayload struct {
+	// Description description
+	Description string `json:"description"`
+
+	// IsImage Indicates if the snapshot is an image
+	IsImage bool `json:"is_image"`
+
+	// Labels Labels associated with snapshot
+	Labels *[]string `json:"labels,omitempty"`
+
+	// Name Snapshot name
+	Name string `json:"name"`
+}
+
+// CreateSnapshotResponse defines model for CreateSnapshotResponse.
+type CreateSnapshotResponse struct {
+	Message  *string         `json:"message,omitempty"`
+	Snapshot *SnapshotFields `json:"snapshot,omitempty"`
+	Status   *bool           `json:"status,omitempty"`
+}
+
 // EditlabelofanexistingVMPayload defines model for EditlabelofanexistingVMPayload.
 type EditlabelofanexistingVMPayload struct {
+	// Labels Multiple labels can be added by separating with spaces
 	Labels *[]string `json:"labels,omitempty"`
+}
+
+// EnvironmentFeatures defines model for EnvironmentFeatures.
+type EnvironmentFeatures struct {
+	NetworkOptimised *bool `json:"network_optimised,omitempty"`
 }
 
 // ErrorResponseModel defines model for ErrorResponseModel.
@@ -166,33 +200,37 @@ type Instance struct {
 
 // InstanceEnvironmentFields defines model for InstanceEnvironmentFields.
 type InstanceEnvironmentFields struct {
-	Id     *int    `json:"id,omitempty"`
-	Name   *string `json:"name,omitempty"`
-	OrgId  *int    `json:"org_id,omitempty"`
-	Region *string `json:"region,omitempty"`
+	Features *EnvironmentFeatures `json:"features,omitempty"`
+	Id       *int                 `json:"id,omitempty"`
+	Name     *string              `json:"name,omitempty"`
+	OrgId    *int                 `json:"org_id,omitempty"`
+	Region   *string              `json:"region,omitempty"`
 }
 
 // InstanceFields defines model for InstanceFields.
 type InstanceFields struct {
-	ContractId        *int                              `json:"contract_id,omitempty"`
-	CreatedAt         *time.CustomTime                        `json:"created_at,omitempty"`
-	Environment       *InstanceEnvironmentFields        `json:"environment,omitempty"`
-	FixedIp           *string                           `json:"fixed_ip,omitempty"`
-	Flavor            *InstanceFlavorFields             `json:"flavor,omitempty"`
-	FloatingIp        *string                           `json:"floating_ip,omitempty"`
-	FloatingIpStatus  *string                           `json:"floating_ip_status,omitempty"`
-	Id                *int                              `json:"id,omitempty"`
-	Image             *InstanceImageFields              `json:"image,omitempty"`
-	Keypair           *InstanceKeypairFields            `json:"keypair,omitempty"`
-	Labels            *[]string                         `json:"labels,omitempty"`
-	Locked            *bool                             `json:"locked,omitempty"`
-	Name              *string                           `json:"name,omitempty"`
-	Os                *string                           `json:"os,omitempty"`
-	PowerState        *string                           `json:"power_state,omitempty"`
-	SecurityRules     *[]SecurityRulesFieldsforInstance `json:"security_rules,omitempty"`
-	Status            *string                           `json:"status,omitempty"`
-	VmState           *string                           `json:"vm_state,omitempty"`
-	VolumeAttachments *[]VolumeAttachmentFields         `json:"volume_attachments,omitempty"`
+	CallbackUrl             *string                           `json:"callback_url,omitempty"`
+	ContractId              *int                              `json:"contract_id,omitempty"`
+	CreatedAt               *time.CustomTime                        `json:"created_at,omitempty"`
+	Environment             *InstanceEnvironmentFields        `json:"environment,omitempty"`
+	FixedIp                 *string                           `json:"fixed_ip,omitempty"`
+	Flavor                  *InstanceFlavorFields             `json:"flavor,omitempty"`
+	FloatingIp              *string                           `json:"floating_ip,omitempty"`
+	FloatingIpStatus        *string                           `json:"floating_ip_status,omitempty"`
+	Id                      *int                              `json:"id,omitempty"`
+	Image                   *InstanceImageFields              `json:"image,omitempty"`
+	Keypair                 *InstanceKeypairFields            `json:"keypair,omitempty"`
+	Labels                  *[]string                         `json:"labels,omitempty"`
+	Locked                  *bool                             `json:"locked,omitempty"`
+	Name                    *string                           `json:"name,omitempty"`
+	Os                      *string                           `json:"os,omitempty"`
+	PortRandomization       *bool                             `json:"port_randomization,omitempty"`
+	PortRandomizationStatus *string                           `json:"port_randomization_status,omitempty"`
+	PowerState              *string                           `json:"power_state,omitempty"`
+	SecurityRules           *[]SecurityRulesFieldsforInstance `json:"security_rules,omitempty"`
+	Status                  *string                           `json:"status,omitempty"`
+	VmState                 *string                           `json:"vm_state,omitempty"`
+	VolumeAttachments       *[]VolumeAttachmentFields         `json:"volume_attachments,omitempty"`
 }
 
 // InstanceFlavorFields defines model for InstanceFlavorFields.
@@ -250,6 +288,13 @@ type MetricsFields struct {
 	NetworkOut   *MetricItemFields `json:"network.out,omitempty"`
 }
 
+// NameAvailableModel defines model for NameAvailableModel.
+type NameAvailableModel struct {
+	Available *bool   `json:"available,omitempty"`
+	Message   *string `json:"message,omitempty"`
+	Name      *string `json:"name,omitempty"`
+}
+
 // ProfileObjectFields defines model for ProfileObjectFields.
 type ProfileObjectFields struct {
 	Description *string `json:"description,omitempty"`
@@ -295,6 +340,39 @@ type SecurityRulesFieldsforInstance struct {
 	Status         *string    `json:"status,omitempty"`
 }
 
+// SnapshotFields defines model for SnapshotFields.
+type SnapshotFields struct {
+	// Description Description of the snapshot
+	Description string `json:"description"`
+
+	// HasFloatingIp Indicates if the VM had a floating IP assigned
+	HasFloatingIp *bool `json:"has_floating_ip,omitempty"`
+
+	// Id Snapshot ID
+	Id int `json:"id"`
+
+	// IsImage Indicates if the snapshot is an image
+	IsImage bool `json:"is_image"`
+
+	// Labels Labels associated with snapshot
+	Labels *[]string `json:"labels,omitempty"`
+
+	// Name Snapshot name
+	Name string `json:"name"`
+
+	// RegionId Region where the snapshot will be available
+	RegionId int `json:"region_id"`
+
+	// Size Size in GB of the snapshot
+	Size int `json:"size"`
+
+	// Status Status of the snapshot
+	Status string `json:"status"`
+
+	// VmId ID of the VM from which the snapshot is created
+	VmId int `json:"vm_id"`
+}
+
 // VolumeAttachmentFields defines model for VolumeAttachmentFields.
 type VolumeAttachmentFields struct {
 	CreatedAt *time.CustomTime               `json:"created_at,omitempty"`
@@ -305,6 +383,7 @@ type VolumeAttachmentFields struct {
 
 // VolumeFieldsforInstance defines model for VolumeFieldsforInstance.
 type VolumeFieldsforInstance struct {
+	Bootable    *bool   `json:"bootable,omitempty"`
 	Description *string `json:"description,omitempty"`
 	Id          *int    `json:"id,omitempty"`
 	Name        *string `json:"name,omitempty"`
@@ -314,6 +393,14 @@ type VolumeFieldsforInstance struct {
 
 // ListVirtualMachinesParams defines parameters for ListVirtualMachines.
 type ListVirtualMachinesParams struct {
+	Page        *string `form:"page,omitempty" json:"page,omitempty"`
+	PageSize    *string `form:"pageSize,omitempty" json:"pageSize,omitempty"`
+	Search      *string `form:"search,omitempty" json:"search,omitempty"`
+	Environment *string `form:"environment,omitempty" json:"environment,omitempty"`
+}
+
+// RetrieveVirtualMachinesAssociatedWithAContractParams defines parameters for RetrieveVirtualMachinesAssociatedWithAContract.
+type RetrieveVirtualMachinesAssociatedWithAContractParams struct {
 	Page     *string `form:"page,omitempty" json:"page,omitempty"`
 	PageSize *string `form:"pageSize,omitempty" json:"pageSize,omitempty"`
 	Search   *string `form:"search,omitempty" json:"search,omitempty"`
@@ -324,11 +411,11 @@ type RetrieveVirtualMachinePerformanceMetricsParams struct {
 	Duration *string `form:"duration,omitempty" json:"duration,omitempty"`
 }
 
-// CreateVirtualMachineJSONRequestBody defines body for CreateVirtualMachine for application/json ContentType.
-type CreateVirtualMachineJSONRequestBody = CreateInstancesPayload
+// CreateVirtualMachinesJSONRequestBody defines body for CreateVirtualMachines for application/json ContentType.
+type CreateVirtualMachinesJSONRequestBody = CreateInstancesPayload
 
-// EditLabelsOfAnExistingVMJSONRequestBody defines body for EditLabelsOfAnExistingVM for application/json ContentType.
-type EditLabelsOfAnExistingVMJSONRequestBody = EditlabelofanexistingVMPayload
+// EditVirtualMachineLabelsJSONRequestBody defines body for EditVirtualMachineLabels for application/json ContentType.
+type EditVirtualMachineLabelsJSONRequestBody = EditlabelofanexistingVMPayload
 
 // ResizeVirtualMachineJSONRequestBody defines body for ResizeVirtualMachine for application/json ContentType.
 type ResizeVirtualMachineJSONRequestBody = InstanceResizePayload
@@ -336,8 +423,11 @@ type ResizeVirtualMachineJSONRequestBody = InstanceResizePayload
 // AddFirewallRuleToVirtualMachineJSONRequestBody defines body for AddFirewallRuleToVirtualMachine for application/json ContentType.
 type AddFirewallRuleToVirtualMachineJSONRequestBody = CreateSecurityRulePayload
 
-// AttachFirewallsToAVMJSONRequestBody defines body for AttachFirewallsToAVM for application/json ContentType.
-type AttachFirewallsToAVMJSONRequestBody = AttachFirewallsToVMPayload
+// AttachFirewallsToAVirtualMachineJSONRequestBody defines body for AttachFirewallsToAVirtualMachine for application/json ContentType.
+type AttachFirewallsToAVirtualMachineJSONRequestBody = AttachFirewallsToVMPayload
+
+// CreateSnapshotFromAVirtualMachineJSONRequestBody defines body for CreateSnapshotFromAVirtualMachine for application/json ContentType.
+type CreateSnapshotFromAVirtualMachineJSONRequestBody = CreateSnapshotPayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -415,13 +505,16 @@ type ClientInterface interface {
 	// ListVirtualMachines request
 	ListVirtualMachines(ctx context.Context, params *ListVirtualMachinesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateVirtualMachineWithBody request with any body
-	CreateVirtualMachineWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateVirtualMachinesWithBody request with any body
+	CreateVirtualMachinesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	CreateVirtualMachine(ctx context.Context, body CreateVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateVirtualMachines(ctx context.Context, body CreateVirtualMachinesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// RetrieveVirtualMachinesAssociatedWithAContract request
-	RetrieveVirtualMachinesAssociatedWithAContract(ctx context.Context, contractId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	RetrieveVirtualMachinesAssociatedWithAContract(ctx context.Context, contractId int, params *RetrieveVirtualMachinesAssociatedWithAContractParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FetchVirtualMachineNameAvailability request
+	FetchVirtualMachineNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteVirtualMachine request
 	DeleteVirtualMachine(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -444,10 +537,10 @@ type ClientInterface interface {
 	// RestoreVirtualMachineFromHibernation request
 	RestoreVirtualMachineFromHibernation(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// EditLabelsOfAnExistingVMWithBody request with any body
-	EditLabelsOfAnExistingVMWithBody(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// EditVirtualMachineLabelsWithBody request with any body
+	EditVirtualMachineLabelsWithBody(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	EditLabelsOfAnExistingVM(ctx context.Context, virtualMachineId int, body EditLabelsOfAnExistingVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	EditVirtualMachineLabels(ctx context.Context, virtualMachineId int, body EditVirtualMachineLabelsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// RetrieveVirtualMachinePerformanceMetrics request
 	RetrieveVirtualMachinePerformanceMetrics(ctx context.Context, virtualMachineId int, params *RetrieveVirtualMachinePerformanceMetricsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -465,10 +558,15 @@ type ClientInterface interface {
 	// DeleteFirewallRuleFromVirtualMachine request
 	DeleteFirewallRuleFromVirtualMachine(ctx context.Context, virtualMachineId int, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// AttachFirewallsToAVMWithBody request with any body
-	AttachFirewallsToAVMWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// AttachFirewallsToAVirtualMachineWithBody request with any body
+	AttachFirewallsToAVirtualMachineWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	AttachFirewallsToAVM(ctx context.Context, vmId int, body AttachFirewallsToAVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	AttachFirewallsToAVirtualMachine(ctx context.Context, vmId int, body AttachFirewallsToAVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateSnapshotFromAVirtualMachineWithBody request with any body
+	CreateSnapshotFromAVirtualMachineWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateSnapshotFromAVirtualMachine(ctx context.Context, vmId int, body CreateSnapshotFromAVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) ListVirtualMachines(ctx context.Context, params *ListVirtualMachinesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -483,8 +581,8 @@ func (c *Client) ListVirtualMachines(ctx context.Context, params *ListVirtualMac
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateVirtualMachineWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateVirtualMachineRequestWithBody(c.Server, contentType, body)
+func (c *Client) CreateVirtualMachinesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualMachinesRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -495,8 +593,8 @@ func (c *Client) CreateVirtualMachineWithBody(ctx context.Context, contentType s
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateVirtualMachine(ctx context.Context, body CreateVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateVirtualMachineRequest(c.Server, body)
+func (c *Client) CreateVirtualMachines(ctx context.Context, body CreateVirtualMachinesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualMachinesRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -507,8 +605,20 @@ func (c *Client) CreateVirtualMachine(ctx context.Context, body CreateVirtualMac
 	return c.Client.Do(req)
 }
 
-func (c *Client) RetrieveVirtualMachinesAssociatedWithAContract(ctx context.Context, contractId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveVirtualMachinesAssociatedWithAContractRequest(c.Server, contractId)
+func (c *Client) RetrieveVirtualMachinesAssociatedWithAContract(ctx context.Context, contractId int, params *RetrieveVirtualMachinesAssociatedWithAContractParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveVirtualMachinesAssociatedWithAContractRequest(c.Server, contractId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FetchVirtualMachineNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFetchVirtualMachineNameAvailabilityRequest(c.Server, name)
 	if err != nil {
 		return nil, err
 	}
@@ -603,8 +713,8 @@ func (c *Client) RestoreVirtualMachineFromHibernation(ctx context.Context, virtu
 	return c.Client.Do(req)
 }
 
-func (c *Client) EditLabelsOfAnExistingVMWithBody(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewEditLabelsOfAnExistingVMRequestWithBody(c.Server, virtualMachineId, contentType, body)
+func (c *Client) EditVirtualMachineLabelsWithBody(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEditVirtualMachineLabelsRequestWithBody(c.Server, virtualMachineId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -615,8 +725,8 @@ func (c *Client) EditLabelsOfAnExistingVMWithBody(ctx context.Context, virtualMa
 	return c.Client.Do(req)
 }
 
-func (c *Client) EditLabelsOfAnExistingVM(ctx context.Context, virtualMachineId int, body EditLabelsOfAnExistingVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewEditLabelsOfAnExistingVMRequest(c.Server, virtualMachineId, body)
+func (c *Client) EditVirtualMachineLabels(ctx context.Context, virtualMachineId int, body EditVirtualMachineLabelsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEditVirtualMachineLabelsRequest(c.Server, virtualMachineId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -699,8 +809,8 @@ func (c *Client) DeleteFirewallRuleFromVirtualMachine(ctx context.Context, virtu
 	return c.Client.Do(req)
 }
 
-func (c *Client) AttachFirewallsToAVMWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAttachFirewallsToAVMRequestWithBody(c.Server, vmId, contentType, body)
+func (c *Client) AttachFirewallsToAVirtualMachineWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachFirewallsToAVirtualMachineRequestWithBody(c.Server, vmId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -711,8 +821,32 @@ func (c *Client) AttachFirewallsToAVMWithBody(ctx context.Context, vmId int, con
 	return c.Client.Do(req)
 }
 
-func (c *Client) AttachFirewallsToAVM(ctx context.Context, vmId int, body AttachFirewallsToAVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAttachFirewallsToAVMRequest(c.Server, vmId, body)
+func (c *Client) AttachFirewallsToAVirtualMachine(ctx context.Context, vmId int, body AttachFirewallsToAVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachFirewallsToAVirtualMachineRequest(c.Server, vmId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateSnapshotFromAVirtualMachineWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSnapshotFromAVirtualMachineRequestWithBody(c.Server, vmId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateSnapshotFromAVirtualMachine(ctx context.Context, vmId int, body CreateSnapshotFromAVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSnapshotFromAVirtualMachineRequest(c.Server, vmId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -793,6 +927,22 @@ func NewListVirtualMachinesRequest(server string, params *ListVirtualMachinesPar
 
 		}
 
+		if params.Environment != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "environment", runtime.ParamLocationQuery, *params.Environment); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		queryURL.RawQuery = queryValues.Encode()
 	}
 
@@ -804,19 +954,19 @@ func NewListVirtualMachinesRequest(server string, params *ListVirtualMachinesPar
 	return req, nil
 }
 
-// NewCreateVirtualMachineRequest calls the generic CreateVirtualMachine builder with application/json body
-func NewCreateVirtualMachineRequest(server string, body CreateVirtualMachineJSONRequestBody) (*http.Request, error) {
+// NewCreateVirtualMachinesRequest calls the generic CreateVirtualMachines builder with application/json body
+func NewCreateVirtualMachinesRequest(server string, body CreateVirtualMachinesJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewCreateVirtualMachineRequestWithBody(server, "application/json", bodyReader)
+	return NewCreateVirtualMachinesRequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewCreateVirtualMachineRequestWithBody generates requests for CreateVirtualMachine with any type of body
-func NewCreateVirtualMachineRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewCreateVirtualMachinesRequestWithBody generates requests for CreateVirtualMachines with any type of body
+func NewCreateVirtualMachinesRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -845,7 +995,7 @@ func NewCreateVirtualMachineRequestWithBody(server string, contentType string, b
 }
 
 // NewRetrieveVirtualMachinesAssociatedWithAContractRequest generates requests for RetrieveVirtualMachinesAssociatedWithAContract
-func NewRetrieveVirtualMachinesAssociatedWithAContractRequest(server string, contractId int) (*http.Request, error) {
+func NewRetrieveVirtualMachinesAssociatedWithAContractRequest(server string, contractId int, params *RetrieveVirtualMachinesAssociatedWithAContractParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -861,6 +1011,94 @@ func NewRetrieveVirtualMachinesAssociatedWithAContractRequest(server string, con
 	}
 
 	operationPath := fmt.Sprintf("/core/virtual-machines/contract/%s/virtual-machines", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page", runtime.ParamLocationQuery, *params.Page); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.PageSize != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "pageSize", runtime.ParamLocationQuery, *params.PageSize); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "search", runtime.ParamLocationQuery, *params.Search); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFetchVirtualMachineNameAvailabilityRequest generates requests for FetchVirtualMachineNameAvailability
+func NewFetchVirtualMachineNameAvailabilityRequest(server string, name string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "name", runtime.ParamLocationPath, name)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/virtual-machines/name-availability/%s", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1116,19 +1354,19 @@ func NewRestoreVirtualMachineFromHibernationRequest(server string, virtualMachin
 	return req, nil
 }
 
-// NewEditLabelsOfAnExistingVMRequest calls the generic EditLabelsOfAnExistingVM builder with application/json body
-func NewEditLabelsOfAnExistingVMRequest(server string, virtualMachineId int, body EditLabelsOfAnExistingVMJSONRequestBody) (*http.Request, error) {
+// NewEditVirtualMachineLabelsRequest calls the generic EditVirtualMachineLabels builder with application/json body
+func NewEditVirtualMachineLabelsRequest(server string, virtualMachineId int, body EditVirtualMachineLabelsJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewEditLabelsOfAnExistingVMRequestWithBody(server, virtualMachineId, "application/json", bodyReader)
+	return NewEditVirtualMachineLabelsRequestWithBody(server, virtualMachineId, "application/json", bodyReader)
 }
 
-// NewEditLabelsOfAnExistingVMRequestWithBody generates requests for EditLabelsOfAnExistingVM with any type of body
-func NewEditLabelsOfAnExistingVMRequestWithBody(server string, virtualMachineId int, contentType string, body io.Reader) (*http.Request, error) {
+// NewEditVirtualMachineLabelsRequestWithBody generates requests for EditVirtualMachineLabels with any type of body
+func NewEditVirtualMachineLabelsRequestWithBody(server string, virtualMachineId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1354,19 +1592,19 @@ func NewDeleteFirewallRuleFromVirtualMachineRequest(server string, virtualMachin
 	return req, nil
 }
 
-// NewAttachFirewallsToAVMRequest calls the generic AttachFirewallsToAVM builder with application/json body
-func NewAttachFirewallsToAVMRequest(server string, vmId int, body AttachFirewallsToAVMJSONRequestBody) (*http.Request, error) {
+// NewAttachFirewallsToAVirtualMachineRequest calls the generic AttachFirewallsToAVirtualMachine builder with application/json body
+func NewAttachFirewallsToAVirtualMachineRequest(server string, vmId int, body AttachFirewallsToAVirtualMachineJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewAttachFirewallsToAVMRequestWithBody(server, vmId, "application/json", bodyReader)
+	return NewAttachFirewallsToAVirtualMachineRequestWithBody(server, vmId, "application/json", bodyReader)
 }
 
-// NewAttachFirewallsToAVMRequestWithBody generates requests for AttachFirewallsToAVM with any type of body
-func NewAttachFirewallsToAVMRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
+// NewAttachFirewallsToAVirtualMachineRequestWithBody generates requests for AttachFirewallsToAVirtualMachine with any type of body
+func NewAttachFirewallsToAVirtualMachineRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1382,6 +1620,53 @@ func NewAttachFirewallsToAVMRequestWithBody(server string, vmId int, contentType
 	}
 
 	operationPath := fmt.Sprintf("/core/virtual-machines/%s/attach-firewalls", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewCreateSnapshotFromAVirtualMachineRequest calls the generic CreateSnapshotFromAVirtualMachine builder with application/json body
+func NewCreateSnapshotFromAVirtualMachineRequest(server string, vmId int, body CreateSnapshotFromAVirtualMachineJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateSnapshotFromAVirtualMachineRequestWithBody(server, vmId, "application/json", bodyReader)
+}
+
+// NewCreateSnapshotFromAVirtualMachineRequestWithBody generates requests for CreateSnapshotFromAVirtualMachine with any type of body
+func NewCreateSnapshotFromAVirtualMachineRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "vm_id", runtime.ParamLocationPath, vmId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/virtual-machines/%s/snapshots", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1447,13 +1732,16 @@ type ClientWithResponsesInterface interface {
 	// ListVirtualMachinesWithResponse request
 	ListVirtualMachinesWithResponse(ctx context.Context, params *ListVirtualMachinesParams, reqEditors ...RequestEditorFn) (*ListVirtualMachinesResponse, error)
 
-	// CreateVirtualMachineWithBodyWithResponse request with any body
-	CreateVirtualMachineWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualMachineResponse, error)
+	// CreateVirtualMachinesWithBodyWithResponse request with any body
+	CreateVirtualMachinesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualMachinesResponse, error)
 
-	CreateVirtualMachineWithResponse(ctx context.Context, body CreateVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualMachineResponse, error)
+	CreateVirtualMachinesWithResponse(ctx context.Context, body CreateVirtualMachinesJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualMachinesResponse, error)
 
 	// RetrieveVirtualMachinesAssociatedWithAContractWithResponse request
-	RetrieveVirtualMachinesAssociatedWithAContractWithResponse(ctx context.Context, contractId int, reqEditors ...RequestEditorFn) (*RetrieveVirtualMachinesAssociatedWithAContractResponse, error)
+	RetrieveVirtualMachinesAssociatedWithAContractWithResponse(ctx context.Context, contractId int, params *RetrieveVirtualMachinesAssociatedWithAContractParams, reqEditors ...RequestEditorFn) (*RetrieveVirtualMachinesAssociatedWithAContractResponse, error)
+
+	// FetchVirtualMachineNameAvailabilityWithResponse request
+	FetchVirtualMachineNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*FetchVirtualMachineNameAvailabilityResponse, error)
 
 	// DeleteVirtualMachineWithResponse request
 	DeleteVirtualMachineWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteVirtualMachineResponse, error)
@@ -1476,10 +1764,10 @@ type ClientWithResponsesInterface interface {
 	// RestoreVirtualMachineFromHibernationWithResponse request
 	RestoreVirtualMachineFromHibernationWithResponse(ctx context.Context, virtualMachineId int, reqEditors ...RequestEditorFn) (*RestoreVirtualMachineFromHibernationResponse, error)
 
-	// EditLabelsOfAnExistingVMWithBodyWithResponse request with any body
-	EditLabelsOfAnExistingVMWithBodyWithResponse(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditLabelsOfAnExistingVMResponse, error)
+	// EditVirtualMachineLabelsWithBodyWithResponse request with any body
+	EditVirtualMachineLabelsWithBodyWithResponse(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditVirtualMachineLabelsResponse, error)
 
-	EditLabelsOfAnExistingVMWithResponse(ctx context.Context, virtualMachineId int, body EditLabelsOfAnExistingVMJSONRequestBody, reqEditors ...RequestEditorFn) (*EditLabelsOfAnExistingVMResponse, error)
+	EditVirtualMachineLabelsWithResponse(ctx context.Context, virtualMachineId int, body EditVirtualMachineLabelsJSONRequestBody, reqEditors ...RequestEditorFn) (*EditVirtualMachineLabelsResponse, error)
 
 	// RetrieveVirtualMachinePerformanceMetricsWithResponse request
 	RetrieveVirtualMachinePerformanceMetricsWithResponse(ctx context.Context, virtualMachineId int, params *RetrieveVirtualMachinePerformanceMetricsParams, reqEditors ...RequestEditorFn) (*RetrieveVirtualMachinePerformanceMetricsResponse, error)
@@ -1497,10 +1785,15 @@ type ClientWithResponsesInterface interface {
 	// DeleteFirewallRuleFromVirtualMachineWithResponse request
 	DeleteFirewallRuleFromVirtualMachineWithResponse(ctx context.Context, virtualMachineId int, id int, reqEditors ...RequestEditorFn) (*DeleteFirewallRuleFromVirtualMachineResponse, error)
 
-	// AttachFirewallsToAVMWithBodyWithResponse request with any body
-	AttachFirewallsToAVMWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachFirewallsToAVMResponse, error)
+	// AttachFirewallsToAVirtualMachineWithBodyWithResponse request with any body
+	AttachFirewallsToAVirtualMachineWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachFirewallsToAVirtualMachineResponse, error)
 
-	AttachFirewallsToAVMWithResponse(ctx context.Context, vmId int, body AttachFirewallsToAVMJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachFirewallsToAVMResponse, error)
+	AttachFirewallsToAVirtualMachineWithResponse(ctx context.Context, vmId int, body AttachFirewallsToAVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachFirewallsToAVirtualMachineResponse, error)
+
+	// CreateSnapshotFromAVirtualMachineWithBodyWithResponse request with any body
+	CreateSnapshotFromAVirtualMachineWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSnapshotFromAVirtualMachineResponse, error)
+
+	CreateSnapshotFromAVirtualMachineWithResponse(ctx context.Context, vmId int, body CreateSnapshotFromAVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSnapshotFromAVirtualMachineResponse, error)
 }
 
 type ListVirtualMachinesResponse struct {
@@ -1527,7 +1820,7 @@ func (r ListVirtualMachinesResponse) StatusCode() int {
 	return 0
 }
 
-type CreateVirtualMachineResponse struct {
+type CreateVirtualMachinesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *CreateInstancesResponse
@@ -1539,7 +1832,7 @@ type CreateVirtualMachineResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r CreateVirtualMachineResponse) Status() string {
+func (r CreateVirtualMachinesResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1547,7 +1840,7 @@ func (r CreateVirtualMachineResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CreateVirtualMachineResponse) StatusCode() int {
+func (r CreateVirtualMachinesResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1572,6 +1865,31 @@ func (r RetrieveVirtualMachinesAssociatedWithAContractResponse) Status() string 
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r RetrieveVirtualMachinesAssociatedWithAContractResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FetchVirtualMachineNameAvailabilityResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *NameAvailableModel
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r FetchVirtualMachineNameAvailabilityResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FetchVirtualMachineNameAvailabilityResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1754,7 +2072,7 @@ func (r RestoreVirtualMachineFromHibernationResponse) StatusCode() int {
 	return 0
 }
 
-type EditLabelsOfAnExistingVMResponse struct {
+type EditVirtualMachineLabelsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -1765,7 +2083,7 @@ type EditLabelsOfAnExistingVMResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r EditLabelsOfAnExistingVMResponse) Status() string {
+func (r EditVirtualMachineLabelsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1773,7 +2091,7 @@ func (r EditLabelsOfAnExistingVMResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r EditLabelsOfAnExistingVMResponse) StatusCode() int {
+func (r EditVirtualMachineLabelsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1883,7 +2201,7 @@ func (r DeleteFirewallRuleFromVirtualMachineResponse) StatusCode() int {
 	return 0
 }
 
-type AttachFirewallsToAVMResponse struct {
+type AttachFirewallsToAVirtualMachineResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -1893,7 +2211,7 @@ type AttachFirewallsToAVMResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r AttachFirewallsToAVMResponse) Status() string {
+func (r AttachFirewallsToAVirtualMachineResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1901,7 +2219,32 @@ func (r AttachFirewallsToAVMResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r AttachFirewallsToAVMResponse) StatusCode() int {
+func (r AttachFirewallsToAVirtualMachineResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateSnapshotFromAVirtualMachineResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *CreateSnapshotResponse
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateSnapshotFromAVirtualMachineResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateSnapshotFromAVirtualMachineResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1917,30 +2260,39 @@ func (c *ClientWithResponses) ListVirtualMachinesWithResponse(ctx context.Contex
 	return ParseListVirtualMachinesResponse(rsp)
 }
 
-// CreateVirtualMachineWithBodyWithResponse request with arbitrary body returning *CreateVirtualMachineResponse
-func (c *ClientWithResponses) CreateVirtualMachineWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualMachineResponse, error) {
-	rsp, err := c.CreateVirtualMachineWithBody(ctx, contentType, body, reqEditors...)
+// CreateVirtualMachinesWithBodyWithResponse request with arbitrary body returning *CreateVirtualMachinesResponse
+func (c *ClientWithResponses) CreateVirtualMachinesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualMachinesResponse, error) {
+	rsp, err := c.CreateVirtualMachinesWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreateVirtualMachineResponse(rsp)
+	return ParseCreateVirtualMachinesResponse(rsp)
 }
 
-func (c *ClientWithResponses) CreateVirtualMachineWithResponse(ctx context.Context, body CreateVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualMachineResponse, error) {
-	rsp, err := c.CreateVirtualMachine(ctx, body, reqEditors...)
+func (c *ClientWithResponses) CreateVirtualMachinesWithResponse(ctx context.Context, body CreateVirtualMachinesJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualMachinesResponse, error) {
+	rsp, err := c.CreateVirtualMachines(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreateVirtualMachineResponse(rsp)
+	return ParseCreateVirtualMachinesResponse(rsp)
 }
 
 // RetrieveVirtualMachinesAssociatedWithAContractWithResponse request returning *RetrieveVirtualMachinesAssociatedWithAContractResponse
-func (c *ClientWithResponses) RetrieveVirtualMachinesAssociatedWithAContractWithResponse(ctx context.Context, contractId int, reqEditors ...RequestEditorFn) (*RetrieveVirtualMachinesAssociatedWithAContractResponse, error) {
-	rsp, err := c.RetrieveVirtualMachinesAssociatedWithAContract(ctx, contractId, reqEditors...)
+func (c *ClientWithResponses) RetrieveVirtualMachinesAssociatedWithAContractWithResponse(ctx context.Context, contractId int, params *RetrieveVirtualMachinesAssociatedWithAContractParams, reqEditors ...RequestEditorFn) (*RetrieveVirtualMachinesAssociatedWithAContractResponse, error) {
+	rsp, err := c.RetrieveVirtualMachinesAssociatedWithAContract(ctx, contractId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseRetrieveVirtualMachinesAssociatedWithAContractResponse(rsp)
+}
+
+// FetchVirtualMachineNameAvailabilityWithResponse request returning *FetchVirtualMachineNameAvailabilityResponse
+func (c *ClientWithResponses) FetchVirtualMachineNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*FetchVirtualMachineNameAvailabilityResponse, error) {
+	rsp, err := c.FetchVirtualMachineNameAvailability(ctx, name, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFetchVirtualMachineNameAvailabilityResponse(rsp)
 }
 
 // DeleteVirtualMachineWithResponse request returning *DeleteVirtualMachineResponse
@@ -2006,21 +2358,21 @@ func (c *ClientWithResponses) RestoreVirtualMachineFromHibernationWithResponse(c
 	return ParseRestoreVirtualMachineFromHibernationResponse(rsp)
 }
 
-// EditLabelsOfAnExistingVMWithBodyWithResponse request with arbitrary body returning *EditLabelsOfAnExistingVMResponse
-func (c *ClientWithResponses) EditLabelsOfAnExistingVMWithBodyWithResponse(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditLabelsOfAnExistingVMResponse, error) {
-	rsp, err := c.EditLabelsOfAnExistingVMWithBody(ctx, virtualMachineId, contentType, body, reqEditors...)
+// EditVirtualMachineLabelsWithBodyWithResponse request with arbitrary body returning *EditVirtualMachineLabelsResponse
+func (c *ClientWithResponses) EditVirtualMachineLabelsWithBodyWithResponse(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditVirtualMachineLabelsResponse, error) {
+	rsp, err := c.EditVirtualMachineLabelsWithBody(ctx, virtualMachineId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseEditLabelsOfAnExistingVMResponse(rsp)
+	return ParseEditVirtualMachineLabelsResponse(rsp)
 }
 
-func (c *ClientWithResponses) EditLabelsOfAnExistingVMWithResponse(ctx context.Context, virtualMachineId int, body EditLabelsOfAnExistingVMJSONRequestBody, reqEditors ...RequestEditorFn) (*EditLabelsOfAnExistingVMResponse, error) {
-	rsp, err := c.EditLabelsOfAnExistingVM(ctx, virtualMachineId, body, reqEditors...)
+func (c *ClientWithResponses) EditVirtualMachineLabelsWithResponse(ctx context.Context, virtualMachineId int, body EditVirtualMachineLabelsJSONRequestBody, reqEditors ...RequestEditorFn) (*EditVirtualMachineLabelsResponse, error) {
+	rsp, err := c.EditVirtualMachineLabels(ctx, virtualMachineId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseEditLabelsOfAnExistingVMResponse(rsp)
+	return ParseEditVirtualMachineLabelsResponse(rsp)
 }
 
 // RetrieveVirtualMachinePerformanceMetricsWithResponse request returning *RetrieveVirtualMachinePerformanceMetricsResponse
@@ -2075,21 +2427,38 @@ func (c *ClientWithResponses) DeleteFirewallRuleFromVirtualMachineWithResponse(c
 	return ParseDeleteFirewallRuleFromVirtualMachineResponse(rsp)
 }
 
-// AttachFirewallsToAVMWithBodyWithResponse request with arbitrary body returning *AttachFirewallsToAVMResponse
-func (c *ClientWithResponses) AttachFirewallsToAVMWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachFirewallsToAVMResponse, error) {
-	rsp, err := c.AttachFirewallsToAVMWithBody(ctx, vmId, contentType, body, reqEditors...)
+// AttachFirewallsToAVirtualMachineWithBodyWithResponse request with arbitrary body returning *AttachFirewallsToAVirtualMachineResponse
+func (c *ClientWithResponses) AttachFirewallsToAVirtualMachineWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachFirewallsToAVirtualMachineResponse, error) {
+	rsp, err := c.AttachFirewallsToAVirtualMachineWithBody(ctx, vmId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseAttachFirewallsToAVMResponse(rsp)
+	return ParseAttachFirewallsToAVirtualMachineResponse(rsp)
 }
 
-func (c *ClientWithResponses) AttachFirewallsToAVMWithResponse(ctx context.Context, vmId int, body AttachFirewallsToAVMJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachFirewallsToAVMResponse, error) {
-	rsp, err := c.AttachFirewallsToAVM(ctx, vmId, body, reqEditors...)
+func (c *ClientWithResponses) AttachFirewallsToAVirtualMachineWithResponse(ctx context.Context, vmId int, body AttachFirewallsToAVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachFirewallsToAVirtualMachineResponse, error) {
+	rsp, err := c.AttachFirewallsToAVirtualMachine(ctx, vmId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseAttachFirewallsToAVMResponse(rsp)
+	return ParseAttachFirewallsToAVirtualMachineResponse(rsp)
+}
+
+// CreateSnapshotFromAVirtualMachineWithBodyWithResponse request with arbitrary body returning *CreateSnapshotFromAVirtualMachineResponse
+func (c *ClientWithResponses) CreateSnapshotFromAVirtualMachineWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSnapshotFromAVirtualMachineResponse, error) {
+	rsp, err := c.CreateSnapshotFromAVirtualMachineWithBody(ctx, vmId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSnapshotFromAVirtualMachineResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateSnapshotFromAVirtualMachineWithResponse(ctx context.Context, vmId int, body CreateSnapshotFromAVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSnapshotFromAVirtualMachineResponse, error) {
+	rsp, err := c.CreateSnapshotFromAVirtualMachine(ctx, vmId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSnapshotFromAVirtualMachineResponse(rsp)
 }
 
 // ParseListVirtualMachinesResponse parses an HTTP response from a ListVirtualMachinesWithResponse call
@@ -2132,15 +2501,15 @@ func ParseListVirtualMachinesResponse(rsp *http.Response) (*ListVirtualMachinesR
 	return response, nil
 }
 
-// ParseCreateVirtualMachineResponse parses an HTTP response from a CreateVirtualMachineWithResponse call
-func ParseCreateVirtualMachineResponse(rsp *http.Response) (*CreateVirtualMachineResponse, error) {
+// ParseCreateVirtualMachinesResponse parses an HTTP response from a CreateVirtualMachinesWithResponse call
+func ParseCreateVirtualMachinesResponse(rsp *http.Response) (*CreateVirtualMachinesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CreateVirtualMachineResponse{
+	response := &CreateVirtualMachinesResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2227,6 +2596,53 @@ func ParseRetrieveVirtualMachinesAssociatedWithAContractResponse(rsp *http.Respo
 			return nil, err
 		}
 		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFetchVirtualMachineNameAvailabilityResponse parses an HTTP response from a FetchVirtualMachineNameAvailabilityWithResponse call
+func ParseFetchVirtualMachineNameAvailabilityResponse(rsp *http.Response) (*FetchVirtualMachineNameAvailabilityResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FetchVirtualMachineNameAvailabilityResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest NameAvailableModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	}
 
@@ -2569,15 +2985,15 @@ func ParseRestoreVirtualMachineFromHibernationResponse(rsp *http.Response) (*Res
 	return response, nil
 }
 
-// ParseEditLabelsOfAnExistingVMResponse parses an HTTP response from a EditLabelsOfAnExistingVMWithResponse call
-func ParseEditLabelsOfAnExistingVMResponse(rsp *http.Response) (*EditLabelsOfAnExistingVMResponse, error) {
+// ParseEditVirtualMachineLabelsResponse parses an HTTP response from a EditVirtualMachineLabelsWithResponse call
+func ParseEditVirtualMachineLabelsResponse(rsp *http.Response) (*EditVirtualMachineLabelsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &EditLabelsOfAnExistingVMResponse{
+	response := &EditVirtualMachineLabelsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2832,15 +3248,15 @@ func ParseDeleteFirewallRuleFromVirtualMachineResponse(rsp *http.Response) (*Del
 	return response, nil
 }
 
-// ParseAttachFirewallsToAVMResponse parses an HTTP response from a AttachFirewallsToAVMWithResponse call
-func ParseAttachFirewallsToAVMResponse(rsp *http.Response) (*AttachFirewallsToAVMResponse, error) {
+// ParseAttachFirewallsToAVirtualMachineResponse parses an HTTP response from a AttachFirewallsToAVirtualMachineWithResponse call
+func ParseAttachFirewallsToAVirtualMachineResponse(rsp *http.Response) (*AttachFirewallsToAVirtualMachineResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &AttachFirewallsToAVMResponse{
+	response := &AttachFirewallsToAVirtualMachineResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2852,6 +3268,53 @@ func ParseAttachFirewallsToAVMResponse(rsp *http.Response) (*AttachFirewallsToAV
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateSnapshotFromAVirtualMachineResponse parses an HTTP response from a CreateSnapshotFromAVirtualMachineWithResponse call
+func ParseCreateSnapshotFromAVirtualMachineResponse(rsp *http.Response) (*CreateSnapshotFromAVirtualMachineResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateSnapshotFromAVirtualMachineResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest CreateSnapshotResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
 		var dest ErrorResponseModel

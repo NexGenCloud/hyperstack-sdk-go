@@ -59,11 +59,11 @@ type GetApiKeysResponseModel struct {
 	Status  *bool           `json:"status,omitempty"`
 }
 
-// GenerateAPIKeyJSONRequestBody defines body for GenerateAPIKey for application/json ContentType.
-type GenerateAPIKeyJSONRequestBody = GenerateUpdateApiKeyPayload
+// GenerateApiKeyJSONRequestBody defines body for GenerateApiKey for application/json ContentType.
+type GenerateApiKeyJSONRequestBody = GenerateUpdateApiKeyPayload
 
-// UpdateAPIKeyJSONRequestBody defines body for UpdateAPIKey for application/json ContentType.
-type UpdateAPIKeyJSONRequestBody = GenerateUpdateApiKeyPayload
+// UpdateApiKeyJSONRequestBody defines body for UpdateApiKey for application/json ContentType.
+type UpdateApiKeyJSONRequestBody = GenerateUpdateApiKeyPayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -138,25 +138,25 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// RetrieveAPIKey request
-	RetrieveAPIKey(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RetrieveApiKeys request
+	RetrieveApiKeys(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GenerateAPIKeyWithBody request with any body
-	GenerateAPIKeyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GenerateApiKeyWithBody request with any body
+	GenerateApiKeyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	GenerateAPIKey(ctx context.Context, body GenerateAPIKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GenerateApiKey(ctx context.Context, body GenerateApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteAPIKey request
-	DeleteAPIKey(ctx context.Context, apiKeyId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteApiKey request
+	DeleteApiKey(ctx context.Context, apiKeyId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateAPIKeyWithBody request with any body
-	UpdateAPIKeyWithBody(ctx context.Context, apiKeyId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdateApiKeyWithBody request with any body
+	UpdateApiKeyWithBody(ctx context.Context, apiKeyId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateAPIKey(ctx context.Context, apiKeyId int, body UpdateAPIKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateApiKey(ctx context.Context, apiKeyId int, body UpdateApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) RetrieveAPIKey(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveAPIKeyRequest(c.Server)
+func (c *Client) RetrieveApiKeys(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveApiKeysRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -167,8 +167,8 @@ func (c *Client) RetrieveAPIKey(ctx context.Context, reqEditors ...RequestEditor
 	return c.Client.Do(req)
 }
 
-func (c *Client) GenerateAPIKeyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGenerateAPIKeyRequestWithBody(c.Server, contentType, body)
+func (c *Client) GenerateApiKeyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGenerateApiKeyRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -179,8 +179,8 @@ func (c *Client) GenerateAPIKeyWithBody(ctx context.Context, contentType string,
 	return c.Client.Do(req)
 }
 
-func (c *Client) GenerateAPIKey(ctx context.Context, body GenerateAPIKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGenerateAPIKeyRequest(c.Server, body)
+func (c *Client) GenerateApiKey(ctx context.Context, body GenerateApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGenerateApiKeyRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -191,8 +191,8 @@ func (c *Client) GenerateAPIKey(ctx context.Context, body GenerateAPIKeyJSONRequ
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteAPIKey(ctx context.Context, apiKeyId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteAPIKeyRequest(c.Server, apiKeyId)
+func (c *Client) DeleteApiKey(ctx context.Context, apiKeyId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiKeyRequest(c.Server, apiKeyId)
 	if err != nil {
 		return nil, err
 	}
@@ -203,8 +203,8 @@ func (c *Client) DeleteAPIKey(ctx context.Context, apiKeyId int, reqEditors ...R
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateAPIKeyWithBody(ctx context.Context, apiKeyId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateAPIKeyRequestWithBody(c.Server, apiKeyId, contentType, body)
+func (c *Client) UpdateApiKeyWithBody(ctx context.Context, apiKeyId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateApiKeyRequestWithBody(c.Server, apiKeyId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -215,8 +215,8 @@ func (c *Client) UpdateAPIKeyWithBody(ctx context.Context, apiKeyId int, content
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateAPIKey(ctx context.Context, apiKeyId int, body UpdateAPIKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateAPIKeyRequest(c.Server, apiKeyId, body)
+func (c *Client) UpdateApiKey(ctx context.Context, apiKeyId int, body UpdateApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateApiKeyRequest(c.Server, apiKeyId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -227,8 +227,8 @@ func (c *Client) UpdateAPIKey(ctx context.Context, apiKeyId int, body UpdateAPIK
 	return c.Client.Do(req)
 }
 
-// NewRetrieveAPIKeyRequest generates requests for RetrieveAPIKey
-func NewRetrieveAPIKeyRequest(server string) (*http.Request, error) {
+// NewRetrieveApiKeysRequest generates requests for RetrieveApiKeys
+func NewRetrieveApiKeysRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -254,19 +254,19 @@ func NewRetrieveAPIKeyRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewGenerateAPIKeyRequest calls the generic GenerateAPIKey builder with application/json body
-func NewGenerateAPIKeyRequest(server string, body GenerateAPIKeyJSONRequestBody) (*http.Request, error) {
+// NewGenerateApiKeyRequest calls the generic GenerateApiKey builder with application/json body
+func NewGenerateApiKeyRequest(server string, body GenerateApiKeyJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewGenerateAPIKeyRequestWithBody(server, "application/json", bodyReader)
+	return NewGenerateApiKeyRequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewGenerateAPIKeyRequestWithBody generates requests for GenerateAPIKey with any type of body
-func NewGenerateAPIKeyRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewGenerateApiKeyRequestWithBody generates requests for GenerateApiKey with any type of body
+func NewGenerateApiKeyRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -294,8 +294,8 @@ func NewGenerateAPIKeyRequestWithBody(server string, contentType string, body io
 	return req, nil
 }
 
-// NewDeleteAPIKeyRequest generates requests for DeleteAPIKey
-func NewDeleteAPIKeyRequest(server string, apiKeyId int) (*http.Request, error) {
+// NewDeleteApiKeyRequest generates requests for DeleteApiKey
+func NewDeleteApiKeyRequest(server string, apiKeyId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -328,19 +328,19 @@ func NewDeleteAPIKeyRequest(server string, apiKeyId int) (*http.Request, error) 
 	return req, nil
 }
 
-// NewUpdateAPIKeyRequest calls the generic UpdateAPIKey builder with application/json body
-func NewUpdateAPIKeyRequest(server string, apiKeyId int, body UpdateAPIKeyJSONRequestBody) (*http.Request, error) {
+// NewUpdateApiKeyRequest calls the generic UpdateApiKey builder with application/json body
+func NewUpdateApiKeyRequest(server string, apiKeyId int, body UpdateApiKeyJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUpdateAPIKeyRequestWithBody(server, apiKeyId, "application/json", bodyReader)
+	return NewUpdateApiKeyRequestWithBody(server, apiKeyId, "application/json", bodyReader)
 }
 
-// NewUpdateAPIKeyRequestWithBody generates requests for UpdateAPIKey with any type of body
-func NewUpdateAPIKeyRequestWithBody(server string, apiKeyId int, contentType string, body io.Reader) (*http.Request, error) {
+// NewUpdateApiKeyRequestWithBody generates requests for UpdateApiKey with any type of body
+func NewUpdateApiKeyRequestWithBody(server string, apiKeyId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -418,24 +418,24 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// RetrieveAPIKeyWithResponse request
-	RetrieveAPIKeyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveAPIKeyResponse, error)
+	// RetrieveApiKeysWithResponse request
+	RetrieveApiKeysWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveApiKeysResponse, error)
 
-	// GenerateAPIKeyWithBodyWithResponse request with any body
-	GenerateAPIKeyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*GenerateAPIKeyResponse, error)
+	// GenerateApiKeyWithBodyWithResponse request with any body
+	GenerateApiKeyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*GenerateApiKeyResponse, error)
 
-	GenerateAPIKeyWithResponse(ctx context.Context, body GenerateAPIKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*GenerateAPIKeyResponse, error)
+	GenerateApiKeyWithResponse(ctx context.Context, body GenerateApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*GenerateApiKeyResponse, error)
 
-	// DeleteAPIKeyWithResponse request
-	DeleteAPIKeyWithResponse(ctx context.Context, apiKeyId int, reqEditors ...RequestEditorFn) (*DeleteAPIKeyResponse, error)
+	// DeleteApiKeyWithResponse request
+	DeleteApiKeyWithResponse(ctx context.Context, apiKeyId int, reqEditors ...RequestEditorFn) (*DeleteApiKeyResponse, error)
 
-	// UpdateAPIKeyWithBodyWithResponse request with any body
-	UpdateAPIKeyWithBodyWithResponse(ctx context.Context, apiKeyId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAPIKeyResponse, error)
+	// UpdateApiKeyWithBodyWithResponse request with any body
+	UpdateApiKeyWithBodyWithResponse(ctx context.Context, apiKeyId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateApiKeyResponse, error)
 
-	UpdateAPIKeyWithResponse(ctx context.Context, apiKeyId int, body UpdateAPIKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAPIKeyResponse, error)
+	UpdateApiKeyWithResponse(ctx context.Context, apiKeyId int, body UpdateApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateApiKeyResponse, error)
 }
 
-type RetrieveAPIKeyResponse struct {
+type RetrieveApiKeysResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *GetApiKeysResponseModel
@@ -444,7 +444,7 @@ type RetrieveAPIKeyResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrieveAPIKeyResponse) Status() string {
+func (r RetrieveApiKeysResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -452,14 +452,14 @@ func (r RetrieveAPIKeyResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrieveAPIKeyResponse) StatusCode() int {
+func (r RetrieveApiKeysResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GenerateAPIKeyResponse struct {
+type GenerateApiKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *GenerateUpdateApiKeyResponseModel
@@ -470,7 +470,7 @@ type GenerateAPIKeyResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GenerateAPIKeyResponse) Status() string {
+func (r GenerateApiKeyResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -478,14 +478,14 @@ func (r GenerateAPIKeyResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GenerateAPIKeyResponse) StatusCode() int {
+func (r GenerateApiKeyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type DeleteAPIKeyResponse struct {
+type DeleteApiKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *CommonResponseModel
@@ -495,7 +495,7 @@ type DeleteAPIKeyResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteAPIKeyResponse) Status() string {
+func (r DeleteApiKeyResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -503,14 +503,14 @@ func (r DeleteAPIKeyResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteAPIKeyResponse) StatusCode() int {
+func (r DeleteApiKeyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type UpdateAPIKeyResponse struct {
+type UpdateApiKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *GenerateUpdateApiKeyResponseModel
@@ -520,7 +520,7 @@ type UpdateAPIKeyResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r UpdateAPIKeyResponse) Status() string {
+func (r UpdateApiKeyResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -528,74 +528,74 @@ func (r UpdateAPIKeyResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r UpdateAPIKeyResponse) StatusCode() int {
+func (r UpdateApiKeyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// RetrieveAPIKeyWithResponse request returning *RetrieveAPIKeyResponse
-func (c *ClientWithResponses) RetrieveAPIKeyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveAPIKeyResponse, error) {
-	rsp, err := c.RetrieveAPIKey(ctx, reqEditors...)
+// RetrieveApiKeysWithResponse request returning *RetrieveApiKeysResponse
+func (c *ClientWithResponses) RetrieveApiKeysWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveApiKeysResponse, error) {
+	rsp, err := c.RetrieveApiKeys(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveAPIKeyResponse(rsp)
+	return ParseRetrieveApiKeysResponse(rsp)
 }
 
-// GenerateAPIKeyWithBodyWithResponse request with arbitrary body returning *GenerateAPIKeyResponse
-func (c *ClientWithResponses) GenerateAPIKeyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*GenerateAPIKeyResponse, error) {
-	rsp, err := c.GenerateAPIKeyWithBody(ctx, contentType, body, reqEditors...)
+// GenerateApiKeyWithBodyWithResponse request with arbitrary body returning *GenerateApiKeyResponse
+func (c *ClientWithResponses) GenerateApiKeyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*GenerateApiKeyResponse, error) {
+	rsp, err := c.GenerateApiKeyWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGenerateAPIKeyResponse(rsp)
+	return ParseGenerateApiKeyResponse(rsp)
 }
 
-func (c *ClientWithResponses) GenerateAPIKeyWithResponse(ctx context.Context, body GenerateAPIKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*GenerateAPIKeyResponse, error) {
-	rsp, err := c.GenerateAPIKey(ctx, body, reqEditors...)
+func (c *ClientWithResponses) GenerateApiKeyWithResponse(ctx context.Context, body GenerateApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*GenerateApiKeyResponse, error) {
+	rsp, err := c.GenerateApiKey(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGenerateAPIKeyResponse(rsp)
+	return ParseGenerateApiKeyResponse(rsp)
 }
 
-// DeleteAPIKeyWithResponse request returning *DeleteAPIKeyResponse
-func (c *ClientWithResponses) DeleteAPIKeyWithResponse(ctx context.Context, apiKeyId int, reqEditors ...RequestEditorFn) (*DeleteAPIKeyResponse, error) {
-	rsp, err := c.DeleteAPIKey(ctx, apiKeyId, reqEditors...)
+// DeleteApiKeyWithResponse request returning *DeleteApiKeyResponse
+func (c *ClientWithResponses) DeleteApiKeyWithResponse(ctx context.Context, apiKeyId int, reqEditors ...RequestEditorFn) (*DeleteApiKeyResponse, error) {
+	rsp, err := c.DeleteApiKey(ctx, apiKeyId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteAPIKeyResponse(rsp)
+	return ParseDeleteApiKeyResponse(rsp)
 }
 
-// UpdateAPIKeyWithBodyWithResponse request with arbitrary body returning *UpdateAPIKeyResponse
-func (c *ClientWithResponses) UpdateAPIKeyWithBodyWithResponse(ctx context.Context, apiKeyId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAPIKeyResponse, error) {
-	rsp, err := c.UpdateAPIKeyWithBody(ctx, apiKeyId, contentType, body, reqEditors...)
+// UpdateApiKeyWithBodyWithResponse request with arbitrary body returning *UpdateApiKeyResponse
+func (c *ClientWithResponses) UpdateApiKeyWithBodyWithResponse(ctx context.Context, apiKeyId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateApiKeyResponse, error) {
+	rsp, err := c.UpdateApiKeyWithBody(ctx, apiKeyId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUpdateAPIKeyResponse(rsp)
+	return ParseUpdateApiKeyResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateAPIKeyWithResponse(ctx context.Context, apiKeyId int, body UpdateAPIKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAPIKeyResponse, error) {
-	rsp, err := c.UpdateAPIKey(ctx, apiKeyId, body, reqEditors...)
+func (c *ClientWithResponses) UpdateApiKeyWithResponse(ctx context.Context, apiKeyId int, body UpdateApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateApiKeyResponse, error) {
+	rsp, err := c.UpdateApiKey(ctx, apiKeyId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUpdateAPIKeyResponse(rsp)
+	return ParseUpdateApiKeyResponse(rsp)
 }
 
-// ParseRetrieveAPIKeyResponse parses an HTTP response from a RetrieveAPIKeyWithResponse call
-func ParseRetrieveAPIKeyResponse(rsp *http.Response) (*RetrieveAPIKeyResponse, error) {
+// ParseRetrieveApiKeysResponse parses an HTTP response from a RetrieveApiKeysWithResponse call
+func ParseRetrieveApiKeysResponse(rsp *http.Response) (*RetrieveApiKeysResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrieveAPIKeyResponse{
+	response := &RetrieveApiKeysResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -627,15 +627,15 @@ func ParseRetrieveAPIKeyResponse(rsp *http.Response) (*RetrieveAPIKeyResponse, e
 	return response, nil
 }
 
-// ParseGenerateAPIKeyResponse parses an HTTP response from a GenerateAPIKeyWithResponse call
-func ParseGenerateAPIKeyResponse(rsp *http.Response) (*GenerateAPIKeyResponse, error) {
+// ParseGenerateApiKeyResponse parses an HTTP response from a GenerateApiKeyWithResponse call
+func ParseGenerateApiKeyResponse(rsp *http.Response) (*GenerateApiKeyResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GenerateAPIKeyResponse{
+	response := &GenerateApiKeyResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -681,15 +681,15 @@ func ParseGenerateAPIKeyResponse(rsp *http.Response) (*GenerateAPIKeyResponse, e
 	return response, nil
 }
 
-// ParseDeleteAPIKeyResponse parses an HTTP response from a DeleteAPIKeyWithResponse call
-func ParseDeleteAPIKeyResponse(rsp *http.Response) (*DeleteAPIKeyResponse, error) {
+// ParseDeleteApiKeyResponse parses an HTTP response from a DeleteApiKeyWithResponse call
+func ParseDeleteApiKeyResponse(rsp *http.Response) (*DeleteApiKeyResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteAPIKeyResponse{
+	response := &DeleteApiKeyResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -728,15 +728,15 @@ func ParseDeleteAPIKeyResponse(rsp *http.Response) (*DeleteAPIKeyResponse, error
 	return response, nil
 }
 
-// ParseUpdateAPIKeyResponse parses an HTTP response from a UpdateAPIKeyWithResponse call
-func ParseUpdateAPIKeyResponse(rsp *http.Response) (*UpdateAPIKeyResponse, error) {
+// ParseUpdateApiKeyResponse parses an HTTP response from a UpdateApiKeyWithResponse call
+func ParseUpdateApiKeyResponse(rsp *http.Response) (*UpdateApiKeyResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &UpdateAPIKeyResponse{
+	response := &UpdateApiKeyResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

@@ -33,12 +33,18 @@ type Environment struct {
 	Status      *bool              `json:"status,omitempty"`
 }
 
+// EnvironmentFeatures defines model for EnvironmentFeatures.
+type EnvironmentFeatures struct {
+	NetworkOptimised *bool `json:"network_optimised,omitempty"`
+}
+
 // EnvironmentFields defines model for EnvironmentFields.
 type EnvironmentFields struct {
-	CreatedAt *time.CustomTime `json:"created_at,omitempty"`
-	Id        *int       `json:"id,omitempty"`
-	Name      *string    `json:"name,omitempty"`
-	Region    *string    `json:"region,omitempty"`
+	CreatedAt *time.CustomTime           `json:"created_at,omitempty"`
+	Features  *EnvironmentFeatures `json:"features,omitempty"`
+	Id        *int                 `json:"id,omitempty"`
+	Name      *string              `json:"name,omitempty"`
+	Region    *string              `json:"region,omitempty"`
 }
 
 // Environments defines model for Environments.

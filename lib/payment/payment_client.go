@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
 )
 
 // ErrorResponseModel defines model for ErrorResponseModel.
@@ -23,15 +24,16 @@ type ErrorResponseModel struct {
 
 // PaymentDetailsFields defines model for PaymentDetailsFields.
 type PaymentDetailsFields struct {
-	Amount          *float32 `json:"amount,omitempty"`
-	Currency        *string  `json:"currency,omitempty"`
-	Description     *string  `json:"description,omitempty"`
-	GatewayResponse *string  `json:"gateway_response,omitempty"`
-	PaidFrom        *string  `json:"paid_from,omitempty"`
-	PaymentId       *string  `json:"payment_id,omitempty"`
-	Status          *string  `json:"status,omitempty"`
-	TransactionId   *string  `json:"transaction_id,omitempty"`
-	UpdatedAt       *string  `json:"updated_at,omitempty"`
+	Amount          *float32   `json:"amount,omitempty"`
+	CreatedAt       *time.CustomTime `json:"created_at,omitempty"`
+	Currency        *string    `json:"currency,omitempty"`
+	Description     *string    `json:"description,omitempty"`
+	GatewayResponse *string    `json:"gateway_response,omitempty"`
+	PaidFrom        *string    `json:"paid_from,omitempty"`
+	PaymentId       *string    `json:"payment_id,omitempty"`
+	Status          *string    `json:"status,omitempty"`
+	TransactionId   *string    `json:"transaction_id,omitempty"`
+	UpdatedAt       *time.CustomTime `json:"updated_at,omitempty"`
 }
 
 // PaymentDetailsResponse defines model for PaymentDetailsResponse.
@@ -58,8 +60,8 @@ type PaymentInitiateResponse struct {
 	Status  *bool                  `json:"status,omitempty"`
 }
 
-// PostPaymentJSONRequestBody defines body for PostPayment for application/json ContentType.
-type PostPaymentJSONRequestBody = PaymentInitiatePayload
+// PostInitiatePaymentJSONRequestBody defines body for PostInitiatePayment for application/json ContentType.
+type PostInitiatePaymentJSONRequestBody = PaymentInitiatePayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -134,17 +136,17 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// GetDetails request
-	GetDetails(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetViewPaymentDetails request
+	GetViewPaymentDetails(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostPaymentWithBody request with any body
-	PostPaymentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// PostInitiatePaymentWithBody request with any body
+	PostInitiatePaymentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PostPayment(ctx context.Context, body PostPaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	PostInitiatePayment(ctx context.Context, body PostInitiatePaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) GetDetails(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetDetailsRequest(c.Server)
+func (c *Client) GetViewPaymentDetails(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetViewPaymentDetailsRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -155,8 +157,8 @@ func (c *Client) GetDetails(ctx context.Context, reqEditors ...RequestEditorFn) 
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostPaymentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostPaymentRequestWithBody(c.Server, contentType, body)
+func (c *Client) PostInitiatePaymentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostInitiatePaymentRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -167,8 +169,8 @@ func (c *Client) PostPaymentWithBody(ctx context.Context, contentType string, bo
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostPayment(ctx context.Context, body PostPaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostPaymentRequest(c.Server, body)
+func (c *Client) PostInitiatePayment(ctx context.Context, body PostInitiatePaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostInitiatePaymentRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -179,8 +181,8 @@ func (c *Client) PostPayment(ctx context.Context, body PostPaymentJSONRequestBod
 	return c.Client.Do(req)
 }
 
-// NewGetDetailsRequest generates requests for GetDetails
-func NewGetDetailsRequest(server string) (*http.Request, error) {
+// NewGetViewPaymentDetailsRequest generates requests for GetViewPaymentDetails
+func NewGetViewPaymentDetailsRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -206,19 +208,19 @@ func NewGetDetailsRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewPostPaymentRequest calls the generic PostPayment builder with application/json body
-func NewPostPaymentRequest(server string, body PostPaymentJSONRequestBody) (*http.Request, error) {
+// NewPostInitiatePaymentRequest calls the generic PostInitiatePayment builder with application/json body
+func NewPostInitiatePaymentRequest(server string, body PostInitiatePaymentJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPostPaymentRequestWithBody(server, "application/json", bodyReader)
+	return NewPostInitiatePaymentRequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewPostPaymentRequestWithBody generates requests for PostPayment with any type of body
-func NewPostPaymentRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewPostInitiatePaymentRequestWithBody generates requests for PostInitiatePayment with any type of body
+func NewPostInitiatePaymentRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -289,16 +291,16 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// GetDetailsWithResponse request
-	GetDetailsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetDetailsResponse, error)
+	// GetViewPaymentDetailsWithResponse request
+	GetViewPaymentDetailsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetViewPaymentDetailsResponse, error)
 
-	// PostPaymentWithBodyWithResponse request with any body
-	PostPaymentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostPaymentResponse, error)
+	// PostInitiatePaymentWithBodyWithResponse request with any body
+	PostInitiatePaymentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostInitiatePaymentResponse, error)
 
-	PostPaymentWithResponse(ctx context.Context, body PostPaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*PostPaymentResponse, error)
+	PostInitiatePaymentWithResponse(ctx context.Context, body PostInitiatePaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*PostInitiatePaymentResponse, error)
 }
 
-type GetDetailsResponse struct {
+type GetViewPaymentDetailsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *PaymentDetailsResponse
@@ -309,7 +311,7 @@ type GetDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetDetailsResponse) Status() string {
+func (r GetViewPaymentDetailsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -317,14 +319,14 @@ func (r GetDetailsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetDetailsResponse) StatusCode() int {
+func (r GetViewPaymentDetailsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PostPaymentResponse struct {
+type PostInitiatePaymentResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *PaymentInitiateResponse
@@ -335,7 +337,7 @@ type PostPaymentResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostPaymentResponse) Status() string {
+func (r PostInitiatePaymentResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -343,48 +345,48 @@ func (r PostPaymentResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostPaymentResponse) StatusCode() int {
+func (r PostInitiatePaymentResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// GetDetailsWithResponse request returning *GetDetailsResponse
-func (c *ClientWithResponses) GetDetailsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetDetailsResponse, error) {
-	rsp, err := c.GetDetails(ctx, reqEditors...)
+// GetViewPaymentDetailsWithResponse request returning *GetViewPaymentDetailsResponse
+func (c *ClientWithResponses) GetViewPaymentDetailsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetViewPaymentDetailsResponse, error) {
+	rsp, err := c.GetViewPaymentDetails(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetDetailsResponse(rsp)
+	return ParseGetViewPaymentDetailsResponse(rsp)
 }
 
-// PostPaymentWithBodyWithResponse request with arbitrary body returning *PostPaymentResponse
-func (c *ClientWithResponses) PostPaymentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostPaymentResponse, error) {
-	rsp, err := c.PostPaymentWithBody(ctx, contentType, body, reqEditors...)
+// PostInitiatePaymentWithBodyWithResponse request with arbitrary body returning *PostInitiatePaymentResponse
+func (c *ClientWithResponses) PostInitiatePaymentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostInitiatePaymentResponse, error) {
+	rsp, err := c.PostInitiatePaymentWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostPaymentResponse(rsp)
+	return ParsePostInitiatePaymentResponse(rsp)
 }
 
-func (c *ClientWithResponses) PostPaymentWithResponse(ctx context.Context, body PostPaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*PostPaymentResponse, error) {
-	rsp, err := c.PostPayment(ctx, body, reqEditors...)
+func (c *ClientWithResponses) PostInitiatePaymentWithResponse(ctx context.Context, body PostInitiatePaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*PostInitiatePaymentResponse, error) {
+	rsp, err := c.PostInitiatePayment(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostPaymentResponse(rsp)
+	return ParsePostInitiatePaymentResponse(rsp)
 }
 
-// ParseGetDetailsResponse parses an HTTP response from a GetDetailsWithResponse call
-func ParseGetDetailsResponse(rsp *http.Response) (*GetDetailsResponse, error) {
+// ParseGetViewPaymentDetailsResponse parses an HTTP response from a GetViewPaymentDetailsWithResponse call
+func ParseGetViewPaymentDetailsResponse(rsp *http.Response) (*GetViewPaymentDetailsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetDetailsResponse{
+	response := &GetViewPaymentDetailsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -430,15 +432,15 @@ func ParseGetDetailsResponse(rsp *http.Response) (*GetDetailsResponse, error) {
 	return response, nil
 }
 
-// ParsePostPaymentResponse parses an HTTP response from a PostPaymentWithResponse call
-func ParsePostPaymentResponse(rsp *http.Response) (*PostPaymentResponse, error) {
+// ParsePostInitiatePaymentResponse parses an HTTP response from a PostInitiatePaymentWithResponse call
+func ParsePostInitiatePaymentResponse(rsp *http.Response) (*PostInitiatePaymentResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostPaymentResponse{
+	response := &PostInitiatePaymentResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

@@ -22,6 +22,11 @@ type ErrorResponseModel struct {
 	Status      *bool   `json:"status,omitempty"`
 }
 
+// Image defines model for Image.
+type Image struct {
+	Image *ImageFields `json:"image,omitempty"`
+}
+
 // ImageFields defines model for ImageFields.
 type ImageFields struct {
 	Description *string         `json:"description,omitempty"`
@@ -57,9 +62,31 @@ type LableResonse struct {
 	Label *string `json:"label,omitempty"`
 }
 
+// NameAvailableModel defines model for NameAvailableModel.
+type NameAvailableModel struct {
+	Available *bool   `json:"available,omitempty"`
+	Message   *string `json:"message,omitempty"`
+	Name      *string `json:"name,omitempty"`
+}
+
+// ResponseModel defines model for ResponseModel.
+type ResponseModel struct {
+	Message *string `json:"message,omitempty"`
+	Status  *bool   `json:"status,omitempty"`
+}
+
 // ListImagesParams defines parameters for ListImages.
 type ListImagesParams struct {
-	Region *string `form:"region,omitempty" json:"region,omitempty"`
+	Region        *string `form:"region,omitempty" json:"region,omitempty"`
+	IncludePublic *bool   `form:"include_public,omitempty" json:"include_public,omitempty"`
+	Search        *string `form:"search,omitempty" json:"search,omitempty"`
+	Page          *int    `form:"page,omitempty" json:"page,omitempty"`
+	PerPage       *int    `form:"per_page,omitempty" json:"per_page,omitempty"`
+}
+
+// GetPrivateImageDetailsParams defines parameters for GetPrivateImageDetails.
+type GetPrivateImageDetailsParams struct {
+	IncludeRelatedVms *bool `form:"include_related_vms,omitempty" json:"include_related_vms,omitempty"`
 }
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
@@ -135,8 +162,29 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
+	// FetchNameAvailabilityForImages request
+	FetchNameAvailabilityForImages(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListImages request
 	ListImages(ctx context.Context, params *ListImagesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteAnImage request
+	DeleteAnImage(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetPrivateImageDetails request
+	GetPrivateImageDetails(ctx context.Context, id int, params *GetPrivateImageDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+}
+
+func (c *Client) FetchNameAvailabilityForImages(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFetchNameAvailabilityForImagesRequest(c.Server, name)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
 }
 
 func (c *Client) ListImages(ctx context.Context, params *ListImagesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -149,6 +197,64 @@ func (c *Client) ListImages(ctx context.Context, params *ListImagesParams, reqEd
 		return nil, err
 	}
 	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteAnImage(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteAnImageRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetPrivateImageDetails(ctx context.Context, id int, params *GetPrivateImageDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetPrivateImageDetailsRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// NewFetchNameAvailabilityForImagesRequest generates requests for FetchNameAvailabilityForImages
+func NewFetchNameAvailabilityForImagesRequest(server string, name string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "name", runtime.ParamLocationPath, name)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/image/name-availability/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
 }
 
 // NewListImagesRequest generates requests for ListImages
@@ -176,6 +282,160 @@ func NewListImagesRequest(server string, params *ListImagesParams) (*http.Reques
 		if params.Region != nil {
 
 			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "region", runtime.ParamLocationQuery, *params.Region); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.IncludePublic != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "include_public", runtime.ParamLocationQuery, *params.IncludePublic); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "search", runtime.ParamLocationQuery, *params.Search); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page", runtime.ParamLocationQuery, *params.Page); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.PerPage != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "per_page", runtime.ParamLocationQuery, *params.PerPage); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteAnImageRequest generates requests for DeleteAnImage
+func NewDeleteAnImageRequest(server string, id int) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/images/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetPrivateImageDetailsRequest generates requests for GetPrivateImageDetails
+func NewGetPrivateImageDetailsRequest(server string, id int, params *GetPrivateImageDetailsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/images/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.IncludeRelatedVms != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "include_related_vms", runtime.ParamLocationQuery, *params.IncludeRelatedVms); err != nil {
 				return nil, err
 			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
 				return nil, err
@@ -243,8 +503,42 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
+	// FetchNameAvailabilityForImagesWithResponse request
+	FetchNameAvailabilityForImagesWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*FetchNameAvailabilityForImagesResponse, error)
+
 	// ListImagesWithResponse request
 	ListImagesWithResponse(ctx context.Context, params *ListImagesParams, reqEditors ...RequestEditorFn) (*ListImagesResponse, error)
+
+	// DeleteAnImageWithResponse request
+	DeleteAnImageWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteAnImageResponse, error)
+
+	// GetPrivateImageDetailsWithResponse request
+	GetPrivateImageDetailsWithResponse(ctx context.Context, id int, params *GetPrivateImageDetailsParams, reqEditors ...RequestEditorFn) (*GetPrivateImageDetailsResponse, error)
+}
+
+type FetchNameAvailabilityForImagesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *NameAvailableModel
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r FetchNameAvailabilityForImagesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FetchNameAvailabilityForImagesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
 }
 
 type ListImagesResponse struct {
@@ -273,6 +567,65 @@ func (r ListImagesResponse) StatusCode() int {
 	return 0
 }
 
+type DeleteAnImageResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ResponseModel
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteAnImageResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteAnImageResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetPrivateImageDetailsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *Image
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r GetPrivateImageDetailsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetPrivateImageDetailsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// FetchNameAvailabilityForImagesWithResponse request returning *FetchNameAvailabilityForImagesResponse
+func (c *ClientWithResponses) FetchNameAvailabilityForImagesWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*FetchNameAvailabilityForImagesResponse, error) {
+	rsp, err := c.FetchNameAvailabilityForImages(ctx, name, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFetchNameAvailabilityForImagesResponse(rsp)
+}
+
 // ListImagesWithResponse request returning *ListImagesResponse
 func (c *ClientWithResponses) ListImagesWithResponse(ctx context.Context, params *ListImagesParams, reqEditors ...RequestEditorFn) (*ListImagesResponse, error) {
 	rsp, err := c.ListImages(ctx, params, reqEditors...)
@@ -280,6 +633,71 @@ func (c *ClientWithResponses) ListImagesWithResponse(ctx context.Context, params
 		return nil, err
 	}
 	return ParseListImagesResponse(rsp)
+}
+
+// DeleteAnImageWithResponse request returning *DeleteAnImageResponse
+func (c *ClientWithResponses) DeleteAnImageWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteAnImageResponse, error) {
+	rsp, err := c.DeleteAnImage(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteAnImageResponse(rsp)
+}
+
+// GetPrivateImageDetailsWithResponse request returning *GetPrivateImageDetailsResponse
+func (c *ClientWithResponses) GetPrivateImageDetailsWithResponse(ctx context.Context, id int, params *GetPrivateImageDetailsParams, reqEditors ...RequestEditorFn) (*GetPrivateImageDetailsResponse, error) {
+	rsp, err := c.GetPrivateImageDetails(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetPrivateImageDetailsResponse(rsp)
+}
+
+// ParseFetchNameAvailabilityForImagesResponse parses an HTTP response from a FetchNameAvailabilityForImagesWithResponse call
+func ParseFetchNameAvailabilityForImagesResponse(rsp *http.Response) (*FetchNameAvailabilityForImagesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FetchNameAvailabilityForImagesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest NameAvailableModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
 }
 
 // ParseListImagesResponse parses an HTTP response from a ListImagesWithResponse call
@@ -330,6 +748,100 @@ func ParseListImagesResponse(rsp *http.Response) (*ListImagesResponse, error) {
 			return nil, err
 		}
 		response.JSON406 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteAnImageResponse parses an HTTP response from a DeleteAnImageWithResponse call
+func ParseDeleteAnImageResponse(rsp *http.Response) (*DeleteAnImageResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteAnImageResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetPrivateImageDetailsResponse parses an HTTP response from a GetPrivateImageDetailsWithResponse call
+func ParseGetPrivateImageDetailsResponse(rsp *http.Response) (*GetPrivateImageDetailsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetPrivateImageDetailsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Image
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	}
 
