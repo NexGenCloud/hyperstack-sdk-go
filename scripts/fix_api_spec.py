@@ -130,6 +130,9 @@ def attr_fix_components(data: AttrType) -> None:
 
   schemas["FlavorFields"]["properties"]["ram"]["type"] = "number"
 
+  schemas["Volumes"]["properties"]["volumes"] = schemas["Volumes"]["properties"]["volume"]
+  del schemas["Volumes"]["properties"]["volume"]
+
   schemas["InstanceOverviewFields"]["properties"]["ram"]["type"] = "number"
   schemas["ContainerOverviewFields"]["properties"]["ram"]["type"] = "number"
   schemas["InstanceFlavorFields"]["properties"]["ram"]["type"] = "number"

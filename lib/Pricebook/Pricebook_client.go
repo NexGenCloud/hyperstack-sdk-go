@@ -105,12 +105,12 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// RetrivePricebook request
-	RetrivePricebook(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetPricebook request
+	GetPricebook(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) RetrivePricebook(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrivePricebookRequest(c.Server)
+func (c *Client) GetPricebook(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetPricebookRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -121,8 +121,8 @@ func (c *Client) RetrivePricebook(ctx context.Context, reqEditors ...RequestEdit
 	return c.Client.Do(req)
 }
 
-// NewRetrivePricebookRequest generates requests for RetrivePricebook
-func NewRetrivePricebookRequest(server string) (*http.Request, error) {
+// NewGetPricebookRequest generates requests for GetPricebook
+func NewGetPricebookRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -191,11 +191,11 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// RetrivePricebookWithResponse request
-	RetrivePricebookWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrivePricebookResponse, error)
+	// GetPricebookWithResponse request
+	GetPricebookWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetPricebookResponse, error)
 }
 
-type RetrivePricebookResponse struct {
+type GetPricebookResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]PricebookModel
@@ -205,7 +205,7 @@ type RetrivePricebookResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrivePricebookResponse) Status() string {
+func (r GetPricebookResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -213,31 +213,31 @@ func (r RetrivePricebookResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrivePricebookResponse) StatusCode() int {
+func (r GetPricebookResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// RetrivePricebookWithResponse request returning *RetrivePricebookResponse
-func (c *ClientWithResponses) RetrivePricebookWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrivePricebookResponse, error) {
-	rsp, err := c.RetrivePricebook(ctx, reqEditors...)
+// GetPricebookWithResponse request returning *GetPricebookResponse
+func (c *ClientWithResponses) GetPricebookWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetPricebookResponse, error) {
+	rsp, err := c.GetPricebook(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrivePricebookResponse(rsp)
+	return ParseGetPricebookResponse(rsp)
 }
 
-// ParseRetrivePricebookResponse parses an HTTP response from a RetrivePricebookWithResponse call
-func ParseRetrivePricebookResponse(rsp *http.Response) (*RetrivePricebookResponse, error) {
+// ParseGetPricebookResponse parses an HTTP response from a GetPricebookWithResponse call
+func ParseGetPricebookResponse(rsp *http.Response) (*GetPricebookResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrivePricebookResponse{
+	response := &GetPricebookResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

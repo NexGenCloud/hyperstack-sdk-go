@@ -101,7 +101,7 @@ type VolumeTypes struct {
 type Volumes struct {
 	Message *string         `json:"message,omitempty"`
 	Status  *bool           `json:"status,omitempty"`
-	Volume  *[]VolumeFields `json:"volume,omitempty"`
+	Volumes *[]VolumeFields `json:"volumes,omitempty"`
 }
 
 // ListVolumesParams defines parameters for ListVolumes.
