@@ -13,6 +13,13 @@ import (
 	"strings"
 )
 
+// Defines values for RegionFieldsGreenStatus.
+const (
+	GREEN          RegionFieldsGreenStatus = "GREEN"
+	NOTGREEN       RegionFieldsGreenStatus = "NOT_GREEN"
+	PARTIALLYGREEN RegionFieldsGreenStatus = "PARTIALLY_GREEN"
+)
+
 // ErrorResponseModel defines model for ErrorResponseModel.
 type ErrorResponseModel struct {
 	ErrorReason *string `json:"error_reason,omitempty"`
@@ -22,10 +29,17 @@ type ErrorResponseModel struct {
 
 // RegionFields defines model for RegionFields.
 type RegionFields struct {
+	Country     *string `json:"country,omitempty"`
 	Description *string `json:"description,omitempty"`
-	Id          *int    `json:"id,omitempty"`
-	Name        *string `json:"name,omitempty"`
+
+	// GreenStatus Green status
+	GreenStatus *RegionFieldsGreenStatus `json:"green_status,omitempty"`
+	Id          *int                     `json:"id,omitempty"`
+	Name        *string                  `json:"name,omitempty"`
 }
+
+// RegionFieldsGreenStatus Green status
+type RegionFieldsGreenStatus string
 
 // Regions defines model for Regions.
 type Regions struct {

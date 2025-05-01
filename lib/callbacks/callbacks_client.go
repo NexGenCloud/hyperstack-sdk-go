@@ -127,34 +127,34 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 // The interface specification for the client above.
 type ClientInterface interface {
 	// AttachCallbackToVirtualMachineWithBody request with any body
-	AttachCallbackToVirtualMachineWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	AttachCallbackToVirtualMachineWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	AttachCallbackToVirtualMachine(ctx context.Context, id int, body AttachCallbackToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	AttachCallbackToVirtualMachine(ctx context.Context, vmId int, body AttachCallbackToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteVirtualMachineCallback request
-	DeleteVirtualMachineCallback(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeleteVirtualMachineCallback(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateVirtualMachineCallbackWithBody request with any body
-	UpdateVirtualMachineCallbackWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateVirtualMachineCallbackWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateVirtualMachineCallback(ctx context.Context, id int, body UpdateVirtualMachineCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateVirtualMachineCallback(ctx context.Context, vmId int, body UpdateVirtualMachineCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// AttachCallbackToVolumeWithBody request with any body
-	AttachCallbackToVolumeWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	AttachCallbackToVolumeWithBody(ctx context.Context, volumeId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	AttachCallbackToVolume(ctx context.Context, id int, body AttachCallbackToVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	AttachCallbackToVolume(ctx context.Context, volumeId int, body AttachCallbackToVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteVolumeCallback request
-	DeleteVolumeCallback(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeleteVolumeCallback(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateVolumeCallbackWithBody request with any body
-	UpdateVolumeCallbackWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateVolumeCallbackWithBody(ctx context.Context, volumeId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateVolumeCallback(ctx context.Context, id int, body UpdateVolumeCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateVolumeCallback(ctx context.Context, volumeId int, body UpdateVolumeCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) AttachCallbackToVirtualMachineWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAttachCallbackToVirtualMachineRequestWithBody(c.Server, id, contentType, body)
+func (c *Client) AttachCallbackToVirtualMachineWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachCallbackToVirtualMachineRequestWithBody(c.Server, vmId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -165,8 +165,8 @@ func (c *Client) AttachCallbackToVirtualMachineWithBody(ctx context.Context, id 
 	return c.Client.Do(req)
 }
 
-func (c *Client) AttachCallbackToVirtualMachine(ctx context.Context, id int, body AttachCallbackToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAttachCallbackToVirtualMachineRequest(c.Server, id, body)
+func (c *Client) AttachCallbackToVirtualMachine(ctx context.Context, vmId int, body AttachCallbackToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachCallbackToVirtualMachineRequest(c.Server, vmId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -177,8 +177,8 @@ func (c *Client) AttachCallbackToVirtualMachine(ctx context.Context, id int, bod
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteVirtualMachineCallback(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteVirtualMachineCallbackRequest(c.Server, id)
+func (c *Client) DeleteVirtualMachineCallback(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteVirtualMachineCallbackRequest(c.Server, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -189,8 +189,8 @@ func (c *Client) DeleteVirtualMachineCallback(ctx context.Context, id int, reqEd
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateVirtualMachineCallbackWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateVirtualMachineCallbackRequestWithBody(c.Server, id, contentType, body)
+func (c *Client) UpdateVirtualMachineCallbackWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateVirtualMachineCallbackRequestWithBody(c.Server, vmId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -201,8 +201,8 @@ func (c *Client) UpdateVirtualMachineCallbackWithBody(ctx context.Context, id in
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateVirtualMachineCallback(ctx context.Context, id int, body UpdateVirtualMachineCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateVirtualMachineCallbackRequest(c.Server, id, body)
+func (c *Client) UpdateVirtualMachineCallback(ctx context.Context, vmId int, body UpdateVirtualMachineCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateVirtualMachineCallbackRequest(c.Server, vmId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -213,8 +213,8 @@ func (c *Client) UpdateVirtualMachineCallback(ctx context.Context, id int, body 
 	return c.Client.Do(req)
 }
 
-func (c *Client) AttachCallbackToVolumeWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAttachCallbackToVolumeRequestWithBody(c.Server, id, contentType, body)
+func (c *Client) AttachCallbackToVolumeWithBody(ctx context.Context, volumeId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachCallbackToVolumeRequestWithBody(c.Server, volumeId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -225,8 +225,8 @@ func (c *Client) AttachCallbackToVolumeWithBody(ctx context.Context, id int, con
 	return c.Client.Do(req)
 }
 
-func (c *Client) AttachCallbackToVolume(ctx context.Context, id int, body AttachCallbackToVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAttachCallbackToVolumeRequest(c.Server, id, body)
+func (c *Client) AttachCallbackToVolume(ctx context.Context, volumeId int, body AttachCallbackToVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachCallbackToVolumeRequest(c.Server, volumeId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -237,8 +237,8 @@ func (c *Client) AttachCallbackToVolume(ctx context.Context, id int, body Attach
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteVolumeCallback(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteVolumeCallbackRequest(c.Server, id)
+func (c *Client) DeleteVolumeCallback(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteVolumeCallbackRequest(c.Server, volumeId)
 	if err != nil {
 		return nil, err
 	}
@@ -249,8 +249,8 @@ func (c *Client) DeleteVolumeCallback(ctx context.Context, id int, reqEditors ..
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateVolumeCallbackWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateVolumeCallbackRequestWithBody(c.Server, id, contentType, body)
+func (c *Client) UpdateVolumeCallbackWithBody(ctx context.Context, volumeId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateVolumeCallbackRequestWithBody(c.Server, volumeId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -261,8 +261,8 @@ func (c *Client) UpdateVolumeCallbackWithBody(ctx context.Context, id int, conte
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateVolumeCallback(ctx context.Context, id int, body UpdateVolumeCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateVolumeCallbackRequest(c.Server, id, body)
+func (c *Client) UpdateVolumeCallback(ctx context.Context, volumeId int, body UpdateVolumeCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateVolumeCallbackRequest(c.Server, volumeId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -274,23 +274,23 @@ func (c *Client) UpdateVolumeCallback(ctx context.Context, id int, body UpdateVo
 }
 
 // NewAttachCallbackToVirtualMachineRequest calls the generic AttachCallbackToVirtualMachine builder with application/json body
-func NewAttachCallbackToVirtualMachineRequest(server string, id int, body AttachCallbackToVirtualMachineJSONRequestBody) (*http.Request, error) {
+func NewAttachCallbackToVirtualMachineRequest(server string, vmId int, body AttachCallbackToVirtualMachineJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewAttachCallbackToVirtualMachineRequestWithBody(server, id, "application/json", bodyReader)
+	return NewAttachCallbackToVirtualMachineRequestWithBody(server, vmId, "application/json", bodyReader)
 }
 
 // NewAttachCallbackToVirtualMachineRequestWithBody generates requests for AttachCallbackToVirtualMachine with any type of body
-func NewAttachCallbackToVirtualMachineRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
+func NewAttachCallbackToVirtualMachineRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "vm_id", runtime.ParamLocationPath, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -321,12 +321,12 @@ func NewAttachCallbackToVirtualMachineRequestWithBody(server string, id int, con
 }
 
 // NewDeleteVirtualMachineCallbackRequest generates requests for DeleteVirtualMachineCallback
-func NewDeleteVirtualMachineCallbackRequest(server string, id int) (*http.Request, error) {
+func NewDeleteVirtualMachineCallbackRequest(server string, vmId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "vm_id", runtime.ParamLocationPath, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -355,23 +355,23 @@ func NewDeleteVirtualMachineCallbackRequest(server string, id int) (*http.Reques
 }
 
 // NewUpdateVirtualMachineCallbackRequest calls the generic UpdateVirtualMachineCallback builder with application/json body
-func NewUpdateVirtualMachineCallbackRequest(server string, id int, body UpdateVirtualMachineCallbackJSONRequestBody) (*http.Request, error) {
+func NewUpdateVirtualMachineCallbackRequest(server string, vmId int, body UpdateVirtualMachineCallbackJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUpdateVirtualMachineCallbackRequestWithBody(server, id, "application/json", bodyReader)
+	return NewUpdateVirtualMachineCallbackRequestWithBody(server, vmId, "application/json", bodyReader)
 }
 
 // NewUpdateVirtualMachineCallbackRequestWithBody generates requests for UpdateVirtualMachineCallback with any type of body
-func NewUpdateVirtualMachineCallbackRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
+func NewUpdateVirtualMachineCallbackRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "vm_id", runtime.ParamLocationPath, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -402,23 +402,23 @@ func NewUpdateVirtualMachineCallbackRequestWithBody(server string, id int, conte
 }
 
 // NewAttachCallbackToVolumeRequest calls the generic AttachCallbackToVolume builder with application/json body
-func NewAttachCallbackToVolumeRequest(server string, id int, body AttachCallbackToVolumeJSONRequestBody) (*http.Request, error) {
+func NewAttachCallbackToVolumeRequest(server string, volumeId int, body AttachCallbackToVolumeJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewAttachCallbackToVolumeRequestWithBody(server, id, "application/json", bodyReader)
+	return NewAttachCallbackToVolumeRequestWithBody(server, volumeId, "application/json", bodyReader)
 }
 
 // NewAttachCallbackToVolumeRequestWithBody generates requests for AttachCallbackToVolume with any type of body
-func NewAttachCallbackToVolumeRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
+func NewAttachCallbackToVolumeRequestWithBody(server string, volumeId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "volume_id", runtime.ParamLocationPath, volumeId)
 	if err != nil {
 		return nil, err
 	}
@@ -449,12 +449,12 @@ func NewAttachCallbackToVolumeRequestWithBody(server string, id int, contentType
 }
 
 // NewDeleteVolumeCallbackRequest generates requests for DeleteVolumeCallback
-func NewDeleteVolumeCallbackRequest(server string, id int) (*http.Request, error) {
+func NewDeleteVolumeCallbackRequest(server string, volumeId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "volume_id", runtime.ParamLocationPath, volumeId)
 	if err != nil {
 		return nil, err
 	}
@@ -483,23 +483,23 @@ func NewDeleteVolumeCallbackRequest(server string, id int) (*http.Request, error
 }
 
 // NewUpdateVolumeCallbackRequest calls the generic UpdateVolumeCallback builder with application/json body
-func NewUpdateVolumeCallbackRequest(server string, id int, body UpdateVolumeCallbackJSONRequestBody) (*http.Request, error) {
+func NewUpdateVolumeCallbackRequest(server string, volumeId int, body UpdateVolumeCallbackJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUpdateVolumeCallbackRequestWithBody(server, id, "application/json", bodyReader)
+	return NewUpdateVolumeCallbackRequestWithBody(server, volumeId, "application/json", bodyReader)
 }
 
 // NewUpdateVolumeCallbackRequestWithBody generates requests for UpdateVolumeCallback with any type of body
-func NewUpdateVolumeCallbackRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
+func NewUpdateVolumeCallbackRequestWithBody(server string, volumeId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "volume_id", runtime.ParamLocationPath, volumeId)
 	if err != nil {
 		return nil, err
 	}
@@ -573,30 +573,30 @@ func WithBaseURL(baseURL string) ClientOption {
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
 	// AttachCallbackToVirtualMachineWithBodyWithResponse request with any body
-	AttachCallbackToVirtualMachineWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachCallbackToVirtualMachineResponse, error)
+	AttachCallbackToVirtualMachineWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachCallbackToVirtualMachineResponse, error)
 
-	AttachCallbackToVirtualMachineWithResponse(ctx context.Context, id int, body AttachCallbackToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachCallbackToVirtualMachineResponse, error)
+	AttachCallbackToVirtualMachineWithResponse(ctx context.Context, vmId int, body AttachCallbackToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachCallbackToVirtualMachineResponse, error)
 
 	// DeleteVirtualMachineCallbackWithResponse request
-	DeleteVirtualMachineCallbackWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteVirtualMachineCallbackResponse, error)
+	DeleteVirtualMachineCallbackWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*DeleteVirtualMachineCallbackResponse, error)
 
 	// UpdateVirtualMachineCallbackWithBodyWithResponse request with any body
-	UpdateVirtualMachineCallbackWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateVirtualMachineCallbackResponse, error)
+	UpdateVirtualMachineCallbackWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateVirtualMachineCallbackResponse, error)
 
-	UpdateVirtualMachineCallbackWithResponse(ctx context.Context, id int, body UpdateVirtualMachineCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateVirtualMachineCallbackResponse, error)
+	UpdateVirtualMachineCallbackWithResponse(ctx context.Context, vmId int, body UpdateVirtualMachineCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateVirtualMachineCallbackResponse, error)
 
 	// AttachCallbackToVolumeWithBodyWithResponse request with any body
-	AttachCallbackToVolumeWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachCallbackToVolumeResponse, error)
+	AttachCallbackToVolumeWithBodyWithResponse(ctx context.Context, volumeId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachCallbackToVolumeResponse, error)
 
-	AttachCallbackToVolumeWithResponse(ctx context.Context, id int, body AttachCallbackToVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachCallbackToVolumeResponse, error)
+	AttachCallbackToVolumeWithResponse(ctx context.Context, volumeId int, body AttachCallbackToVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachCallbackToVolumeResponse, error)
 
 	// DeleteVolumeCallbackWithResponse request
-	DeleteVolumeCallbackWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteVolumeCallbackResponse, error)
+	DeleteVolumeCallbackWithResponse(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*DeleteVolumeCallbackResponse, error)
 
 	// UpdateVolumeCallbackWithBodyWithResponse request with any body
-	UpdateVolumeCallbackWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateVolumeCallbackResponse, error)
+	UpdateVolumeCallbackWithBodyWithResponse(ctx context.Context, volumeId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateVolumeCallbackResponse, error)
 
-	UpdateVolumeCallbackWithResponse(ctx context.Context, id int, body UpdateVolumeCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateVolumeCallbackResponse, error)
+	UpdateVolumeCallbackWithResponse(ctx context.Context, volumeId int, body UpdateVolumeCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateVolumeCallbackResponse, error)
 }
 
 type AttachCallbackToVirtualMachineResponse struct {
@@ -750,16 +750,16 @@ func (r UpdateVolumeCallbackResponse) StatusCode() int {
 }
 
 // AttachCallbackToVirtualMachineWithBodyWithResponse request with arbitrary body returning *AttachCallbackToVirtualMachineResponse
-func (c *ClientWithResponses) AttachCallbackToVirtualMachineWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachCallbackToVirtualMachineResponse, error) {
-	rsp, err := c.AttachCallbackToVirtualMachineWithBody(ctx, id, contentType, body, reqEditors...)
+func (c *ClientWithResponses) AttachCallbackToVirtualMachineWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachCallbackToVirtualMachineResponse, error) {
+	rsp, err := c.AttachCallbackToVirtualMachineWithBody(ctx, vmId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseAttachCallbackToVirtualMachineResponse(rsp)
 }
 
-func (c *ClientWithResponses) AttachCallbackToVirtualMachineWithResponse(ctx context.Context, id int, body AttachCallbackToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachCallbackToVirtualMachineResponse, error) {
-	rsp, err := c.AttachCallbackToVirtualMachine(ctx, id, body, reqEditors...)
+func (c *ClientWithResponses) AttachCallbackToVirtualMachineWithResponse(ctx context.Context, vmId int, body AttachCallbackToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachCallbackToVirtualMachineResponse, error) {
+	rsp, err := c.AttachCallbackToVirtualMachine(ctx, vmId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -767,8 +767,8 @@ func (c *ClientWithResponses) AttachCallbackToVirtualMachineWithResponse(ctx con
 }
 
 // DeleteVirtualMachineCallbackWithResponse request returning *DeleteVirtualMachineCallbackResponse
-func (c *ClientWithResponses) DeleteVirtualMachineCallbackWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteVirtualMachineCallbackResponse, error) {
-	rsp, err := c.DeleteVirtualMachineCallback(ctx, id, reqEditors...)
+func (c *ClientWithResponses) DeleteVirtualMachineCallbackWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*DeleteVirtualMachineCallbackResponse, error) {
+	rsp, err := c.DeleteVirtualMachineCallback(ctx, vmId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -776,16 +776,16 @@ func (c *ClientWithResponses) DeleteVirtualMachineCallbackWithResponse(ctx conte
 }
 
 // UpdateVirtualMachineCallbackWithBodyWithResponse request with arbitrary body returning *UpdateVirtualMachineCallbackResponse
-func (c *ClientWithResponses) UpdateVirtualMachineCallbackWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateVirtualMachineCallbackResponse, error) {
-	rsp, err := c.UpdateVirtualMachineCallbackWithBody(ctx, id, contentType, body, reqEditors...)
+func (c *ClientWithResponses) UpdateVirtualMachineCallbackWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateVirtualMachineCallbackResponse, error) {
+	rsp, err := c.UpdateVirtualMachineCallbackWithBody(ctx, vmId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseUpdateVirtualMachineCallbackResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateVirtualMachineCallbackWithResponse(ctx context.Context, id int, body UpdateVirtualMachineCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateVirtualMachineCallbackResponse, error) {
-	rsp, err := c.UpdateVirtualMachineCallback(ctx, id, body, reqEditors...)
+func (c *ClientWithResponses) UpdateVirtualMachineCallbackWithResponse(ctx context.Context, vmId int, body UpdateVirtualMachineCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateVirtualMachineCallbackResponse, error) {
+	rsp, err := c.UpdateVirtualMachineCallback(ctx, vmId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -793,16 +793,16 @@ func (c *ClientWithResponses) UpdateVirtualMachineCallbackWithResponse(ctx conte
 }
 
 // AttachCallbackToVolumeWithBodyWithResponse request with arbitrary body returning *AttachCallbackToVolumeResponse
-func (c *ClientWithResponses) AttachCallbackToVolumeWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachCallbackToVolumeResponse, error) {
-	rsp, err := c.AttachCallbackToVolumeWithBody(ctx, id, contentType, body, reqEditors...)
+func (c *ClientWithResponses) AttachCallbackToVolumeWithBodyWithResponse(ctx context.Context, volumeId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachCallbackToVolumeResponse, error) {
+	rsp, err := c.AttachCallbackToVolumeWithBody(ctx, volumeId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseAttachCallbackToVolumeResponse(rsp)
 }
 
-func (c *ClientWithResponses) AttachCallbackToVolumeWithResponse(ctx context.Context, id int, body AttachCallbackToVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachCallbackToVolumeResponse, error) {
-	rsp, err := c.AttachCallbackToVolume(ctx, id, body, reqEditors...)
+func (c *ClientWithResponses) AttachCallbackToVolumeWithResponse(ctx context.Context, volumeId int, body AttachCallbackToVolumeJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachCallbackToVolumeResponse, error) {
+	rsp, err := c.AttachCallbackToVolume(ctx, volumeId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -810,8 +810,8 @@ func (c *ClientWithResponses) AttachCallbackToVolumeWithResponse(ctx context.Con
 }
 
 // DeleteVolumeCallbackWithResponse request returning *DeleteVolumeCallbackResponse
-func (c *ClientWithResponses) DeleteVolumeCallbackWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteVolumeCallbackResponse, error) {
-	rsp, err := c.DeleteVolumeCallback(ctx, id, reqEditors...)
+func (c *ClientWithResponses) DeleteVolumeCallbackWithResponse(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*DeleteVolumeCallbackResponse, error) {
+	rsp, err := c.DeleteVolumeCallback(ctx, volumeId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -819,16 +819,16 @@ func (c *ClientWithResponses) DeleteVolumeCallbackWithResponse(ctx context.Conte
 }
 
 // UpdateVolumeCallbackWithBodyWithResponse request with arbitrary body returning *UpdateVolumeCallbackResponse
-func (c *ClientWithResponses) UpdateVolumeCallbackWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateVolumeCallbackResponse, error) {
-	rsp, err := c.UpdateVolumeCallbackWithBody(ctx, id, contentType, body, reqEditors...)
+func (c *ClientWithResponses) UpdateVolumeCallbackWithBodyWithResponse(ctx context.Context, volumeId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateVolumeCallbackResponse, error) {
+	rsp, err := c.UpdateVolumeCallbackWithBody(ctx, volumeId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseUpdateVolumeCallbackResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateVolumeCallbackWithResponse(ctx context.Context, id int, body UpdateVolumeCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateVolumeCallbackResponse, error) {
-	rsp, err := c.UpdateVolumeCallback(ctx, id, body, reqEditors...)
+func (c *ClientWithResponses) UpdateVolumeCallbackWithResponse(ctx context.Context, volumeId int, body UpdateVolumeCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateVolumeCallbackResponse, error) {
+	rsp, err := c.UpdateVolumeCallback(ctx, volumeId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}

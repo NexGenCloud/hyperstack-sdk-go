@@ -17,6 +17,13 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// Defines values for KeypairEnvironmentFeaturesGreenStatus.
+const (
+	GREEN          KeypairEnvironmentFeaturesGreenStatus = "GREEN"
+	NOTGREEN       KeypairEnvironmentFeaturesGreenStatus = "NOT_GREEN"
+	PARTIALLYGREEN KeypairEnvironmentFeaturesGreenStatus = "PARTIALLY_GREEN"
+)
+
 // ErrorResponseModel defines model for ErrorResponseModel.
 type ErrorResponseModel struct {
 	ErrorReason *string `json:"error_reason,omitempty"`
@@ -43,14 +50,32 @@ type ImportKeypairResponse struct {
 	Status  *bool          `json:"status,omitempty"`
 }
 
+// KeypairEnvironmentFeatures defines model for KeypairEnvironmentFeatures.
+type KeypairEnvironmentFeatures struct {
+	GreenStatus      *KeypairEnvironmentFeaturesGreenStatus `json:"green_status,omitempty"`
+	NetworkOptimised *bool                                  `json:"network_optimised,omitempty"`
+}
+
+// KeypairEnvironmentFeaturesGreenStatus defines model for KeypairEnvironmentFeatures.GreenStatus.
+type KeypairEnvironmentFeaturesGreenStatus string
+
+// KeypairEnvironmentFields defines model for KeypairEnvironmentFields.
+type KeypairEnvironmentFields struct {
+	CreatedAt *time.CustomTime                  `json:"created_at,omitempty"`
+	Features  *KeypairEnvironmentFeatures `json:"features,omitempty"`
+	Id        *int                        `json:"id,omitempty"`
+	Name      *string                     `json:"name,omitempty"`
+	Region    *string                     `json:"region,omitempty"`
+}
+
 // KeypairFields defines model for KeypairFields.
 type KeypairFields struct {
-	CreatedAt   *time.CustomTime `json:"created_at,omitempty"`
-	Environment *string    `json:"environment,omitempty"`
-	Fingerprint *string    `json:"fingerprint,omitempty"`
-	Id          *int       `json:"id,omitempty"`
-	Name        *string    `json:"name,omitempty"`
-	PublicKey   *string    `json:"public_key,omitempty"`
+	CreatedAt   *time.CustomTime                `json:"created_at,omitempty"`
+	Environment *KeypairEnvironmentFields `json:"environment,omitempty"`
+	Fingerprint *string                   `json:"fingerprint,omitempty"`
+	Id          *int                      `json:"id,omitempty"`
+	Name        *string                   `json:"name,omitempty"`
+	PublicKey   *string                   `json:"public_key,omitempty"`
 }
 
 // Keypairs defines model for Keypairs.

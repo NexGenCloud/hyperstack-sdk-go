@@ -17,6 +17,13 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// Defines values for EnvironmentFeaturesGreenStatus.
+const (
+	GREEN          EnvironmentFeaturesGreenStatus = "GREEN"
+	NOTGREEN       EnvironmentFeaturesGreenStatus = "NOT_GREEN"
+	PARTIALLYGREEN EnvironmentFeaturesGreenStatus = "PARTIALLY_GREEN"
+)
+
 // CreateImage defines model for CreateImage.
 type CreateImage struct {
 	Id      *int    `json:"id,omitempty"`
@@ -35,14 +42,24 @@ type CreateImagePayload struct {
 
 // EnvironmentFeatures defines model for EnvironmentFeatures.
 type EnvironmentFeatures struct {
-	NetworkOptimised *bool `json:"network_optimised,omitempty"`
+	GreenStatus      *EnvironmentFeaturesGreenStatus `json:"green_status,omitempty"`
+	NetworkOptimised *bool                           `json:"network_optimised,omitempty"`
 }
+
+// EnvironmentFeaturesGreenStatus defines model for EnvironmentFeatures.GreenStatus.
+type EnvironmentFeaturesGreenStatus string
 
 // ErrorResponseModel defines model for ErrorResponseModel.
 type ErrorResponseModel struct {
 	ErrorReason *string `json:"error_reason,omitempty"`
 	Message     *string `json:"message,omitempty"`
 	Status      *bool   `json:"status,omitempty"`
+}
+
+// FlavorLabelFields defines model for FlavorLabelFields.
+type FlavorLabelFields struct {
+	Id    *int    `json:"id,omitempty"`
+	Label *string `json:"label,omitempty"`
 }
 
 // Instance defines model for Instance.
@@ -67,6 +84,7 @@ type InstanceFields struct {
 	ContractId              *int                              `json:"contract_id,omitempty"`
 	CreatedAt               *time.CustomTime                        `json:"created_at,omitempty"`
 	Environment             *InstanceEnvironmentFields        `json:"environment,omitempty"`
+	Features                *map[string]interface{}           `json:"features,omitempty"`
 	FixedIp                 *string                           `json:"fixed_ip,omitempty"`
 	Flavor                  *InstanceFlavorFields             `json:"flavor,omitempty"`
 	FloatingIp              *string                           `json:"floating_ip,omitempty"`
@@ -81,6 +99,7 @@ type InstanceFields struct {
 	PortRandomization       *bool                             `json:"port_randomization,omitempty"`
 	PortRandomizationStatus *string                           `json:"port_randomization_status,omitempty"`
 	PowerState              *string                           `json:"power_state,omitempty"`
+	RequiresPublicIp        *bool                             `json:"requires_public_ip,omitempty"`
 	SecurityRules           *[]SecurityRulesFieldsforInstance `json:"security_rules,omitempty"`
 	Status                  *string                           `json:"status,omitempty"`
 	VmState                 *string                           `json:"vm_state,omitempty"`
@@ -89,14 +108,16 @@ type InstanceFields struct {
 
 // InstanceFlavorFields defines model for InstanceFlavorFields.
 type InstanceFlavorFields struct {
-	Cpu       *int     `json:"cpu,omitempty"`
-	Disk      *int     `json:"disk,omitempty"`
-	Ephemeral *int     `json:"ephemeral,omitempty"`
-	Gpu       *string  `json:"gpu,omitempty"`
-	GpuCount  *int     `json:"gpu_count,omitempty"`
-	Id        *int     `json:"id,omitempty"`
-	Name      *string  `json:"name,omitempty"`
-	Ram       *float32 `json:"ram,omitempty"`
+	Cpu       *int                    `json:"cpu,omitempty"`
+	Disk      *int                    `json:"disk,omitempty"`
+	Ephemeral *int                    `json:"ephemeral,omitempty"`
+	Features  *map[string]interface{} `json:"features,omitempty"`
+	Gpu       *string                 `json:"gpu,omitempty"`
+	GpuCount  *int                    `json:"gpu_count,omitempty"`
+	Id        *int                    `json:"id,omitempty"`
+	Labels    *[]FlavorLabelFields    `json:"labels,omitempty"`
+	Name      *string                 `json:"name,omitempty"`
+	Ram       *float32                `json:"ram,omitempty"`
 }
 
 // InstanceImageFields defines model for InstanceImageFields.
@@ -137,6 +158,9 @@ type SecurityRulesFieldsforInstance struct {
 
 // SnapshotFields defines model for SnapshotFields.
 type SnapshotFields struct {
+	// CreatedAt Creation timestamp
+	CreatedAt time.CustomTime `json:"created_at"`
+
 	// Description Description of the snapshot
 	Description string `json:"description"`
 
@@ -164,6 +188,9 @@ type SnapshotFields struct {
 	// Status Status of the snapshot
 	Status string `json:"status"`
 
+	// UpdatedAt Last update timestamp
+	UpdatedAt time.CustomTime `json:"updated_at"`
+
 	// VmId ID of the VM from which the snapshot is created
 	VmId int `json:"vm_id"`
 }
@@ -186,6 +213,10 @@ type SnapshotRetrieve struct {
 
 // SnapshotRetrieveFields defines model for SnapshotRetrieveFields.
 type SnapshotRetrieveFields struct {
+	// CreatedAt Creation timestamp
+	CreatedAt   time.CustomTime `json:"created_at"`
+	CustomImage *string   `json:"custom_image,omitempty"`
+
 	// Description Description of the snapshot
 	Description string `json:"description"`
 
@@ -196,10 +227,12 @@ type SnapshotRetrieveFields struct {
 	Id int `json:"id"`
 
 	// IsImage Indicates if the snapshot is an image
-	IsImage bool `json:"is_image"`
+	IsImage bool    `json:"is_image"`
+	Labels  *string `json:"labels,omitempty"`
 
 	// Name Snapshot name
-	Name string `json:"name"`
+	Name   string  `json:"name"`
+	Region *string `json:"region,omitempty"`
 
 	// RegionId Region where the snapshot will be available
 	RegionId int `json:"region_id"`
@@ -210,8 +243,19 @@ type SnapshotRetrieveFields struct {
 	// Status Status of the snapshot
 	Status string `json:"status"`
 
+	// UpdatedAt Last update timestamp
+	UpdatedAt     time.CustomTime `json:"updated_at"`
+	VmEnvironment *string   `json:"vm_environment,omitempty"`
+	VmFlavor      *string   `json:"vm_flavor,omitempty"`
+
 	// VmId ID of the VM from which the snapshot is created
-	VmId int `json:"vm_id"`
+	VmId       int     `json:"vm_id"`
+	VmImage    *string `json:"vm_image,omitempty"`
+	VmKeypair  *string `json:"vm_keypair,omitempty"`
+	VmName     *string `json:"vm_name,omitempty"`
+	VmStatus   *string `json:"vm_status,omitempty"`
+	VolumeId   *string `json:"volume_id,omitempty"`
+	VolumeName *string `json:"volume_name,omitempty"`
 }
 
 // Snapshots defines model for Snapshots.

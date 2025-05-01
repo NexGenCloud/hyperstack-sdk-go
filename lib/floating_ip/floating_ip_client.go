@@ -102,14 +102,14 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 // The interface specification for the client above.
 type ClientInterface interface {
 	// AttachPublicIpToVirtualMachine request
-	AttachPublicIpToVirtualMachine(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	AttachPublicIpToVirtualMachine(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DetachPublicIpFromVirtualMachine request
-	DetachPublicIpFromVirtualMachine(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DetachPublicIpFromVirtualMachine(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) AttachPublicIpToVirtualMachine(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAttachPublicIpToVirtualMachineRequest(c.Server, id)
+func (c *Client) AttachPublicIpToVirtualMachine(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachPublicIpToVirtualMachineRequest(c.Server, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -120,8 +120,8 @@ func (c *Client) AttachPublicIpToVirtualMachine(ctx context.Context, id int, req
 	return c.Client.Do(req)
 }
 
-func (c *Client) DetachPublicIpFromVirtualMachine(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDetachPublicIpFromVirtualMachineRequest(c.Server, id)
+func (c *Client) DetachPublicIpFromVirtualMachine(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDetachPublicIpFromVirtualMachineRequest(c.Server, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -133,12 +133,12 @@ func (c *Client) DetachPublicIpFromVirtualMachine(ctx context.Context, id int, r
 }
 
 // NewAttachPublicIpToVirtualMachineRequest generates requests for AttachPublicIpToVirtualMachine
-func NewAttachPublicIpToVirtualMachineRequest(server string, id int) (*http.Request, error) {
+func NewAttachPublicIpToVirtualMachineRequest(server string, vmId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "vm_id", runtime.ParamLocationPath, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -167,12 +167,12 @@ func NewAttachPublicIpToVirtualMachineRequest(server string, id int) (*http.Requ
 }
 
 // NewDetachPublicIpFromVirtualMachineRequest generates requests for DetachPublicIpFromVirtualMachine
-func NewDetachPublicIpFromVirtualMachineRequest(server string, id int) (*http.Request, error) {
+func NewDetachPublicIpFromVirtualMachineRequest(server string, vmId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "vm_id", runtime.ParamLocationPath, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -244,10 +244,10 @@ func WithBaseURL(baseURL string) ClientOption {
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
 	// AttachPublicIpToVirtualMachineWithResponse request
-	AttachPublicIpToVirtualMachineWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*AttachPublicIpToVirtualMachineResponse, error)
+	AttachPublicIpToVirtualMachineWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*AttachPublicIpToVirtualMachineResponse, error)
 
 	// DetachPublicIpFromVirtualMachineWithResponse request
-	DetachPublicIpFromVirtualMachineWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DetachPublicIpFromVirtualMachineResponse, error)
+	DetachPublicIpFromVirtualMachineWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*DetachPublicIpFromVirtualMachineResponse, error)
 }
 
 type AttachPublicIpToVirtualMachineResponse struct {
@@ -256,6 +256,7 @@ type AttachPublicIpToVirtualMachineResponse struct {
 	JSON200      *ResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
+	JSON402      *ErrorResponseModel
 	JSON404      *ErrorResponseModel
 }
 
@@ -301,8 +302,8 @@ func (r DetachPublicIpFromVirtualMachineResponse) StatusCode() int {
 }
 
 // AttachPublicIpToVirtualMachineWithResponse request returning *AttachPublicIpToVirtualMachineResponse
-func (c *ClientWithResponses) AttachPublicIpToVirtualMachineWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*AttachPublicIpToVirtualMachineResponse, error) {
-	rsp, err := c.AttachPublicIpToVirtualMachine(ctx, id, reqEditors...)
+func (c *ClientWithResponses) AttachPublicIpToVirtualMachineWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*AttachPublicIpToVirtualMachineResponse, error) {
+	rsp, err := c.AttachPublicIpToVirtualMachine(ctx, vmId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -310,8 +311,8 @@ func (c *ClientWithResponses) AttachPublicIpToVirtualMachineWithResponse(ctx con
 }
 
 // DetachPublicIpFromVirtualMachineWithResponse request returning *DetachPublicIpFromVirtualMachineResponse
-func (c *ClientWithResponses) DetachPublicIpFromVirtualMachineWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DetachPublicIpFromVirtualMachineResponse, error) {
-	rsp, err := c.DetachPublicIpFromVirtualMachine(ctx, id, reqEditors...)
+func (c *ClientWithResponses) DetachPublicIpFromVirtualMachineWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*DetachPublicIpFromVirtualMachineResponse, error) {
+	rsp, err := c.DetachPublicIpFromVirtualMachine(ctx, vmId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -352,6 +353,13 @@ func ParseAttachPublicIpToVirtualMachineResponse(rsp *http.Response) (*AttachPub
 			return nil, err
 		}
 		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 402:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON402 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
 		var dest ErrorResponseModel

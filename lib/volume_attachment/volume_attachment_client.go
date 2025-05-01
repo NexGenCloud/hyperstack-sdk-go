@@ -137,18 +137,18 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 // The interface specification for the client above.
 type ClientInterface interface {
 	// AttachVolumesToVirtualMachineWithBody request with any body
-	AttachVolumesToVirtualMachineWithBody(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	AttachVolumesToVirtualMachineWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	AttachVolumesToVirtualMachine(ctx context.Context, virtualMachineId int, body AttachVolumesToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	AttachVolumesToVirtualMachine(ctx context.Context, vmId int, body AttachVolumesToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DetachVolumesFromVirtualMachineWithBody request with any body
-	DetachVolumesFromVirtualMachineWithBody(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DetachVolumesFromVirtualMachineWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	DetachVolumesFromVirtualMachine(ctx context.Context, virtualMachineId int, body DetachVolumesFromVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DetachVolumesFromVirtualMachine(ctx context.Context, vmId int, body DetachVolumesFromVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) AttachVolumesToVirtualMachineWithBody(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAttachVolumesToVirtualMachineRequestWithBody(c.Server, virtualMachineId, contentType, body)
+func (c *Client) AttachVolumesToVirtualMachineWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachVolumesToVirtualMachineRequestWithBody(c.Server, vmId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -159,8 +159,8 @@ func (c *Client) AttachVolumesToVirtualMachineWithBody(ctx context.Context, virt
 	return c.Client.Do(req)
 }
 
-func (c *Client) AttachVolumesToVirtualMachine(ctx context.Context, virtualMachineId int, body AttachVolumesToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAttachVolumesToVirtualMachineRequest(c.Server, virtualMachineId, body)
+func (c *Client) AttachVolumesToVirtualMachine(ctx context.Context, vmId int, body AttachVolumesToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachVolumesToVirtualMachineRequest(c.Server, vmId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -171,8 +171,8 @@ func (c *Client) AttachVolumesToVirtualMachine(ctx context.Context, virtualMachi
 	return c.Client.Do(req)
 }
 
-func (c *Client) DetachVolumesFromVirtualMachineWithBody(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDetachVolumesFromVirtualMachineRequestWithBody(c.Server, virtualMachineId, contentType, body)
+func (c *Client) DetachVolumesFromVirtualMachineWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDetachVolumesFromVirtualMachineRequestWithBody(c.Server, vmId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -183,8 +183,8 @@ func (c *Client) DetachVolumesFromVirtualMachineWithBody(ctx context.Context, vi
 	return c.Client.Do(req)
 }
 
-func (c *Client) DetachVolumesFromVirtualMachine(ctx context.Context, virtualMachineId int, body DetachVolumesFromVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDetachVolumesFromVirtualMachineRequest(c.Server, virtualMachineId, body)
+func (c *Client) DetachVolumesFromVirtualMachine(ctx context.Context, vmId int, body DetachVolumesFromVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDetachVolumesFromVirtualMachineRequest(c.Server, vmId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -196,23 +196,23 @@ func (c *Client) DetachVolumesFromVirtualMachine(ctx context.Context, virtualMac
 }
 
 // NewAttachVolumesToVirtualMachineRequest calls the generic AttachVolumesToVirtualMachine builder with application/json body
-func NewAttachVolumesToVirtualMachineRequest(server string, virtualMachineId int, body AttachVolumesToVirtualMachineJSONRequestBody) (*http.Request, error) {
+func NewAttachVolumesToVirtualMachineRequest(server string, vmId int, body AttachVolumesToVirtualMachineJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewAttachVolumesToVirtualMachineRequestWithBody(server, virtualMachineId, "application/json", bodyReader)
+	return NewAttachVolumesToVirtualMachineRequestWithBody(server, vmId, "application/json", bodyReader)
 }
 
 // NewAttachVolumesToVirtualMachineRequestWithBody generates requests for AttachVolumesToVirtualMachine with any type of body
-func NewAttachVolumesToVirtualMachineRequestWithBody(server string, virtualMachineId int, contentType string, body io.Reader) (*http.Request, error) {
+func NewAttachVolumesToVirtualMachineRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "virtual_machine_id", runtime.ParamLocationPath, virtualMachineId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "vm_id", runtime.ParamLocationPath, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -243,23 +243,23 @@ func NewAttachVolumesToVirtualMachineRequestWithBody(server string, virtualMachi
 }
 
 // NewDetachVolumesFromVirtualMachineRequest calls the generic DetachVolumesFromVirtualMachine builder with application/json body
-func NewDetachVolumesFromVirtualMachineRequest(server string, virtualMachineId int, body DetachVolumesFromVirtualMachineJSONRequestBody) (*http.Request, error) {
+func NewDetachVolumesFromVirtualMachineRequest(server string, vmId int, body DetachVolumesFromVirtualMachineJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewDetachVolumesFromVirtualMachineRequestWithBody(server, virtualMachineId, "application/json", bodyReader)
+	return NewDetachVolumesFromVirtualMachineRequestWithBody(server, vmId, "application/json", bodyReader)
 }
 
 // NewDetachVolumesFromVirtualMachineRequestWithBody generates requests for DetachVolumesFromVirtualMachine with any type of body
-func NewDetachVolumesFromVirtualMachineRequestWithBody(server string, virtualMachineId int, contentType string, body io.Reader) (*http.Request, error) {
+func NewDetachVolumesFromVirtualMachineRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "virtual_machine_id", runtime.ParamLocationPath, virtualMachineId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "vm_id", runtime.ParamLocationPath, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -333,14 +333,14 @@ func WithBaseURL(baseURL string) ClientOption {
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
 	// AttachVolumesToVirtualMachineWithBodyWithResponse request with any body
-	AttachVolumesToVirtualMachineWithBodyWithResponse(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachVolumesToVirtualMachineResponse, error)
+	AttachVolumesToVirtualMachineWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachVolumesToVirtualMachineResponse, error)
 
-	AttachVolumesToVirtualMachineWithResponse(ctx context.Context, virtualMachineId int, body AttachVolumesToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachVolumesToVirtualMachineResponse, error)
+	AttachVolumesToVirtualMachineWithResponse(ctx context.Context, vmId int, body AttachVolumesToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachVolumesToVirtualMachineResponse, error)
 
 	// DetachVolumesFromVirtualMachineWithBodyWithResponse request with any body
-	DetachVolumesFromVirtualMachineWithBodyWithResponse(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DetachVolumesFromVirtualMachineResponse, error)
+	DetachVolumesFromVirtualMachineWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DetachVolumesFromVirtualMachineResponse, error)
 
-	DetachVolumesFromVirtualMachineWithResponse(ctx context.Context, virtualMachineId int, body DetachVolumesFromVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*DetachVolumesFromVirtualMachineResponse, error)
+	DetachVolumesFromVirtualMachineWithResponse(ctx context.Context, vmId int, body DetachVolumesFromVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*DetachVolumesFromVirtualMachineResponse, error)
 }
 
 type AttachVolumesToVirtualMachineResponse struct {
@@ -396,16 +396,16 @@ func (r DetachVolumesFromVirtualMachineResponse) StatusCode() int {
 }
 
 // AttachVolumesToVirtualMachineWithBodyWithResponse request with arbitrary body returning *AttachVolumesToVirtualMachineResponse
-func (c *ClientWithResponses) AttachVolumesToVirtualMachineWithBodyWithResponse(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachVolumesToVirtualMachineResponse, error) {
-	rsp, err := c.AttachVolumesToVirtualMachineWithBody(ctx, virtualMachineId, contentType, body, reqEditors...)
+func (c *ClientWithResponses) AttachVolumesToVirtualMachineWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachVolumesToVirtualMachineResponse, error) {
+	rsp, err := c.AttachVolumesToVirtualMachineWithBody(ctx, vmId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseAttachVolumesToVirtualMachineResponse(rsp)
 }
 
-func (c *ClientWithResponses) AttachVolumesToVirtualMachineWithResponse(ctx context.Context, virtualMachineId int, body AttachVolumesToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachVolumesToVirtualMachineResponse, error) {
-	rsp, err := c.AttachVolumesToVirtualMachine(ctx, virtualMachineId, body, reqEditors...)
+func (c *ClientWithResponses) AttachVolumesToVirtualMachineWithResponse(ctx context.Context, vmId int, body AttachVolumesToVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachVolumesToVirtualMachineResponse, error) {
+	rsp, err := c.AttachVolumesToVirtualMachine(ctx, vmId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -413,16 +413,16 @@ func (c *ClientWithResponses) AttachVolumesToVirtualMachineWithResponse(ctx cont
 }
 
 // DetachVolumesFromVirtualMachineWithBodyWithResponse request with arbitrary body returning *DetachVolumesFromVirtualMachineResponse
-func (c *ClientWithResponses) DetachVolumesFromVirtualMachineWithBodyWithResponse(ctx context.Context, virtualMachineId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DetachVolumesFromVirtualMachineResponse, error) {
-	rsp, err := c.DetachVolumesFromVirtualMachineWithBody(ctx, virtualMachineId, contentType, body, reqEditors...)
+func (c *ClientWithResponses) DetachVolumesFromVirtualMachineWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DetachVolumesFromVirtualMachineResponse, error) {
+	rsp, err := c.DetachVolumesFromVirtualMachineWithBody(ctx, vmId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseDetachVolumesFromVirtualMachineResponse(rsp)
 }
 
-func (c *ClientWithResponses) DetachVolumesFromVirtualMachineWithResponse(ctx context.Context, virtualMachineId int, body DetachVolumesFromVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*DetachVolumesFromVirtualMachineResponse, error) {
-	rsp, err := c.DetachVolumesFromVirtualMachine(ctx, virtualMachineId, body, reqEditors...)
+func (c *ClientWithResponses) DetachVolumesFromVirtualMachineWithResponse(ctx context.Context, vmId int, body DetachVolumesFromVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*DetachVolumesFromVirtualMachineResponse, error) {
+	rsp, err := c.DetachVolumesFromVirtualMachine(ctx, vmId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}

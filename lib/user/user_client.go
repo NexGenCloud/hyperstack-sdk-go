@@ -58,6 +58,7 @@ type UsersInfoFields struct {
 	OrganizationId  *int       `json:"organization_id,omitempty"`
 	Phone           *string    `json:"phone,omitempty"`
 	State           *string    `json:"state,omitempty"`
+	StripeUserId    *string    `json:"stripe_user_id,omitempty"`
 	VatNumber       *string    `json:"vat_number,omitempty"`
 	ZipCode         *string    `json:"zip_code,omitempty"`
 }
@@ -69,11 +70,11 @@ type UsersInfoListResponse struct {
 	UsersInfo *UsersInfoFields `json:"users_info,omitempty"`
 }
 
-// PostInsertUserInfoJSONRequestBody defines body for PostInsertUserInfo for application/json ContentType.
-type PostInsertUserInfoJSONRequestBody = Userinfopostpayload
+// PostInsertBillingInfoJSONRequestBody defines body for PostInsertBillingInfo for application/json ContentType.
+type PostInsertBillingInfoJSONRequestBody = Userinfopostpayload
 
-// PutUpdateUserInfoJSONRequestBody defines body for PutUpdateUserInfo for application/json ContentType.
-type PutUpdateUserInfoJSONRequestBody = Userinfopostpayload
+// PutUpdateBillingInfoJSONRequestBody defines body for PutUpdateBillingInfo for application/json ContentType.
+type PutUpdateBillingInfoJSONRequestBody = Userinfopostpayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -148,22 +149,22 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// GetFetchUserInfo request
-	GetFetchUserInfo(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetRetrieveBillingInfo request
+	GetRetrieveBillingInfo(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostInsertUserInfoWithBody request with any body
-	PostInsertUserInfoWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// PostInsertBillingInfoWithBody request with any body
+	PostInsertBillingInfoWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PostInsertUserInfo(ctx context.Context, body PostInsertUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	PostInsertBillingInfo(ctx context.Context, body PostInsertBillingInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PutUpdateUserInfoWithBody request with any body
-	PutUpdateUserInfoWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// PutUpdateBillingInfoWithBody request with any body
+	PutUpdateBillingInfoWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PutUpdateUserInfo(ctx context.Context, body PutUpdateUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	PutUpdateBillingInfo(ctx context.Context, body PutUpdateBillingInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) GetFetchUserInfo(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetFetchUserInfoRequest(c.Server)
+func (c *Client) GetRetrieveBillingInfo(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetRetrieveBillingInfoRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -174,8 +175,8 @@ func (c *Client) GetFetchUserInfo(ctx context.Context, reqEditors ...RequestEdit
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostInsertUserInfoWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostInsertUserInfoRequestWithBody(c.Server, contentType, body)
+func (c *Client) PostInsertBillingInfoWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostInsertBillingInfoRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -186,8 +187,8 @@ func (c *Client) PostInsertUserInfoWithBody(ctx context.Context, contentType str
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostInsertUserInfo(ctx context.Context, body PostInsertUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostInsertUserInfoRequest(c.Server, body)
+func (c *Client) PostInsertBillingInfo(ctx context.Context, body PostInsertBillingInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostInsertBillingInfoRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -198,8 +199,8 @@ func (c *Client) PostInsertUserInfo(ctx context.Context, body PostInsertUserInfo
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutUpdateUserInfoWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutUpdateUserInfoRequestWithBody(c.Server, contentType, body)
+func (c *Client) PutUpdateBillingInfoWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutUpdateBillingInfoRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -210,8 +211,8 @@ func (c *Client) PutUpdateUserInfoWithBody(ctx context.Context, contentType stri
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutUpdateUserInfo(ctx context.Context, body PutUpdateUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutUpdateUserInfoRequest(c.Server, body)
+func (c *Client) PutUpdateBillingInfo(ctx context.Context, body PutUpdateBillingInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutUpdateBillingInfoRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -222,8 +223,8 @@ func (c *Client) PutUpdateUserInfo(ctx context.Context, body PutUpdateUserInfoJS
 	return c.Client.Do(req)
 }
 
-// NewGetFetchUserInfoRequest generates requests for GetFetchUserInfo
-func NewGetFetchUserInfoRequest(server string) (*http.Request, error) {
+// NewGetRetrieveBillingInfoRequest generates requests for GetRetrieveBillingInfo
+func NewGetRetrieveBillingInfoRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -249,19 +250,19 @@ func NewGetFetchUserInfoRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewPostInsertUserInfoRequest calls the generic PostInsertUserInfo builder with application/json body
-func NewPostInsertUserInfoRequest(server string, body PostInsertUserInfoJSONRequestBody) (*http.Request, error) {
+// NewPostInsertBillingInfoRequest calls the generic PostInsertBillingInfo builder with application/json body
+func NewPostInsertBillingInfoRequest(server string, body PostInsertBillingInfoJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPostInsertUserInfoRequestWithBody(server, "application/json", bodyReader)
+	return NewPostInsertBillingInfoRequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewPostInsertUserInfoRequestWithBody generates requests for PostInsertUserInfo with any type of body
-func NewPostInsertUserInfoRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewPostInsertBillingInfoRequestWithBody generates requests for PostInsertBillingInfo with any type of body
+func NewPostInsertBillingInfoRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -289,19 +290,19 @@ func NewPostInsertUserInfoRequestWithBody(server string, contentType string, bod
 	return req, nil
 }
 
-// NewPutUpdateUserInfoRequest calls the generic PutUpdateUserInfo builder with application/json body
-func NewPutUpdateUserInfoRequest(server string, body PutUpdateUserInfoJSONRequestBody) (*http.Request, error) {
+// NewPutUpdateBillingInfoRequest calls the generic PutUpdateBillingInfo builder with application/json body
+func NewPutUpdateBillingInfoRequest(server string, body PutUpdateBillingInfoJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPutUpdateUserInfoRequestWithBody(server, "application/json", bodyReader)
+	return NewPutUpdateBillingInfoRequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewPutUpdateUserInfoRequestWithBody generates requests for PutUpdateUserInfo with any type of body
-func NewPutUpdateUserInfoRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewPutUpdateBillingInfoRequestWithBody generates requests for PutUpdateBillingInfo with any type of body
+func NewPutUpdateBillingInfoRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -372,21 +373,21 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// GetFetchUserInfoWithResponse request
-	GetFetchUserInfoWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetFetchUserInfoResponse, error)
+	// GetRetrieveBillingInfoWithResponse request
+	GetRetrieveBillingInfoWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetRetrieveBillingInfoResponse, error)
 
-	// PostInsertUserInfoWithBodyWithResponse request with any body
-	PostInsertUserInfoWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostInsertUserInfoResponse, error)
+	// PostInsertBillingInfoWithBodyWithResponse request with any body
+	PostInsertBillingInfoWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostInsertBillingInfoResponse, error)
 
-	PostInsertUserInfoWithResponse(ctx context.Context, body PostInsertUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*PostInsertUserInfoResponse, error)
+	PostInsertBillingInfoWithResponse(ctx context.Context, body PostInsertBillingInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*PostInsertBillingInfoResponse, error)
 
-	// PutUpdateUserInfoWithBodyWithResponse request with any body
-	PutUpdateUserInfoWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutUpdateUserInfoResponse, error)
+	// PutUpdateBillingInfoWithBodyWithResponse request with any body
+	PutUpdateBillingInfoWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutUpdateBillingInfoResponse, error)
 
-	PutUpdateUserInfoWithResponse(ctx context.Context, body PutUpdateUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*PutUpdateUserInfoResponse, error)
+	PutUpdateBillingInfoWithResponse(ctx context.Context, body PutUpdateBillingInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*PutUpdateBillingInfoResponse, error)
 }
 
-type GetFetchUserInfoResponse struct {
+type GetRetrieveBillingInfoResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *UsersInfoListResponse
@@ -397,7 +398,7 @@ type GetFetchUserInfoResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetFetchUserInfoResponse) Status() string {
+func (r GetRetrieveBillingInfoResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -405,14 +406,14 @@ func (r GetFetchUserInfoResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetFetchUserInfoResponse) StatusCode() int {
+func (r GetRetrieveBillingInfoResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PostInsertUserInfoResponse struct {
+type PostInsertBillingInfoResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *AddUserInfoSuccessResponseModel
@@ -423,7 +424,7 @@ type PostInsertUserInfoResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostInsertUserInfoResponse) Status() string {
+func (r PostInsertBillingInfoResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -431,14 +432,14 @@ func (r PostInsertUserInfoResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostInsertUserInfoResponse) StatusCode() int {
+func (r PostInsertBillingInfoResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PutUpdateUserInfoResponse struct {
+type PutUpdateBillingInfoResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *AddUserInfoSuccessResponseModel
@@ -449,7 +450,7 @@ type PutUpdateUserInfoResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PutUpdateUserInfoResponse) Status() string {
+func (r PutUpdateBillingInfoResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -457,65 +458,65 @@ func (r PutUpdateUserInfoResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PutUpdateUserInfoResponse) StatusCode() int {
+func (r PutUpdateBillingInfoResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// GetFetchUserInfoWithResponse request returning *GetFetchUserInfoResponse
-func (c *ClientWithResponses) GetFetchUserInfoWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetFetchUserInfoResponse, error) {
-	rsp, err := c.GetFetchUserInfo(ctx, reqEditors...)
+// GetRetrieveBillingInfoWithResponse request returning *GetRetrieveBillingInfoResponse
+func (c *ClientWithResponses) GetRetrieveBillingInfoWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetRetrieveBillingInfoResponse, error) {
+	rsp, err := c.GetRetrieveBillingInfo(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetFetchUserInfoResponse(rsp)
+	return ParseGetRetrieveBillingInfoResponse(rsp)
 }
 
-// PostInsertUserInfoWithBodyWithResponse request with arbitrary body returning *PostInsertUserInfoResponse
-func (c *ClientWithResponses) PostInsertUserInfoWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostInsertUserInfoResponse, error) {
-	rsp, err := c.PostInsertUserInfoWithBody(ctx, contentType, body, reqEditors...)
+// PostInsertBillingInfoWithBodyWithResponse request with arbitrary body returning *PostInsertBillingInfoResponse
+func (c *ClientWithResponses) PostInsertBillingInfoWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostInsertBillingInfoResponse, error) {
+	rsp, err := c.PostInsertBillingInfoWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostInsertUserInfoResponse(rsp)
+	return ParsePostInsertBillingInfoResponse(rsp)
 }
 
-func (c *ClientWithResponses) PostInsertUserInfoWithResponse(ctx context.Context, body PostInsertUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*PostInsertUserInfoResponse, error) {
-	rsp, err := c.PostInsertUserInfo(ctx, body, reqEditors...)
+func (c *ClientWithResponses) PostInsertBillingInfoWithResponse(ctx context.Context, body PostInsertBillingInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*PostInsertBillingInfoResponse, error) {
+	rsp, err := c.PostInsertBillingInfo(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostInsertUserInfoResponse(rsp)
+	return ParsePostInsertBillingInfoResponse(rsp)
 }
 
-// PutUpdateUserInfoWithBodyWithResponse request with arbitrary body returning *PutUpdateUserInfoResponse
-func (c *ClientWithResponses) PutUpdateUserInfoWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutUpdateUserInfoResponse, error) {
-	rsp, err := c.PutUpdateUserInfoWithBody(ctx, contentType, body, reqEditors...)
+// PutUpdateBillingInfoWithBodyWithResponse request with arbitrary body returning *PutUpdateBillingInfoResponse
+func (c *ClientWithResponses) PutUpdateBillingInfoWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutUpdateBillingInfoResponse, error) {
+	rsp, err := c.PutUpdateBillingInfoWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutUpdateUserInfoResponse(rsp)
+	return ParsePutUpdateBillingInfoResponse(rsp)
 }
 
-func (c *ClientWithResponses) PutUpdateUserInfoWithResponse(ctx context.Context, body PutUpdateUserInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*PutUpdateUserInfoResponse, error) {
-	rsp, err := c.PutUpdateUserInfo(ctx, body, reqEditors...)
+func (c *ClientWithResponses) PutUpdateBillingInfoWithResponse(ctx context.Context, body PutUpdateBillingInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*PutUpdateBillingInfoResponse, error) {
+	rsp, err := c.PutUpdateBillingInfo(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutUpdateUserInfoResponse(rsp)
+	return ParsePutUpdateBillingInfoResponse(rsp)
 }
 
-// ParseGetFetchUserInfoResponse parses an HTTP response from a GetFetchUserInfoWithResponse call
-func ParseGetFetchUserInfoResponse(rsp *http.Response) (*GetFetchUserInfoResponse, error) {
+// ParseGetRetrieveBillingInfoResponse parses an HTTP response from a GetRetrieveBillingInfoWithResponse call
+func ParseGetRetrieveBillingInfoResponse(rsp *http.Response) (*GetRetrieveBillingInfoResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetFetchUserInfoResponse{
+	response := &GetRetrieveBillingInfoResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -561,15 +562,15 @@ func ParseGetFetchUserInfoResponse(rsp *http.Response) (*GetFetchUserInfoRespons
 	return response, nil
 }
 
-// ParsePostInsertUserInfoResponse parses an HTTP response from a PostInsertUserInfoWithResponse call
-func ParsePostInsertUserInfoResponse(rsp *http.Response) (*PostInsertUserInfoResponse, error) {
+// ParsePostInsertBillingInfoResponse parses an HTTP response from a PostInsertBillingInfoWithResponse call
+func ParsePostInsertBillingInfoResponse(rsp *http.Response) (*PostInsertBillingInfoResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostInsertUserInfoResponse{
+	response := &PostInsertBillingInfoResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -615,15 +616,15 @@ func ParsePostInsertUserInfoResponse(rsp *http.Response) (*PostInsertUserInfoRes
 	return response, nil
 }
 
-// ParsePutUpdateUserInfoResponse parses an HTTP response from a PutUpdateUserInfoWithResponse call
-func ParsePutUpdateUserInfoResponse(rsp *http.Response) (*PutUpdateUserInfoResponse, error) {
+// ParsePutUpdateBillingInfoResponse parses an HTTP response from a PutUpdateBillingInfoWithResponse call
+func ParsePutUpdateBillingInfoResponse(rsp *http.Response) (*PutUpdateBillingInfoResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PutUpdateUserInfoResponse{
+	response := &PutUpdateBillingInfoResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

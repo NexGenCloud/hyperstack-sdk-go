@@ -50,9 +50,10 @@ tasks:
         echo -n "Generating Go SDK... "
         go run sdk_generator.go
         mkdir -p "{{.DIR_PACKAGE}}/{{.TIME_PACKAGE}}"
+        # TODO: check if we have been replacing refs *
         find "{{.DIR_PACKAGE}}" \
           -name "*.go" \
-          -exec bash -c 'sed -i.tmp -e "s/*time.Time/*{{.TIME_PACKAGE}}.CustomTime/g" {} &&
+          -exec bash -c 'sed -i.tmp -e "s/time.Time/{{.TIME_PACKAGE}}.CustomTime/g" {} &&
             rm {}.tmp' \;
         find "{{.DIR_PACKAGE}}" \
           -name "*.go" \

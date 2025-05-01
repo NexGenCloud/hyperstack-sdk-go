@@ -115,15 +115,15 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// RequestInstanceConsole request
-	RequestInstanceConsole(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// GetVncConsoleLink request
-	GetVncConsoleLink(ctx context.Context, virtualMachineId int, jobId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetVncConsoleLink(ctx context.Context, vmId int, jobId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RequestInstanceConsole request
+	RequestInstanceConsole(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) RequestInstanceConsole(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRequestInstanceConsoleRequest(c.Server, id)
+func (c *Client) GetVncConsoleLink(ctx context.Context, vmId int, jobId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVncConsoleLinkRequest(c.Server, vmId, jobId)
 	if err != nil {
 		return nil, err
 	}
@@ -134,8 +134,8 @@ func (c *Client) RequestInstanceConsole(ctx context.Context, id int, reqEditors 
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetVncConsoleLink(ctx context.Context, virtualMachineId int, jobId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetVncConsoleLinkRequest(c.Server, virtualMachineId, jobId)
+func (c *Client) RequestInstanceConsole(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRequestInstanceConsoleRequest(c.Server, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -144,49 +144,15 @@ func (c *Client) GetVncConsoleLink(ctx context.Context, virtualMachineId int, jo
 		return nil, err
 	}
 	return c.Client.Do(req)
-}
-
-// NewRequestInstanceConsoleRequest generates requests for RequestInstanceConsole
-func NewRequestInstanceConsoleRequest(server string, id int) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/core/virtual-machines/%s/request-console", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
 }
 
 // NewGetVncConsoleLinkRequest generates requests for GetVncConsoleLink
-func NewGetVncConsoleLinkRequest(server string, virtualMachineId int, jobId int) (*http.Request, error) {
+func NewGetVncConsoleLinkRequest(server string, vmId int, jobId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "virtual_machine_id", runtime.ParamLocationPath, virtualMachineId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "vm_id", runtime.ParamLocationPath, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -204,6 +170,40 @@ func NewGetVncConsoleLinkRequest(server string, virtualMachineId int, jobId int)
 	}
 
 	operationPath := fmt.Sprintf("/core/virtual-machines/%s/console/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewRequestInstanceConsoleRequest generates requests for RequestInstanceConsole
+func NewRequestInstanceConsoleRequest(server string, vmId int) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "vm_id", runtime.ParamLocationPath, vmId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/virtual-machines/%s/request-console", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -264,36 +264,11 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// RequestInstanceConsoleWithResponse request
-	RequestInstanceConsoleWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RequestInstanceConsoleResponse, error)
-
 	// GetVncConsoleLinkWithResponse request
-	GetVncConsoleLinkWithResponse(ctx context.Context, virtualMachineId int, jobId int, reqEditors ...RequestEditorFn) (*GetVncConsoleLinkResponse, error)
-}
+	GetVncConsoleLinkWithResponse(ctx context.Context, vmId int, jobId int, reqEditors ...RequestEditorFn) (*GetVncConsoleLinkResponse, error)
 
-type RequestInstanceConsoleResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *RequestConsole
-	JSON400      *ErrorResponseModel
-	JSON401      *ErrorResponseModel
-	JSON404      *ErrorResponseModel
-}
-
-// Status returns HTTPResponse.Status
-func (r RequestInstanceConsoleResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r RequestInstanceConsoleResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
+	// RequestInstanceConsoleWithResponse request
+	RequestInstanceConsoleWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*RequestInstanceConsoleResponse, error)
 }
 
 type GetVncConsoleLinkResponse struct {
@@ -321,40 +296,65 @@ func (r GetVncConsoleLinkResponse) StatusCode() int {
 	return 0
 }
 
-// RequestInstanceConsoleWithResponse request returning *RequestInstanceConsoleResponse
-func (c *ClientWithResponses) RequestInstanceConsoleWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RequestInstanceConsoleResponse, error) {
-	rsp, err := c.RequestInstanceConsole(ctx, id, reqEditors...)
-	if err != nil {
-		return nil, err
+type RequestInstanceConsoleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *RequestConsole
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r RequestInstanceConsoleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
 	}
-	return ParseRequestInstanceConsoleResponse(rsp)
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RequestInstanceConsoleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
 }
 
 // GetVncConsoleLinkWithResponse request returning *GetVncConsoleLinkResponse
-func (c *ClientWithResponses) GetVncConsoleLinkWithResponse(ctx context.Context, virtualMachineId int, jobId int, reqEditors ...RequestEditorFn) (*GetVncConsoleLinkResponse, error) {
-	rsp, err := c.GetVncConsoleLink(ctx, virtualMachineId, jobId, reqEditors...)
+func (c *ClientWithResponses) GetVncConsoleLinkWithResponse(ctx context.Context, vmId int, jobId int, reqEditors ...RequestEditorFn) (*GetVncConsoleLinkResponse, error) {
+	rsp, err := c.GetVncConsoleLink(ctx, vmId, jobId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseGetVncConsoleLinkResponse(rsp)
 }
 
-// ParseRequestInstanceConsoleResponse parses an HTTP response from a RequestInstanceConsoleWithResponse call
-func ParseRequestInstanceConsoleResponse(rsp *http.Response) (*RequestInstanceConsoleResponse, error) {
+// RequestInstanceConsoleWithResponse request returning *RequestInstanceConsoleResponse
+func (c *ClientWithResponses) RequestInstanceConsoleWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*RequestInstanceConsoleResponse, error) {
+	rsp, err := c.RequestInstanceConsole(ctx, vmId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRequestInstanceConsoleResponse(rsp)
+}
+
+// ParseGetVncConsoleLinkResponse parses an HTTP response from a GetVncConsoleLinkWithResponse call
+func ParseGetVncConsoleLinkResponse(rsp *http.Response) (*GetVncConsoleLinkResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RequestInstanceConsoleResponse{
+	response := &GetVncConsoleLinkResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest RequestConsole
+		var dest VNCURL
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -386,22 +386,22 @@ func ParseRequestInstanceConsoleResponse(rsp *http.Response) (*RequestInstanceCo
 	return response, nil
 }
 
-// ParseGetVncConsoleLinkResponse parses an HTTP response from a GetVncConsoleLinkWithResponse call
-func ParseGetVncConsoleLinkResponse(rsp *http.Response) (*GetVncConsoleLinkResponse, error) {
+// ParseRequestInstanceConsoleResponse parses an HTTP response from a RequestInstanceConsoleWithResponse call
+func ParseRequestInstanceConsoleResponse(rsp *http.Response) (*RequestInstanceConsoleResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetVncConsoleLinkResponse{
+	response := &RequestInstanceConsoleResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest VNCURL
+		var dest RequestConsole
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

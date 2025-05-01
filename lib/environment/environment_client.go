@@ -17,6 +17,13 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// Defines values for EnvironmentFeaturesGreenStatus.
+const (
+	GREEN          EnvironmentFeaturesGreenStatus = "GREEN"
+	NOTGREEN       EnvironmentFeaturesGreenStatus = "NOT_GREEN"
+	PARTIALLYGREEN EnvironmentFeaturesGreenStatus = "PARTIALLY_GREEN"
+)
+
 // CreateEnvironment defines model for CreateEnvironment.
 type CreateEnvironment struct {
 	// Name The name of the environment being created.
@@ -35,8 +42,12 @@ type Environment struct {
 
 // EnvironmentFeatures defines model for EnvironmentFeatures.
 type EnvironmentFeatures struct {
-	NetworkOptimised *bool `json:"network_optimised,omitempty"`
+	GreenStatus      *EnvironmentFeaturesGreenStatus `json:"green_status,omitempty"`
+	NetworkOptimised *bool                           `json:"network_optimised,omitempty"`
 }
+
+// EnvironmentFeaturesGreenStatus defines model for EnvironmentFeatures.GreenStatus.
+type EnvironmentFeaturesGreenStatus string
 
 // EnvironmentFields defines model for EnvironmentFields.
 type EnvironmentFields struct {
@@ -62,6 +73,13 @@ type ErrorResponseModel struct {
 	ErrorReason *string `json:"error_reason,omitempty"`
 	Message     *string `json:"message,omitempty"`
 	Status      *bool   `json:"status,omitempty"`
+}
+
+// NameAvailableModel defines model for NameAvailableModel.
+type NameAvailableModel struct {
+	Available *bool   `json:"available,omitempty"`
+	Message   *string `json:"message,omitempty"`
+	Name      *string `json:"name,omitempty"`
 }
 
 // ResponseModel defines model for ResponseModel.
@@ -170,6 +188,9 @@ type ClientInterface interface {
 
 	CreateEnvironment(ctx context.Context, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// FetchVolumeNameAvailability request
+	FetchVolumeNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// DeleteEnvironment request
 	DeleteEnvironment(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -208,6 +229,18 @@ func (c *Client) CreateEnvironmentWithBody(ctx context.Context, contentType stri
 
 func (c *Client) CreateEnvironment(ctx context.Context, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateEnvironmentRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FetchVolumeNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFetchVolumeNameAvailabilityRequest(c.Server, name)
 	if err != nil {
 		return nil, err
 	}
@@ -387,6 +420,40 @@ func NewCreateEnvironmentRequestWithBody(server string, contentType string, body
 	return req, nil
 }
 
+// NewFetchVolumeNameAvailabilityRequest generates requests for FetchVolumeNameAvailability
+func NewFetchVolumeNameAvailabilityRequest(server string, name string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "name", runtime.ParamLocationPath, name)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/environments/name-availability/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewDeleteEnvironmentRequest generates requests for DeleteEnvironment
 func NewDeleteEnvironmentRequest(server string, id int) (*http.Request, error) {
 	var err error
@@ -553,6 +620,9 @@ type ClientWithResponsesInterface interface {
 
 	CreateEnvironmentWithResponse(ctx context.Context, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateEnvironmentResponse, error)
 
+	// FetchVolumeNameAvailabilityWithResponse request
+	FetchVolumeNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*FetchVolumeNameAvailabilityResponse, error)
+
 	// DeleteEnvironmentWithResponse request
 	DeleteEnvironmentWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteEnvironmentResponse, error)
 
@@ -609,6 +679,31 @@ func (r CreateEnvironmentResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r CreateEnvironmentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FetchVolumeNameAvailabilityResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *NameAvailableModel
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r FetchVolumeNameAvailabilityResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FetchVolumeNameAvailabilityResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -714,6 +809,15 @@ func (c *ClientWithResponses) CreateEnvironmentWithResponse(ctx context.Context,
 		return nil, err
 	}
 	return ParseCreateEnvironmentResponse(rsp)
+}
+
+// FetchVolumeNameAvailabilityWithResponse request returning *FetchVolumeNameAvailabilityResponse
+func (c *ClientWithResponses) FetchVolumeNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*FetchVolumeNameAvailabilityResponse, error) {
+	rsp, err := c.FetchVolumeNameAvailability(ctx, name, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFetchVolumeNameAvailabilityResponse(rsp)
 }
 
 // DeleteEnvironmentWithResponse request returning *DeleteEnvironmentResponse
@@ -839,6 +943,53 @@ func ParseCreateEnvironmentResponse(rsp *http.Response) (*CreateEnvironmentRespo
 			return nil, err
 		}
 		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFetchVolumeNameAvailabilityResponse parses an HTTP response from a FetchVolumeNameAvailabilityWithResponse call
+func ParseFetchVolumeNameAvailabilityResponse(rsp *http.Response) (*FetchVolumeNameAvailabilityResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FetchVolumeNameAvailabilityResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest NameAvailableModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	}
 

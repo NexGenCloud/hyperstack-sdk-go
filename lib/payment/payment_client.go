@@ -13,6 +13,8 @@ import (
 	"net/url"
 	"strings"
 	"github.com/NexGenCloud/hyperstack-sdk-go/lib/time"
+
+	"github.com/oapi-codegen/runtime"
 )
 
 // ErrorResponseModel defines model for ErrorResponseModel.
@@ -29,9 +31,11 @@ type PaymentDetailsFields struct {
 	Currency        *string    `json:"currency,omitempty"`
 	Description     *string    `json:"description,omitempty"`
 	GatewayResponse *string    `json:"gateway_response,omitempty"`
+	Invoice         *string    `json:"invoice,omitempty"`
 	PaidFrom        *string    `json:"paid_from,omitempty"`
 	PaymentId       *string    `json:"payment_id,omitempty"`
 	Status          *string    `json:"status,omitempty"`
+	TaxAmount       *float32   `json:"tax_amount,omitempty"`
 	TransactionId   *string    `json:"transaction_id,omitempty"`
 	UpdatedAt       *time.CustomTime `json:"updated_at,omitempty"`
 }
@@ -143,6 +147,9 @@ type ClientInterface interface {
 	PostInitiatePaymentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	PostInitiatePayment(ctx context.Context, body PostInitiatePaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RetrievePaymentReceipt request
+	RetrievePaymentReceipt(ctx context.Context, paymentId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) GetViewPaymentDetails(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -171,6 +178,18 @@ func (c *Client) PostInitiatePaymentWithBody(ctx context.Context, contentType st
 
 func (c *Client) PostInitiatePayment(ctx context.Context, body PostInitiatePaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostInitiatePaymentRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RetrievePaymentReceipt(ctx context.Context, paymentId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrievePaymentReceiptRequest(c.Server, paymentId)
 	if err != nil {
 		return nil, err
 	}
@@ -248,6 +267,40 @@ func NewPostInitiatePaymentRequestWithBody(server string, contentType string, bo
 	return req, nil
 }
 
+// NewRetrievePaymentReceiptRequest generates requests for RetrievePaymentReceipt
+func NewRetrievePaymentReceiptRequest(server string, paymentId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "payment_id", runtime.ParamLocationPath, paymentId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/billing/payment/receipt/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -298,6 +351,9 @@ type ClientWithResponsesInterface interface {
 	PostInitiatePaymentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostInitiatePaymentResponse, error)
 
 	PostInitiatePaymentWithResponse(ctx context.Context, body PostInitiatePaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*PostInitiatePaymentResponse, error)
+
+	// RetrievePaymentReceiptWithResponse request
+	RetrievePaymentReceiptWithResponse(ctx context.Context, paymentId string, reqEditors ...RequestEditorFn) (*RetrievePaymentReceiptResponse, error)
 }
 
 type GetViewPaymentDetailsResponse struct {
@@ -352,6 +408,31 @@ func (r PostInitiatePaymentResponse) StatusCode() int {
 	return 0
 }
 
+type RetrievePaymentReceiptResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON403      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r RetrievePaymentReceiptResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetrievePaymentReceiptResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 // GetViewPaymentDetailsWithResponse request returning *GetViewPaymentDetailsResponse
 func (c *ClientWithResponses) GetViewPaymentDetailsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetViewPaymentDetailsResponse, error) {
 	rsp, err := c.GetViewPaymentDetails(ctx, reqEditors...)
@@ -376,6 +457,15 @@ func (c *ClientWithResponses) PostInitiatePaymentWithResponse(ctx context.Contex
 		return nil, err
 	}
 	return ParsePostInitiatePaymentResponse(rsp)
+}
+
+// RetrievePaymentReceiptWithResponse request returning *RetrievePaymentReceiptResponse
+func (c *ClientWithResponses) RetrievePaymentReceiptWithResponse(ctx context.Context, paymentId string, reqEditors ...RequestEditorFn) (*RetrievePaymentReceiptResponse, error) {
+	rsp, err := c.RetrievePaymentReceipt(ctx, paymentId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetrievePaymentReceiptResponse(rsp)
 }
 
 // ParseGetViewPaymentDetailsResponse parses an HTTP response from a GetViewPaymentDetailsWithResponse call
@@ -453,6 +543,53 @@ func ParsePostInitiatePaymentResponse(rsp *http.Response) (*PostInitiatePaymentR
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRetrievePaymentReceiptResponse parses an HTTP response from a RetrievePaymentReceiptWithResponse call
+func ParseRetrievePaymentReceiptResponse(rsp *http.Response) (*RetrievePaymentReceiptResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RetrievePaymentReceiptResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
 		var dest ErrorResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
