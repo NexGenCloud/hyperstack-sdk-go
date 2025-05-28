@@ -1,2 +1,9 @@
 .env
 .DS_Store
+./dist
+dist
+./artifacts
+.DS_Store
+.idea/
+.local-actions-env.json
+data/temp.md
