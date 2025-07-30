@@ -162,17 +162,20 @@ def attr_fix_components(data: AttrType) -> None:
   #  props["N%s" % p] = props.pop(p)
 
   # TODO: UNSYNCED see tf provider
-  paths["/core/virtual-machines/{virtual_machine_id}/sg-rules"] = paths["/core/virtual-machines/{id}/sg-rules"]
-  del paths["/core/virtual-machines/{id}/sg-rules"]
-  paths["/core/virtual-machines/{virtual_machine_id}/sg-rules"]["post"]["parameters"][0]["name"] = "virtual_machine_id"
+  # The API spec now uses {vm_id} instead of {id}
+  # paths["/core/virtual-machines/{virtual_machine_id}/sg-rules"] = paths["/core/virtual-machines/{id}/sg-rules"]
+  # del paths["/core/virtual-machines/{id}/sg-rules"]
+  # Commented out because the API spec now uses different path parameters
+  # paths["/core/virtual-machines/{virtual_machine_id}/sg-rules"]["post"]["parameters"][0]["name"] = "virtual_machine_id"
 
   # TODO: UNSYNCED see tf provider
-  paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"] = paths[
-    "/core/virtual-machines/{virtual_machine_id}/sg-rules/{sg_rule_id}"]
-  del paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{sg_rule_id}"]
-  paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"]["delete"]["parameters"][0][
-    "name"] = "virtual_machine_id"
-  paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"]["delete"]["parameters"][1]["name"] = "id"
+  # The API spec now uses {sg_rule_id} instead of {id}
+  # paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"] = paths[
+  #   "/core/virtual-machines/{virtual_machine_id}/sg-rules/{sg_rule_id}"]
+  # del paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{sg_rule_id}"]
+  # paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"]["delete"]["parameters"][0][
+  #   "name"] = "virtual_machine_id"
+  # paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"]["delete"]["parameters"][1]["name"] = "id"
 
 
 def fix_api_spec(spec_file: str) -> None:
