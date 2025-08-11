@@ -52,7 +52,7 @@ tasks:
         mkdir -p "{{.DIR_PACKAGE}}/{{.TIME_PACKAGE}}"
         find "{{.DIR_PACKAGE}}" \
           -name "*.go" \
-          -exec bash -c 'sed -i.tmp -e "s/*time.Time/*{{.TIME_PACKAGE}}.CustomTime/g" "$1" && rm "$1.tmp"' _ {} \;
+          -exec bash -c 'sed -i.tmp -e "s/time\.Time/{{.TIME_PACKAGE}}.CustomTime/g" "$1" && rm "$1.tmp"' _ {} \;
         find "{{.DIR_PACKAGE}}" \
           -name "*.go" \
           -exec bash -c 'sed -i.tmp -e '"'"'s/"time"/"{{.PROJECT}}\/{{.LIB_DIR}}\/{{.TIME_PACKAGE}}"/g'"'"' "$1" && rm "$1.tmp"' _ {} \;
