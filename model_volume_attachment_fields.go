@@ -21,8 +21,10 @@ var _ MappedNullable = &VolumeAttachmentFields{}
 type VolumeAttachmentFields struct {
 	CreatedAt *CustomTime              `json:"created_at,omitempty"`
 	Device    *string                  `json:"device,omitempty"`
+	Id        *int32                   `json:"id,omitempty"`
+	Protected *bool                    `json:"protected,omitempty"`
 	Status    *string                  `json:"status,omitempty"`
-	Volume    *VolumeFieldsforInstance `json:"volume,omitempty"`
+	Volume    *VolumeFieldsForInstance `json:"volume,omitempty"`
 }
 
 // NewVolumeAttachmentFields instantiates a new VolumeAttachmentFields object
@@ -106,6 +108,70 @@ func (o *VolumeAttachmentFields) SetDevice(v string) {
 	o.Device = &v
 }
 
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *VolumeAttachmentFields) GetId() int32 {
+	if o == nil || IsNil(o.Id) {
+		var ret int32
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *VolumeAttachmentFields) GetIdOk() (*int32, bool) {
+	if o == nil || IsNil(o.Id) {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *VolumeAttachmentFields) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given int32 and assigns it to the Id field.
+func (o *VolumeAttachmentFields) SetId(v int32) {
+	o.Id = &v
+}
+
+// GetProtected returns the Protected field value if set, zero value otherwise.
+func (o *VolumeAttachmentFields) GetProtected() bool {
+	if o == nil || IsNil(o.Protected) {
+		var ret bool
+		return ret
+	}
+	return *o.Protected
+}
+
+// GetProtectedOk returns a tuple with the Protected field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *VolumeAttachmentFields) GetProtectedOk() (*bool, bool) {
+	if o == nil || IsNil(o.Protected) {
+		return nil, false
+	}
+	return o.Protected, true
+}
+
+// HasProtected returns a boolean if a field has been set.
+func (o *VolumeAttachmentFields) HasProtected() bool {
+	if o != nil && !IsNil(o.Protected) {
+		return true
+	}
+
+	return false
+}
+
+// SetProtected gets a reference to the given bool and assigns it to the Protected field.
+func (o *VolumeAttachmentFields) SetProtected(v bool) {
+	o.Protected = &v
+}
+
 // GetStatus returns the Status field value if set, zero value otherwise.
 func (o *VolumeAttachmentFields) GetStatus() string {
 	if o == nil || IsNil(o.Status) {
@@ -139,9 +205,9 @@ func (o *VolumeAttachmentFields) SetStatus(v string) {
 }
 
 // GetVolume returns the Volume field value if set, zero value otherwise.
-func (o *VolumeAttachmentFields) GetVolume() VolumeFieldsforInstance {
+func (o *VolumeAttachmentFields) GetVolume() VolumeFieldsForInstance {
 	if o == nil || IsNil(o.Volume) {
-		var ret VolumeFieldsforInstance
+		var ret VolumeFieldsForInstance
 		return ret
 	}
 	return *o.Volume
@@ -149,7 +215,7 @@ func (o *VolumeAttachmentFields) GetVolume() VolumeFieldsforInstance {
 
 // GetVolumeOk returns a tuple with the Volume field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *VolumeAttachmentFields) GetVolumeOk() (*VolumeFieldsforInstance, bool) {
+func (o *VolumeAttachmentFields) GetVolumeOk() (*VolumeFieldsForInstance, bool) {
 	if o == nil || IsNil(o.Volume) {
 		return nil, false
 	}
@@ -165,8 +231,8 @@ func (o *VolumeAttachmentFields) HasVolume() bool {
 	return false
 }
 
-// SetVolume gets a reference to the given VolumeFieldsforInstance and assigns it to the Volume field.
-func (o *VolumeAttachmentFields) SetVolume(v VolumeFieldsforInstance) {
+// SetVolume gets a reference to the given VolumeFieldsForInstance and assigns it to the Volume field.
+func (o *VolumeAttachmentFields) SetVolume(v VolumeFieldsForInstance) {
 	o.Volume = &v
 }
 
@@ -185,6 +251,12 @@ func (o VolumeAttachmentFields) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Device) {
 		toSerialize["device"] = o.Device
+	}
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
+	if !IsNil(o.Protected) {
+		toSerialize["protected"] = o.Protected
 	}
 	if !IsNil(o.Status) {
 		toSerialize["status"] = o.Status

@@ -21,9 +21,9 @@ var _ MappedNullable = &CreateInstancesPayload{}
 
 // CreateInstancesPayload struct for CreateInstancesPayload
 type CreateInstancesPayload struct {
-	// When this field is set to `true`, it attaches a [public IP address](https://infrahub-doc.nexgencloud.com/docs/virtual-machines/public-ip)to the virtual machine, enabling internet accessibility.
+	// When this field is set to `true`, it attaches a [public IP address](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/floating-ip/) to the virtual machine, enabling internet accessibility.
 	AssignFloatingIp *bool `json:"assign_floating_ip,omitempty"`
-	// An optional URL where actions performed on the virtual machine will be sent. For additional information on event callbacks, [**click here**](https://infrahub-doc.nexgencloud.com/docs/features/webhooks-callbacks).
+	// An optional URL where actions performed on the virtual machine will be sent. For additional information on event callbacks, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/callbacks-vms/).
 	CallbackUrl *string `json:"callback_url,omitempty"`
 	// The number of virtual machines to be created.
 	Count int32 `json:"count"`
@@ -31,21 +31,21 @@ type CreateInstancesPayload struct {
 	CreateBootableVolume *bool `json:"create_bootable_volume,omitempty"`
 	// Indicates whether to enable port randomization.This setting is only effective if 'assign_floating_ip' is true. Defaults to true.
 	EnablePortRandomization *bool `json:"enable_port_randomization,omitempty"`
-	// The name of the [environment](https://infrahub-doc.nexgencloud.com/docs/features/environments-available-features) in which the virtual machine is to be created.
+	// The name of the [environment](https://docs.hyperstack.cloud/docs/api-reference/core-resources/environments/) in which the virtual machine is to be created.
 	EnvironmentName string              `json:"environment_name"`
 	Flavor          *FlavorObjectFields `json:"flavor,omitempty"`
-	// The name of the GPU hardware configuration ([flavor](https://infrahub-doc.nexgencloud.com/docs/hardware/flavors)) for the virtual machines being created.
+	// The name of the GPU hardware configuration ([flavor](https://docs.hyperstack.cloud/docs/hardware/flavors)) for the virtual machines being created.
 	FlavorName string `json:"flavor_name"`
-	// The [operating system (OS) image](https://infrahub-doc.nexgencloud.com/docs/virtual-machines/images) name designated for installation on the virtual machine.It also accepts custom, private images, created from [existing snapshots](https://infrahub-doc.nexgencloud.com/docs/virtual-machines/custom-images).
+	// The [operating system (OS) image](https://docs.hyperstack.cloud/docs/virtual-machines/images) name designated for installation on the virtual machine.It also accepts custom, private images, created from [existing snapshots](https://docs.hyperstack.cloud/docs/virtual-machines/custom-images).
 	ImageName *string `json:"image_name,omitempty"`
-	// The name of the existing SSH key pair to be used for secure access to the virtual machine. For additional information on SSH key pairs, [**click here**](https://infrahub-doc.nexgencloud.com/docs/getting-started/create-keypair).
+	// The name of the existing SSH key pair to be used for secure access to the virtual machine. For additional information on SSH key pairs, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/keypairs/).
 	KeyName string   `json:"key_name"`
 	Labels  []string `json:"labels,omitempty"`
 	// The name of the virtual machine being created.
 	Name          string                      `json:"name"`
 	Profile       *ProfileObjectFields        `json:"profile,omitempty"`
 	SecurityRules []CreateSecurityRulePayload `json:"security_rules,omitempty"`
-	// Optional initialization configuration commands to manage the configuration of a virtual machine at launch using cloud-init scripts. For more information about custom VM configuration using cloud-init, [**click here**](https://infrahub-doc.nexgencloud.com/docs/virtual-machines/initialization-configuration).
+	// Optional initialization configuration commands to manage the configuration of a virtual machine at launch using cloud-init scripts. For more information about custom VM configuration using cloud-init, [**click here**](https://docs.hyperstack.cloud/docs/virtual-machines/initialization-configuration).
 	UserData *string `json:"user_data,omitempty"`
 	// The names of the volume(s) to be attached to the virtual machine being created.
 	VolumeName *string `json:"volume_name,omitempty"`

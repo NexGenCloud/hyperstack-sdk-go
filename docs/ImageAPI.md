@@ -4,16 +4,16 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteAnImage**](ImageAPI.md#DeleteAnImage) | **Delete** /core/images/{id} | Delete an image
-[**FetchNameAvailabilityForImages**](ImageAPI.md#FetchNameAvailabilityForImages) | **Get** /core/image/name-availability/{name} | Fetch name availability for Images
-[**GetPrivateImageDetails**](ImageAPI.md#GetPrivateImageDetails) | **Get** /core/images/{id} | Get Private Image Details
-[**ListImages**](ImageAPI.md#ListImages) | **Get** /core/images | List Images
+[**DeleteImage**](ImageAPI.md#DeleteImage) | **Delete** /core/images/{id} | Delete an image
+[**FetchImageNameAvailability**](ImageAPI.md#FetchImageNameAvailability) | **Get** /core/image/name-availability/{name} | Fetch name availability for Images
+[**GetImageDetails**](ImageAPI.md#GetImageDetails) | **Get** /core/images/{id} | Get Private Image Details
+[**ListImages2**](ImageAPI.md#ListImages2) | **Get** /core/images | List Images
 
 
 
-## DeleteAnImage
+## DeleteImage
 
-> ResponseModel DeleteAnImage(ctx, id).Execute()
+> ResponseModel DeleteImage(ctx, id).Execute()
 
 Delete an image
 
@@ -36,13 +36,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ImageAPI.DeleteAnImage(context.Background(), id).Execute()
+	resp, r, err := apiClient.ImageAPI.DeleteImage(context.Background(), id).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ImageAPI.DeleteAnImage``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ImageAPI.DeleteImage``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `DeleteAnImage`: ResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `ImageAPI.DeleteAnImage`: %v\n", resp)
+	// response from `DeleteImage`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `ImageAPI.DeleteImage`: %v\n", resp)
 }
 ```
 
@@ -56,7 +56,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiDeleteAnImageRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiDeleteImageRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -69,7 +69,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -81,9 +81,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## FetchNameAvailabilityForImages
+## FetchImageNameAvailability
 
-> NameAvailableModel FetchNameAvailabilityForImages(ctx, name).Execute()
+> NameAvailableModel FetchImageNameAvailability(ctx, name).Execute()
 
 Fetch name availability for Images
 
@@ -106,13 +106,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ImageAPI.FetchNameAvailabilityForImages(context.Background(), name).Execute()
+	resp, r, err := apiClient.ImageAPI.FetchImageNameAvailability(context.Background(), name).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ImageAPI.FetchNameAvailabilityForImages``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ImageAPI.FetchImageNameAvailability``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `FetchNameAvailabilityForImages`: NameAvailableModel
-	fmt.Fprintf(os.Stdout, "Response from `ImageAPI.FetchNameAvailabilityForImages`: %v\n", resp)
+	// response from `FetchImageNameAvailability`: NameAvailableModel
+	fmt.Fprintf(os.Stdout, "Response from `ImageAPI.FetchImageNameAvailability`: %v\n", resp)
 }
 ```
 
@@ -126,7 +126,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiFetchNameAvailabilityForImagesRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiFetchImageNameAvailabilityRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -139,7 +139,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -151,9 +151,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetPrivateImageDetails
+## GetImageDetails
 
-> Image GetPrivateImageDetails(ctx, id).IncludeRelatedVms(includeRelatedVms).Execute()
+> Image GetImageDetails(ctx, id).IncludeRelatedVms(includeRelatedVms).Execute()
 
 Get Private Image Details
 
@@ -177,13 +177,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ImageAPI.GetPrivateImageDetails(context.Background(), id).IncludeRelatedVms(includeRelatedVms).Execute()
+	resp, r, err := apiClient.ImageAPI.GetImageDetails(context.Background(), id).IncludeRelatedVms(includeRelatedVms).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ImageAPI.GetPrivateImageDetails``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ImageAPI.GetImageDetails``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetPrivateImageDetails`: Image
-	fmt.Fprintf(os.Stdout, "Response from `ImageAPI.GetPrivateImageDetails`: %v\n", resp)
+	// response from `GetImageDetails`: Image
+	fmt.Fprintf(os.Stdout, "Response from `ImageAPI.GetImageDetails`: %v\n", resp)
 }
 ```
 
@@ -197,7 +197,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetPrivateImageDetailsRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetImageDetailsRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -211,7 +211,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -223,9 +223,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## ListImages
+## ListImages2
 
-> Images ListImages(ctx).Region(region).IncludePublic(includePublic).Search(search).Page(page).PerPage(perPage).Execute()
+> Images ListImages2(ctx).Region(region).IncludePublic(includePublic).Search(search).Page(page).PerPage(perPage).Execute()
 
 List Images
 
@@ -252,13 +252,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ImageAPI.ListImages(context.Background()).Region(region).IncludePublic(includePublic).Search(search).Page(page).PerPage(perPage).Execute()
+	resp, r, err := apiClient.ImageAPI.ListImages2(context.Background()).Region(region).IncludePublic(includePublic).Search(search).Page(page).PerPage(perPage).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ImageAPI.ListImages``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ImageAPI.ListImages2``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ListImages`: Images
-	fmt.Fprintf(os.Stdout, "Response from `ImageAPI.ListImages`: %v\n", resp)
+	// response from `ListImages2`: Images
+	fmt.Fprintf(os.Stdout, "Response from `ImageAPI.ListImages2`: %v\n", resp)
 }
 ```
 
@@ -268,7 +268,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiListImagesRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiListImages2Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -285,7 +285,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 

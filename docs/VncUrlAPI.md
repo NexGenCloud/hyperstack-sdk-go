@@ -4,16 +4,18 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetVncConsoleLink**](VncUrlAPI.md#GetVncConsoleLink) | **Get** /core/virtual-machines/{virtual_machine_id}/console/{job_id} | Get VNC Console Link
-[**RequestInstanceConsole**](VncUrlAPI.md#RequestInstanceConsole) | **Get** /core/virtual-machines/{id}/request-console | Request Instance Console
+[**GetVncUrl**](VncUrlAPI.md#GetVncUrl) | **Get** /core/virtual-machines/{vm_id}/console/{job_id} | Get VNC Console Link
+[**GetVncUrl2**](VncUrlAPI.md#GetVncUrl2) | **Get** /core/virtual-machines/{vm_id}/request-console | Request Instance Console
 
 
 
-## GetVncConsoleLink
+## GetVncUrl
 
-> VNCURL GetVncConsoleLink(ctx, virtualMachineId, jobId).Execute()
+> VNCURL GetVncUrl(ctx, vmId, jobId).Execute()
 
 Get VNC Console Link
+
+
 
 ### Example
 
@@ -28,18 +30,18 @@ import (
 )
 
 func main() {
-	virtualMachineId := int32(56) // int32 | 
+	vmId := int32(56) // int32 | 
 	jobId := int32(56) // int32 | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VncUrlAPI.GetVncConsoleLink(context.Background(), virtualMachineId, jobId).Execute()
+	resp, r, err := apiClient.VncUrlAPI.GetVncUrl(context.Background(), vmId, jobId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VncUrlAPI.GetVncConsoleLink``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `VncUrlAPI.GetVncUrl``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetVncConsoleLink`: VNCURL
-	fmt.Fprintf(os.Stdout, "Response from `VncUrlAPI.GetVncConsoleLink`: %v\n", resp)
+	// response from `GetVncUrl`: VNCURL
+	fmt.Fprintf(os.Stdout, "Response from `VncUrlAPI.GetVncUrl`: %v\n", resp)
 }
 ```
 
@@ -49,12 +51,12 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**virtualMachineId** | **int32** |  | 
+**vmId** | **int32** |  | 
 **jobId** | **int32** |  | 
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetVncConsoleLinkRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetVncUrlRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -68,7 +70,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -80,11 +82,13 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## RequestInstanceConsole
+## GetVncUrl2
 
-> RequestConsole RequestInstanceConsole(ctx, id).Execute()
+> RequestConsole GetVncUrl2(ctx, vmId).Execute()
 
 Request Instance Console
+
+
 
 ### Example
 
@@ -99,17 +103,17 @@ import (
 )
 
 func main() {
-	id := int32(56) // int32 | 
+	vmId := int32(56) // int32 | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VncUrlAPI.RequestInstanceConsole(context.Background(), id).Execute()
+	resp, r, err := apiClient.VncUrlAPI.GetVncUrl2(context.Background(), vmId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VncUrlAPI.RequestInstanceConsole``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `VncUrlAPI.GetVncUrl2``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `RequestInstanceConsole`: RequestConsole
-	fmt.Fprintf(os.Stdout, "Response from `VncUrlAPI.RequestInstanceConsole`: %v\n", resp)
+	// response from `GetVncUrl2`: RequestConsole
+	fmt.Fprintf(os.Stdout, "Response from `VncUrlAPI.GetVncUrl2`: %v\n", resp)
 }
 ```
 
@@ -119,11 +123,11 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **int32** |  | 
+**vmId** | **int32** |  | 
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiRequestInstanceConsoleRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetVncUrl2Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -136,7 +140,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 

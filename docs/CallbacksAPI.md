@@ -4,18 +4,18 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**AttachCallbackToVirtualMachine**](CallbacksAPI.md#AttachCallbackToVirtualMachine) | **Post** /core/virtual-machines/{id}/attach-callback | Attach callback to virtual machine
-[**AttachCallbackToVolume**](CallbacksAPI.md#AttachCallbackToVolume) | **Post** /core/volumes/{id}/attach-callback | Attach callback to volume
-[**DeleteVirtualMachineCallback**](CallbacksAPI.md#DeleteVirtualMachineCallback) | **Delete** /core/virtual-machines/{id}/delete-callback | Delete virtual machine callback
-[**DeleteVolumeCallback**](CallbacksAPI.md#DeleteVolumeCallback) | **Delete** /core/volumes/{id}/delete-callback | Delete volume callback
-[**UpdateVirtualMachineCallback**](CallbacksAPI.md#UpdateVirtualMachineCallback) | **Put** /core/virtual-machines/{id}/update-callback | Update virtual machine callback
-[**UpdateVolumeCallback**](CallbacksAPI.md#UpdateVolumeCallback) | **Put** /core/volumes/{id}/update-callback | Update volume callback
+[**AttachCallbackToVirtualMachine**](CallbacksAPI.md#AttachCallbackToVirtualMachine) | **Post** /core/virtual-machines/{vm_id}/attach-callback | Attach callback to virtual machine
+[**AttachCallbackToVolume**](CallbacksAPI.md#AttachCallbackToVolume) | **Post** /core/volumes/{volume_id}/attach-callback | Attach callback to volume
+[**DeleteVirtualMachineCallback**](CallbacksAPI.md#DeleteVirtualMachineCallback) | **Delete** /core/virtual-machines/{vm_id}/delete-callback | Delete virtual machine callback
+[**DeleteVolumeCallback**](CallbacksAPI.md#DeleteVolumeCallback) | **Delete** /core/volumes/{volume_id}/delete-callback | Delete volume callback
+[**UpdateVirtualMachineCallback**](CallbacksAPI.md#UpdateVirtualMachineCallback) | **Put** /core/virtual-machines/{vm_id}/update-callback | Update virtual machine callback
+[**UpdateVolumeCallback**](CallbacksAPI.md#UpdateVolumeCallback) | **Put** /core/volumes/{volume_id}/update-callback | Update volume callback
 
 
 
 ## AttachCallbackToVirtualMachine
 
-> AttachCallbackResponse AttachCallbackToVirtualMachine(ctx, id).Payload(payload).Execute()
+> AttachCallbackResponse AttachCallbackToVirtualMachine(ctx, vmId).Payload(payload).Execute()
 
 Attach callback to virtual machine
 
@@ -34,12 +34,12 @@ import (
 )
 
 func main() {
-	id := int32(56) // int32 | 
+	vmId := int32(56) // int32 | 
 	payload := *openapiclient.NewAttachCallbackPayload("Url_example") // AttachCallbackPayload | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.CallbacksAPI.AttachCallbackToVirtualMachine(context.Background(), id).Payload(payload).Execute()
+	resp, r, err := apiClient.CallbacksAPI.AttachCallbackToVirtualMachine(context.Background(), vmId).Payload(payload).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CallbacksAPI.AttachCallbackToVirtualMachine``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -55,7 +55,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **int32** |  | 
+**vmId** | **int32** |  | 
 
 ### Other Parameters
 
@@ -73,7 +73,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -87,7 +87,7 @@ Name | Type | Description  | Notes
 
 ## AttachCallbackToVolume
 
-> AttachCallbackResponse AttachCallbackToVolume(ctx, id).Payload(payload).Execute()
+> AttachCallbackResponse AttachCallbackToVolume(ctx, volumeId).Payload(payload).Execute()
 
 Attach callback to volume
 
@@ -106,12 +106,12 @@ import (
 )
 
 func main() {
-	id := int32(56) // int32 | 
+	volumeId := int32(56) // int32 | 
 	payload := *openapiclient.NewAttachCallbackPayload("Url_example") // AttachCallbackPayload | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.CallbacksAPI.AttachCallbackToVolume(context.Background(), id).Payload(payload).Execute()
+	resp, r, err := apiClient.CallbacksAPI.AttachCallbackToVolume(context.Background(), volumeId).Payload(payload).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CallbacksAPI.AttachCallbackToVolume``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -127,7 +127,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **int32** |  | 
+**volumeId** | **int32** |  | 
 
 ### Other Parameters
 
@@ -145,7 +145,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -159,7 +159,7 @@ Name | Type | Description  | Notes
 
 ## DeleteVirtualMachineCallback
 
-> ResponseModel DeleteVirtualMachineCallback(ctx, id).Execute()
+> ResponseModel DeleteVirtualMachineCallback(ctx, vmId).Execute()
 
 Delete virtual machine callback
 
@@ -178,11 +178,11 @@ import (
 )
 
 func main() {
-	id := int32(56) // int32 | 
+	vmId := int32(56) // int32 | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.CallbacksAPI.DeleteVirtualMachineCallback(context.Background(), id).Execute()
+	resp, r, err := apiClient.CallbacksAPI.DeleteVirtualMachineCallback(context.Background(), vmId).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CallbacksAPI.DeleteVirtualMachineCallback``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -198,7 +198,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **int32** |  | 
+**vmId** | **int32** |  | 
 
 ### Other Parameters
 
@@ -215,7 +215,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -229,7 +229,7 @@ Name | Type | Description  | Notes
 
 ## DeleteVolumeCallback
 
-> ResponseModel DeleteVolumeCallback(ctx, id).Execute()
+> ResponseModel DeleteVolumeCallback(ctx, volumeId).Execute()
 
 Delete volume callback
 
@@ -248,11 +248,11 @@ import (
 )
 
 func main() {
-	id := int32(56) // int32 | 
+	volumeId := int32(56) // int32 | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.CallbacksAPI.DeleteVolumeCallback(context.Background(), id).Execute()
+	resp, r, err := apiClient.CallbacksAPI.DeleteVolumeCallback(context.Background(), volumeId).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CallbacksAPI.DeleteVolumeCallback``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -268,7 +268,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **int32** |  | 
+**volumeId** | **int32** |  | 
 
 ### Other Parameters
 
@@ -285,7 +285,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -299,7 +299,7 @@ Name | Type | Description  | Notes
 
 ## UpdateVirtualMachineCallback
 
-> AttachCallbackResponse UpdateVirtualMachineCallback(ctx, id).Payload(payload).Execute()
+> AttachCallbackResponse UpdateVirtualMachineCallback(ctx, vmId).Payload(payload).Execute()
 
 Update virtual machine callback
 
@@ -318,12 +318,12 @@ import (
 )
 
 func main() {
-	id := int32(56) // int32 | 
+	vmId := int32(56) // int32 | 
 	payload := *openapiclient.NewAttachCallbackPayload("Url_example") // AttachCallbackPayload | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.CallbacksAPI.UpdateVirtualMachineCallback(context.Background(), id).Payload(payload).Execute()
+	resp, r, err := apiClient.CallbacksAPI.UpdateVirtualMachineCallback(context.Background(), vmId).Payload(payload).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CallbacksAPI.UpdateVirtualMachineCallback``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -339,7 +339,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **int32** |  | 
+**vmId** | **int32** |  | 
 
 ### Other Parameters
 
@@ -357,7 +357,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -371,7 +371,7 @@ Name | Type | Description  | Notes
 
 ## UpdateVolumeCallback
 
-> AttachCallbackResponse UpdateVolumeCallback(ctx, id).Payload(payload).Execute()
+> AttachCallbackResponse UpdateVolumeCallback(ctx, volumeId).Payload(payload).Execute()
 
 Update volume callback
 
@@ -390,12 +390,12 @@ import (
 )
 
 func main() {
-	id := int32(56) // int32 | 
+	volumeId := int32(56) // int32 | 
 	payload := *openapiclient.NewAttachCallbackPayload("Url_example") // AttachCallbackPayload | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.CallbacksAPI.UpdateVolumeCallback(context.Background(), id).Payload(payload).Execute()
+	resp, r, err := apiClient.CallbacksAPI.UpdateVolumeCallback(context.Background(), volumeId).Payload(payload).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CallbacksAPI.UpdateVolumeCallback``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -411,7 +411,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **int32** |  | 
+**volumeId** | **int32** |  | 
 
 ### Other Parameters
 
@@ -429,7 +429,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 

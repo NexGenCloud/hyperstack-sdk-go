@@ -39,9 +39,9 @@ func Test_hyperstack_VolumeAPIService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var id int32
+		var volumeId int32
 
-		resp, httpRes, err := apiClient.VolumeAPI.DeleteVolume(context.Background(), id).Execute()
+		resp, httpRes, err := apiClient.VolumeAPI.DeleteVolume(context.Background(), volumeId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -94,6 +94,20 @@ func Test_hyperstack_VolumeAPIService(t *testing.T) {
 		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.VolumeAPI.ListVolumes(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test VolumeAPIService UpdateVolume", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var volumeId int32
+
+		resp, httpRes, err := apiClient.VolumeAPI.UpdateVolume(context.Background(), volumeId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

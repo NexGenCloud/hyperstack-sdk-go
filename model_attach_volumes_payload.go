@@ -19,6 +19,7 @@ var _ MappedNullable = &AttachVolumesPayload{}
 
 // AttachVolumesPayload struct for AttachVolumesPayload
 type AttachVolumesPayload struct {
+	Protected *bool   `json:"protected,omitempty"`
 	VolumeIds []int32 `json:"volume_ids,omitempty"`
 }
 
@@ -28,6 +29,8 @@ type AttachVolumesPayload struct {
 // will change when the set of required properties is changed
 func NewAttachVolumesPayload() *AttachVolumesPayload {
 	this := AttachVolumesPayload{}
+	var protected bool = false
+	this.Protected = &protected
 	return &this
 }
 
@@ -36,7 +39,41 @@ func NewAttachVolumesPayload() *AttachVolumesPayload {
 // but it doesn't guarantee that properties required by API are set
 func NewAttachVolumesPayloadWithDefaults() *AttachVolumesPayload {
 	this := AttachVolumesPayload{}
+	var protected bool = false
+	this.Protected = &protected
 	return &this
+}
+
+// GetProtected returns the Protected field value if set, zero value otherwise.
+func (o *AttachVolumesPayload) GetProtected() bool {
+	if o == nil || IsNil(o.Protected) {
+		var ret bool
+		return ret
+	}
+	return *o.Protected
+}
+
+// GetProtectedOk returns a tuple with the Protected field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *AttachVolumesPayload) GetProtectedOk() (*bool, bool) {
+	if o == nil || IsNil(o.Protected) {
+		return nil, false
+	}
+	return o.Protected, true
+}
+
+// HasProtected returns a boolean if a field has been set.
+func (o *AttachVolumesPayload) HasProtected() bool {
+	if o != nil && !IsNil(o.Protected) {
+		return true
+	}
+
+	return false
+}
+
+// SetProtected gets a reference to the given bool and assigns it to the Protected field.
+func (o *AttachVolumesPayload) SetProtected(v bool) {
+	o.Protected = &v
 }
 
 // GetVolumeIds returns the VolumeIds field value if set, zero value otherwise.
@@ -81,6 +118,9 @@ func (o AttachVolumesPayload) MarshalJSON() ([]byte, error) {
 
 func (o AttachVolumesPayload) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Protected) {
+		toSerialize["protected"] = o.Protected
+	}
 	if !IsNil(o.VolumeIds) {
 		toSerialize["volume_ids"] = o.VolumeIds
 	}

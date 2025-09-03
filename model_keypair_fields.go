@@ -19,12 +19,12 @@ var _ MappedNullable = &KeypairFields{}
 
 // KeypairFields struct for KeypairFields
 type KeypairFields struct {
-	CreatedAt   *CustomTime `json:"created_at,omitempty"`
-	Environment *string     `json:"environment,omitempty"`
-	Fingerprint *string     `json:"fingerprint,omitempty"`
-	Id          *int32      `json:"id,omitempty"`
-	Name        *string     `json:"name,omitempty"`
-	PublicKey   *string     `json:"public_key,omitempty"`
+	CreatedAt   *CustomTime               `json:"created_at,omitempty"`
+	Environment *KeypairEnvironmentFields `json:"environment,omitempty"`
+	Fingerprint *string                   `json:"fingerprint,omitempty"`
+	Id          *int32                    `json:"id,omitempty"`
+	Name        *string                   `json:"name,omitempty"`
+	PublicKey   *string                   `json:"public_key,omitempty"`
 }
 
 // NewKeypairFields instantiates a new KeypairFields object
@@ -77,9 +77,9 @@ func (o *KeypairFields) SetCreatedAt(v CustomTime) {
 }
 
 // GetEnvironment returns the Environment field value if set, zero value otherwise.
-func (o *KeypairFields) GetEnvironment() string {
+func (o *KeypairFields) GetEnvironment() KeypairEnvironmentFields {
 	if o == nil || IsNil(o.Environment) {
-		var ret string
+		var ret KeypairEnvironmentFields
 		return ret
 	}
 	return *o.Environment
@@ -87,7 +87,7 @@ func (o *KeypairFields) GetEnvironment() string {
 
 // GetEnvironmentOk returns a tuple with the Environment field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *KeypairFields) GetEnvironmentOk() (*string, bool) {
+func (o *KeypairFields) GetEnvironmentOk() (*KeypairEnvironmentFields, bool) {
 	if o == nil || IsNil(o.Environment) {
 		return nil, false
 	}
@@ -103,8 +103,8 @@ func (o *KeypairFields) HasEnvironment() bool {
 	return false
 }
 
-// SetEnvironment gets a reference to the given string and assigns it to the Environment field.
-func (o *KeypairFields) SetEnvironment(v string) {
+// SetEnvironment gets a reference to the given KeypairEnvironmentFields and assigns it to the Environment field.
+func (o *KeypairFields) SetEnvironment(v KeypairEnvironmentFields) {
 	o.Environment = &v
 }
 

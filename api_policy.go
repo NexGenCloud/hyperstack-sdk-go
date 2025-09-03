@@ -33,7 +33,7 @@ func (r ApiListPoliciesRequest) Execute() (*GetPoliciesResponseModel, *http.Resp
 /*
 ListPolicies List Policies
 
-Retrieves a list of policies available for addition to RBAC roles. For additional information on policies, [click here](https://infrahub-doc.nexgencloud.com/docs/api-reference/auth-resources/policies).
+Retrieves a list of policies available for addition to RBAC roles. For additional information on policies, [click here](https://docs.hyperstack.cloud/docs/api-reference/auth-resources/policies).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiListPoliciesRequest
@@ -95,20 +95,6 @@ func (a *PolicyAPIService) ListPoliciesExecute(r ApiListPoliciesRequest) (*GetPo
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

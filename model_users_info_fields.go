@@ -31,6 +31,7 @@ type UsersInfoFields struct {
 	OrganizationId  *int32      `json:"organization_id,omitempty"`
 	Phone           *string     `json:"phone,omitempty"`
 	State           *string     `json:"state,omitempty"`
+	StripeUserId    *string     `json:"stripe_user_id,omitempty"`
 	VatNumber       *string     `json:"vat_number,omitempty"`
 	ZipCode         *string     `json:"zip_code,omitempty"`
 }
@@ -436,6 +437,38 @@ func (o *UsersInfoFields) SetState(v string) {
 	o.State = &v
 }
 
+// GetStripeUserId returns the StripeUserId field value if set, zero value otherwise.
+func (o *UsersInfoFields) GetStripeUserId() string {
+	if o == nil || IsNil(o.StripeUserId) {
+		var ret string
+		return ret
+	}
+	return *o.StripeUserId
+}
+
+// GetStripeUserIdOk returns a tuple with the StripeUserId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UsersInfoFields) GetStripeUserIdOk() (*string, bool) {
+	if o == nil || IsNil(o.StripeUserId) {
+		return nil, false
+	}
+	return o.StripeUserId, true
+}
+
+// HasStripeUserId returns a boolean if a field has been set.
+func (o *UsersInfoFields) HasStripeUserId() bool {
+	if o != nil && !IsNil(o.StripeUserId) {
+		return true
+	}
+
+	return false
+}
+
+// SetStripeUserId gets a reference to the given string and assigns it to the StripeUserId field.
+func (o *UsersInfoFields) SetStripeUserId(v string) {
+	o.StripeUserId = &v
+}
+
 // GetVatNumber returns the VatNumber field value if set, zero value otherwise.
 func (o *UsersInfoFields) GetVatNumber() string {
 	if o == nil || IsNil(o.VatNumber) {
@@ -545,6 +578,9 @@ func (o UsersInfoFields) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.State) {
 		toSerialize["state"] = o.State
+	}
+	if !IsNil(o.StripeUserId) {
+		toSerialize["stripe_user_id"] = o.StripeUserId
 	}
 	if !IsNil(o.VatNumber) {
 		toSerialize["vat_number"] = o.VatNumber

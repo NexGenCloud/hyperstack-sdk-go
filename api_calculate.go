@@ -22,29 +22,29 @@ import (
 // CalculateAPIService CalculateAPI service
 type CalculateAPIService service
 
-type ApiRetrieveBillingRateForResourceRequest struct {
+type ApiGetCalculate2Request struct {
 	ctx          context.Context
 	ApiService   *CalculateAPIService
 	resourceType string
 	id           int32
 }
 
-func (r ApiRetrieveBillingRateForResourceRequest) Execute() (*ResourceBillingResponseForCustomer, *http.Response, error) {
-	return r.ApiService.RetrieveBillingRateForResourceExecute(r)
+func (r ApiGetCalculate2Request) Execute() (*ResourceBillingResponseForCustomer, *http.Response, error) {
+	return r.ApiService.GetCalculate2Execute(r)
 }
 
 /*
-RetrieveBillingRateForResource Retrieve Billing Rate for Resource
+GetCalculate2 Retrieve Billing Rate for Resource
 
 Calculate the hourly billing rate of a specified resource by including the resource ID in the path.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param resourceType
 	@param id
-	@return ApiRetrieveBillingRateForResourceRequest
+	@return ApiGetCalculate2Request
 */
-func (a *CalculateAPIService) RetrieveBillingRateForResource(ctx context.Context, resourceType string, id int32) ApiRetrieveBillingRateForResourceRequest {
-	return ApiRetrieveBillingRateForResourceRequest{
+func (a *CalculateAPIService) GetCalculate2(ctx context.Context, resourceType string, id int32) ApiGetCalculate2Request {
+	return ApiGetCalculate2Request{
 		ApiService:   a,
 		ctx:          ctx,
 		resourceType: resourceType,
@@ -55,7 +55,7 @@ func (a *CalculateAPIService) RetrieveBillingRateForResource(ctx context.Context
 // Execute executes the request
 //
 //	@return ResourceBillingResponseForCustomer
-func (a *CalculateAPIService) RetrieveBillingRateForResourceExecute(r ApiRetrieveBillingRateForResourceRequest) (*ResourceBillingResponseForCustomer, *http.Response, error) {
+func (a *CalculateAPIService) GetCalculate2Execute(r ApiGetCalculate2Request) (*ResourceBillingResponseForCustomer, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -63,7 +63,7 @@ func (a *CalculateAPIService) RetrieveBillingRateForResourceExecute(r ApiRetriev
 		localVarReturnValue *ResourceBillingResponseForCustomer
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CalculateAPIService.RetrieveBillingRateForResource")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CalculateAPIService.GetCalculate2")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -104,20 +104,6 @@ func (a *CalculateAPIService) RetrieveBillingRateForResourceExecute(r ApiRetriev
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

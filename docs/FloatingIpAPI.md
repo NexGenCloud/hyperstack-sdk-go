@@ -4,14 +4,14 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**AttachPublicIpToVirtualMachine**](FloatingIpAPI.md#AttachPublicIpToVirtualMachine) | **Post** /core/virtual-machines/{id}/attach-floatingip | Attach public IP to virtual machine
-[**DetachPublicIpFromVirtualMachine**](FloatingIpAPI.md#DetachPublicIpFromVirtualMachine) | **Post** /core/virtual-machines/{id}/detach-floatingip | Detach public IP from virtual machine
+[**AttachPublicIPToVirtualMachine**](FloatingIpAPI.md#AttachPublicIPToVirtualMachine) | **Post** /core/virtual-machines/{vm_id}/attach-floatingip | Attach public IP to virtual machine
+[**DetachPublicIPFromVirtualMachine**](FloatingIpAPI.md#DetachPublicIPFromVirtualMachine) | **Post** /core/virtual-machines/{vm_id}/detach-floatingip | Detach public IP from virtual machine
 
 
 
-## AttachPublicIpToVirtualMachine
+## AttachPublicIPToVirtualMachine
 
-> ResponseModel AttachPublicIpToVirtualMachine(ctx, id).Execute()
+> ResponseModel AttachPublicIPToVirtualMachine(ctx, vmId).Execute()
 
 Attach public IP to virtual machine
 
@@ -30,17 +30,17 @@ import (
 )
 
 func main() {
-	id := int32(56) // int32 | 
+	vmId := int32(56) // int32 | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.FloatingIpAPI.AttachPublicIpToVirtualMachine(context.Background(), id).Execute()
+	resp, r, err := apiClient.FloatingIpAPI.AttachPublicIPToVirtualMachine(context.Background(), vmId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `FloatingIpAPI.AttachPublicIpToVirtualMachine``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `FloatingIpAPI.AttachPublicIPToVirtualMachine``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `AttachPublicIpToVirtualMachine`: ResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `FloatingIpAPI.AttachPublicIpToVirtualMachine`: %v\n", resp)
+	// response from `AttachPublicIPToVirtualMachine`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `FloatingIpAPI.AttachPublicIPToVirtualMachine`: %v\n", resp)
 }
 ```
 
@@ -50,11 +50,11 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **int32** |  | 
+**vmId** | **int32** |  | 
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiAttachPublicIpToVirtualMachineRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiAttachPublicIPToVirtualMachineRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -67,7 +67,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -79,9 +79,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## DetachPublicIpFromVirtualMachine
+## DetachPublicIPFromVirtualMachine
 
-> ResponseModel DetachPublicIpFromVirtualMachine(ctx, id).Execute()
+> ResponseModel DetachPublicIPFromVirtualMachine(ctx, vmId).Execute()
 
 Detach public IP from virtual machine
 
@@ -100,17 +100,17 @@ import (
 )
 
 func main() {
-	id := int32(56) // int32 | 
+	vmId := int32(56) // int32 | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.FloatingIpAPI.DetachPublicIpFromVirtualMachine(context.Background(), id).Execute()
+	resp, r, err := apiClient.FloatingIpAPI.DetachPublicIPFromVirtualMachine(context.Background(), vmId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `FloatingIpAPI.DetachPublicIpFromVirtualMachine``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `FloatingIpAPI.DetachPublicIPFromVirtualMachine``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `DetachPublicIpFromVirtualMachine`: ResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `FloatingIpAPI.DetachPublicIpFromVirtualMachine`: %v\n", resp)
+	// response from `DetachPublicIPFromVirtualMachine`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `FloatingIpAPI.DetachPublicIPFromVirtualMachine`: %v\n", resp)
 }
 ```
 
@@ -120,11 +120,11 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **int32** |  | 
+**vmId** | **int32** |  | 
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiDetachPublicIpFromVirtualMachineRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiDetachPublicIPFromVirtualMachineRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -137,7 +137,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 

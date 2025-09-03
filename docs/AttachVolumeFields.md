@@ -5,8 +5,10 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
+**Device** | Pointer to **string** |  | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
 **InstanceId** | Pointer to **int32** |  | [optional] 
+**Protected** | Pointer to **bool** |  | [optional] 
 **Status** | Pointer to **string** |  | [optional] 
 **VolumeId** | Pointer to **int32** |  | [optional] 
 
@@ -53,6 +55,31 @@ SetCreatedAt sets CreatedAt field to given value.
 `func (o *AttachVolumeFields) HasCreatedAt() bool`
 
 HasCreatedAt returns a boolean if a field has been set.
+
+### GetDevice
+
+`func (o *AttachVolumeFields) GetDevice() string`
+
+GetDevice returns the Device field if non-nil, zero value otherwise.
+
+### GetDeviceOk
+
+`func (o *AttachVolumeFields) GetDeviceOk() (*string, bool)`
+
+GetDeviceOk returns a tuple with the Device field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDevice
+
+`func (o *AttachVolumeFields) SetDevice(v string)`
+
+SetDevice sets Device field to given value.
+
+### HasDevice
+
+`func (o *AttachVolumeFields) HasDevice() bool`
+
+HasDevice returns a boolean if a field has been set.
 
 ### GetId
 
@@ -103,6 +130,31 @@ SetInstanceId sets InstanceId field to given value.
 `func (o *AttachVolumeFields) HasInstanceId() bool`
 
 HasInstanceId returns a boolean if a field has been set.
+
+### GetProtected
+
+`func (o *AttachVolumeFields) GetProtected() bool`
+
+GetProtected returns the Protected field if non-nil, zero value otherwise.
+
+### GetProtectedOk
+
+`func (o *AttachVolumeFields) GetProtectedOk() (*bool, bool)`
+
+GetProtectedOk returns a tuple with the Protected field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetProtected
+
+`func (o *AttachVolumeFields) SetProtected(v bool)`
+
+SetProtected sets Protected field to given value.
+
+### HasProtected
+
+`func (o *AttachVolumeFields) HasProtected() bool`
+
+HasProtected returns a boolean if a field has been set.
 
 ### GetStatus
 

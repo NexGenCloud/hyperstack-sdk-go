@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **DiscountStatus** | Pointer to **string** |  | [optional] 
 **DiscountType** | Pointer to **string** |  | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
+**RemainingCount** | Pointer to **int32** |  | [optional] 
 **ResourceCount** | Pointer to **int32** |  | [optional] 
 **ResourceId** | Pointer to **int32** |  | [optional] 
 **ResourceName** | Pointer to **string** |  | [optional] 
@@ -182,6 +183,31 @@ SetId sets Id field to given value.
 `func (o *ContractDiscountPlanFields) HasId() bool`
 
 HasId returns a boolean if a field has been set.
+
+### GetRemainingCount
+
+`func (o *ContractDiscountPlanFields) GetRemainingCount() int32`
+
+GetRemainingCount returns the RemainingCount field if non-nil, zero value otherwise.
+
+### GetRemainingCountOk
+
+`func (o *ContractDiscountPlanFields) GetRemainingCountOk() (*int32, bool)`
+
+GetRemainingCountOk returns a tuple with the RemainingCount field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRemainingCount
+
+`func (o *ContractDiscountPlanFields) SetRemainingCount(v int32)`
+
+SetRemainingCount sets RemainingCount field to given value.
+
+### HasRemainingCount
+
+`func (o *ContractDiscountPlanFields) HasRemainingCount() bool`
+
+HasRemainingCount returns a boolean if a field has been set.
 
 ### GetResourceCount
 

@@ -1,104 +1,104 @@
-# Getcreditandthresholdinfoinresponse
+# GetCreditAndThresholdInfoInResponse
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Data** | Pointer to [**Getcreditandthresholdinfo**](Getcreditandthresholdinfo.md) |  | [optional] 
+**Data** | Pointer to [**GetCreditAndThresholdInfo**](GetCreditAndThresholdInfo.md) |  | [optional] 
 **Message** | Pointer to **string** |  | [optional] 
 **Status** | Pointer to **bool** |  | [optional] 
 
 ## Methods
 
-### NewGetcreditandthresholdinfoinresponse
+### NewGetCreditAndThresholdInfoInResponse
 
-`func NewGetcreditandthresholdinfoinresponse() *Getcreditandthresholdinfoinresponse`
+`func NewGetCreditAndThresholdInfoInResponse() *GetCreditAndThresholdInfoInResponse`
 
-NewGetcreditandthresholdinfoinresponse instantiates a new Getcreditandthresholdinfoinresponse object
+NewGetCreditAndThresholdInfoInResponse instantiates a new GetCreditAndThresholdInfoInResponse object
 This constructor will assign default values to properties that have it defined,
 and makes sure properties required by API are set, but the set of arguments
 will change when the set of required properties is changed
 
-### NewGetcreditandthresholdinfoinresponseWithDefaults
+### NewGetCreditAndThresholdInfoInResponseWithDefaults
 
-`func NewGetcreditandthresholdinfoinresponseWithDefaults() *Getcreditandthresholdinfoinresponse`
+`func NewGetCreditAndThresholdInfoInResponseWithDefaults() *GetCreditAndThresholdInfoInResponse`
 
-NewGetcreditandthresholdinfoinresponseWithDefaults instantiates a new Getcreditandthresholdinfoinresponse object
+NewGetCreditAndThresholdInfoInResponseWithDefaults instantiates a new GetCreditAndThresholdInfoInResponse object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
 ### GetData
 
-`func (o *Getcreditandthresholdinfoinresponse) GetData() Getcreditandthresholdinfo`
+`func (o *GetCreditAndThresholdInfoInResponse) GetData() GetCreditAndThresholdInfo`
 
 GetData returns the Data field if non-nil, zero value otherwise.
 
 ### GetDataOk
 
-`func (o *Getcreditandthresholdinfoinresponse) GetDataOk() (*Getcreditandthresholdinfo, bool)`
+`func (o *GetCreditAndThresholdInfoInResponse) GetDataOk() (*GetCreditAndThresholdInfo, bool)`
 
 GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetData
 
-`func (o *Getcreditandthresholdinfoinresponse) SetData(v Getcreditandthresholdinfo)`
+`func (o *GetCreditAndThresholdInfoInResponse) SetData(v GetCreditAndThresholdInfo)`
 
 SetData sets Data field to given value.
 
 ### HasData
 
-`func (o *Getcreditandthresholdinfoinresponse) HasData() bool`
+`func (o *GetCreditAndThresholdInfoInResponse) HasData() bool`
 
 HasData returns a boolean if a field has been set.
 
 ### GetMessage
 
-`func (o *Getcreditandthresholdinfoinresponse) GetMessage() string`
+`func (o *GetCreditAndThresholdInfoInResponse) GetMessage() string`
 
 GetMessage returns the Message field if non-nil, zero value otherwise.
 
 ### GetMessageOk
 
-`func (o *Getcreditandthresholdinfoinresponse) GetMessageOk() (*string, bool)`
+`func (o *GetCreditAndThresholdInfoInResponse) GetMessageOk() (*string, bool)`
 
 GetMessageOk returns a tuple with the Message field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetMessage
 
-`func (o *Getcreditandthresholdinfoinresponse) SetMessage(v string)`
+`func (o *GetCreditAndThresholdInfoInResponse) SetMessage(v string)`
 
 SetMessage sets Message field to given value.
 
 ### HasMessage
 
-`func (o *Getcreditandthresholdinfoinresponse) HasMessage() bool`
+`func (o *GetCreditAndThresholdInfoInResponse) HasMessage() bool`
 
 HasMessage returns a boolean if a field has been set.
 
 ### GetStatus
 
-`func (o *Getcreditandthresholdinfoinresponse) GetStatus() bool`
+`func (o *GetCreditAndThresholdInfoInResponse) GetStatus() bool`
 
 GetStatus returns the Status field if non-nil, zero value otherwise.
 
 ### GetStatusOk
 
-`func (o *Getcreditandthresholdinfoinresponse) GetStatusOk() (*bool, bool)`
+`func (o *GetCreditAndThresholdInfoInResponse) GetStatusOk() (*bool, bool)`
 
 GetStatusOk returns a tuple with the Status field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetStatus
 
-`func (o *Getcreditandthresholdinfoinresponse) SetStatus(v bool)`
+`func (o *GetCreditAndThresholdInfoInResponse) SetStatus(v bool)`
 
 SetStatus sets Status field to given value.
 
 ### HasStatus
 
-`func (o *Getcreditandthresholdinfoinresponse) HasStatus() bool`
+`func (o *GetCreditAndThresholdInfoInResponse) HasStatus() bool`
 
 HasStatus returns a boolean if a field has been set.
 

@@ -40,12 +40,7 @@ func (r ApiListFlavorsRequest) Execute() (*FlavorListResponse, *http.Response, e
 /*
 ListFlavors List Flavors
 
-Returns a list of available virtual machine hardware configurations, known as
-
-	           **flavors**. You can specify a `region_name` in the query string of the request to
-	           retrieve flavors available only in the specified region; by default, it returns flavors
-	            available in all regions. For more details on flavors,
-	            [**click here**](https://infrahub-doc.nexgencloud.com/docs/hardware/flavors).
+Returns a list of available virtual machine hardware configurations, known as**flavors**. You can specify a `region_name` in the query string of the request toretrieve flavors available only in the specified region; by default, it returnsflavors available in all regions. For more details on flavors,[**click here**](https://docs.hyperstack.cloud/docs/hardware/flavors).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiListFlavorsRequest
@@ -110,20 +105,6 @@ func (a *FlavorAPIService) ListFlavorsExecute(r ApiListFlavorsRequest) (*FlavorL
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

@@ -4,15 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Attachments** | Pointer to [**[]AttachmentsFieldsForVolume**](AttachmentsFieldsForVolume.md) |  | [optional] 
 **Bootable** | Pointer to **bool** |  | [optional] 
 **CallbackUrl** | Pointer to **string** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **Description** | Pointer to **string** |  | [optional] 
-**Environment** | Pointer to [**EnvironmentFieldsforVolume**](EnvironmentFieldsforVolume.md) |  | [optional] 
+**Environment** | Pointer to [**EnvironmentFieldsForVolume**](EnvironmentFieldsForVolume.md) |  | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
 **ImageId** | Pointer to **int32** |  | [optional] 
 **Name** | Pointer to **string** |  | [optional] 
-**OsImage** | Pointer to **string** |  | [optional] 
 **Size** | Pointer to **int32** |  | [optional] 
 **Status** | Pointer to **string** |  | [optional] 
 **UpdatedAt** | Pointer to **time.Time** |  | [optional] 
@@ -36,6 +36,31 @@ will change when the set of required properties is changed
 NewVolumeFieldsWithDefaults instantiates a new VolumeFields object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetAttachments
+
+`func (o *VolumeFields) GetAttachments() []AttachmentsFieldsForVolume`
+
+GetAttachments returns the Attachments field if non-nil, zero value otherwise.
+
+### GetAttachmentsOk
+
+`func (o *VolumeFields) GetAttachmentsOk() (*[]AttachmentsFieldsForVolume, bool)`
+
+GetAttachmentsOk returns a tuple with the Attachments field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAttachments
+
+`func (o *VolumeFields) SetAttachments(v []AttachmentsFieldsForVolume)`
+
+SetAttachments sets Attachments field to given value.
+
+### HasAttachments
+
+`func (o *VolumeFields) HasAttachments() bool`
+
+HasAttachments returns a boolean if a field has been set.
 
 ### GetBootable
 
@@ -139,20 +164,20 @@ HasDescription returns a boolean if a field has been set.
 
 ### GetEnvironment
 
-`func (o *VolumeFields) GetEnvironment() EnvironmentFieldsforVolume`
+`func (o *VolumeFields) GetEnvironment() EnvironmentFieldsForVolume`
 
 GetEnvironment returns the Environment field if non-nil, zero value otherwise.
 
 ### GetEnvironmentOk
 
-`func (o *VolumeFields) GetEnvironmentOk() (*EnvironmentFieldsforVolume, bool)`
+`func (o *VolumeFields) GetEnvironmentOk() (*EnvironmentFieldsForVolume, bool)`
 
 GetEnvironmentOk returns a tuple with the Environment field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetEnvironment
 
-`func (o *VolumeFields) SetEnvironment(v EnvironmentFieldsforVolume)`
+`func (o *VolumeFields) SetEnvironment(v EnvironmentFieldsForVolume)`
 
 SetEnvironment sets Environment field to given value.
 
@@ -236,31 +261,6 @@ SetName sets Name field to given value.
 `func (o *VolumeFields) HasName() bool`
 
 HasName returns a boolean if a field has been set.
-
-### GetOsImage
-
-`func (o *VolumeFields) GetOsImage() string`
-
-GetOsImage returns the OsImage field if non-nil, zero value otherwise.
-
-### GetOsImageOk
-
-`func (o *VolumeFields) GetOsImageOk() (*string, bool)`
-
-GetOsImageOk returns a tuple with the OsImage field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetOsImage
-
-`func (o *VolumeFields) SetOsImage(v string)`
-
-SetOsImage sets OsImage field to given value.
-
-### HasOsImage
-
-`func (o *VolumeFields) HasOsImage() bool`
-
-HasOsImage returns a boolean if a field has been set.
 
 ### GetSize
 

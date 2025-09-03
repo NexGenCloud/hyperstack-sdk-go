@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**CreatedAt** | **time.Time** | Creation timestamp | 
 **Description** | **string** | Description of the snapshot | 
 **HasFloatingIp** | Pointer to **bool** | Indicates if the VM had a floating IP assigned | [optional] 
 **Id** | **int32** | Snapshot ID | 
@@ -13,13 +14,14 @@ Name | Type | Description | Notes
 **RegionId** | **int32** | Region where the snapshot will be available | 
 **Size** | **int32** | Size in GB of the snapshot | 
 **Status** | **string** | Status of the snapshot | 
+**UpdatedAt** | **time.Time** | Last update timestamp | 
 **VmId** | **int32** | ID of the VM from which the snapshot is created | 
 
 ## Methods
 
 ### NewSnapshotFields
 
-`func NewSnapshotFields(description string, id int32, isImage bool, name string, regionId int32, size int32, status string, vmId int32, ) *SnapshotFields`
+`func NewSnapshotFields(createdAt time.Time, description string, id int32, isImage bool, name string, regionId int32, size int32, status string, updatedAt time.Time, vmId int32, ) *SnapshotFields`
 
 NewSnapshotFields instantiates a new SnapshotFields object
 This constructor will assign default values to properties that have it defined,
@@ -33,6 +35,26 @@ will change when the set of required properties is changed
 NewSnapshotFieldsWithDefaults instantiates a new SnapshotFields object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetCreatedAt
+
+`func (o *SnapshotFields) GetCreatedAt() time.Time`
+
+GetCreatedAt returns the CreatedAt field if non-nil, zero value otherwise.
+
+### GetCreatedAtOk
+
+`func (o *SnapshotFields) GetCreatedAtOk() (*time.Time, bool)`
+
+GetCreatedAtOk returns a tuple with the CreatedAt field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCreatedAt
+
+`func (o *SnapshotFields) SetCreatedAt(v time.Time)`
+
+SetCreatedAt sets CreatedAt field to given value.
+
 
 ### GetDescription
 
@@ -222,6 +244,26 @@ and a boolean to check if the value has been set.
 `func (o *SnapshotFields) SetStatus(v string)`
 
 SetStatus sets Status field to given value.
+
+
+### GetUpdatedAt
+
+`func (o *SnapshotFields) GetUpdatedAt() time.Time`
+
+GetUpdatedAt returns the UpdatedAt field if non-nil, zero value otherwise.
+
+### GetUpdatedAtOk
+
+`func (o *SnapshotFields) GetUpdatedAtOk() (*time.Time, bool)`
+
+GetUpdatedAtOk returns a tuple with the UpdatedAt field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetUpdatedAt
+
+`func (o *SnapshotFields) SetUpdatedAt(v time.Time)`
+
+SetUpdatedAt sets UpdatedAt field to given value.
 
 
 ### GetVmId

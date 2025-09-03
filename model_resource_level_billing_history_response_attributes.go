@@ -19,6 +19,7 @@ var _ MappedNullable = &ResourceLevelBillingHistoryResponseAttributes{}
 
 // ResourceLevelBillingHistoryResponseAttributes struct for ResourceLevelBillingHistoryResponseAttributes
 type ResourceLevelBillingHistoryResponseAttributes struct {
+	ContractId   *int32  `json:"contract_id,omitempty"`
 	Id           *string `json:"id,omitempty"`
 	InfrahubId   *int32  `json:"infrahub_id,omitempty"`
 	ResourceName *string `json:"resource_name,omitempty"`
@@ -40,6 +41,38 @@ func NewResourceLevelBillingHistoryResponseAttributes() *ResourceLevelBillingHis
 func NewResourceLevelBillingHistoryResponseAttributesWithDefaults() *ResourceLevelBillingHistoryResponseAttributes {
 	this := ResourceLevelBillingHistoryResponseAttributes{}
 	return &this
+}
+
+// GetContractId returns the ContractId field value if set, zero value otherwise.
+func (o *ResourceLevelBillingHistoryResponseAttributes) GetContractId() int32 {
+	if o == nil || IsNil(o.ContractId) {
+		var ret int32
+		return ret
+	}
+	return *o.ContractId
+}
+
+// GetContractIdOk returns a tuple with the ContractId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ResourceLevelBillingHistoryResponseAttributes) GetContractIdOk() (*int32, bool) {
+	if o == nil || IsNil(o.ContractId) {
+		return nil, false
+	}
+	return o.ContractId, true
+}
+
+// HasContractId returns a boolean if a field has been set.
+func (o *ResourceLevelBillingHistoryResponseAttributes) HasContractId() bool {
+	if o != nil && !IsNil(o.ContractId) {
+		return true
+	}
+
+	return false
+}
+
+// SetContractId gets a reference to the given int32 and assigns it to the ContractId field.
+func (o *ResourceLevelBillingHistoryResponseAttributes) SetContractId(v int32) {
+	o.ContractId = &v
 }
 
 // GetId returns the Id field value if set, zero value otherwise.
@@ -180,6 +213,9 @@ func (o ResourceLevelBillingHistoryResponseAttributes) MarshalJSON() ([]byte, er
 
 func (o ResourceLevelBillingHistoryResponseAttributes) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.ContractId) {
+		toSerialize["contract_id"] = o.ContractId
+	}
 	if !IsNil(o.Id) {
 		toSerialize["id"] = o.Id
 	}

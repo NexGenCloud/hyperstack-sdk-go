@@ -1,104 +1,104 @@
-# Lastdaycostresponse
+# LastDayCostResponse
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Data** | Pointer to [**Lastdaycostfields**](Lastdaycostfields.md) |  | [optional] 
+**Data** | Pointer to [**LastDayCostFields**](LastDayCostFields.md) |  | [optional] 
 **Message** | Pointer to **string** |  | [optional] 
 **Status** | Pointer to **bool** |  | [optional] 
 
 ## Methods
 
-### NewLastdaycostresponse
+### NewLastDayCostResponse
 
-`func NewLastdaycostresponse() *Lastdaycostresponse`
+`func NewLastDayCostResponse() *LastDayCostResponse`
 
-NewLastdaycostresponse instantiates a new Lastdaycostresponse object
+NewLastDayCostResponse instantiates a new LastDayCostResponse object
 This constructor will assign default values to properties that have it defined,
 and makes sure properties required by API are set, but the set of arguments
 will change when the set of required properties is changed
 
-### NewLastdaycostresponseWithDefaults
+### NewLastDayCostResponseWithDefaults
 
-`func NewLastdaycostresponseWithDefaults() *Lastdaycostresponse`
+`func NewLastDayCostResponseWithDefaults() *LastDayCostResponse`
 
-NewLastdaycostresponseWithDefaults instantiates a new Lastdaycostresponse object
+NewLastDayCostResponseWithDefaults instantiates a new LastDayCostResponse object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
 ### GetData
 
-`func (o *Lastdaycostresponse) GetData() Lastdaycostfields`
+`func (o *LastDayCostResponse) GetData() LastDayCostFields`
 
 GetData returns the Data field if non-nil, zero value otherwise.
 
 ### GetDataOk
 
-`func (o *Lastdaycostresponse) GetDataOk() (*Lastdaycostfields, bool)`
+`func (o *LastDayCostResponse) GetDataOk() (*LastDayCostFields, bool)`
 
 GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetData
 
-`func (o *Lastdaycostresponse) SetData(v Lastdaycostfields)`
+`func (o *LastDayCostResponse) SetData(v LastDayCostFields)`
 
 SetData sets Data field to given value.
 
 ### HasData
 
-`func (o *Lastdaycostresponse) HasData() bool`
+`func (o *LastDayCostResponse) HasData() bool`
 
 HasData returns a boolean if a field has been set.
 
 ### GetMessage
 
-`func (o *Lastdaycostresponse) GetMessage() string`
+`func (o *LastDayCostResponse) GetMessage() string`
 
 GetMessage returns the Message field if non-nil, zero value otherwise.
 
 ### GetMessageOk
 
-`func (o *Lastdaycostresponse) GetMessageOk() (*string, bool)`
+`func (o *LastDayCostResponse) GetMessageOk() (*string, bool)`
 
 GetMessageOk returns a tuple with the Message field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetMessage
 
-`func (o *Lastdaycostresponse) SetMessage(v string)`
+`func (o *LastDayCostResponse) SetMessage(v string)`
 
 SetMessage sets Message field to given value.
 
 ### HasMessage
 
-`func (o *Lastdaycostresponse) HasMessage() bool`
+`func (o *LastDayCostResponse) HasMessage() bool`
 
 HasMessage returns a boolean if a field has been set.
 
 ### GetStatus
 
-`func (o *Lastdaycostresponse) GetStatus() bool`
+`func (o *LastDayCostResponse) GetStatus() bool`
 
 GetStatus returns the Status field if non-nil, zero value otherwise.
 
 ### GetStatusOk
 
-`func (o *Lastdaycostresponse) GetStatusOk() (*bool, bool)`
+`func (o *LastDayCostResponse) GetStatusOk() (*bool, bool)`
 
 GetStatusOk returns a tuple with the Status field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetStatus
 
-`func (o *Lastdaycostresponse) SetStatus(v bool)`
+`func (o *LastDayCostResponse) SetStatus(v bool)`
 
 SetStatus sets Status field to given value.
 
 ### HasStatus
 
-`func (o *Lastdaycostresponse) HasStatus() bool`
+`func (o *LastDayCostResponse) HasStatus() bool`
 
 HasStatus returns a boolean if a field has been set.
 

@@ -23,8 +23,6 @@ var _ MappedNullable = &CreateSnapshotPayload{}
 type CreateSnapshotPayload struct {
 	// description
 	Description string `json:"description"`
-	// Indicates if the snapshot is an image
-	IsImage bool `json:"is_image"`
 	// Labels associated with snapshot
 	Labels []string `json:"labels,omitempty"`
 	// Snapshot name
@@ -37,10 +35,9 @@ type _CreateSnapshotPayload CreateSnapshotPayload
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateSnapshotPayload(description string, isImage bool, name string) *CreateSnapshotPayload {
+func NewCreateSnapshotPayload(description string, name string) *CreateSnapshotPayload {
 	this := CreateSnapshotPayload{}
 	this.Description = description
-	this.IsImage = isImage
 	this.Name = name
 	return &this
 }
@@ -75,30 +72,6 @@ func (o *CreateSnapshotPayload) GetDescriptionOk() (*string, bool) {
 // SetDescription sets field value
 func (o *CreateSnapshotPayload) SetDescription(v string) {
 	o.Description = v
-}
-
-// GetIsImage returns the IsImage field value
-func (o *CreateSnapshotPayload) GetIsImage() bool {
-	if o == nil {
-		var ret bool
-		return ret
-	}
-
-	return o.IsImage
-}
-
-// GetIsImageOk returns a tuple with the IsImage field value
-// and a boolean to check if the value has been set.
-func (o *CreateSnapshotPayload) GetIsImageOk() (*bool, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.IsImage, true
-}
-
-// SetIsImage sets field value
-func (o *CreateSnapshotPayload) SetIsImage(v bool) {
-	o.IsImage = v
 }
 
 // GetLabels returns the Labels field value if set, zero value otherwise.
@@ -168,7 +141,6 @@ func (o CreateSnapshotPayload) MarshalJSON() ([]byte, error) {
 func (o CreateSnapshotPayload) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["description"] = o.Description
-	toSerialize["is_image"] = o.IsImage
 	if !IsNil(o.Labels) {
 		toSerialize["labels"] = o.Labels
 	}
@@ -182,7 +154,6 @@ func (o *CreateSnapshotPayload) UnmarshalJSON(data []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"description",
-		"is_image",
 		"name",
 	}
 

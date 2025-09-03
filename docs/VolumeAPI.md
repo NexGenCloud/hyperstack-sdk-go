@@ -5,11 +5,12 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateVolume**](VolumeAPI.md#CreateVolume) | **Post** /core/volumes | Create volume
-[**DeleteVolume**](VolumeAPI.md#DeleteVolume) | **Delete** /core/volumes/{id} | Delete volume
-[**FetchVolumeDetails**](VolumeAPI.md#FetchVolumeDetails) | **Get** /core/volume/{volume_id} | Fetch Volume Details
+[**DeleteVolume**](VolumeAPI.md#DeleteVolume) | **Delete** /core/volumes/{volume_id} | Delete volume
+[**FetchVolumeDetails**](VolumeAPI.md#FetchVolumeDetails) | **Get** /core/volumes/{volume_id} | Fetch Volume Details
 [**FetchVolumeNameAvailability**](VolumeAPI.md#FetchVolumeNameAvailability) | **Get** /core/volume/name-availability/{name} | Fetch volume name availability
 [**ListVolumeTypes**](VolumeAPI.md#ListVolumeTypes) | **Get** /core/volume-types | List volume types
 [**ListVolumes**](VolumeAPI.md#ListVolumes) | **Get** /core/volumes | List volumes
+[**UpdateVolume**](VolumeAPI.md#UpdateVolume) | **Patch** /core/volumes/{volume_id} | Update volume fields
 
 
 
@@ -67,7 +68,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -81,7 +82,7 @@ Name | Type | Description  | Notes
 
 ## DeleteVolume
 
-> ResponseModel DeleteVolume(ctx, id).Execute()
+> ResponseModel DeleteVolume(ctx, volumeId).Execute()
 
 Delete volume
 
@@ -100,11 +101,11 @@ import (
 )
 
 func main() {
-	id := int32(56) // int32 | 
+	volumeId := int32(56) // int32 | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VolumeAPI.DeleteVolume(context.Background(), id).Execute()
+	resp, r, err := apiClient.VolumeAPI.DeleteVolume(context.Background(), volumeId).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `VolumeAPI.DeleteVolume``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -120,7 +121,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **int32** |  | 
+**volumeId** | **int32** |  | 
 
 ### Other Parameters
 
@@ -137,7 +138,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -151,7 +152,7 @@ Name | Type | Description  | Notes
 
 ## FetchVolumeDetails
 
-> Volumes FetchVolumeDetails(ctx, volumeId).Execute()
+> Volume FetchVolumeDetails(ctx, volumeId).Execute()
 
 Fetch Volume Details
 
@@ -179,7 +180,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error when calling `VolumeAPI.FetchVolumeDetails``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `FetchVolumeDetails`: Volumes
+	// response from `FetchVolumeDetails`: Volume
 	fmt.Fprintf(os.Stdout, "Response from `VolumeAPI.FetchVolumeDetails`: %v\n", resp)
 }
 ```
@@ -203,11 +204,11 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Volumes**](Volumes.md)
+[**Volume**](Volume.md)
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -277,7 +278,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -338,7 +339,7 @@ Other parameters are passed through a pointer to a apiListVolumeTypesRequest str
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -410,11 +411,83 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpdateVolume
+
+> UpdateVolumeResponse UpdateVolume(ctx, volumeId).Payload(payload).Execute()
+
+Update volume fields
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	volumeId := int32(56) // int32 | 
+	payload := *openapiclient.NewUpdateVolumePayload("EnvironmentName_example") // UpdateVolumePayload | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.VolumeAPI.UpdateVolume(context.Background(), volumeId).Payload(payload).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `VolumeAPI.UpdateVolume``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UpdateVolume`: UpdateVolumeResponse
+	fmt.Fprintf(os.Stdout, "Response from `VolumeAPI.UpdateVolume`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**volumeId** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateVolumeRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **payload** | [**UpdateVolumePayload**](UpdateVolumePayload.md) |  | 
+
+### Return type
+
+[**UpdateVolumeResponse**](UpdateVolumeResponse.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

@@ -35,7 +35,7 @@ func (r ApiDeleteKeyPairRequest) Execute() (*ResponseModel, *http.Response, erro
 /*
 DeleteKeyPair Delete key pair
 
-Permanently deletes a specified key pair. Include the key pair ID in the request path to remove the designated key pair.
+Permanently deletes a specified key pair. Provide the key pair ID in the path to remove the designated key pair.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param id
@@ -100,20 +100,6 @@ func (a *KeypairAPIService) DeleteKeyPairExecute(r ApiDeleteKeyPairRequest) (*Re
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -205,7 +191,7 @@ func (r ApiImportKeyPairRequest) Execute() (*ImportKeypairResponse, *http.Respon
 /*
 ImportKeyPair Import key pair
 
-Imports a new key pair for secure shell (SSH) access to your resources. To import a new key pair, include the key name, environment name, and public key in the request body. For additional information on importing SSH key pairs, [**click here**](https://infrahub-doc.nexgencloud.com/docs/getting-started/create-keypair#importing-an-ssh-key).
+Imports a new key pair for secure shell (SSH) access to your resources. Provide the key name, environment name, and public key in the request body. For more details on importing SSH key pairs, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/keypairs/import-keypair).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiImportKeyPairRequest
@@ -272,20 +258,6 @@ func (a *KeypairAPIService) ImportKeyPairExecute(r ApiImportKeyPairRequest) (*Im
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -402,7 +374,7 @@ func (r ApiListKeyPairsRequest) Execute() (*Keypairs, *http.Response, error) {
 /*
 ListKeyPairs List key pairs
 
-Retrieves a list of your existing SSH key pairs, providing details for each. For additional information on SSH key pairs, [**click here**](https://infrahub-doc.nexgencloud.com/docs/features/keypairs-available-features).
+Retrieves a list of your existing SSH key pairs, providing details for each. For more information on SSH key pairs, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/keypairs/).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiListKeyPairsRequest
@@ -473,20 +445,6 @@ func (a *KeypairAPIService) ListKeyPairsExecute(r ApiListKeyPairsRequest) (*Keyp
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -561,14 +519,14 @@ func (r ApiUpdateKeyPairNameRequest) Payload(payload UpdateKeypairName) ApiUpdat
 	return r
 }
 
-func (r ApiUpdateKeyPairNameRequest) Execute() (*UpdateKeypairnameresponse, *http.Response, error) {
+func (r ApiUpdateKeyPairNameRequest) Execute() (*UpdateKeypairNameResponse, *http.Response, error) {
 	return r.ApiService.UpdateKeyPairNameExecute(r)
 }
 
 /*
 UpdateKeyPairName Update key pair name
 
-Updates the name of a specified key pair. Include the key pair ID in the request path and the new `name` of the key pair in the request body.
+Updates the name of a specified key pair. Provide the key pair ID in the path, and include the new `name` in the request body.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param id
@@ -584,13 +542,13 @@ func (a *KeypairAPIService) UpdateKeyPairName(ctx context.Context, id int32) Api
 
 // Execute executes the request
 //
-//	@return UpdateKeypairnameresponse
-func (a *KeypairAPIService) UpdateKeyPairNameExecute(r ApiUpdateKeyPairNameRequest) (*UpdateKeypairnameresponse, *http.Response, error) {
+//	@return UpdateKeypairNameResponse
+func (a *KeypairAPIService) UpdateKeyPairNameExecute(r ApiUpdateKeyPairNameRequest) (*UpdateKeypairNameResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *UpdateKeypairnameresponse
+		localVarReturnValue *UpdateKeypairNameResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "KeypairAPIService.UpdateKeyPairName")
@@ -638,20 +596,6 @@ func (a *KeypairAPIService) UpdateKeyPairNameExecute(r ApiUpdateKeyPairNameReque
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

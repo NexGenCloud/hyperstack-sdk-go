@@ -21,23 +21,25 @@ import (
 // UserAPIService UserAPI service
 type UserAPIService service
 
-type ApiGetFetchUserInfoRequest struct {
+type ApiGetUserRequest struct {
 	ctx        context.Context
 	ApiService *UserAPIService
 }
 
-func (r ApiGetFetchUserInfoRequest) Execute() (*UsersInfoListResponse, *http.Response, error) {
-	return r.ApiService.GetFetchUserInfoExecute(r)
+func (r ApiGetUserRequest) Execute() (*UsersInfoListResponse, *http.Response, error) {
+	return r.ApiService.GetUserExecute(r)
 }
 
 /*
-GetFetchUserInfo GET: Fetch User Info
+GetUser GET: Retrieve billing info
+
+Retrieve the billing details associated with your organization.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetFetchUserInfoRequest
+	@return ApiGetUserRequest
 */
-func (a *UserAPIService) GetFetchUserInfo(ctx context.Context) ApiGetFetchUserInfoRequest {
-	return ApiGetFetchUserInfoRequest{
+func (a *UserAPIService) GetUser(ctx context.Context) ApiGetUserRequest {
+	return ApiGetUserRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -46,7 +48,7 @@ func (a *UserAPIService) GetFetchUserInfo(ctx context.Context) ApiGetFetchUserIn
 // Execute executes the request
 //
 //	@return UsersInfoListResponse
-func (a *UserAPIService) GetFetchUserInfoExecute(r ApiGetFetchUserInfoRequest) (*UsersInfoListResponse, *http.Response, error) {
+func (a *UserAPIService) GetUserExecute(r ApiGetUserRequest) (*UsersInfoListResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -54,7 +56,7 @@ func (a *UserAPIService) GetFetchUserInfoExecute(r ApiGetFetchUserInfoRequest) (
 		localVarReturnValue *UsersInfoListResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.GetFetchUserInfo")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.GetUser")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -96,20 +98,6 @@ func (a *UserAPIService) GetFetchUserInfoExecute(r ApiGetFetchUserInfoRequest) (
 			}
 		}
 	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
-			}
-		}
-	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -191,29 +179,31 @@ func (a *UserAPIService) GetFetchUserInfoExecute(r ApiGetFetchUserInfoRequest) (
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiPostInsertUserInfoRequest struct {
+type ApiPostUserRequest struct {
 	ctx        context.Context
 	ApiService *UserAPIService
-	payload    *Userinfopostpayload
+	payload    *UserInfoPostPayload
 }
 
-func (r ApiPostInsertUserInfoRequest) Payload(payload Userinfopostpayload) ApiPostInsertUserInfoRequest {
+func (r ApiPostUserRequest) Payload(payload UserInfoPostPayload) ApiPostUserRequest {
 	r.payload = &payload
 	return r
 }
 
-func (r ApiPostInsertUserInfoRequest) Execute() (*AddUserInfoSuccessResponseModel, *http.Response, error) {
-	return r.ApiService.PostInsertUserInfoExecute(r)
+func (r ApiPostUserRequest) Execute() (*AddUserInfoSuccessResponseModel, *http.Response, error) {
+	return r.ApiService.PostUserExecute(r)
 }
 
 /*
-PostInsertUserInfo POST: Insert user info
+PostUser POST: Insert billing info
+
+Add billing details associated with your organization in the request body.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiPostInsertUserInfoRequest
+	@return ApiPostUserRequest
 */
-func (a *UserAPIService) PostInsertUserInfo(ctx context.Context) ApiPostInsertUserInfoRequest {
-	return ApiPostInsertUserInfoRequest{
+func (a *UserAPIService) PostUser(ctx context.Context) ApiPostUserRequest {
+	return ApiPostUserRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -222,7 +212,7 @@ func (a *UserAPIService) PostInsertUserInfo(ctx context.Context) ApiPostInsertUs
 // Execute executes the request
 //
 //	@return AddUserInfoSuccessResponseModel
-func (a *UserAPIService) PostInsertUserInfoExecute(r ApiPostInsertUserInfoRequest) (*AddUserInfoSuccessResponseModel, *http.Response, error) {
+func (a *UserAPIService) PostUserExecute(r ApiPostUserRequest) (*AddUserInfoSuccessResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -230,7 +220,7 @@ func (a *UserAPIService) PostInsertUserInfoExecute(r ApiPostInsertUserInfoReques
 		localVarReturnValue *AddUserInfoSuccessResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.PostInsertUserInfo")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.PostUser")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -274,20 +264,6 @@ func (a *UserAPIService) PostInsertUserInfoExecute(r ApiPostInsertUserInfoReques
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -372,29 +348,31 @@ func (a *UserAPIService) PostInsertUserInfoExecute(r ApiPostInsertUserInfoReques
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiPutUpdateUserInfoRequest struct {
+type ApiPutUserRequest struct {
 	ctx        context.Context
 	ApiService *UserAPIService
-	payload    *Userinfopostpayload
+	payload    *UserInfoPostPayload
 }
 
-func (r ApiPutUpdateUserInfoRequest) Payload(payload Userinfopostpayload) ApiPutUpdateUserInfoRequest {
+func (r ApiPutUserRequest) Payload(payload UserInfoPostPayload) ApiPutUserRequest {
 	r.payload = &payload
 	return r
 }
 
-func (r ApiPutUpdateUserInfoRequest) Execute() (*AddUserInfoSuccessResponseModel, *http.Response, error) {
-	return r.ApiService.PutUpdateUserInfoExecute(r)
+func (r ApiPutUserRequest) Execute() (*AddUserInfoSuccessResponseModel, *http.Response, error) {
+	return r.ApiService.PutUserExecute(r)
 }
 
 /*
-PutUpdateUserInfo PUT: Update user info
+PutUser PUT: Update billing info
+
+Update the billing information for your organization in the request body.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiPutUpdateUserInfoRequest
+	@return ApiPutUserRequest
 */
-func (a *UserAPIService) PutUpdateUserInfo(ctx context.Context) ApiPutUpdateUserInfoRequest {
-	return ApiPutUpdateUserInfoRequest{
+func (a *UserAPIService) PutUser(ctx context.Context) ApiPutUserRequest {
+	return ApiPutUserRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -403,7 +381,7 @@ func (a *UserAPIService) PutUpdateUserInfo(ctx context.Context) ApiPutUpdateUser
 // Execute executes the request
 //
 //	@return AddUserInfoSuccessResponseModel
-func (a *UserAPIService) PutUpdateUserInfoExecute(r ApiPutUpdateUserInfoRequest) (*AddUserInfoSuccessResponseModel, *http.Response, error) {
+func (a *UserAPIService) PutUserExecute(r ApiPutUserRequest) (*AddUserInfoSuccessResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
@@ -411,7 +389,7 @@ func (a *UserAPIService) PutUpdateUserInfoExecute(r ApiPutUpdateUserInfoRequest)
 		localVarReturnValue *AddUserInfoSuccessResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.PutUpdateUserInfo")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.PutUser")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -455,20 +433,6 @@ func (a *UserAPIService) PutUpdateUserInfoExecute(r ApiPutUpdateUserInfoRequest)
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

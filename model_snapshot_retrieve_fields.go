@@ -21,6 +21,10 @@ var _ MappedNullable = &SnapshotRetrieveFields{}
 
 // SnapshotRetrieveFields struct for SnapshotRetrieveFields
 type SnapshotRetrieveFields struct {
+	// Creation timestamp
+	CreatedAt CustomTime `json:"created_at"`
+	//
+	CustomImage *string `json:"custom_image,omitempty"`
 	// Description of the snapshot
 	Description string `json:"description"`
 	// Indicates if the VM had a floating IP assigned
@@ -29,16 +33,38 @@ type SnapshotRetrieveFields struct {
 	Id int32 `json:"id"`
 	// Indicates if the snapshot is an image
 	IsImage bool `json:"is_image"`
+	//
+	Labels *string `json:"labels,omitempty"`
 	// Snapshot name
 	Name string `json:"name"`
+	//
+	Region *string `json:"region,omitempty"`
 	// Region where the snapshot will be available
 	RegionId int32 `json:"region_id"`
 	// Size in GB of the snapshot
 	Size int32 `json:"size"`
 	// Status of the snapshot
 	Status string `json:"status"`
+	// Last update timestamp
+	UpdatedAt CustomTime `json:"updated_at"`
+	//
+	VmEnvironment *string `json:"vm_environment,omitempty"`
+	//
+	VmFlavor *string `json:"vm_flavor,omitempty"`
 	// ID of the VM from which the snapshot is created
 	VmId int32 `json:"vm_id"`
+	//
+	VmImage *string `json:"vm_image,omitempty"`
+	//
+	VmKeypair *string `json:"vm_keypair,omitempty"`
+	//
+	VmName *string `json:"vm_name,omitempty"`
+	//
+	VmStatus *string `json:"vm_status,omitempty"`
+	//
+	VolumeId *string `json:"volume_id,omitempty"`
+	//
+	VolumeName *string `json:"volume_name,omitempty"`
 }
 
 type _SnapshotRetrieveFields SnapshotRetrieveFields
@@ -47,8 +73,9 @@ type _SnapshotRetrieveFields SnapshotRetrieveFields
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSnapshotRetrieveFields(description string, id int32, isImage bool, name string, regionId int32, size int32, status string, vmId int32) *SnapshotRetrieveFields {
+func NewSnapshotRetrieveFields(createdAt CustomTime, description string, id int32, isImage bool, name string, regionId int32, size int32, status string, updatedAt CustomTime, vmId int32) *SnapshotRetrieveFields {
 	this := SnapshotRetrieveFields{}
+	this.CreatedAt = createdAt
 	this.Description = description
 	this.Id = id
 	this.IsImage = isImage
@@ -56,6 +83,7 @@ func NewSnapshotRetrieveFields(description string, id int32, isImage bool, name 
 	this.RegionId = regionId
 	this.Size = size
 	this.Status = status
+	this.UpdatedAt = updatedAt
 	this.VmId = vmId
 	return &this
 }
@@ -66,6 +94,62 @@ func NewSnapshotRetrieveFields(description string, id int32, isImage bool, name 
 func NewSnapshotRetrieveFieldsWithDefaults() *SnapshotRetrieveFields {
 	this := SnapshotRetrieveFields{}
 	return &this
+}
+
+// GetCreatedAt returns the CreatedAt field value
+func (o *SnapshotRetrieveFields) GetCreatedAt() CustomTime {
+	if o == nil {
+		var ret CustomTime
+		return ret
+	}
+
+	return o.CreatedAt
+}
+
+// GetCreatedAtOk returns a tuple with the CreatedAt field value
+// and a boolean to check if the value has been set.
+func (o *SnapshotRetrieveFields) GetCreatedAtOk() (*CustomTime, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.CreatedAt, true
+}
+
+// SetCreatedAt sets field value
+func (o *SnapshotRetrieveFields) SetCreatedAt(v CustomTime) {
+	o.CreatedAt = v
+}
+
+// GetCustomImage returns the CustomImage field value if set, zero value otherwise.
+func (o *SnapshotRetrieveFields) GetCustomImage() string {
+	if o == nil || IsNil(o.CustomImage) {
+		var ret string
+		return ret
+	}
+	return *o.CustomImage
+}
+
+// GetCustomImageOk returns a tuple with the CustomImage field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SnapshotRetrieveFields) GetCustomImageOk() (*string, bool) {
+	if o == nil || IsNil(o.CustomImage) {
+		return nil, false
+	}
+	return o.CustomImage, true
+}
+
+// HasCustomImage returns a boolean if a field has been set.
+func (o *SnapshotRetrieveFields) HasCustomImage() bool {
+	if o != nil && !IsNil(o.CustomImage) {
+		return true
+	}
+
+	return false
+}
+
+// SetCustomImage gets a reference to the given string and assigns it to the CustomImage field.
+func (o *SnapshotRetrieveFields) SetCustomImage(v string) {
+	o.CustomImage = &v
 }
 
 // GetDescription returns the Description field value
@@ -172,6 +256,38 @@ func (o *SnapshotRetrieveFields) SetIsImage(v bool) {
 	o.IsImage = v
 }
 
+// GetLabels returns the Labels field value if set, zero value otherwise.
+func (o *SnapshotRetrieveFields) GetLabels() string {
+	if o == nil || IsNil(o.Labels) {
+		var ret string
+		return ret
+	}
+	return *o.Labels
+}
+
+// GetLabelsOk returns a tuple with the Labels field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SnapshotRetrieveFields) GetLabelsOk() (*string, bool) {
+	if o == nil || IsNil(o.Labels) {
+		return nil, false
+	}
+	return o.Labels, true
+}
+
+// HasLabels returns a boolean if a field has been set.
+func (o *SnapshotRetrieveFields) HasLabels() bool {
+	if o != nil && !IsNil(o.Labels) {
+		return true
+	}
+
+	return false
+}
+
+// SetLabels gets a reference to the given string and assigns it to the Labels field.
+func (o *SnapshotRetrieveFields) SetLabels(v string) {
+	o.Labels = &v
+}
+
 // GetName returns the Name field value
 func (o *SnapshotRetrieveFields) GetName() string {
 	if o == nil {
@@ -194,6 +310,38 @@ func (o *SnapshotRetrieveFields) GetNameOk() (*string, bool) {
 // SetName sets field value
 func (o *SnapshotRetrieveFields) SetName(v string) {
 	o.Name = v
+}
+
+// GetRegion returns the Region field value if set, zero value otherwise.
+func (o *SnapshotRetrieveFields) GetRegion() string {
+	if o == nil || IsNil(o.Region) {
+		var ret string
+		return ret
+	}
+	return *o.Region
+}
+
+// GetRegionOk returns a tuple with the Region field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SnapshotRetrieveFields) GetRegionOk() (*string, bool) {
+	if o == nil || IsNil(o.Region) {
+		return nil, false
+	}
+	return o.Region, true
+}
+
+// HasRegion returns a boolean if a field has been set.
+func (o *SnapshotRetrieveFields) HasRegion() bool {
+	if o != nil && !IsNil(o.Region) {
+		return true
+	}
+
+	return false
+}
+
+// SetRegion gets a reference to the given string and assigns it to the Region field.
+func (o *SnapshotRetrieveFields) SetRegion(v string) {
+	o.Region = &v
 }
 
 // GetRegionId returns the RegionId field value
@@ -268,6 +416,94 @@ func (o *SnapshotRetrieveFields) SetStatus(v string) {
 	o.Status = v
 }
 
+// GetUpdatedAt returns the UpdatedAt field value
+func (o *SnapshotRetrieveFields) GetUpdatedAt() CustomTime {
+	if o == nil {
+		var ret CustomTime
+		return ret
+	}
+
+	return o.UpdatedAt
+}
+
+// GetUpdatedAtOk returns a tuple with the UpdatedAt field value
+// and a boolean to check if the value has been set.
+func (o *SnapshotRetrieveFields) GetUpdatedAtOk() (*CustomTime, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.UpdatedAt, true
+}
+
+// SetUpdatedAt sets field value
+func (o *SnapshotRetrieveFields) SetUpdatedAt(v CustomTime) {
+	o.UpdatedAt = v
+}
+
+// GetVmEnvironment returns the VmEnvironment field value if set, zero value otherwise.
+func (o *SnapshotRetrieveFields) GetVmEnvironment() string {
+	if o == nil || IsNil(o.VmEnvironment) {
+		var ret string
+		return ret
+	}
+	return *o.VmEnvironment
+}
+
+// GetVmEnvironmentOk returns a tuple with the VmEnvironment field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SnapshotRetrieveFields) GetVmEnvironmentOk() (*string, bool) {
+	if o == nil || IsNil(o.VmEnvironment) {
+		return nil, false
+	}
+	return o.VmEnvironment, true
+}
+
+// HasVmEnvironment returns a boolean if a field has been set.
+func (o *SnapshotRetrieveFields) HasVmEnvironment() bool {
+	if o != nil && !IsNil(o.VmEnvironment) {
+		return true
+	}
+
+	return false
+}
+
+// SetVmEnvironment gets a reference to the given string and assigns it to the VmEnvironment field.
+func (o *SnapshotRetrieveFields) SetVmEnvironment(v string) {
+	o.VmEnvironment = &v
+}
+
+// GetVmFlavor returns the VmFlavor field value if set, zero value otherwise.
+func (o *SnapshotRetrieveFields) GetVmFlavor() string {
+	if o == nil || IsNil(o.VmFlavor) {
+		var ret string
+		return ret
+	}
+	return *o.VmFlavor
+}
+
+// GetVmFlavorOk returns a tuple with the VmFlavor field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SnapshotRetrieveFields) GetVmFlavorOk() (*string, bool) {
+	if o == nil || IsNil(o.VmFlavor) {
+		return nil, false
+	}
+	return o.VmFlavor, true
+}
+
+// HasVmFlavor returns a boolean if a field has been set.
+func (o *SnapshotRetrieveFields) HasVmFlavor() bool {
+	if o != nil && !IsNil(o.VmFlavor) {
+		return true
+	}
+
+	return false
+}
+
+// SetVmFlavor gets a reference to the given string and assigns it to the VmFlavor field.
+func (o *SnapshotRetrieveFields) SetVmFlavor(v string) {
+	o.VmFlavor = &v
+}
+
 // GetVmId returns the VmId field value
 func (o *SnapshotRetrieveFields) GetVmId() int32 {
 	if o == nil {
@@ -292,6 +528,198 @@ func (o *SnapshotRetrieveFields) SetVmId(v int32) {
 	o.VmId = v
 }
 
+// GetVmImage returns the VmImage field value if set, zero value otherwise.
+func (o *SnapshotRetrieveFields) GetVmImage() string {
+	if o == nil || IsNil(o.VmImage) {
+		var ret string
+		return ret
+	}
+	return *o.VmImage
+}
+
+// GetVmImageOk returns a tuple with the VmImage field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SnapshotRetrieveFields) GetVmImageOk() (*string, bool) {
+	if o == nil || IsNil(o.VmImage) {
+		return nil, false
+	}
+	return o.VmImage, true
+}
+
+// HasVmImage returns a boolean if a field has been set.
+func (o *SnapshotRetrieveFields) HasVmImage() bool {
+	if o != nil && !IsNil(o.VmImage) {
+		return true
+	}
+
+	return false
+}
+
+// SetVmImage gets a reference to the given string and assigns it to the VmImage field.
+func (o *SnapshotRetrieveFields) SetVmImage(v string) {
+	o.VmImage = &v
+}
+
+// GetVmKeypair returns the VmKeypair field value if set, zero value otherwise.
+func (o *SnapshotRetrieveFields) GetVmKeypair() string {
+	if o == nil || IsNil(o.VmKeypair) {
+		var ret string
+		return ret
+	}
+	return *o.VmKeypair
+}
+
+// GetVmKeypairOk returns a tuple with the VmKeypair field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SnapshotRetrieveFields) GetVmKeypairOk() (*string, bool) {
+	if o == nil || IsNil(o.VmKeypair) {
+		return nil, false
+	}
+	return o.VmKeypair, true
+}
+
+// HasVmKeypair returns a boolean if a field has been set.
+func (o *SnapshotRetrieveFields) HasVmKeypair() bool {
+	if o != nil && !IsNil(o.VmKeypair) {
+		return true
+	}
+
+	return false
+}
+
+// SetVmKeypair gets a reference to the given string and assigns it to the VmKeypair field.
+func (o *SnapshotRetrieveFields) SetVmKeypair(v string) {
+	o.VmKeypair = &v
+}
+
+// GetVmName returns the VmName field value if set, zero value otherwise.
+func (o *SnapshotRetrieveFields) GetVmName() string {
+	if o == nil || IsNil(o.VmName) {
+		var ret string
+		return ret
+	}
+	return *o.VmName
+}
+
+// GetVmNameOk returns a tuple with the VmName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SnapshotRetrieveFields) GetVmNameOk() (*string, bool) {
+	if o == nil || IsNil(o.VmName) {
+		return nil, false
+	}
+	return o.VmName, true
+}
+
+// HasVmName returns a boolean if a field has been set.
+func (o *SnapshotRetrieveFields) HasVmName() bool {
+	if o != nil && !IsNil(o.VmName) {
+		return true
+	}
+
+	return false
+}
+
+// SetVmName gets a reference to the given string and assigns it to the VmName field.
+func (o *SnapshotRetrieveFields) SetVmName(v string) {
+	o.VmName = &v
+}
+
+// GetVmStatus returns the VmStatus field value if set, zero value otherwise.
+func (o *SnapshotRetrieveFields) GetVmStatus() string {
+	if o == nil || IsNil(o.VmStatus) {
+		var ret string
+		return ret
+	}
+	return *o.VmStatus
+}
+
+// GetVmStatusOk returns a tuple with the VmStatus field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SnapshotRetrieveFields) GetVmStatusOk() (*string, bool) {
+	if o == nil || IsNil(o.VmStatus) {
+		return nil, false
+	}
+	return o.VmStatus, true
+}
+
+// HasVmStatus returns a boolean if a field has been set.
+func (o *SnapshotRetrieveFields) HasVmStatus() bool {
+	if o != nil && !IsNil(o.VmStatus) {
+		return true
+	}
+
+	return false
+}
+
+// SetVmStatus gets a reference to the given string and assigns it to the VmStatus field.
+func (o *SnapshotRetrieveFields) SetVmStatus(v string) {
+	o.VmStatus = &v
+}
+
+// GetVolumeId returns the VolumeId field value if set, zero value otherwise.
+func (o *SnapshotRetrieveFields) GetVolumeId() string {
+	if o == nil || IsNil(o.VolumeId) {
+		var ret string
+		return ret
+	}
+	return *o.VolumeId
+}
+
+// GetVolumeIdOk returns a tuple with the VolumeId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SnapshotRetrieveFields) GetVolumeIdOk() (*string, bool) {
+	if o == nil || IsNil(o.VolumeId) {
+		return nil, false
+	}
+	return o.VolumeId, true
+}
+
+// HasVolumeId returns a boolean if a field has been set.
+func (o *SnapshotRetrieveFields) HasVolumeId() bool {
+	if o != nil && !IsNil(o.VolumeId) {
+		return true
+	}
+
+	return false
+}
+
+// SetVolumeId gets a reference to the given string and assigns it to the VolumeId field.
+func (o *SnapshotRetrieveFields) SetVolumeId(v string) {
+	o.VolumeId = &v
+}
+
+// GetVolumeName returns the VolumeName field value if set, zero value otherwise.
+func (o *SnapshotRetrieveFields) GetVolumeName() string {
+	if o == nil || IsNil(o.VolumeName) {
+		var ret string
+		return ret
+	}
+	return *o.VolumeName
+}
+
+// GetVolumeNameOk returns a tuple with the VolumeName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SnapshotRetrieveFields) GetVolumeNameOk() (*string, bool) {
+	if o == nil || IsNil(o.VolumeName) {
+		return nil, false
+	}
+	return o.VolumeName, true
+}
+
+// HasVolumeName returns a boolean if a field has been set.
+func (o *SnapshotRetrieveFields) HasVolumeName() bool {
+	if o != nil && !IsNil(o.VolumeName) {
+		return true
+	}
+
+	return false
+}
+
+// SetVolumeName gets a reference to the given string and assigns it to the VolumeName field.
+func (o *SnapshotRetrieveFields) SetVolumeName(v string) {
+	o.VolumeName = &v
+}
+
 func (o SnapshotRetrieveFields) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -302,17 +730,52 @@ func (o SnapshotRetrieveFields) MarshalJSON() ([]byte, error) {
 
 func (o SnapshotRetrieveFields) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	toSerialize["created_at"] = o.CreatedAt
+	if !IsNil(o.CustomImage) {
+		toSerialize["custom_image"] = o.CustomImage
+	}
 	toSerialize["description"] = o.Description
 	if !IsNil(o.HasFloatingIp) {
 		toSerialize["has_floating_ip"] = o.HasFloatingIp
 	}
 	toSerialize["id"] = o.Id
 	toSerialize["is_image"] = o.IsImage
+	if !IsNil(o.Labels) {
+		toSerialize["labels"] = o.Labels
+	}
 	toSerialize["name"] = o.Name
+	if !IsNil(o.Region) {
+		toSerialize["region"] = o.Region
+	}
 	toSerialize["region_id"] = o.RegionId
 	toSerialize["size"] = o.Size
 	toSerialize["status"] = o.Status
+	toSerialize["updated_at"] = o.UpdatedAt
+	if !IsNil(o.VmEnvironment) {
+		toSerialize["vm_environment"] = o.VmEnvironment
+	}
+	if !IsNil(o.VmFlavor) {
+		toSerialize["vm_flavor"] = o.VmFlavor
+	}
 	toSerialize["vm_id"] = o.VmId
+	if !IsNil(o.VmImage) {
+		toSerialize["vm_image"] = o.VmImage
+	}
+	if !IsNil(o.VmKeypair) {
+		toSerialize["vm_keypair"] = o.VmKeypair
+	}
+	if !IsNil(o.VmName) {
+		toSerialize["vm_name"] = o.VmName
+	}
+	if !IsNil(o.VmStatus) {
+		toSerialize["vm_status"] = o.VmStatus
+	}
+	if !IsNil(o.VolumeId) {
+		toSerialize["volume_id"] = o.VolumeId
+	}
+	if !IsNil(o.VolumeName) {
+		toSerialize["volume_name"] = o.VolumeName
+	}
 	return toSerialize, nil
 }
 
@@ -321,6 +784,7 @@ func (o *SnapshotRetrieveFields) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
+		"created_at",
 		"description",
 		"id",
 		"is_image",
@@ -328,6 +792,7 @@ func (o *SnapshotRetrieveFields) UnmarshalJSON(data []byte) (err error) {
 		"region_id",
 		"size",
 		"status",
+		"updated_at",
 		"vm_id",
 	}
 

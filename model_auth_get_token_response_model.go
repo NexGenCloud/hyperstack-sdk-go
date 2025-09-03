@@ -19,10 +19,9 @@ var _ MappedNullable = &AuthGetTokenResponseModel{}
 
 // AuthGetTokenResponseModel struct for AuthGetTokenResponseModel
 type AuthGetTokenResponseModel struct {
-	FirstLogin *bool        `json:"first_login,omitempty"`
-	Message    *string      `json:"message,omitempty"`
-	Status     *bool        `json:"status,omitempty"`
-	Token      *TokenFields `json:"token,omitempty"`
+	Message *string           `json:"message,omitempty"`
+	Status  *bool             `json:"status,omitempty"`
+	Token   *AccessTokenField `json:"token,omitempty"`
 }
 
 // NewAuthGetTokenResponseModel instantiates a new AuthGetTokenResponseModel object
@@ -40,38 +39,6 @@ func NewAuthGetTokenResponseModel() *AuthGetTokenResponseModel {
 func NewAuthGetTokenResponseModelWithDefaults() *AuthGetTokenResponseModel {
 	this := AuthGetTokenResponseModel{}
 	return &this
-}
-
-// GetFirstLogin returns the FirstLogin field value if set, zero value otherwise.
-func (o *AuthGetTokenResponseModel) GetFirstLogin() bool {
-	if o == nil || IsNil(o.FirstLogin) {
-		var ret bool
-		return ret
-	}
-	return *o.FirstLogin
-}
-
-// GetFirstLoginOk returns a tuple with the FirstLogin field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *AuthGetTokenResponseModel) GetFirstLoginOk() (*bool, bool) {
-	if o == nil || IsNil(o.FirstLogin) {
-		return nil, false
-	}
-	return o.FirstLogin, true
-}
-
-// HasFirstLogin returns a boolean if a field has been set.
-func (o *AuthGetTokenResponseModel) HasFirstLogin() bool {
-	if o != nil && !IsNil(o.FirstLogin) {
-		return true
-	}
-
-	return false
-}
-
-// SetFirstLogin gets a reference to the given bool and assigns it to the FirstLogin field.
-func (o *AuthGetTokenResponseModel) SetFirstLogin(v bool) {
-	o.FirstLogin = &v
 }
 
 // GetMessage returns the Message field value if set, zero value otherwise.
@@ -139,9 +106,9 @@ func (o *AuthGetTokenResponseModel) SetStatus(v bool) {
 }
 
 // GetToken returns the Token field value if set, zero value otherwise.
-func (o *AuthGetTokenResponseModel) GetToken() TokenFields {
+func (o *AuthGetTokenResponseModel) GetToken() AccessTokenField {
 	if o == nil || IsNil(o.Token) {
-		var ret TokenFields
+		var ret AccessTokenField
 		return ret
 	}
 	return *o.Token
@@ -149,7 +116,7 @@ func (o *AuthGetTokenResponseModel) GetToken() TokenFields {
 
 // GetTokenOk returns a tuple with the Token field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *AuthGetTokenResponseModel) GetTokenOk() (*TokenFields, bool) {
+func (o *AuthGetTokenResponseModel) GetTokenOk() (*AccessTokenField, bool) {
 	if o == nil || IsNil(o.Token) {
 		return nil, false
 	}
@@ -165,8 +132,8 @@ func (o *AuthGetTokenResponseModel) HasToken() bool {
 	return false
 }
 
-// SetToken gets a reference to the given TokenFields and assigns it to the Token field.
-func (o *AuthGetTokenResponseModel) SetToken(v TokenFields) {
+// SetToken gets a reference to the given AccessTokenField and assigns it to the Token field.
+func (o *AuthGetTokenResponseModel) SetToken(v AccessTokenField) {
 	o.Token = &v
 }
 
@@ -180,9 +147,6 @@ func (o AuthGetTokenResponseModel) MarshalJSON() ([]byte, error) {
 
 func (o AuthGetTokenResponseModel) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.FirstLogin) {
-		toSerialize["first_login"] = o.FirstLogin
-	}
 	if !IsNil(o.Message) {
 		toSerialize["message"] = o.Message
 	}

@@ -9,9 +9,11 @@ Name | Type | Description | Notes
 **Currency** | Pointer to **string** |  | [optional] 
 **Description** | Pointer to **string** |  | [optional] 
 **GatewayResponse** | Pointer to **string** |  | [optional] 
+**Invoice** | Pointer to **string** |  | [optional] 
 **PaidFrom** | Pointer to **string** |  | [optional] 
 **PaymentId** | Pointer to **string** |  | [optional] 
 **Status** | Pointer to **string** |  | [optional] 
+**TaxAmount** | Pointer to **float32** |  | [optional] 
 **TransactionId** | Pointer to **string** |  | [optional] 
 **UpdatedAt** | Pointer to **time.Time** |  | [optional] 
 
@@ -159,6 +161,31 @@ SetGatewayResponse sets GatewayResponse field to given value.
 
 HasGatewayResponse returns a boolean if a field has been set.
 
+### GetInvoice
+
+`func (o *PaymentDetailsFields) GetInvoice() string`
+
+GetInvoice returns the Invoice field if non-nil, zero value otherwise.
+
+### GetInvoiceOk
+
+`func (o *PaymentDetailsFields) GetInvoiceOk() (*string, bool)`
+
+GetInvoiceOk returns a tuple with the Invoice field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetInvoice
+
+`func (o *PaymentDetailsFields) SetInvoice(v string)`
+
+SetInvoice sets Invoice field to given value.
+
+### HasInvoice
+
+`func (o *PaymentDetailsFields) HasInvoice() bool`
+
+HasInvoice returns a boolean if a field has been set.
+
 ### GetPaidFrom
 
 `func (o *PaymentDetailsFields) GetPaidFrom() string`
@@ -233,6 +260,31 @@ SetStatus sets Status field to given value.
 `func (o *PaymentDetailsFields) HasStatus() bool`
 
 HasStatus returns a boolean if a field has been set.
+
+### GetTaxAmount
+
+`func (o *PaymentDetailsFields) GetTaxAmount() float32`
+
+GetTaxAmount returns the TaxAmount field if non-nil, zero value otherwise.
+
+### GetTaxAmountOk
+
+`func (o *PaymentDetailsFields) GetTaxAmountOk() (*float32, bool)`
+
+GetTaxAmountOk returns a tuple with the TaxAmount field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTaxAmount
+
+`func (o *PaymentDetailsFields) SetTaxAmount(v float32)`
+
+SetTaxAmount sets TaxAmount field to given value.
+
+### HasTaxAmount
+
+`func (o *PaymentDetailsFields) HasTaxAmount() bool`
+
+HasTaxAmount returns a boolean if a field has been set.
 
 ### GetTransactionId
 

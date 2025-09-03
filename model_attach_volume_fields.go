@@ -20,8 +20,10 @@ var _ MappedNullable = &AttachVolumeFields{}
 // AttachVolumeFields struct for AttachVolumeFields
 type AttachVolumeFields struct {
 	CreatedAt  *CustomTime `json:"created_at,omitempty"`
+	Device     *string     `json:"device,omitempty"`
 	Id         *int32      `json:"id,omitempty"`
 	InstanceId *int32      `json:"instance_id,omitempty"`
+	Protected  *bool       `json:"protected,omitempty"`
 	Status     *string     `json:"status,omitempty"`
 	VolumeId   *int32      `json:"volume_id,omitempty"`
 }
@@ -73,6 +75,38 @@ func (o *AttachVolumeFields) HasCreatedAt() bool {
 // SetCreatedAt gets a reference to the given CustomTime and assigns it to the CreatedAt field.
 func (o *AttachVolumeFields) SetCreatedAt(v CustomTime) {
 	o.CreatedAt = &v
+}
+
+// GetDevice returns the Device field value if set, zero value otherwise.
+func (o *AttachVolumeFields) GetDevice() string {
+	if o == nil || IsNil(o.Device) {
+		var ret string
+		return ret
+	}
+	return *o.Device
+}
+
+// GetDeviceOk returns a tuple with the Device field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *AttachVolumeFields) GetDeviceOk() (*string, bool) {
+	if o == nil || IsNil(o.Device) {
+		return nil, false
+	}
+	return o.Device, true
+}
+
+// HasDevice returns a boolean if a field has been set.
+func (o *AttachVolumeFields) HasDevice() bool {
+	if o != nil && !IsNil(o.Device) {
+		return true
+	}
+
+	return false
+}
+
+// SetDevice gets a reference to the given string and assigns it to the Device field.
+func (o *AttachVolumeFields) SetDevice(v string) {
+	o.Device = &v
 }
 
 // GetId returns the Id field value if set, zero value otherwise.
@@ -137,6 +171,38 @@ func (o *AttachVolumeFields) HasInstanceId() bool {
 // SetInstanceId gets a reference to the given int32 and assigns it to the InstanceId field.
 func (o *AttachVolumeFields) SetInstanceId(v int32) {
 	o.InstanceId = &v
+}
+
+// GetProtected returns the Protected field value if set, zero value otherwise.
+func (o *AttachVolumeFields) GetProtected() bool {
+	if o == nil || IsNil(o.Protected) {
+		var ret bool
+		return ret
+	}
+	return *o.Protected
+}
+
+// GetProtectedOk returns a tuple with the Protected field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *AttachVolumeFields) GetProtectedOk() (*bool, bool) {
+	if o == nil || IsNil(o.Protected) {
+		return nil, false
+	}
+	return o.Protected, true
+}
+
+// HasProtected returns a boolean if a field has been set.
+func (o *AttachVolumeFields) HasProtected() bool {
+	if o != nil && !IsNil(o.Protected) {
+		return true
+	}
+
+	return false
+}
+
+// SetProtected gets a reference to the given bool and assigns it to the Protected field.
+func (o *AttachVolumeFields) SetProtected(v bool) {
+	o.Protected = &v
 }
 
 // GetStatus returns the Status field value if set, zero value otherwise.
@@ -216,11 +282,17 @@ func (o AttachVolumeFields) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CreatedAt) {
 		toSerialize["created_at"] = o.CreatedAt
 	}
+	if !IsNil(o.Device) {
+		toSerialize["device"] = o.Device
+	}
 	if !IsNil(o.Id) {
 		toSerialize["id"] = o.Id
 	}
 	if !IsNil(o.InstanceId) {
 		toSerialize["instance_id"] = o.InstanceId
+	}
+	if !IsNil(o.Protected) {
+		toSerialize["protected"] = o.Protected
 	}
 	if !IsNil(o.Status) {
 		toSerialize["status"] = o.Status

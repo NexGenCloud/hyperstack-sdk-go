@@ -69,7 +69,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -135,7 +135,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -205,7 +205,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -219,7 +219,7 @@ Name | Type | Description  | Notes
 
 ## UpdateKeyPairName
 
-> UpdateKeypairnameresponse UpdateKeyPairName(ctx, id).Payload(payload).Execute()
+> UpdateKeypairNameResponse UpdateKeyPairName(ctx, id).Payload(payload).Execute()
 
 Update key pair name
 
@@ -248,7 +248,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error when calling `KeypairAPI.UpdateKeyPairName``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `UpdateKeyPairName`: UpdateKeypairnameresponse
+	// response from `UpdateKeyPairName`: UpdateKeypairNameResponse
 	fmt.Fprintf(os.Stdout, "Response from `KeypairAPI.UpdateKeyPairName`: %v\n", resp)
 }
 ```
@@ -273,11 +273,11 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UpdateKeypairnameresponse**](UpdateKeypairnameresponse.md)
+[**UpdateKeypairNameResponse**](UpdateKeypairNameResponse.md)
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 

@@ -19,7 +19,10 @@ var _ MappedNullable = &RegionFields{}
 
 // RegionFields struct for RegionFields
 type RegionFields struct {
+	Country     *string `json:"country,omitempty"`
 	Description *string `json:"description,omitempty"`
+	// Green status
+	GreenStatus *string `json:"green_status,omitempty"`
 	Id          *int32  `json:"id,omitempty"`
 	Name        *string `json:"name,omitempty"`
 }
@@ -39,6 +42,38 @@ func NewRegionFields() *RegionFields {
 func NewRegionFieldsWithDefaults() *RegionFields {
 	this := RegionFields{}
 	return &this
+}
+
+// GetCountry returns the Country field value if set, zero value otherwise.
+func (o *RegionFields) GetCountry() string {
+	if o == nil || IsNil(o.Country) {
+		var ret string
+		return ret
+	}
+	return *o.Country
+}
+
+// GetCountryOk returns a tuple with the Country field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RegionFields) GetCountryOk() (*string, bool) {
+	if o == nil || IsNil(o.Country) {
+		return nil, false
+	}
+	return o.Country, true
+}
+
+// HasCountry returns a boolean if a field has been set.
+func (o *RegionFields) HasCountry() bool {
+	if o != nil && !IsNil(o.Country) {
+		return true
+	}
+
+	return false
+}
+
+// SetCountry gets a reference to the given string and assigns it to the Country field.
+func (o *RegionFields) SetCountry(v string) {
+	o.Country = &v
 }
 
 // GetDescription returns the Description field value if set, zero value otherwise.
@@ -71,6 +106,38 @@ func (o *RegionFields) HasDescription() bool {
 // SetDescription gets a reference to the given string and assigns it to the Description field.
 func (o *RegionFields) SetDescription(v string) {
 	o.Description = &v
+}
+
+// GetGreenStatus returns the GreenStatus field value if set, zero value otherwise.
+func (o *RegionFields) GetGreenStatus() string {
+	if o == nil || IsNil(o.GreenStatus) {
+		var ret string
+		return ret
+	}
+	return *o.GreenStatus
+}
+
+// GetGreenStatusOk returns a tuple with the GreenStatus field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RegionFields) GetGreenStatusOk() (*string, bool) {
+	if o == nil || IsNil(o.GreenStatus) {
+		return nil, false
+	}
+	return o.GreenStatus, true
+}
+
+// HasGreenStatus returns a boolean if a field has been set.
+func (o *RegionFields) HasGreenStatus() bool {
+	if o != nil && !IsNil(o.GreenStatus) {
+		return true
+	}
+
+	return false
+}
+
+// SetGreenStatus gets a reference to the given string and assigns it to the GreenStatus field.
+func (o *RegionFields) SetGreenStatus(v string) {
+	o.GreenStatus = &v
 }
 
 // GetId returns the Id field value if set, zero value otherwise.
@@ -147,8 +214,14 @@ func (o RegionFields) MarshalJSON() ([]byte, error) {
 
 func (o RegionFields) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Country) {
+		toSerialize["country"] = o.Country
+	}
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
+	}
+	if !IsNil(o.GreenStatus) {
+		toSerialize["green_status"] = o.GreenStatus
 	}
 	if !IsNil(o.Id) {
 		toSerialize["id"] = o.Id

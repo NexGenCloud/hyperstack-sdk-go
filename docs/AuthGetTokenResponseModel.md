@@ -4,10 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**FirstLogin** | Pointer to **bool** |  | [optional] 
 **Message** | Pointer to **string** |  | [optional] 
 **Status** | Pointer to **bool** |  | [optional] 
-**Token** | Pointer to [**TokenFields**](TokenFields.md) |  | [optional] 
+**Token** | Pointer to [**AccessTokenField**](AccessTokenField.md) |  | [optional] 
 
 ## Methods
 
@@ -27,31 +26,6 @@ will change when the set of required properties is changed
 NewAuthGetTokenResponseModelWithDefaults instantiates a new AuthGetTokenResponseModel object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
-
-### GetFirstLogin
-
-`func (o *AuthGetTokenResponseModel) GetFirstLogin() bool`
-
-GetFirstLogin returns the FirstLogin field if non-nil, zero value otherwise.
-
-### GetFirstLoginOk
-
-`func (o *AuthGetTokenResponseModel) GetFirstLoginOk() (*bool, bool)`
-
-GetFirstLoginOk returns a tuple with the FirstLogin field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetFirstLogin
-
-`func (o *AuthGetTokenResponseModel) SetFirstLogin(v bool)`
-
-SetFirstLogin sets FirstLogin field to given value.
-
-### HasFirstLogin
-
-`func (o *AuthGetTokenResponseModel) HasFirstLogin() bool`
-
-HasFirstLogin returns a boolean if a field has been set.
 
 ### GetMessage
 
@@ -105,20 +79,20 @@ HasStatus returns a boolean if a field has been set.
 
 ### GetToken
 
-`func (o *AuthGetTokenResponseModel) GetToken() TokenFields`
+`func (o *AuthGetTokenResponseModel) GetToken() AccessTokenField`
 
 GetToken returns the Token field if non-nil, zero value otherwise.
 
 ### GetTokenOk
 
-`func (o *AuthGetTokenResponseModel) GetTokenOk() (*TokenFields, bool)`
+`func (o *AuthGetTokenResponseModel) GetTokenOk() (*AccessTokenField, bool)`
 
 GetTokenOk returns a tuple with the Token field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetToken
 
-`func (o *AuthGetTokenResponseModel) SetToken(v TokenFields)`
+`func (o *AuthGetTokenResponseModel) SetToken(v AccessTokenField)`
 
 SetToken sets Token field to given value.
 

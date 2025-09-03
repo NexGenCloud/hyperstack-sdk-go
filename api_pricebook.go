@@ -21,23 +21,25 @@ import (
 // PricebookAPIService PricebookAPI service
 type PricebookAPIService service
 
-type ApiRetrivePricebookRequest struct {
+type ApiGetPricebookRequest struct {
 	ctx        context.Context
 	ApiService *PricebookAPIService
 }
 
-func (r ApiRetrivePricebookRequest) Execute() ([]PricebookModel, *http.Response, error) {
-	return r.ApiService.RetrivePricebookExecute(r)
+func (r ApiGetPricebookRequest) Execute() ([]PricebookModel, *http.Response, error) {
+	return r.ApiService.GetPricebookExecute(r)
 }
 
 /*
-RetrivePricebook Method for RetrivePricebook
+GetPricebook Method for GetPricebook
+
+Retrieves the Infrahub Pricebook, detailing hourly running costs for all resources offered by Infrahub. For more information on Pricebook [**click here**](https://docs.hyperstack.cloud/docs/api-reference/pricebook-resources/pricebook/).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiRetrivePricebookRequest
+	@return ApiGetPricebookRequest
 */
-func (a *PricebookAPIService) RetrivePricebook(ctx context.Context) ApiRetrivePricebookRequest {
-	return ApiRetrivePricebookRequest{
+func (a *PricebookAPIService) GetPricebook(ctx context.Context) ApiGetPricebookRequest {
+	return ApiGetPricebookRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -46,7 +48,7 @@ func (a *PricebookAPIService) RetrivePricebook(ctx context.Context) ApiRetrivePr
 // Execute executes the request
 //
 //	@return []PricebookModel
-func (a *PricebookAPIService) RetrivePricebookExecute(r ApiRetrivePricebookRequest) ([]PricebookModel, *http.Response, error) {
+func (a *PricebookAPIService) GetPricebookExecute(r ApiGetPricebookRequest) ([]PricebookModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -54,7 +56,7 @@ func (a *PricebookAPIService) RetrivePricebookExecute(r ApiRetrivePricebookReque
 		localVarReturnValue []PricebookModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PricebookAPIService.RetrivePricebook")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PricebookAPIService.GetPricebook")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -93,20 +95,6 @@ func (a *PricebookAPIService) RetrivePricebookExecute(r ApiRetrivePricebookReque
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

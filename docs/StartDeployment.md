@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Deployment** | Pointer to [**DeploymentFieldsforstartdeployments**](DeploymentFieldsforstartdeployments.md) |  | [optional] 
+**Deployment** | Pointer to [**DeploymentFieldsForStartDeployments**](DeploymentFieldsForStartDeployments.md) |  | [optional] 
 **Message** | Pointer to **string** |  | [optional] 
 **Status** | Pointer to **bool** |  | [optional] 
 
@@ -29,20 +29,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetDeployment
 
-`func (o *StartDeployment) GetDeployment() DeploymentFieldsforstartdeployments`
+`func (o *StartDeployment) GetDeployment() DeploymentFieldsForStartDeployments`
 
 GetDeployment returns the Deployment field if non-nil, zero value otherwise.
 
 ### GetDeploymentOk
 
-`func (o *StartDeployment) GetDeploymentOk() (*DeploymentFieldsforstartdeployments, bool)`
+`func (o *StartDeployment) GetDeploymentOk() (*DeploymentFieldsForStartDeployments, bool)`
 
 GetDeploymentOk returns a tuple with the Deployment field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetDeployment
 
-`func (o *StartDeployment) SetDeployment(v DeploymentFieldsforstartdeployments)`
+`func (o *StartDeployment) SetDeployment(v DeploymentFieldsForStartDeployments)`
 
 SetDeployment sets Deployment field to given value.
 

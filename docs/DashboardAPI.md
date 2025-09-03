@@ -57,7 +57,7 @@ Other parameters are passed through a pointer to a apiRetrieveDashboardRequest s
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 

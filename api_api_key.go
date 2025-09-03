@@ -22,27 +22,27 @@ import (
 // ApiKeyAPIService ApiKeyAPI service
 type ApiKeyAPIService service
 
-type ApiDeleteApiKeyRequest struct {
+type ApiDeleteAPIKeyRequest struct {
 	ctx        context.Context
 	ApiService *ApiKeyAPIService
 	apiKeyId   int32
 }
 
-func (r ApiDeleteApiKeyRequest) Execute() (*CommonResponseModel, *http.Response, error) {
-	return r.ApiService.DeleteApiKeyExecute(r)
+func (r ApiDeleteAPIKeyRequest) Execute() (*CommonResponseModel, *http.Response, error) {
+	return r.ApiService.DeleteAPIKeyExecute(r)
 }
 
 /*
-DeleteApiKey Delete API Key
+DeleteAPIKey Delete API Key
 
 Delete a specified API key by including the ID of the API key in the path.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param apiKeyId
-	@return ApiDeleteApiKeyRequest
+	@return ApiDeleteAPIKeyRequest
 */
-func (a *ApiKeyAPIService) DeleteApiKey(ctx context.Context, apiKeyId int32) ApiDeleteApiKeyRequest {
-	return ApiDeleteApiKeyRequest{
+func (a *ApiKeyAPIService) DeleteAPIKey(ctx context.Context, apiKeyId int32) ApiDeleteAPIKeyRequest {
+	return ApiDeleteAPIKeyRequest{
 		ApiService: a,
 		ctx:        ctx,
 		apiKeyId:   apiKeyId,
@@ -52,7 +52,7 @@ func (a *ApiKeyAPIService) DeleteApiKey(ctx context.Context, apiKeyId int32) Api
 // Execute executes the request
 //
 //	@return CommonResponseModel
-func (a *ApiKeyAPIService) DeleteApiKeyExecute(r ApiDeleteApiKeyRequest) (*CommonResponseModel, *http.Response, error) {
+func (a *ApiKeyAPIService) DeleteAPIKeyExecute(r ApiDeleteAPIKeyRequest) (*CommonResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
@@ -60,7 +60,7 @@ func (a *ApiKeyAPIService) DeleteApiKeyExecute(r ApiDeleteApiKeyRequest) (*Commo
 		localVarReturnValue *CommonResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ApiKeyAPIService.DeleteApiKey")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ApiKeyAPIService.DeleteAPIKey")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -100,20 +100,6 @@ func (a *ApiKeyAPIService) DeleteApiKeyExecute(r ApiDeleteApiKeyRequest) (*Commo
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -187,31 +173,31 @@ func (a *ApiKeyAPIService) DeleteApiKeyExecute(r ApiDeleteApiKeyRequest) (*Commo
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGenerateApiKeyRequest struct {
+type ApiGenerateAPIKeyRequest struct {
 	ctx        context.Context
 	ApiService *ApiKeyAPIService
 	payload    *GenerateUpdateApiKeyPayload
 }
 
-func (r ApiGenerateApiKeyRequest) Payload(payload GenerateUpdateApiKeyPayload) ApiGenerateApiKeyRequest {
+func (r ApiGenerateAPIKeyRequest) Payload(payload GenerateUpdateApiKeyPayload) ApiGenerateAPIKeyRequest {
 	r.payload = &payload
 	return r
 }
 
-func (r ApiGenerateApiKeyRequest) Execute() (*GenerateUpdateApiKeyResponseModel, *http.Response, error) {
-	return r.ApiService.GenerateApiKeyExecute(r)
+func (r ApiGenerateAPIKeyRequest) Execute() (*GenerateUpdateApiKeyResponseModel, *http.Response, error) {
+	return r.ApiService.GenerateAPIKeyExecute(r)
 }
 
 /*
-GenerateApiKey Generate API Key
+GenerateAPIKey Generate API Key
 
-Generates your API key, providing access to the Infrahub APIs. For further details on API keys, [**click here**](https://infrahub-doc.nexgencloud.com/docs/api-reference/auth-resources/api-key/generate-api-key).
+Generates your API key, providing access to the Infrahub APIs. For further details on API keys, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/auth-resources/api-key/generate-api-key).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGenerateApiKeyRequest
+	@return ApiGenerateAPIKeyRequest
 */
-func (a *ApiKeyAPIService) GenerateApiKey(ctx context.Context) ApiGenerateApiKeyRequest {
-	return ApiGenerateApiKeyRequest{
+func (a *ApiKeyAPIService) GenerateAPIKey(ctx context.Context) ApiGenerateAPIKeyRequest {
+	return ApiGenerateAPIKeyRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -220,7 +206,7 @@ func (a *ApiKeyAPIService) GenerateApiKey(ctx context.Context) ApiGenerateApiKey
 // Execute executes the request
 //
 //	@return GenerateUpdateApiKeyResponseModel
-func (a *ApiKeyAPIService) GenerateApiKeyExecute(r ApiGenerateApiKeyRequest) (*GenerateUpdateApiKeyResponseModel, *http.Response, error) {
+func (a *ApiKeyAPIService) GenerateAPIKeyExecute(r ApiGenerateAPIKeyRequest) (*GenerateUpdateApiKeyResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -228,7 +214,7 @@ func (a *ApiKeyAPIService) GenerateApiKeyExecute(r ApiGenerateApiKeyRequest) (*G
 		localVarReturnValue *GenerateUpdateApiKeyResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ApiKeyAPIService.GenerateApiKey")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ApiKeyAPIService.GenerateAPIKey")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -261,20 +247,6 @@ func (a *ApiKeyAPIService) GenerateApiKeyExecute(r ApiGenerateApiKeyRequest) (*G
 	}
 	// body params
 	localVarPostBody = r.payload
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
-			}
-		}
-	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -356,25 +328,25 @@ func (a *ApiKeyAPIService) GenerateApiKeyExecute(r ApiGenerateApiKeyRequest) (*G
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiRetrieveApiKeysRequest struct {
+type ApiRetrieveAPIKeyRequest struct {
 	ctx        context.Context
 	ApiService *ApiKeyAPIService
 }
 
-func (r ApiRetrieveApiKeysRequest) Execute() (*GetApiKeysResponseModel, *http.Response, error) {
-	return r.ApiService.RetrieveApiKeysExecute(r)
+func (r ApiRetrieveAPIKeyRequest) Execute() (*GetApiKeysResponseModel, *http.Response, error) {
+	return r.ApiService.RetrieveAPIKeyExecute(r)
 }
 
 /*
-RetrieveApiKeys Retrieve API Keys
+RetrieveAPIKey Retrieve API Keys
 
-Retrieves your API keys, granting access to the Infrahub APIs. For further details on API keys, [**click here**](https://infrahub-doc.nexgencloud.com/docs/api-reference/auth-resources/api-key/retrieve-api-key).
+Retrieves your API keys, granting access to the Infrahub APIs. For further details on API keys, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/auth-resources/api-key/retrieve-api-key).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiRetrieveApiKeysRequest
+	@return ApiRetrieveAPIKeyRequest
 */
-func (a *ApiKeyAPIService) RetrieveApiKeys(ctx context.Context) ApiRetrieveApiKeysRequest {
-	return ApiRetrieveApiKeysRequest{
+func (a *ApiKeyAPIService) RetrieveAPIKey(ctx context.Context) ApiRetrieveAPIKeyRequest {
+	return ApiRetrieveAPIKeyRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -383,7 +355,7 @@ func (a *ApiKeyAPIService) RetrieveApiKeys(ctx context.Context) ApiRetrieveApiKe
 // Execute executes the request
 //
 //	@return GetApiKeysResponseModel
-func (a *ApiKeyAPIService) RetrieveApiKeysExecute(r ApiRetrieveApiKeysRequest) (*GetApiKeysResponseModel, *http.Response, error) {
+func (a *ApiKeyAPIService) RetrieveAPIKeyExecute(r ApiRetrieveAPIKeyRequest) (*GetApiKeysResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -391,7 +363,7 @@ func (a *ApiKeyAPIService) RetrieveApiKeysExecute(r ApiRetrieveApiKeysRequest) (
 		localVarReturnValue *GetApiKeysResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ApiKeyAPIService.RetrieveApiKeys")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ApiKeyAPIService.RetrieveAPIKey")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -430,20 +402,6 @@ func (a *ApiKeyAPIService) RetrieveApiKeysExecute(r ApiRetrieveApiKeysRequest) (
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -506,33 +464,33 @@ func (a *ApiKeyAPIService) RetrieveApiKeysExecute(r ApiRetrieveApiKeysRequest) (
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiUpdateApiKeyRequest struct {
+type ApiUpdateAPIKeyRequest struct {
 	ctx        context.Context
 	ApiService *ApiKeyAPIService
 	apiKeyId   int32
 	payload    *GenerateUpdateApiKeyPayload
 }
 
-func (r ApiUpdateApiKeyRequest) Payload(payload GenerateUpdateApiKeyPayload) ApiUpdateApiKeyRequest {
+func (r ApiUpdateAPIKeyRequest) Payload(payload GenerateUpdateApiKeyPayload) ApiUpdateAPIKeyRequest {
 	r.payload = &payload
 	return r
 }
 
-func (r ApiUpdateApiKeyRequest) Execute() (*GenerateUpdateApiKeyResponseModel, *http.Response, error) {
-	return r.ApiService.UpdateApiKeyExecute(r)
+func (r ApiUpdateAPIKeyRequest) Execute() (*GenerateUpdateApiKeyResponseModel, *http.Response, error) {
+	return r.ApiService.UpdateAPIKeyExecute(r)
 }
 
 /*
-UpdateApiKey Update API Key
+UpdateAPIKey Update API Key
 
 Updates the name and optionally the description of a specified API key. Include the ID of the API key in the path and the new name and optional description in the body of the request.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param apiKeyId
-	@return ApiUpdateApiKeyRequest
+	@return ApiUpdateAPIKeyRequest
 */
-func (a *ApiKeyAPIService) UpdateApiKey(ctx context.Context, apiKeyId int32) ApiUpdateApiKeyRequest {
-	return ApiUpdateApiKeyRequest{
+func (a *ApiKeyAPIService) UpdateAPIKey(ctx context.Context, apiKeyId int32) ApiUpdateAPIKeyRequest {
+	return ApiUpdateAPIKeyRequest{
 		ApiService: a,
 		ctx:        ctx,
 		apiKeyId:   apiKeyId,
@@ -542,7 +500,7 @@ func (a *ApiKeyAPIService) UpdateApiKey(ctx context.Context, apiKeyId int32) Api
 // Execute executes the request
 //
 //	@return GenerateUpdateApiKeyResponseModel
-func (a *ApiKeyAPIService) UpdateApiKeyExecute(r ApiUpdateApiKeyRequest) (*GenerateUpdateApiKeyResponseModel, *http.Response, error) {
+func (a *ApiKeyAPIService) UpdateAPIKeyExecute(r ApiUpdateAPIKeyRequest) (*GenerateUpdateApiKeyResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
@@ -550,7 +508,7 @@ func (a *ApiKeyAPIService) UpdateApiKeyExecute(r ApiUpdateApiKeyRequest) (*Gener
 		localVarReturnValue *GenerateUpdateApiKeyResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ApiKeyAPIService.UpdateApiKey")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ApiKeyAPIService.UpdateAPIKey")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -595,20 +553,6 @@ func (a *ApiKeyAPIService) UpdateApiKeyExecute(r ApiUpdateApiKeyRequest) (*Gener
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

@@ -22,27 +22,27 @@ import (
 // ImageAPIService ImageAPI service
 type ImageAPIService service
 
-type ApiDeleteAnImageRequest struct {
+type ApiDeleteImageRequest struct {
 	ctx        context.Context
 	ApiService *ImageAPIService
 	id         int32
 }
 
-func (r ApiDeleteAnImageRequest) Execute() (*ResponseModel, *http.Response, error) {
-	return r.ApiService.DeleteAnImageExecute(r)
+func (r ApiDeleteImageRequest) Execute() (*ResponseModel, *http.Response, error) {
+	return r.ApiService.DeleteImageExecute(r)
 }
 
 /*
-DeleteAnImage Delete an image
+DeleteImage Delete an image
 
 Deletes an image permanently. Provide the image ID in the path to specify the image to be deleted.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param id
-	@return ApiDeleteAnImageRequest
+	@return ApiDeleteImageRequest
 */
-func (a *ImageAPIService) DeleteAnImage(ctx context.Context, id int32) ApiDeleteAnImageRequest {
-	return ApiDeleteAnImageRequest{
+func (a *ImageAPIService) DeleteImage(ctx context.Context, id int32) ApiDeleteImageRequest {
+	return ApiDeleteImageRequest{
 		ApiService: a,
 		ctx:        ctx,
 		id:         id,
@@ -52,7 +52,7 @@ func (a *ImageAPIService) DeleteAnImage(ctx context.Context, id int32) ApiDelete
 // Execute executes the request
 //
 //	@return ResponseModel
-func (a *ImageAPIService) DeleteAnImageExecute(r ApiDeleteAnImageRequest) (*ResponseModel, *http.Response, error) {
+func (a *ImageAPIService) DeleteImageExecute(r ApiDeleteImageRequest) (*ResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
@@ -60,7 +60,7 @@ func (a *ImageAPIService) DeleteAnImageExecute(r ApiDeleteAnImageRequest) (*Resp
 		localVarReturnValue *ResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ImageAPIService.DeleteAnImage")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ImageAPIService.DeleteImage")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -103,20 +103,6 @@ func (a *ImageAPIService) DeleteAnImageExecute(r ApiDeleteAnImageRequest) (*Resp
 			}
 		}
 	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
-			}
-		}
-	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -187,27 +173,27 @@ func (a *ImageAPIService) DeleteAnImageExecute(r ApiDeleteAnImageRequest) (*Resp
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiFetchNameAvailabilityForImagesRequest struct {
+type ApiFetchImageNameAvailabilityRequest struct {
 	ctx        context.Context
 	ApiService *ImageAPIService
 	name       string
 }
 
-func (r ApiFetchNameAvailabilityForImagesRequest) Execute() (*NameAvailableModel, *http.Response, error) {
-	return r.ApiService.FetchNameAvailabilityForImagesExecute(r)
+func (r ApiFetchImageNameAvailabilityRequest) Execute() (*NameAvailableModel, *http.Response, error) {
+	return r.ApiService.FetchImageNameAvailabilityExecute(r)
 }
 
 /*
-FetchNameAvailabilityForImages Fetch name availability for Images
+FetchImageNameAvailability Fetch name availability for Images
 
 Check if an Image name is available
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param name
-	@return ApiFetchNameAvailabilityForImagesRequest
+	@return ApiFetchImageNameAvailabilityRequest
 */
-func (a *ImageAPIService) FetchNameAvailabilityForImages(ctx context.Context, name string) ApiFetchNameAvailabilityForImagesRequest {
-	return ApiFetchNameAvailabilityForImagesRequest{
+func (a *ImageAPIService) FetchImageNameAvailability(ctx context.Context, name string) ApiFetchImageNameAvailabilityRequest {
+	return ApiFetchImageNameAvailabilityRequest{
 		ApiService: a,
 		ctx:        ctx,
 		name:       name,
@@ -217,7 +203,7 @@ func (a *ImageAPIService) FetchNameAvailabilityForImages(ctx context.Context, na
 // Execute executes the request
 //
 //	@return NameAvailableModel
-func (a *ImageAPIService) FetchNameAvailabilityForImagesExecute(r ApiFetchNameAvailabilityForImagesRequest) (*NameAvailableModel, *http.Response, error) {
+func (a *ImageAPIService) FetchImageNameAvailabilityExecute(r ApiFetchImageNameAvailabilityRequest) (*NameAvailableModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -225,7 +211,7 @@ func (a *ImageAPIService) FetchNameAvailabilityForImagesExecute(r ApiFetchNameAv
 		localVarReturnValue *NameAvailableModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ImageAPIService.FetchNameAvailabilityForImages")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ImageAPIService.FetchImageNameAvailability")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -268,20 +254,6 @@ func (a *ImageAPIService) FetchNameAvailabilityForImagesExecute(r ApiFetchNameAv
 			}
 		}
 	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
-			}
-		}
-	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -352,33 +324,33 @@ func (a *ImageAPIService) FetchNameAvailabilityForImagesExecute(r ApiFetchNameAv
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetPrivateImageDetailsRequest struct {
+type ApiGetImageDetailsRequest struct {
 	ctx               context.Context
 	ApiService        *ImageAPIService
 	id                int32
 	includeRelatedVms *bool
 }
 
-func (r ApiGetPrivateImageDetailsRequest) IncludeRelatedVms(includeRelatedVms bool) ApiGetPrivateImageDetailsRequest {
+func (r ApiGetImageDetailsRequest) IncludeRelatedVms(includeRelatedVms bool) ApiGetImageDetailsRequest {
 	r.includeRelatedVms = &includeRelatedVms
 	return r
 }
 
-func (r ApiGetPrivateImageDetailsRequest) Execute() (*Image, *http.Response, error) {
-	return r.ApiService.GetPrivateImageDetailsExecute(r)
+func (r ApiGetImageDetailsRequest) Execute() (*Image, *http.Response, error) {
+	return r.ApiService.GetImageDetailsExecute(r)
 }
 
 /*
-GetPrivateImageDetails Get Private Image Details
+GetImageDetails Get Private Image Details
 
 Retrieve details of a specific image by providing the image ID.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param id
-	@return ApiGetPrivateImageDetailsRequest
+	@return ApiGetImageDetailsRequest
 */
-func (a *ImageAPIService) GetPrivateImageDetails(ctx context.Context, id int32) ApiGetPrivateImageDetailsRequest {
-	return ApiGetPrivateImageDetailsRequest{
+func (a *ImageAPIService) GetImageDetails(ctx context.Context, id int32) ApiGetImageDetailsRequest {
+	return ApiGetImageDetailsRequest{
 		ApiService: a,
 		ctx:        ctx,
 		id:         id,
@@ -388,7 +360,7 @@ func (a *ImageAPIService) GetPrivateImageDetails(ctx context.Context, id int32) 
 // Execute executes the request
 //
 //	@return Image
-func (a *ImageAPIService) GetPrivateImageDetailsExecute(r ApiGetPrivateImageDetailsRequest) (*Image, *http.Response, error) {
+func (a *ImageAPIService) GetImageDetailsExecute(r ApiGetImageDetailsRequest) (*Image, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -396,7 +368,7 @@ func (a *ImageAPIService) GetPrivateImageDetailsExecute(r ApiGetPrivateImageDeta
 		localVarReturnValue *Image
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ImageAPIService.GetPrivateImageDetails")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ImageAPIService.GetImageDetails")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -442,20 +414,6 @@ func (a *ImageAPIService) GetPrivateImageDetailsExecute(r ApiGetPrivateImageDeta
 			}
 		}
 	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
-			}
-		}
-	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -526,7 +484,7 @@ func (a *ImageAPIService) GetPrivateImageDetailsExecute(r ApiGetPrivateImageDeta
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiListImagesRequest struct {
+type ApiListImages2Request struct {
 	ctx           context.Context
 	ApiService    *ImageAPIService
 	region        *string
@@ -537,49 +495,49 @@ type ApiListImagesRequest struct {
 }
 
 // Region Name
-func (r ApiListImagesRequest) Region(region string) ApiListImagesRequest {
+func (r ApiListImages2Request) Region(region string) ApiListImages2Request {
 	r.region = &region
 	return r
 }
 
 // Flag to include public images in the response (true/false). Default is true.
-func (r ApiListImagesRequest) IncludePublic(includePublic bool) ApiListImagesRequest {
+func (r ApiListImages2Request) IncludePublic(includePublic bool) ApiListImages2Request {
 	r.includePublic = &includePublic
 	return r
 }
 
 // Search query to filter images by name
-func (r ApiListImagesRequest) Search(search string) ApiListImagesRequest {
+func (r ApiListImages2Request) Search(search string) ApiListImages2Request {
 	r.search = &search
 	return r
 }
 
 // Page number for pagination
-func (r ApiListImagesRequest) Page(page int32) ApiListImagesRequest {
+func (r ApiListImages2Request) Page(page int32) ApiListImages2Request {
 	r.page = &page
 	return r
 }
 
 // Number of Images per page
-func (r ApiListImagesRequest) PerPage(perPage int32) ApiListImagesRequest {
+func (r ApiListImages2Request) PerPage(perPage int32) ApiListImages2Request {
 	r.perPage = &perPage
 	return r
 }
 
-func (r ApiListImagesRequest) Execute() (*Images, *http.Response, error) {
-	return r.ApiService.ListImagesExecute(r)
+func (r ApiListImages2Request) Execute() (*Images, *http.Response, error) {
+	return r.ApiService.ListImages2Execute(r)
 }
 
 /*
-ListImages List Images
+ListImages2 List Images
 
-Returns a list of all available operating system (OS) images, providing details about each image's corresponding virtual machine operating system. You can include the optional `region` parameter in the query string of the request to specifically return OS images from the designated region. Additionally, use the `include_public` parameter to specify whether to include public images in the response. For more information onOS images, [**click here**](https://infrahub-doc.nexgencloud.com/docs/virtual-machines/images).
+Returns a list of all available operating system (OS) images, providing details about each image's corresponding virtual machine operating system. You can include the optional `region` parameter in the query string of the request to specifically return OS images from the designated region. Additionally, use the `include_public` parameter to specify whether to include public images in the response. For more information onOS images, [**click here**](https://docs.hyperstack.cloud/docs/virtual-machines/images).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiListImagesRequest
+	@return ApiListImages2Request
 */
-func (a *ImageAPIService) ListImages(ctx context.Context) ApiListImagesRequest {
-	return ApiListImagesRequest{
+func (a *ImageAPIService) ListImages2(ctx context.Context) ApiListImages2Request {
+	return ApiListImages2Request{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -588,7 +546,7 @@ func (a *ImageAPIService) ListImages(ctx context.Context) ApiListImagesRequest {
 // Execute executes the request
 //
 //	@return Images
-func (a *ImageAPIService) ListImagesExecute(r ApiListImagesRequest) (*Images, *http.Response, error) {
+func (a *ImageAPIService) ListImages2Execute(r ApiListImages2Request) (*Images, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -596,7 +554,7 @@ func (a *ImageAPIService) ListImagesExecute(r ApiListImagesRequest) (*Images, *h
 		localVarReturnValue *Images
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ImageAPIService.ListImages")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ImageAPIService.ListImages2")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -650,20 +608,6 @@ func (a *ImageAPIService) ListImagesExecute(r ApiListImagesRequest) (*Images, *h
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

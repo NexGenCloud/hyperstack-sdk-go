@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
-**Environment** | Pointer to **string** |  | [optional] 
+**Environment** | Pointer to [**KeypairEnvironmentFields**](KeypairEnvironmentFields.md) |  | [optional] 
 **Fingerprint** | Pointer to **string** |  | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
 **Name** | Pointer to **string** |  | [optional] 
@@ -57,20 +57,20 @@ HasCreatedAt returns a boolean if a field has been set.
 
 ### GetEnvironment
 
-`func (o *KeypairFields) GetEnvironment() string`
+`func (o *KeypairFields) GetEnvironment() KeypairEnvironmentFields`
 
 GetEnvironment returns the Environment field if non-nil, zero value otherwise.
 
 ### GetEnvironmentOk
 
-`func (o *KeypairFields) GetEnvironmentOk() (*string, bool)`
+`func (o *KeypairFields) GetEnvironmentOk() (*KeypairEnvironmentFields, bool)`
 
 GetEnvironmentOk returns a tuple with the Environment field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetEnvironment
 
-`func (o *KeypairFields) SetEnvironment(v string)`
+`func (o *KeypairFields) SetEnvironment(v KeypairEnvironmentFields)`
 
 SetEnvironment sets Environment field to given value.
 

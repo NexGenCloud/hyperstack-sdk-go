@@ -21,25 +21,25 @@ import (
 // GpuAPIService GpuAPI service
 type GpuAPIService service
 
-type ApiListGpusRequest struct {
+type ApiListGPUsRequest struct {
 	ctx        context.Context
 	ApiService *GpuAPIService
 }
 
-func (r ApiListGpusRequest) Execute() (*GPUList, *http.Response, error) {
-	return r.ApiService.ListGpusExecute(r)
+func (r ApiListGPUsRequest) Execute() (*GPUList, *http.Response, error) {
+	return r.ApiService.ListGPUsExecute(r)
 }
 
 /*
-ListGpus List GPUs
+ListGPUs List GPUs
 
 Returns a list of all available GPUs that can be utilized in the creation of custom virtual machine configurations.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiListGpusRequest
+	@return ApiListGPUsRequest
 */
-func (a *GpuAPIService) ListGpus(ctx context.Context) ApiListGpusRequest {
-	return ApiListGpusRequest{
+func (a *GpuAPIService) ListGPUs(ctx context.Context) ApiListGPUsRequest {
+	return ApiListGPUsRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -48,7 +48,7 @@ func (a *GpuAPIService) ListGpus(ctx context.Context) ApiListGpusRequest {
 // Execute executes the request
 //
 //	@return GPUList
-func (a *GpuAPIService) ListGpusExecute(r ApiListGpusRequest) (*GPUList, *http.Response, error) {
+func (a *GpuAPIService) ListGPUsExecute(r ApiListGPUsRequest) (*GPUList, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -56,7 +56,7 @@ func (a *GpuAPIService) ListGpusExecute(r ApiListGpusRequest) (*GPUList, *http.R
 		localVarReturnValue *GPUList
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GpuAPIService.ListGpus")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GpuAPIService.ListGPUs")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -95,20 +95,6 @@ func (a *GpuAPIService) ListGpusExecute(r ApiListGpusRequest) (*GPUList, *http.R
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

@@ -56,6 +56,8 @@ type APIClient struct {
 
 	AuthAPI *AuthAPIService
 
+	BetaAccessAPI *BetaAccessAPIService
+
 	BillingAPI *BillingAPIService
 
 	CalculateAPI *CalculateAPIService
@@ -95,6 +97,8 @@ type APIClient struct {
 	KeypairAPI *KeypairAPIService
 
 	OrganizationAPI *OrganizationAPIService
+
+	PartnerConfigAPI *PartnerConfigAPIService
 
 	PaymentAPI *PaymentAPIService
 
@@ -157,6 +161,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.ApiKeyAPI = (*ApiKeyAPIService)(&c.common)
 	c.AssigningMemberRoleAPI = (*AssigningMemberRoleAPIService)(&c.common)
 	c.AuthAPI = (*AuthAPIService)(&c.common)
+	c.BetaAccessAPI = (*BetaAccessAPIService)(&c.common)
 	c.BillingAPI = (*BillingAPIService)(&c.common)
 	c.CalculateAPI = (*CalculateAPIService)(&c.common)
 	c.CallbacksAPI = (*CallbacksAPIService)(&c.common)
@@ -177,6 +182,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.InviteAPI = (*InviteAPIService)(&c.common)
 	c.KeypairAPI = (*KeypairAPIService)(&c.common)
 	c.OrganizationAPI = (*OrganizationAPIService)(&c.common)
+	c.PartnerConfigAPI = (*PartnerConfigAPIService)(&c.common)
 	c.PaymentAPI = (*PaymentAPIService)(&c.common)
 	c.PermissionAPI = (*PermissionAPIService)(&c.common)
 	c.PolicyAPI = (*PolicyAPIService)(&c.common)
@@ -255,6 +261,10 @@ func typeCheckParameter(obj interface{}, expected string, name string) error {
 
 func parameterValueToString(obj interface{}, key string) string {
 	if reflect.TypeOf(obj).Kind() != reflect.Ptr {
+		if actualObj, ok := obj.(interface{ GetActualInstanceValue() interface{} }); ok {
+			return fmt.Sprintf("%v", actualObj.GetActualInstanceValue())
+		}
+
 		return fmt.Sprintf("%v", obj)
 	}
 	var param, ok = obj.(MappedNullable)

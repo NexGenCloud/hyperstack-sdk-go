@@ -21,14 +21,16 @@ var _ MappedNullable = &CreateClusterPayload{}
 
 // CreateClusterPayload struct for CreateClusterPayload
 type CreateClusterPayload struct {
-	EnvironmentName   string `json:"environment_name"`
-	ImageName         string `json:"image_name"`
-	KeypairName       string `json:"keypair_name"`
-	KubernetesVersion string `json:"kubernetes_version"`
-	MasterFlavorName  string `json:"master_flavor_name"`
-	Name              string `json:"name"`
-	NodeCount         int32  `json:"node_count"`
-	NodeFlavorName    string `json:"node_flavor_name"`
+	DeploymentMode    *string                         `json:"deployment_mode,omitempty"`
+	EnvironmentName   string                          `json:"environment_name"`
+	ImageName         string                          `json:"image_name"`
+	KeypairName       string                          `json:"keypair_name"`
+	KubernetesVersion string                          `json:"kubernetes_version"`
+	MasterFlavorName  string                          `json:"master_flavor_name"`
+	Name              string                          `json:"name"`
+	NodeCount         *int32                          `json:"node_count,omitempty"`
+	NodeFlavorName    *string                         `json:"node_flavor_name,omitempty"`
+	NodeGroups        []CreateClusterNodeGroupPayload `json:"node_groups,omitempty"`
 }
 
 type _CreateClusterPayload CreateClusterPayload
@@ -37,16 +39,16 @@ type _CreateClusterPayload CreateClusterPayload
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateClusterPayload(environmentName string, imageName string, keypairName string, kubernetesVersion string, masterFlavorName string, name string, nodeCount int32, nodeFlavorName string) *CreateClusterPayload {
+func NewCreateClusterPayload(environmentName string, imageName string, keypairName string, kubernetesVersion string, masterFlavorName string, name string) *CreateClusterPayload {
 	this := CreateClusterPayload{}
+	var deploymentMode string = "full"
+	this.DeploymentMode = &deploymentMode
 	this.EnvironmentName = environmentName
 	this.ImageName = imageName
 	this.KeypairName = keypairName
 	this.KubernetesVersion = kubernetesVersion
 	this.MasterFlavorName = masterFlavorName
 	this.Name = name
-	this.NodeCount = nodeCount
-	this.NodeFlavorName = nodeFlavorName
 	return &this
 }
 
@@ -55,7 +57,41 @@ func NewCreateClusterPayload(environmentName string, imageName string, keypairNa
 // but it doesn't guarantee that properties required by API are set
 func NewCreateClusterPayloadWithDefaults() *CreateClusterPayload {
 	this := CreateClusterPayload{}
+	var deploymentMode string = "full"
+	this.DeploymentMode = &deploymentMode
 	return &this
+}
+
+// GetDeploymentMode returns the DeploymentMode field value if set, zero value otherwise.
+func (o *CreateClusterPayload) GetDeploymentMode() string {
+	if o == nil || IsNil(o.DeploymentMode) {
+		var ret string
+		return ret
+	}
+	return *o.DeploymentMode
+}
+
+// GetDeploymentModeOk returns a tuple with the DeploymentMode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CreateClusterPayload) GetDeploymentModeOk() (*string, bool) {
+	if o == nil || IsNil(o.DeploymentMode) {
+		return nil, false
+	}
+	return o.DeploymentMode, true
+}
+
+// HasDeploymentMode returns a boolean if a field has been set.
+func (o *CreateClusterPayload) HasDeploymentMode() bool {
+	if o != nil && !IsNil(o.DeploymentMode) {
+		return true
+	}
+
+	return false
+}
+
+// SetDeploymentMode gets a reference to the given string and assigns it to the DeploymentMode field.
+func (o *CreateClusterPayload) SetDeploymentMode(v string) {
+	o.DeploymentMode = &v
 }
 
 // GetEnvironmentName returns the EnvironmentName field value
@@ -202,52 +238,100 @@ func (o *CreateClusterPayload) SetName(v string) {
 	o.Name = v
 }
 
-// GetNodeCount returns the NodeCount field value
+// GetNodeCount returns the NodeCount field value if set, zero value otherwise.
 func (o *CreateClusterPayload) GetNodeCount() int32 {
-	if o == nil {
+	if o == nil || IsNil(o.NodeCount) {
 		var ret int32
 		return ret
 	}
-
-	return o.NodeCount
+	return *o.NodeCount
 }
 
-// GetNodeCountOk returns a tuple with the NodeCount field value
+// GetNodeCountOk returns a tuple with the NodeCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateClusterPayload) GetNodeCountOk() (*int32, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.NodeCount) {
 		return nil, false
 	}
-	return &o.NodeCount, true
+	return o.NodeCount, true
 }
 
-// SetNodeCount sets field value
+// HasNodeCount returns a boolean if a field has been set.
+func (o *CreateClusterPayload) HasNodeCount() bool {
+	if o != nil && !IsNil(o.NodeCount) {
+		return true
+	}
+
+	return false
+}
+
+// SetNodeCount gets a reference to the given int32 and assigns it to the NodeCount field.
 func (o *CreateClusterPayload) SetNodeCount(v int32) {
-	o.NodeCount = v
+	o.NodeCount = &v
 }
 
-// GetNodeFlavorName returns the NodeFlavorName field value
+// GetNodeFlavorName returns the NodeFlavorName field value if set, zero value otherwise.
 func (o *CreateClusterPayload) GetNodeFlavorName() string {
-	if o == nil {
+	if o == nil || IsNil(o.NodeFlavorName) {
 		var ret string
 		return ret
 	}
-
-	return o.NodeFlavorName
+	return *o.NodeFlavorName
 }
 
-// GetNodeFlavorNameOk returns a tuple with the NodeFlavorName field value
+// GetNodeFlavorNameOk returns a tuple with the NodeFlavorName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateClusterPayload) GetNodeFlavorNameOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.NodeFlavorName) {
 		return nil, false
 	}
-	return &o.NodeFlavorName, true
+	return o.NodeFlavorName, true
 }
 
-// SetNodeFlavorName sets field value
+// HasNodeFlavorName returns a boolean if a field has been set.
+func (o *CreateClusterPayload) HasNodeFlavorName() bool {
+	if o != nil && !IsNil(o.NodeFlavorName) {
+		return true
+	}
+
+	return false
+}
+
+// SetNodeFlavorName gets a reference to the given string and assigns it to the NodeFlavorName field.
 func (o *CreateClusterPayload) SetNodeFlavorName(v string) {
-	o.NodeFlavorName = v
+	o.NodeFlavorName = &v
+}
+
+// GetNodeGroups returns the NodeGroups field value if set, zero value otherwise.
+func (o *CreateClusterPayload) GetNodeGroups() []CreateClusterNodeGroupPayload {
+	if o == nil || IsNil(o.NodeGroups) {
+		var ret []CreateClusterNodeGroupPayload
+		return ret
+	}
+	return o.NodeGroups
+}
+
+// GetNodeGroupsOk returns a tuple with the NodeGroups field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CreateClusterPayload) GetNodeGroupsOk() ([]CreateClusterNodeGroupPayload, bool) {
+	if o == nil || IsNil(o.NodeGroups) {
+		return nil, false
+	}
+	return o.NodeGroups, true
+}
+
+// HasNodeGroups returns a boolean if a field has been set.
+func (o *CreateClusterPayload) HasNodeGroups() bool {
+	if o != nil && !IsNil(o.NodeGroups) {
+		return true
+	}
+
+	return false
+}
+
+// SetNodeGroups gets a reference to the given []CreateClusterNodeGroupPayload and assigns it to the NodeGroups field.
+func (o *CreateClusterPayload) SetNodeGroups(v []CreateClusterNodeGroupPayload) {
+	o.NodeGroups = v
 }
 
 func (o CreateClusterPayload) MarshalJSON() ([]byte, error) {
@@ -260,14 +344,24 @@ func (o CreateClusterPayload) MarshalJSON() ([]byte, error) {
 
 func (o CreateClusterPayload) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.DeploymentMode) {
+		toSerialize["deployment_mode"] = o.DeploymentMode
+	}
 	toSerialize["environment_name"] = o.EnvironmentName
 	toSerialize["image_name"] = o.ImageName
 	toSerialize["keypair_name"] = o.KeypairName
 	toSerialize["kubernetes_version"] = o.KubernetesVersion
 	toSerialize["master_flavor_name"] = o.MasterFlavorName
 	toSerialize["name"] = o.Name
-	toSerialize["node_count"] = o.NodeCount
-	toSerialize["node_flavor_name"] = o.NodeFlavorName
+	if !IsNil(o.NodeCount) {
+		toSerialize["node_count"] = o.NodeCount
+	}
+	if !IsNil(o.NodeFlavorName) {
+		toSerialize["node_flavor_name"] = o.NodeFlavorName
+	}
+	if !IsNil(o.NodeGroups) {
+		toSerialize["node_groups"] = o.NodeGroups
+	}
 	return toSerialize, nil
 }
 
@@ -282,8 +376,6 @@ func (o *CreateClusterPayload) UnmarshalJSON(data []byte) (err error) {
 		"kubernetes_version",
 		"master_flavor_name",
 		"name",
-		"node_count",
-		"node_flavor_name",
 	}
 
 	allProperties := make(map[string]interface{})

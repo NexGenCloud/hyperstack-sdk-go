@@ -16,28 +16,31 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
 // PaymentAPIService PaymentAPI service
 type PaymentAPIService service
 
-type ApiGetViewPaymentDetailsRequest struct {
+type ApiGetDetailsRequest struct {
 	ctx        context.Context
 	ApiService *PaymentAPIService
 }
 
-func (r ApiGetViewPaymentDetailsRequest) Execute() (*PaymentDetailsResponse, *http.Response, error) {
-	return r.ApiService.GetViewPaymentDetailsExecute(r)
+func (r ApiGetDetailsRequest) Execute() (*PaymentDetailsResponse, *http.Response, error) {
+	return r.ApiService.GetDetailsExecute(r)
 }
 
 /*
-GetViewPaymentDetails GET: View payment details
+GetDetails GET: View payment details
+
+Retrieves a list of all payments made within your [**organization**](/docs/rbac/organization) and their details, including the amount, payment status, and more. For additional information [**click here**](https://docs.hyperstack.cloud/docs/api-reference/billing-resources/retrieve-payment-history/).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetViewPaymentDetailsRequest
+	@return ApiGetDetailsRequest
 */
-func (a *PaymentAPIService) GetViewPaymentDetails(ctx context.Context) ApiGetViewPaymentDetailsRequest {
-	return ApiGetViewPaymentDetailsRequest{
+func (a *PaymentAPIService) GetDetails(ctx context.Context) ApiGetDetailsRequest {
+	return ApiGetDetailsRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -46,7 +49,7 @@ func (a *PaymentAPIService) GetViewPaymentDetails(ctx context.Context) ApiGetVie
 // Execute executes the request
 //
 //	@return PaymentDetailsResponse
-func (a *PaymentAPIService) GetViewPaymentDetailsExecute(r ApiGetViewPaymentDetailsRequest) (*PaymentDetailsResponse, *http.Response, error) {
+func (a *PaymentAPIService) GetDetailsExecute(r ApiGetDetailsRequest) (*PaymentDetailsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -54,7 +57,7 @@ func (a *PaymentAPIService) GetViewPaymentDetailsExecute(r ApiGetViewPaymentDeta
 		localVarReturnValue *PaymentDetailsResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PaymentAPIService.GetViewPaymentDetails")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PaymentAPIService.GetDetails")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -93,20 +96,6 @@ func (a *PaymentAPIService) GetViewPaymentDetailsExecute(r ApiGetViewPaymentDeta
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -191,29 +180,181 @@ func (a *PaymentAPIService) GetViewPaymentDetailsExecute(r ApiGetViewPaymentDeta
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiPostInitiatePaymentRequest struct {
+type ApiGetPaymentReceipt2Request struct {
+	ctx        context.Context
+	ApiService *PaymentAPIService
+	paymentId  string
+}
+
+func (r ApiGetPaymentReceipt2Request) Execute() (*http.Response, error) {
+	return r.ApiService.GetPaymentReceipt2Execute(r)
+}
+
+/*
+GetPaymentReceipt2 Retrieve Payment Receipt
+
+Retrieve the payment receipt from Stripe for a specific payment
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param paymentId
+	@return ApiGetPaymentReceipt2Request
+*/
+func (a *PaymentAPIService) GetPaymentReceipt2(ctx context.Context, paymentId string) ApiGetPaymentReceipt2Request {
+	return ApiGetPaymentReceipt2Request{
+		ApiService: a,
+		ctx:        ctx,
+		paymentId:  paymentId,
+	}
+}
+
+// Execute executes the request
+func (a *PaymentAPIService) GetPaymentReceipt2Execute(r ApiGetPaymentReceipt2Request) (*http.Response, error) {
+	var (
+		localVarHTTPMethod = http.MethodGet
+		localVarPostBody   interface{}
+		formFiles          []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PaymentAPIService.GetPaymentReceipt2")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/payment/receipt/{payment_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"payment_id"+"}", url.PathEscape(parameterValueToString(r.paymentId, "paymentId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type ApiPostPaymentRequest struct {
 	ctx        context.Context
 	ApiService *PaymentAPIService
 	payload    *PaymentInitiatePayload
 }
 
-func (r ApiPostInitiatePaymentRequest) Payload(payload PaymentInitiatePayload) ApiPostInitiatePaymentRequest {
+func (r ApiPostPaymentRequest) Payload(payload PaymentInitiatePayload) ApiPostPaymentRequest {
 	r.payload = &payload
 	return r
 }
 
-func (r ApiPostInitiatePaymentRequest) Execute() (*PaymentInitiateResponse, *http.Response, error) {
-	return r.ApiService.PostInitiatePaymentExecute(r)
+func (r ApiPostPaymentRequest) Execute() (*PaymentInitiateResponse, *http.Response, error) {
+	return r.ApiService.PostPaymentExecute(r)
 }
 
 /*
-PostInitiatePayment POST: Initiate payment
+PostPayment POST: Initiate payment
+
+Creates a payment for a specified amount, adding credit to the balance of your [**organization**](/docs/rbac/organization). Include the `amount` in the body of the request to make a payment for the specified value in dollars. View a history of past payments by calling the [**Retrieve Payment History**](/docs/api-reference/billing-resources/retrieve-payment-history) API. For additional information [**click here**](https://docs.hyperstack.cloud/docs/api-reference/billing-resources/create-payment).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiPostInitiatePaymentRequest
+	@return ApiPostPaymentRequest
 */
-func (a *PaymentAPIService) PostInitiatePayment(ctx context.Context) ApiPostInitiatePaymentRequest {
-	return ApiPostInitiatePaymentRequest{
+func (a *PaymentAPIService) PostPayment(ctx context.Context) ApiPostPaymentRequest {
+	return ApiPostPaymentRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -222,7 +363,7 @@ func (a *PaymentAPIService) PostInitiatePayment(ctx context.Context) ApiPostInit
 // Execute executes the request
 //
 //	@return PaymentInitiateResponse
-func (a *PaymentAPIService) PostInitiatePaymentExecute(r ApiPostInitiatePaymentRequest) (*PaymentInitiateResponse, *http.Response, error) {
+func (a *PaymentAPIService) PostPaymentExecute(r ApiPostPaymentRequest) (*PaymentInitiateResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -230,7 +371,7 @@ func (a *PaymentAPIService) PostInitiatePaymentExecute(r ApiPostInitiatePaymentR
 		localVarReturnValue *PaymentInitiateResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PaymentAPIService.PostInitiatePayment")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PaymentAPIService.PostPayment")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -274,20 +415,6 @@ func (a *PaymentAPIService) PostInitiatePaymentExecute(r ApiPostInitiatePaymentR
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

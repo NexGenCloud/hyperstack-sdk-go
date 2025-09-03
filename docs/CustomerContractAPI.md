@@ -4,15 +4,15 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**ListContracts**](CustomerContractAPI.md#ListContracts) | **Get** /pricebook/contracts | List Contracts
-[**RetrieveContractDetails**](CustomerContractAPI.md#RetrieveContractDetails) | **Get** /pricebook/contracts/{contract_id} | Retrieve Contract Details
-[**RetrieveGpuAllocationGraphForContract**](CustomerContractAPI.md#RetrieveGpuAllocationGraphForContract) | **Get** /pricebook/contracts/{contract_id}/gpu_allocation_graph | Retrieve GPU Allocation Graph for Contract
+[**GetCustomerContract**](CustomerContractAPI.md#GetCustomerContract) | **Get** /pricebook/contracts | List Contracts
+[**GetCustomerContractDetails**](CustomerContractAPI.md#GetCustomerContractDetails) | **Get** /pricebook/contracts/{contract_id} | Retrieve Contract Details
+[**GetCustomerContractGpuAllocationGraph**](CustomerContractAPI.md#GetCustomerContractGpuAllocationGraph) | **Get** /pricebook/contracts/{contract_id}/gpu_allocation_graph | Retrieve GPU Allocation Graph for Contract
 
 
 
-## ListContracts
+## GetCustomerContract
 
-> GetCustomerContractsListResponseModel ListContracts(ctx).Page(page).PerPage(perPage).Execute()
+> GetCustomerContractsListResponseModel GetCustomerContract(ctx).Page(page).PerPage(perPage).Execute()
 
 List Contracts
 
@@ -36,13 +36,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.CustomerContractAPI.ListContracts(context.Background()).Page(page).PerPage(perPage).Execute()
+	resp, r, err := apiClient.CustomerContractAPI.GetCustomerContract(context.Background()).Page(page).PerPage(perPage).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `CustomerContractAPI.ListContracts``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `CustomerContractAPI.GetCustomerContract``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ListContracts`: GetCustomerContractsListResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `CustomerContractAPI.ListContracts`: %v\n", resp)
+	// response from `GetCustomerContract`: GetCustomerContractsListResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `CustomerContractAPI.GetCustomerContract`: %v\n", resp)
 }
 ```
 
@@ -52,7 +52,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiListContractsRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetCustomerContractRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -66,7 +66,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -78,9 +78,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## RetrieveContractDetails
+## GetCustomerContractDetails
 
-> CustomerContractDetailResponseModel RetrieveContractDetails(ctx, contractId).Execute()
+> CustomerContractDetailResponseModel GetCustomerContractDetails(ctx, contractId).Execute()
 
 Retrieve Contract Details
 
@@ -103,13 +103,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.CustomerContractAPI.RetrieveContractDetails(context.Background(), contractId).Execute()
+	resp, r, err := apiClient.CustomerContractAPI.GetCustomerContractDetails(context.Background(), contractId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `CustomerContractAPI.RetrieveContractDetails``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `CustomerContractAPI.GetCustomerContractDetails``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `RetrieveContractDetails`: CustomerContractDetailResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `CustomerContractAPI.RetrieveContractDetails`: %v\n", resp)
+	// response from `GetCustomerContractDetails`: CustomerContractDetailResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `CustomerContractAPI.GetCustomerContractDetails`: %v\n", resp)
 }
 ```
 
@@ -123,7 +123,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiRetrieveContractDetailsRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetCustomerContractDetailsRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -136,7 +136,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -148,9 +148,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## RetrieveGpuAllocationGraphForContract
+## GetCustomerContractGpuAllocationGraph
 
-> ContractGPUAllocationGraphResponse RetrieveGpuAllocationGraphForContract(ctx, contractId).StartDate(startDate).EndDate(endDate).Execute()
+> ContractGPUAllocationGraphResponse GetCustomerContractGpuAllocationGraph(ctx, contractId).StartDate(startDate).EndDate(endDate).Execute()
 
 Retrieve GPU Allocation Graph for Contract
 
@@ -175,13 +175,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.CustomerContractAPI.RetrieveGpuAllocationGraphForContract(context.Background(), contractId).StartDate(startDate).EndDate(endDate).Execute()
+	resp, r, err := apiClient.CustomerContractAPI.GetCustomerContractGpuAllocationGraph(context.Background(), contractId).StartDate(startDate).EndDate(endDate).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `CustomerContractAPI.RetrieveGpuAllocationGraphForContract``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `CustomerContractAPI.GetCustomerContractGpuAllocationGraph``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `RetrieveGpuAllocationGraphForContract`: ContractGPUAllocationGraphResponse
-	fmt.Fprintf(os.Stdout, "Response from `CustomerContractAPI.RetrieveGpuAllocationGraphForContract`: %v\n", resp)
+	// response from `GetCustomerContractGpuAllocationGraph`: ContractGPUAllocationGraphResponse
+	fmt.Fprintf(os.Stdout, "Response from `CustomerContractAPI.GetCustomerContractGpuAllocationGraph`: %v\n", resp)
 }
 ```
 
@@ -195,7 +195,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiRetrieveGpuAllocationGraphForContractRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetCustomerContractGpuAllocationGraphRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -210,7 +210,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 

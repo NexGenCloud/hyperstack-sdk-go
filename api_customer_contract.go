@@ -22,37 +22,37 @@ import (
 // CustomerContractAPIService CustomerContractAPI service
 type CustomerContractAPIService service
 
-type ApiListContractsRequest struct {
+type ApiGetCustomerContractRequest struct {
 	ctx        context.Context
 	ApiService *CustomerContractAPIService
 	page       *int32
 	perPage    *int32
 }
 
-func (r ApiListContractsRequest) Page(page int32) ApiListContractsRequest {
+func (r ApiGetCustomerContractRequest) Page(page int32) ApiGetCustomerContractRequest {
 	r.page = &page
 	return r
 }
 
-func (r ApiListContractsRequest) PerPage(perPage int32) ApiListContractsRequest {
+func (r ApiGetCustomerContractRequest) PerPage(perPage int32) ApiGetCustomerContractRequest {
 	r.perPage = &perPage
 	return r
 }
 
-func (r ApiListContractsRequest) Execute() (*GetCustomerContractsListResponseModel, *http.Response, error) {
-	return r.ApiService.ListContractsExecute(r)
+func (r ApiGetCustomerContractRequest) Execute() (*GetCustomerContractsListResponseModel, *http.Response, error) {
+	return r.ApiService.GetCustomerContractExecute(r)
 }
 
 /*
-ListContracts List Contracts
+GetCustomerContract List Contracts
 
-Retrieves a list of contracts and their details, including the terms of each contract and the discounts applied to all resources under each contract. Pagination can be controlled using the `page` and `per_page` query parameters. For additional information about contracts, click [**here**](https://infrahub-doc.nexgencloud.com/docs/billing-and-payment/contracts).
+Retrieves a list of contracts and their details, including the terms of each contract and the discounts applied to all resources under each contract. Pagination can be controlled using the `page` and `per_page` query parameters. For additional information about contracts, click [**here**](https://docs.hyperstack.cloud/docs/billing-and-payment/contracts).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiListContractsRequest
+	@return ApiGetCustomerContractRequest
 */
-func (a *CustomerContractAPIService) ListContracts(ctx context.Context) ApiListContractsRequest {
-	return ApiListContractsRequest{
+func (a *CustomerContractAPIService) GetCustomerContract(ctx context.Context) ApiGetCustomerContractRequest {
+	return ApiGetCustomerContractRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -61,7 +61,7 @@ func (a *CustomerContractAPIService) ListContracts(ctx context.Context) ApiListC
 // Execute executes the request
 //
 //	@return GetCustomerContractsListResponseModel
-func (a *CustomerContractAPIService) ListContractsExecute(r ApiListContractsRequest) (*GetCustomerContractsListResponseModel, *http.Response, error) {
+func (a *CustomerContractAPIService) GetCustomerContractExecute(r ApiGetCustomerContractRequest) (*GetCustomerContractsListResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -69,7 +69,7 @@ func (a *CustomerContractAPIService) ListContractsExecute(r ApiListContractsRequ
 		localVarReturnValue *GetCustomerContractsListResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CustomerContractAPIService.ListContracts")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CustomerContractAPIService.GetCustomerContract")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -114,20 +114,6 @@ func (a *CustomerContractAPIService) ListContractsExecute(r ApiListContractsRequ
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -201,27 +187,27 @@ func (a *CustomerContractAPIService) ListContractsExecute(r ApiListContractsRequ
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiRetrieveContractDetailsRequest struct {
+type ApiGetCustomerContractDetailsRequest struct {
 	ctx        context.Context
 	ApiService *CustomerContractAPIService
 	contractId int32
 }
 
-func (r ApiRetrieveContractDetailsRequest) Execute() (*CustomerContractDetailResponseModel, *http.Response, error) {
-	return r.ApiService.RetrieveContractDetailsExecute(r)
+func (r ApiGetCustomerContractDetailsRequest) Execute() (*CustomerContractDetailResponseModel, *http.Response, error) {
+	return r.ApiService.GetCustomerContractDetailsExecute(r)
 }
 
 /*
-RetrieveContractDetails Retrieve Contract Details
+GetCustomerContractDetails Retrieve Contract Details
 
-Retrieve details of a specific contract by providing the contract ID in the path. The endpoint returns the contract object along with its associated discount plans. For more information, [**click here**](https://infrahub-doc.nexgencloud.com/docs/api-reference/pricebook-resources/retrieve-contract-details).
+Retrieve details of a specific contract by providing the contract ID in the path. The endpoint returns the contract object along with its associated discount plans. For more information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/pricebook-resources/retrieve-contract-details).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param contractId
-	@return ApiRetrieveContractDetailsRequest
+	@return ApiGetCustomerContractDetailsRequest
 */
-func (a *CustomerContractAPIService) RetrieveContractDetails(ctx context.Context, contractId int32) ApiRetrieveContractDetailsRequest {
-	return ApiRetrieveContractDetailsRequest{
+func (a *CustomerContractAPIService) GetCustomerContractDetails(ctx context.Context, contractId int32) ApiGetCustomerContractDetailsRequest {
+	return ApiGetCustomerContractDetailsRequest{
 		ApiService: a,
 		ctx:        ctx,
 		contractId: contractId,
@@ -231,7 +217,7 @@ func (a *CustomerContractAPIService) RetrieveContractDetails(ctx context.Context
 // Execute executes the request
 //
 //	@return CustomerContractDetailResponseModel
-func (a *CustomerContractAPIService) RetrieveContractDetailsExecute(r ApiRetrieveContractDetailsRequest) (*CustomerContractDetailResponseModel, *http.Response, error) {
+func (a *CustomerContractAPIService) GetCustomerContractDetailsExecute(r ApiGetCustomerContractDetailsRequest) (*CustomerContractDetailResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -239,7 +225,7 @@ func (a *CustomerContractAPIService) RetrieveContractDetailsExecute(r ApiRetriev
 		localVarReturnValue *CustomerContractDetailResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CustomerContractAPIService.RetrieveContractDetails")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CustomerContractAPIService.GetCustomerContractDetails")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -279,20 +265,6 @@ func (a *CustomerContractAPIService) RetrieveContractDetailsExecute(r ApiRetriev
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -377,7 +349,7 @@ func (a *CustomerContractAPIService) RetrieveContractDetailsExecute(r ApiRetriev
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiRetrieveGpuAllocationGraphForContractRequest struct {
+type ApiGetCustomerContractGpuAllocationGraphRequest struct {
 	ctx        context.Context
 	ApiService *CustomerContractAPIService
 	contractId int32
@@ -386,32 +358,32 @@ type ApiRetrieveGpuAllocationGraphForContractRequest struct {
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiRetrieveGpuAllocationGraphForContractRequest) StartDate(startDate string) ApiRetrieveGpuAllocationGraphForContractRequest {
+func (r ApiGetCustomerContractGpuAllocationGraphRequest) StartDate(startDate string) ApiGetCustomerContractGpuAllocationGraphRequest {
 	r.startDate = &startDate
 	return r
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiRetrieveGpuAllocationGraphForContractRequest) EndDate(endDate string) ApiRetrieveGpuAllocationGraphForContractRequest {
+func (r ApiGetCustomerContractGpuAllocationGraphRequest) EndDate(endDate string) ApiGetCustomerContractGpuAllocationGraphRequest {
 	r.endDate = &endDate
 	return r
 }
 
-func (r ApiRetrieveGpuAllocationGraphForContractRequest) Execute() (*ContractGPUAllocationGraphResponse, *http.Response, error) {
-	return r.ApiService.RetrieveGpuAllocationGraphForContractExecute(r)
+func (r ApiGetCustomerContractGpuAllocationGraphRequest) Execute() (*ContractGPUAllocationGraphResponse, *http.Response, error) {
+	return r.ApiService.GetCustomerContractGpuAllocationGraphExecute(r)
 }
 
 /*
-RetrieveGpuAllocationGraphForContract Retrieve GPU Allocation Graph for Contract
+GetCustomerContractGpuAllocationGraph Retrieve GPU Allocation Graph for Contract
 
 Retrieve GPU allocation count graph for a specific contract by providing the contract ID in the path. The endpoint returns the GPU allocation count graph for the contract within the specified date range.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param contractId
-	@return ApiRetrieveGpuAllocationGraphForContractRequest
+	@return ApiGetCustomerContractGpuAllocationGraphRequest
 */
-func (a *CustomerContractAPIService) RetrieveGpuAllocationGraphForContract(ctx context.Context, contractId int32) ApiRetrieveGpuAllocationGraphForContractRequest {
-	return ApiRetrieveGpuAllocationGraphForContractRequest{
+func (a *CustomerContractAPIService) GetCustomerContractGpuAllocationGraph(ctx context.Context, contractId int32) ApiGetCustomerContractGpuAllocationGraphRequest {
+	return ApiGetCustomerContractGpuAllocationGraphRequest{
 		ApiService: a,
 		ctx:        ctx,
 		contractId: contractId,
@@ -421,7 +393,7 @@ func (a *CustomerContractAPIService) RetrieveGpuAllocationGraphForContract(ctx c
 // Execute executes the request
 //
 //	@return ContractGPUAllocationGraphResponse
-func (a *CustomerContractAPIService) RetrieveGpuAllocationGraphForContractExecute(r ApiRetrieveGpuAllocationGraphForContractRequest) (*ContractGPUAllocationGraphResponse, *http.Response, error) {
+func (a *CustomerContractAPIService) GetCustomerContractGpuAllocationGraphExecute(r ApiGetCustomerContractGpuAllocationGraphRequest) (*ContractGPUAllocationGraphResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -429,7 +401,7 @@ func (a *CustomerContractAPIService) RetrieveGpuAllocationGraphForContractExecut
 		localVarReturnValue *ContractGPUAllocationGraphResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CustomerContractAPIService.RetrieveGpuAllocationGraphForContract")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CustomerContractAPIService.GetCustomerContractGpuAllocationGraph")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -475,20 +447,6 @@ func (a *CustomerContractAPIService) RetrieveGpuAllocationGraphForContractExecut
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

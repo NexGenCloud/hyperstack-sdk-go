@@ -24,9 +24,11 @@ type PaymentDetailsFields struct {
 	Currency        *string     `json:"currency,omitempty"`
 	Description     *string     `json:"description,omitempty"`
 	GatewayResponse *string     `json:"gateway_response,omitempty"`
+	Invoice         *string     `json:"invoice,omitempty"`
 	PaidFrom        *string     `json:"paid_from,omitempty"`
 	PaymentId       *string     `json:"payment_id,omitempty"`
 	Status          *string     `json:"status,omitempty"`
+	TaxAmount       *float32    `json:"tax_amount,omitempty"`
 	TransactionId   *string     `json:"transaction_id,omitempty"`
 	UpdatedAt       *CustomTime `json:"updated_at,omitempty"`
 }
@@ -208,6 +210,38 @@ func (o *PaymentDetailsFields) SetGatewayResponse(v string) {
 	o.GatewayResponse = &v
 }
 
+// GetInvoice returns the Invoice field value if set, zero value otherwise.
+func (o *PaymentDetailsFields) GetInvoice() string {
+	if o == nil || IsNil(o.Invoice) {
+		var ret string
+		return ret
+	}
+	return *o.Invoice
+}
+
+// GetInvoiceOk returns a tuple with the Invoice field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PaymentDetailsFields) GetInvoiceOk() (*string, bool) {
+	if o == nil || IsNil(o.Invoice) {
+		return nil, false
+	}
+	return o.Invoice, true
+}
+
+// HasInvoice returns a boolean if a field has been set.
+func (o *PaymentDetailsFields) HasInvoice() bool {
+	if o != nil && !IsNil(o.Invoice) {
+		return true
+	}
+
+	return false
+}
+
+// SetInvoice gets a reference to the given string and assigns it to the Invoice field.
+func (o *PaymentDetailsFields) SetInvoice(v string) {
+	o.Invoice = &v
+}
+
 // GetPaidFrom returns the PaidFrom field value if set, zero value otherwise.
 func (o *PaymentDetailsFields) GetPaidFrom() string {
 	if o == nil || IsNil(o.PaidFrom) {
@@ -304,6 +338,38 @@ func (o *PaymentDetailsFields) SetStatus(v string) {
 	o.Status = &v
 }
 
+// GetTaxAmount returns the TaxAmount field value if set, zero value otherwise.
+func (o *PaymentDetailsFields) GetTaxAmount() float32 {
+	if o == nil || IsNil(o.TaxAmount) {
+		var ret float32
+		return ret
+	}
+	return *o.TaxAmount
+}
+
+// GetTaxAmountOk returns a tuple with the TaxAmount field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PaymentDetailsFields) GetTaxAmountOk() (*float32, bool) {
+	if o == nil || IsNil(o.TaxAmount) {
+		return nil, false
+	}
+	return o.TaxAmount, true
+}
+
+// HasTaxAmount returns a boolean if a field has been set.
+func (o *PaymentDetailsFields) HasTaxAmount() bool {
+	if o != nil && !IsNil(o.TaxAmount) {
+		return true
+	}
+
+	return false
+}
+
+// SetTaxAmount gets a reference to the given float32 and assigns it to the TaxAmount field.
+func (o *PaymentDetailsFields) SetTaxAmount(v float32) {
+	o.TaxAmount = &v
+}
+
 // GetTransactionId returns the TransactionId field value if set, zero value otherwise.
 func (o *PaymentDetailsFields) GetTransactionId() string {
 	if o == nil || IsNil(o.TransactionId) {
@@ -393,6 +459,9 @@ func (o PaymentDetailsFields) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.GatewayResponse) {
 		toSerialize["gateway_response"] = o.GatewayResponse
 	}
+	if !IsNil(o.Invoice) {
+		toSerialize["invoice"] = o.Invoice
+	}
 	if !IsNil(o.PaidFrom) {
 		toSerialize["paid_from"] = o.PaidFrom
 	}
@@ -401,6 +470,9 @@ func (o PaymentDetailsFields) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Status) {
 		toSerialize["status"] = o.Status
+	}
+	if !IsNil(o.TaxAmount) {
+		toSerialize["tax_amount"] = o.TaxAmount
 	}
 	if !IsNil(o.TransactionId) {
 		toSerialize["transaction_id"] = o.TransactionId

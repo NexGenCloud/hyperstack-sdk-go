@@ -21,6 +21,8 @@ var _ MappedNullable = &SnapshotFields{}
 
 // SnapshotFields struct for SnapshotFields
 type SnapshotFields struct {
+	// Creation timestamp
+	CreatedAt CustomTime `json:"created_at"`
 	// Description of the snapshot
 	Description string `json:"description"`
 	// Indicates if the VM had a floating IP assigned
@@ -39,6 +41,8 @@ type SnapshotFields struct {
 	Size int32 `json:"size"`
 	// Status of the snapshot
 	Status string `json:"status"`
+	// Last update timestamp
+	UpdatedAt CustomTime `json:"updated_at"`
 	// ID of the VM from which the snapshot is created
 	VmId int32 `json:"vm_id"`
 }
@@ -49,8 +53,9 @@ type _SnapshotFields SnapshotFields
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSnapshotFields(description string, id int32, isImage bool, name string, regionId int32, size int32, status string, vmId int32) *SnapshotFields {
+func NewSnapshotFields(createdAt CustomTime, description string, id int32, isImage bool, name string, regionId int32, size int32, status string, updatedAt CustomTime, vmId int32) *SnapshotFields {
 	this := SnapshotFields{}
+	this.CreatedAt = createdAt
 	this.Description = description
 	this.Id = id
 	this.IsImage = isImage
@@ -58,6 +63,7 @@ func NewSnapshotFields(description string, id int32, isImage bool, name string, 
 	this.RegionId = regionId
 	this.Size = size
 	this.Status = status
+	this.UpdatedAt = updatedAt
 	this.VmId = vmId
 	return &this
 }
@@ -68,6 +74,30 @@ func NewSnapshotFields(description string, id int32, isImage bool, name string, 
 func NewSnapshotFieldsWithDefaults() *SnapshotFields {
 	this := SnapshotFields{}
 	return &this
+}
+
+// GetCreatedAt returns the CreatedAt field value
+func (o *SnapshotFields) GetCreatedAt() CustomTime {
+	if o == nil {
+		var ret CustomTime
+		return ret
+	}
+
+	return o.CreatedAt
+}
+
+// GetCreatedAtOk returns a tuple with the CreatedAt field value
+// and a boolean to check if the value has been set.
+func (o *SnapshotFields) GetCreatedAtOk() (*CustomTime, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.CreatedAt, true
+}
+
+// SetCreatedAt sets field value
+func (o *SnapshotFields) SetCreatedAt(v CustomTime) {
+	o.CreatedAt = v
 }
 
 // GetDescription returns the Description field value
@@ -302,6 +332,30 @@ func (o *SnapshotFields) SetStatus(v string) {
 	o.Status = v
 }
 
+// GetUpdatedAt returns the UpdatedAt field value
+func (o *SnapshotFields) GetUpdatedAt() CustomTime {
+	if o == nil {
+		var ret CustomTime
+		return ret
+	}
+
+	return o.UpdatedAt
+}
+
+// GetUpdatedAtOk returns a tuple with the UpdatedAt field value
+// and a boolean to check if the value has been set.
+func (o *SnapshotFields) GetUpdatedAtOk() (*CustomTime, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.UpdatedAt, true
+}
+
+// SetUpdatedAt sets field value
+func (o *SnapshotFields) SetUpdatedAt(v CustomTime) {
+	o.UpdatedAt = v
+}
+
 // GetVmId returns the VmId field value
 func (o *SnapshotFields) GetVmId() int32 {
 	if o == nil {
@@ -336,6 +390,7 @@ func (o SnapshotFields) MarshalJSON() ([]byte, error) {
 
 func (o SnapshotFields) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	toSerialize["created_at"] = o.CreatedAt
 	toSerialize["description"] = o.Description
 	if !IsNil(o.HasFloatingIp) {
 		toSerialize["has_floating_ip"] = o.HasFloatingIp
@@ -349,6 +404,7 @@ func (o SnapshotFields) ToMap() (map[string]interface{}, error) {
 	toSerialize["region_id"] = o.RegionId
 	toSerialize["size"] = o.Size
 	toSerialize["status"] = o.Status
+	toSerialize["updated_at"] = o.UpdatedAt
 	toSerialize["vm_id"] = o.VmId
 	return toSerialize, nil
 }
@@ -358,6 +414,7 @@ func (o *SnapshotFields) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
+		"created_at",
 		"description",
 		"id",
 		"is_image",
@@ -365,6 +422,7 @@ func (o *SnapshotFields) UnmarshalJSON(data []byte) (err error) {
 		"region_id",
 		"size",
 		"status",
+		"updated_at",
 		"vm_id",
 	}
 

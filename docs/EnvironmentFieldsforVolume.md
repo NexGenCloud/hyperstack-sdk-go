@@ -1,4 +1,4 @@
-# EnvironmentFieldsforVolume
+# EnvironmentFieldsForVolume
 
 ## Properties
 
@@ -8,45 +8,45 @@ Name | Type | Description | Notes
 
 ## Methods
 
-### NewEnvironmentFieldsforVolume
+### NewEnvironmentFieldsForVolume
 
-`func NewEnvironmentFieldsforVolume() *EnvironmentFieldsforVolume`
+`func NewEnvironmentFieldsForVolume() *EnvironmentFieldsForVolume`
 
-NewEnvironmentFieldsforVolume instantiates a new EnvironmentFieldsforVolume object
+NewEnvironmentFieldsForVolume instantiates a new EnvironmentFieldsForVolume object
 This constructor will assign default values to properties that have it defined,
 and makes sure properties required by API are set, but the set of arguments
 will change when the set of required properties is changed
 
-### NewEnvironmentFieldsforVolumeWithDefaults
+### NewEnvironmentFieldsForVolumeWithDefaults
 
-`func NewEnvironmentFieldsforVolumeWithDefaults() *EnvironmentFieldsforVolume`
+`func NewEnvironmentFieldsForVolumeWithDefaults() *EnvironmentFieldsForVolume`
 
-NewEnvironmentFieldsforVolumeWithDefaults instantiates a new EnvironmentFieldsforVolume object
+NewEnvironmentFieldsForVolumeWithDefaults instantiates a new EnvironmentFieldsForVolume object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
 ### GetName
 
-`func (o *EnvironmentFieldsforVolume) GetName() string`
+`func (o *EnvironmentFieldsForVolume) GetName() string`
 
 GetName returns the Name field if non-nil, zero value otherwise.
 
 ### GetNameOk
 
-`func (o *EnvironmentFieldsforVolume) GetNameOk() (*string, bool)`
+`func (o *EnvironmentFieldsForVolume) GetNameOk() (*string, bool)`
 
 GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetName
 
-`func (o *EnvironmentFieldsforVolume) SetName(v string)`
+`func (o *EnvironmentFieldsForVolume) SetName(v string)`
 
 SetName sets Name field to given value.
 
 ### HasName
 
-`func (o *EnvironmentFieldsforVolume) HasName() bool`
+`func (o *EnvironmentFieldsForVolume) HasName() bool`
 
 HasName returns a boolean if a field has been set.
 

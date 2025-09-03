@@ -49,6 +49,20 @@ func Test_hyperstack_EnvironmentAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test EnvironmentAPIService FetchEnvironmentNameAvailability", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var name string
+
+		resp, httpRes, err := apiClient.EnvironmentAPI.FetchEnvironmentNameAvailability(context.Background(), name).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test EnvironmentAPIService ListEnvironments", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test

@@ -23,11 +23,11 @@ func Test_hyperstack_RbacRoleAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test RbacRoleAPIService CreateRbacRole", func(t *testing.T) {
+	t.Run("Test RbacRoleAPIService CreateRBACRole", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.RbacRoleAPI.CreateRbacRole(context.Background()).Execute()
+		resp, httpRes, err := apiClient.RbacRoleAPI.CreateRBACRole(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -35,13 +35,13 @@ func Test_hyperstack_RbacRoleAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test RbacRoleAPIService DeleteRbacRole", func(t *testing.T) {
+	t.Run("Test RbacRoleAPIService DeleteRBACRole", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var id int32
 
-		resp, httpRes, err := apiClient.RbacRoleAPI.DeleteRbacRole(context.Background(), id).Execute()
+		resp, httpRes, err := apiClient.RbacRoleAPI.DeleteRBACRole(context.Background(), id).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -49,11 +49,11 @@ func Test_hyperstack_RbacRoleAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test RbacRoleAPIService ListRbacRoles", func(t *testing.T) {
+	t.Run("Test RbacRoleAPIService ListRBACRoles", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.RbacRoleAPI.ListRbacRoles(context.Background()).Execute()
+		resp, httpRes, err := apiClient.RbacRoleAPI.ListRBACRoles(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -61,27 +61,27 @@ func Test_hyperstack_RbacRoleAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test RbacRoleAPIService RetrieveRbacRoleDetails", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var id int32
-
-		resp, httpRes, err := apiClient.RbacRoleAPI.RetrieveRbacRoleDetails(context.Background(), id).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test RbacRoleAPIService UpdateRbacRole", func(t *testing.T) {
+	t.Run("Test RbacRoleAPIService RetrieveRBACRoleDetails", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var id int32
 
-		resp, httpRes, err := apiClient.RbacRoleAPI.UpdateRbacRole(context.Background(), id).Execute()
+		resp, httpRes, err := apiClient.RbacRoleAPI.RetrieveRBACRoleDetails(context.Background(), id).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test RbacRoleAPIService UpdateRBACRole", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var id int32
+
+		resp, httpRes, err := apiClient.RbacRoleAPI.UpdateRBACRole(context.Background(), id).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

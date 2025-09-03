@@ -4,7 +4,7 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**ListRegions**](RegionAPI.md#ListRegions) | **Get** /core/regions | List regions
+[**ListRegions**](RegionAPI.md#ListRegions) | **Get** /core/regions | List Regions
 
 
 
@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 > Regions ListRegions(ctx).Execute()
 
-List regions
+List Regions
 
 
 
@@ -57,7 +57,7 @@ Other parameters are passed through a pointer to a apiListRegionsRequest struct 
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 

@@ -22,33 +22,33 @@ import (
 // AssigningMemberRoleAPIService AssigningMemberRoleAPI service
 type AssigningMemberRoleAPIService service
 
-type ApiAssignRbacRoleRequest struct {
+type ApiAssignRBACRoleToUserRequest struct {
 	ctx        context.Context
 	ApiService *AssigningMemberRoleAPIService
 	userId     int32
 	payload    *AssignRbacRolePayload
 }
 
-func (r ApiAssignRbacRoleRequest) Payload(payload AssignRbacRolePayload) ApiAssignRbacRoleRequest {
+func (r ApiAssignRBACRoleToUserRequest) Payload(payload AssignRbacRolePayload) ApiAssignRBACRoleToUserRequest {
 	r.payload = &payload
 	return r
 }
 
-func (r ApiAssignRbacRoleRequest) Execute() (*RbacRoleDetailResponseModel, *http.Response, error) {
-	return r.ApiService.AssignRbacRoleExecute(r)
+func (r ApiAssignRBACRoleToUserRequest) Execute() (*RbacRoleDetailResponseModel, *http.Response, error) {
+	return r.ApiService.AssignRBACRoleToUserExecute(r)
 }
 
 /*
-AssignRbacRole Assign RBAC Role
+AssignRBACRoleToUser Assign RBAC Role
 
-Assigns a specific RBAC role to a user within your organization, granting them access to the resource actions permitted by the role. Provide the user ID in the path and the role ID in the request body. For additional information, [click here](https://infrahub-doc.nexgencloud.com/docs/api-reference/auth-resources/rbac/manage-member-roles/assign-rbac-role).
+Assigns a specific RBAC role to a user within your organization, granting them access to the resource actions permitted by the role. Provide the user ID in the path and the role ID in the request body. For additional information, [click here](https://docs.hyperstack.cloud/docs/api-reference/auth-resources/rbac/manage-member-roles/assign-rbac-role).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param userId
-	@return ApiAssignRbacRoleRequest
+	@return ApiAssignRBACRoleToUserRequest
 */
-func (a *AssigningMemberRoleAPIService) AssignRbacRole(ctx context.Context, userId int32) ApiAssignRbacRoleRequest {
-	return ApiAssignRbacRoleRequest{
+func (a *AssigningMemberRoleAPIService) AssignRBACRoleToUser(ctx context.Context, userId int32) ApiAssignRBACRoleToUserRequest {
+	return ApiAssignRBACRoleToUserRequest{
 		ApiService: a,
 		ctx:        ctx,
 		userId:     userId,
@@ -58,7 +58,7 @@ func (a *AssigningMemberRoleAPIService) AssignRbacRole(ctx context.Context, user
 // Execute executes the request
 //
 //	@return RbacRoleDetailResponseModel
-func (a *AssigningMemberRoleAPIService) AssignRbacRoleExecute(r ApiAssignRbacRoleRequest) (*RbacRoleDetailResponseModel, *http.Response, error) {
+func (a *AssigningMemberRoleAPIService) AssignRBACRoleToUserExecute(r ApiAssignRBACRoleToUserRequest) (*RbacRoleDetailResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
@@ -66,7 +66,7 @@ func (a *AssigningMemberRoleAPIService) AssignRbacRoleExecute(r ApiAssignRbacRol
 		localVarReturnValue *RbacRoleDetailResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AssigningMemberRoleAPIService.AssignRbacRole")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AssigningMemberRoleAPIService.AssignRBACRoleToUser")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -111,20 +111,6 @@ func (a *AssigningMemberRoleAPIService) AssignRbacRoleExecute(r ApiAssignRbacRol
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -198,27 +184,27 @@ func (a *AssigningMemberRoleAPIService) AssignRbacRoleExecute(r ApiAssignRbacRol
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiRemoveRbacRoleFromUserRequest struct {
+type ApiRemoveRBACRoleFromUserRequest struct {
 	ctx        context.Context
 	ApiService *AssigningMemberRoleAPIService
 	userId     int32
 }
 
-func (r ApiRemoveRbacRoleFromUserRequest) Execute() (*CommonResponseModel, *http.Response, error) {
-	return r.ApiService.RemoveRbacRoleFromUserExecute(r)
+func (r ApiRemoveRBACRoleFromUserRequest) Execute() (*CommonResponseModel, *http.Response, error) {
+	return r.ApiService.RemoveRBACRoleFromUserExecute(r)
 }
 
 /*
-RemoveRbacRoleFromUser Remove RBAC Role From User
+RemoveRBACRoleFromUser Remove RBAC Role From User
 
-Removes an RBAC role from a user within your organization, revoking the resource permissions they had access to. Provide the user ID in the path. For additional information, [click here](https://infrahub-doc.nexgencloud.com/docs/api-reference/auth-resources/rbac/manage-member-roles/revoke-rbac-role).
+Removes an RBAC role from a user within your organization, revoking the resource permissions they had access to. Provide the user ID in the path. For additional information, [click here](https://docs.hyperstack.cloud/docs/api-reference/auth-resources/rbac/manage-member-roles/revoke-rbac-role).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param userId
-	@return ApiRemoveRbacRoleFromUserRequest
+	@return ApiRemoveRBACRoleFromUserRequest
 */
-func (a *AssigningMemberRoleAPIService) RemoveRbacRoleFromUser(ctx context.Context, userId int32) ApiRemoveRbacRoleFromUserRequest {
-	return ApiRemoveRbacRoleFromUserRequest{
+func (a *AssigningMemberRoleAPIService) RemoveRBACRoleFromUser(ctx context.Context, userId int32) ApiRemoveRBACRoleFromUserRequest {
+	return ApiRemoveRBACRoleFromUserRequest{
 		ApiService: a,
 		ctx:        ctx,
 		userId:     userId,
@@ -228,7 +214,7 @@ func (a *AssigningMemberRoleAPIService) RemoveRbacRoleFromUser(ctx context.Conte
 // Execute executes the request
 //
 //	@return CommonResponseModel
-func (a *AssigningMemberRoleAPIService) RemoveRbacRoleFromUserExecute(r ApiRemoveRbacRoleFromUserRequest) (*CommonResponseModel, *http.Response, error) {
+func (a *AssigningMemberRoleAPIService) RemoveRBACRoleFromUserExecute(r ApiRemoveRBACRoleFromUserRequest) (*CommonResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
@@ -236,7 +222,7 @@ func (a *AssigningMemberRoleAPIService) RemoveRbacRoleFromUserExecute(r ApiRemov
 		localVarReturnValue *CommonResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AssigningMemberRoleAPIService.RemoveRbacRoleFromUser")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AssigningMemberRoleAPIService.RemoveRBACRoleFromUser")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -276,20 +262,6 @@ func (a *AssigningMemberRoleAPIService) RemoveRbacRoleFromUserExecute(r ApiRemov
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

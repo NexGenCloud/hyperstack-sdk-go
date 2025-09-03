@@ -22,37 +22,37 @@ import (
 // FloatingIpAPIService FloatingIpAPI service
 type FloatingIpAPIService service
 
-type ApiAttachPublicIpToVirtualMachineRequest struct {
+type ApiAttachPublicIPToVirtualMachineRequest struct {
 	ctx        context.Context
 	ApiService *FloatingIpAPIService
-	id         int32
+	vmId       int32
 }
 
-func (r ApiAttachPublicIpToVirtualMachineRequest) Execute() (*ResponseModel, *http.Response, error) {
-	return r.ApiService.AttachPublicIpToVirtualMachineExecute(r)
+func (r ApiAttachPublicIPToVirtualMachineRequest) Execute() (*ResponseModel, *http.Response, error) {
+	return r.ApiService.AttachPublicIPToVirtualMachineExecute(r)
 }
 
 /*
-AttachPublicIpToVirtualMachine Attach public IP to virtual machine
+AttachPublicIPToVirtualMachine Attach public IP to virtual machine
 
-Initiates the creation of a public IP address and attaches it to an existing virtual machine, making it accessible through the internet. Include the virtual machine ID in the path to attach a public IP to the specified VM. For more information on public IP addresses, [**click here**](https://infrahub-doc.nexgencloud.com/docs/virtual-machines/public-ip).
+Initiates the creation of a public IP address and attaches it to an existing virtual machine, making it accessible through the internet. Include the virtual machine ID in the path to attach a public IP to the specified VM. For more information on public IP addresses, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/floating-ip/attach-floating-ip/).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param id
-	@return ApiAttachPublicIpToVirtualMachineRequest
+	@param vmId
+	@return ApiAttachPublicIPToVirtualMachineRequest
 */
-func (a *FloatingIpAPIService) AttachPublicIpToVirtualMachine(ctx context.Context, id int32) ApiAttachPublicIpToVirtualMachineRequest {
-	return ApiAttachPublicIpToVirtualMachineRequest{
+func (a *FloatingIpAPIService) AttachPublicIPToVirtualMachine(ctx context.Context, vmId int32) ApiAttachPublicIPToVirtualMachineRequest {
+	return ApiAttachPublicIPToVirtualMachineRequest{
 		ApiService: a,
 		ctx:        ctx,
-		id:         id,
+		vmId:       vmId,
 	}
 }
 
 // Execute executes the request
 //
 //	@return ResponseModel
-func (a *FloatingIpAPIService) AttachPublicIpToVirtualMachineExecute(r ApiAttachPublicIpToVirtualMachineRequest) (*ResponseModel, *http.Response, error) {
+func (a *FloatingIpAPIService) AttachPublicIPToVirtualMachineExecute(r ApiAttachPublicIPToVirtualMachineRequest) (*ResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -60,13 +60,13 @@ func (a *FloatingIpAPIService) AttachPublicIpToVirtualMachineExecute(r ApiAttach
 		localVarReturnValue *ResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FloatingIpAPIService.AttachPublicIpToVirtualMachine")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FloatingIpAPIService.AttachPublicIPToVirtualMachine")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/core/virtual-machines/{id}/attach-floatingip"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
+	localVarPath := localBasePath + "/core/virtual-machines/{vm_id}/attach-floatingip"
+	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -100,20 +100,6 @@ func (a *FloatingIpAPIService) AttachPublicIpToVirtualMachineExecute(r ApiAttach
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -161,6 +147,17 @@ func (a *FloatingIpAPIService) AttachPublicIpToVirtualMachineExecute(r ApiAttach
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		if localVarHTTPResponse.StatusCode == 402 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ErrorResponseModel
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
@@ -187,37 +184,37 @@ func (a *FloatingIpAPIService) AttachPublicIpToVirtualMachineExecute(r ApiAttach
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiDetachPublicIpFromVirtualMachineRequest struct {
+type ApiDetachPublicIPFromVirtualMachineRequest struct {
 	ctx        context.Context
 	ApiService *FloatingIpAPIService
-	id         int32
+	vmId       int32
 }
 
-func (r ApiDetachPublicIpFromVirtualMachineRequest) Execute() (*ResponseModel, *http.Response, error) {
-	return r.ApiService.DetachPublicIpFromVirtualMachineExecute(r)
+func (r ApiDetachPublicIPFromVirtualMachineRequest) Execute() (*ResponseModel, *http.Response, error) {
+	return r.ApiService.DetachPublicIPFromVirtualMachineExecute(r)
 }
 
 /*
-DetachPublicIpFromVirtualMachine Detach public IP from virtual machine
+DetachPublicIPFromVirtualMachine Detach public IP from virtual machine
 
-Removes a public IP address from an existing virtual machine, disabling internet accessibility to the VM. Include the virtual machine ID in the path to detach the public IP from the specified VM. For more information on public IP addresses, [**click here**](https://infrahub-doc.nexgencloud.com/docs/virtual-machines/public-ip).
+Removes a public IP address from an existing virtual machine, disabling internet accessibility to the VM. Include the virtual machine ID in the path to detach the public IP from the specified VM. For more information on public IP addresses, [**click here**](https://docs.hyperstack.cloud/docs/virtual-machines/public-ip).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param id
-	@return ApiDetachPublicIpFromVirtualMachineRequest
+	@param vmId
+	@return ApiDetachPublicIPFromVirtualMachineRequest
 */
-func (a *FloatingIpAPIService) DetachPublicIpFromVirtualMachine(ctx context.Context, id int32) ApiDetachPublicIpFromVirtualMachineRequest {
-	return ApiDetachPublicIpFromVirtualMachineRequest{
+func (a *FloatingIpAPIService) DetachPublicIPFromVirtualMachine(ctx context.Context, vmId int32) ApiDetachPublicIPFromVirtualMachineRequest {
+	return ApiDetachPublicIPFromVirtualMachineRequest{
 		ApiService: a,
 		ctx:        ctx,
-		id:         id,
+		vmId:       vmId,
 	}
 }
 
 // Execute executes the request
 //
 //	@return ResponseModel
-func (a *FloatingIpAPIService) DetachPublicIpFromVirtualMachineExecute(r ApiDetachPublicIpFromVirtualMachineRequest) (*ResponseModel, *http.Response, error) {
+func (a *FloatingIpAPIService) DetachPublicIPFromVirtualMachineExecute(r ApiDetachPublicIPFromVirtualMachineRequest) (*ResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -225,13 +222,13 @@ func (a *FloatingIpAPIService) DetachPublicIpFromVirtualMachineExecute(r ApiDeta
 		localVarReturnValue *ResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FloatingIpAPIService.DetachPublicIpFromVirtualMachine")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FloatingIpAPIService.DetachPublicIPFromVirtualMachine")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/core/virtual-machines/{id}/detach-floatingip"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
+	localVarPath := localBasePath + "/core/virtual-machines/{vm_id}/detach-floatingip"
+	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -265,20 +262,6 @@ func (a *FloatingIpAPIService) DetachPublicIpFromVirtualMachineExecute(r ApiDeta
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

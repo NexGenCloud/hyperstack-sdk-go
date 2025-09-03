@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Message** | Pointer to **string** |  | [optional] 
 **Status** | Pointer to **bool** |  | [optional] 
-**Volume** | Pointer to [**VolumeFields**](VolumeFields.md) |  | [optional] 
+**Volume** | Pointer to [**[]VolumeFields**](VolumeFields.md) |  | [optional] 
 
 ## Methods
 
@@ -79,20 +79,20 @@ HasStatus returns a boolean if a field has been set.
 
 ### GetVolume
 
-`func (o *Volume) GetVolume() VolumeFields`
+`func (o *Volume) GetVolume() []VolumeFields`
 
 GetVolume returns the Volume field if non-nil, zero value otherwise.
 
 ### GetVolumeOk
 
-`func (o *Volume) GetVolumeOk() (*VolumeFields, bool)`
+`func (o *Volume) GetVolumeOk() (*[]VolumeFields, bool)`
 
 GetVolumeOk returns a tuple with the Volume field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetVolume
 
-`func (o *Volume) SetVolume(v VolumeFields)`
+`func (o *Volume) SetVolume(v []VolumeFields)`
 
 SetVolume sets Volume field to given value.
 

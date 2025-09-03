@@ -21,23 +21,25 @@ import (
 // CreditAPIService CreditAPI service
 type CreditAPIService service
 
-type ApiGetViewCreditAndThresholdRequest struct {
+type ApiGetCredit2Request struct {
 	ctx        context.Context
 	ApiService *CreditAPIService
 }
 
-func (r ApiGetViewCreditAndThresholdRequest) Execute() (*Getcreditandthresholdinfoinresponse, *http.Response, error) {
-	return r.ApiService.GetViewCreditAndThresholdExecute(r)
+func (r ApiGetCredit2Request) Execute() (*GetCreditAndThresholdInfoInResponse, *http.Response, error) {
+	return r.ApiService.GetCredit2Execute(r)
 }
 
 /*
-GetViewCreditAndThreshold GET: View credit and threshold
+GetCredit2 GET: View credit and threshold
+
+Retrieves the current credit balance for your [**organization**](/docs/rbac/organization). Ensuring a positive credit balance allows you to create resources. However, for prepaid accounts, if the credit balance falls below $0, all associated resources will be temporarily suspended until a [**payment**](/docs/api-reference/billing-resources/create-payment) is made. For additional information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/billing-resources/retrieve-credit-balance/).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetViewCreditAndThresholdRequest
+	@return ApiGetCredit2Request
 */
-func (a *CreditAPIService) GetViewCreditAndThreshold(ctx context.Context) ApiGetViewCreditAndThresholdRequest {
-	return ApiGetViewCreditAndThresholdRequest{
+func (a *CreditAPIService) GetCredit2(ctx context.Context) ApiGetCredit2Request {
+	return ApiGetCredit2Request{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -45,16 +47,16 @@ func (a *CreditAPIService) GetViewCreditAndThreshold(ctx context.Context) ApiGet
 
 // Execute executes the request
 //
-//	@return Getcreditandthresholdinfoinresponse
-func (a *CreditAPIService) GetViewCreditAndThresholdExecute(r ApiGetViewCreditAndThresholdRequest) (*Getcreditandthresholdinfoinresponse, *http.Response, error) {
+//	@return GetCreditAndThresholdInfoInResponse
+func (a *CreditAPIService) GetCredit2Execute(r ApiGetCredit2Request) (*GetCreditAndThresholdInfoInResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *Getcreditandthresholdinfoinresponse
+		localVarReturnValue *GetCreditAndThresholdInfoInResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CreditAPIService.GetViewCreditAndThreshold")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CreditAPIService.GetCredit2")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -93,20 +95,6 @@ func (a *CreditAPIService) GetViewCreditAndThresholdExecute(r ApiGetViewCreditAn
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

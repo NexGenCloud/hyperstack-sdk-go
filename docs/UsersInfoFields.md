@@ -16,6 +16,7 @@ Name | Type | Description | Notes
 **OrganizationId** | Pointer to **int32** |  | [optional] 
 **Phone** | Pointer to **string** |  | [optional] 
 **State** | Pointer to **string** |  | [optional] 
+**StripeUserId** | Pointer to **string** |  | [optional] 
 **VatNumber** | Pointer to **string** |  | [optional] 
 **ZipCode** | Pointer to **string** |  | [optional] 
 
@@ -337,6 +338,31 @@ SetState sets State field to given value.
 `func (o *UsersInfoFields) HasState() bool`
 
 HasState returns a boolean if a field has been set.
+
+### GetStripeUserId
+
+`func (o *UsersInfoFields) GetStripeUserId() string`
+
+GetStripeUserId returns the StripeUserId field if non-nil, zero value otherwise.
+
+### GetStripeUserIdOk
+
+`func (o *UsersInfoFields) GetStripeUserIdOk() (*string, bool)`
+
+GetStripeUserIdOk returns a tuple with the StripeUserId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetStripeUserId
+
+`func (o *UsersInfoFields) SetStripeUserId(v string)`
+
+SetStripeUserId sets StripeUserId field to given value.
+
+### HasStripeUserId
+
+`func (o *UsersInfoFields) HasStripeUserId() bool`
+
+HasStripeUserId returns a boolean if a field has been set.
 
 ### GetVatNumber
 

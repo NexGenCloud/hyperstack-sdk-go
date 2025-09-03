@@ -23,9 +23,9 @@ import (
 type VirtualMachineEventsAPIService service
 
 type ApiListVirtualMachineEventsRequest struct {
-	ctx              context.Context
-	ApiService       *VirtualMachineEventsAPIService
-	virtualMachineId string
+	ctx        context.Context
+	ApiService *VirtualMachineEventsAPIService
+	vmId       int32
 }
 
 func (r ApiListVirtualMachineEventsRequest) Execute() (*InstanceEvents, *http.Response, error) {
@@ -35,17 +35,17 @@ func (r ApiListVirtualMachineEventsRequest) Execute() (*InstanceEvents, *http.Re
 /*
 ListVirtualMachineEvents List virtual machine events
 
-Retrieves a list of all events in a virtual machine's history, which records actions performed on the specified virtual machine. Include the virtual machine ID in the path to retrieve the history of events. For more details on virtual machine events history, [**click here**](https://infrahub-doc.nexgencloud.com/docs/virtual-machines/vm-performance-metrics-and-events-history#events-history).
+Retrieves a list of all events in a virtual machine's history, which records actions performed on the specified virtual machine. Include the virtual machine ID in the path to retrieve the history of events. For more details on virtual machine events history, [**click here**](https://docs.hyperstack.cloud/docs/virtual-machines/vm-performance-metrics-and-events-history#events-history).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param virtualMachineId
+	@param vmId
 	@return ApiListVirtualMachineEventsRequest
 */
-func (a *VirtualMachineEventsAPIService) ListVirtualMachineEvents(ctx context.Context, virtualMachineId string) ApiListVirtualMachineEventsRequest {
+func (a *VirtualMachineEventsAPIService) ListVirtualMachineEvents(ctx context.Context, vmId int32) ApiListVirtualMachineEventsRequest {
 	return ApiListVirtualMachineEventsRequest{
-		ApiService:       a,
-		ctx:              ctx,
-		virtualMachineId: virtualMachineId,
+		ApiService: a,
+		ctx:        ctx,
+		vmId:       vmId,
 	}
 }
 
@@ -65,8 +65,8 @@ func (a *VirtualMachineEventsAPIService) ListVirtualMachineEventsExecute(r ApiLi
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/core/virtual-machines/{virtual_machine_id}/events"
-	localVarPath = strings.Replace(localVarPath, "{"+"virtual_machine_id"+"}", url.PathEscape(parameterValueToString(r.virtualMachineId, "virtualMachineId")), -1)
+	localVarPath := localBasePath + "/core/virtual-machines/{vm_id}/events"
+	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -100,20 +100,6 @@ func (a *VirtualMachineEventsAPIService) ListVirtualMachineEventsExecute(r ApiLi
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

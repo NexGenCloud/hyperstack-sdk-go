@@ -19,14 +19,15 @@ var _ MappedNullable = &ContractInstanceFields{}
 
 // ContractInstanceFields struct for ContractInstanceFields
 type ContractInstanceFields struct {
-	CreatedAt       *CustomTime `json:"created_at,omitempty"`
-	FlavorName      *string     `json:"flavor_name,omitempty"`
-	GpuCount        *int32      `json:"gpu_count,omitempty"`
-	Id              *int32      `json:"id,omitempty"`
-	Name            *string     `json:"name,omitempty"`
-	Status          *string     `json:"status,omitempty"`
-	TerminationTime *CustomTime `json:"termination_time,omitempty"`
-	TotalUsageTime  *int32      `json:"total_usage_time,omitempty"`
+	Cluster         *ClusterFields `json:"cluster,omitempty"`
+	CreatedAt       *CustomTime    `json:"created_at,omitempty"`
+	FlavorName      *string        `json:"flavor_name,omitempty"`
+	GpuCount        *int32         `json:"gpu_count,omitempty"`
+	Id              *int32         `json:"id,omitempty"`
+	Name            *string        `json:"name,omitempty"`
+	Status          *string        `json:"status,omitempty"`
+	TerminationTime *CustomTime    `json:"termination_time,omitempty"`
+	TotalUsageTime  *int32         `json:"total_usage_time,omitempty"`
 }
 
 // NewContractInstanceFields instantiates a new ContractInstanceFields object
@@ -44,6 +45,38 @@ func NewContractInstanceFields() *ContractInstanceFields {
 func NewContractInstanceFieldsWithDefaults() *ContractInstanceFields {
 	this := ContractInstanceFields{}
 	return &this
+}
+
+// GetCluster returns the Cluster field value if set, zero value otherwise.
+func (o *ContractInstanceFields) GetCluster() ClusterFields {
+	if o == nil || IsNil(o.Cluster) {
+		var ret ClusterFields
+		return ret
+	}
+	return *o.Cluster
+}
+
+// GetClusterOk returns a tuple with the Cluster field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ContractInstanceFields) GetClusterOk() (*ClusterFields, bool) {
+	if o == nil || IsNil(o.Cluster) {
+		return nil, false
+	}
+	return o.Cluster, true
+}
+
+// HasCluster returns a boolean if a field has been set.
+func (o *ContractInstanceFields) HasCluster() bool {
+	if o != nil && !IsNil(o.Cluster) {
+		return true
+	}
+
+	return false
+}
+
+// SetCluster gets a reference to the given ClusterFields and assigns it to the Cluster field.
+func (o *ContractInstanceFields) SetCluster(v ClusterFields) {
+	o.Cluster = &v
 }
 
 // GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
@@ -312,6 +345,9 @@ func (o ContractInstanceFields) MarshalJSON() ([]byte, error) {
 
 func (o ContractInstanceFields) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Cluster) {
+		toSerialize["cluster"] = o.Cluster
+	}
 	if !IsNil(o.CreatedAt) {
 		toSerialize["created_at"] = o.CreatedAt
 	}

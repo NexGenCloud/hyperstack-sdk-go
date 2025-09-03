@@ -19,19 +19,16 @@ var _ MappedNullable = &FlavorFields{}
 
 // FlavorFields struct for FlavorFields
 type FlavorFields struct {
-	Cpu            *int32         `json:"cpu,omitempty"`
-	CreatedAt      *CustomTime    `json:"created_at,omitempty"`
-	Disk           *int32         `json:"disk,omitempty"`
-	DisplayName    *string        `json:"display_name,omitempty"`
-	Ephemeral      *int32         `json:"ephemeral,omitempty"`
-	Gpu            *string        `json:"gpu,omitempty"`
-	GpuCount       *int32         `json:"gpu_count,omitempty"`
-	Id             *int32         `json:"id,omitempty"`
-	Labels         []LableResonse `json:"labels,omitempty"`
-	Name           *string        `json:"name,omitempty"`
-	Ram            *float32       `json:"ram,omitempty"`
-	RegionName     *string        `json:"region_name,omitempty"`
-	StockAvailable *bool          `json:"stock_available,omitempty"`
+	Cpu       *int32                 `json:"cpu,omitempty"`
+	Disk      *int32                 `json:"disk,omitempty"`
+	Ephemeral *int32                 `json:"ephemeral,omitempty"`
+	Features  map[string]interface{} `json:"features,omitempty"`
+	Gpu       *string                `json:"gpu,omitempty"`
+	GpuCount  *int32                 `json:"gpu_count,omitempty"`
+	Id        *int32                 `json:"id,omitempty"`
+	Labels    []LableResonse         `json:"labels,omitempty"`
+	Name      *string                `json:"name,omitempty"`
+	Ram       *float32               `json:"ram,omitempty"`
 }
 
 // NewFlavorFields instantiates a new FlavorFields object
@@ -83,38 +80,6 @@ func (o *FlavorFields) SetCpu(v int32) {
 	o.Cpu = &v
 }
 
-// GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
-func (o *FlavorFields) GetCreatedAt() CustomTime {
-	if o == nil || IsNil(o.CreatedAt) {
-		var ret CustomTime
-		return ret
-	}
-	return *o.CreatedAt
-}
-
-// GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *FlavorFields) GetCreatedAtOk() (*CustomTime, bool) {
-	if o == nil || IsNil(o.CreatedAt) {
-		return nil, false
-	}
-	return o.CreatedAt, true
-}
-
-// HasCreatedAt returns a boolean if a field has been set.
-func (o *FlavorFields) HasCreatedAt() bool {
-	if o != nil && !IsNil(o.CreatedAt) {
-		return true
-	}
-
-	return false
-}
-
-// SetCreatedAt gets a reference to the given CustomTime and assigns it to the CreatedAt field.
-func (o *FlavorFields) SetCreatedAt(v CustomTime) {
-	o.CreatedAt = &v
-}
-
 // GetDisk returns the Disk field value if set, zero value otherwise.
 func (o *FlavorFields) GetDisk() int32 {
 	if o == nil || IsNil(o.Disk) {
@@ -147,38 +112,6 @@ func (o *FlavorFields) SetDisk(v int32) {
 	o.Disk = &v
 }
 
-// GetDisplayName returns the DisplayName field value if set, zero value otherwise.
-func (o *FlavorFields) GetDisplayName() string {
-	if o == nil || IsNil(o.DisplayName) {
-		var ret string
-		return ret
-	}
-	return *o.DisplayName
-}
-
-// GetDisplayNameOk returns a tuple with the DisplayName field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *FlavorFields) GetDisplayNameOk() (*string, bool) {
-	if o == nil || IsNil(o.DisplayName) {
-		return nil, false
-	}
-	return o.DisplayName, true
-}
-
-// HasDisplayName returns a boolean if a field has been set.
-func (o *FlavorFields) HasDisplayName() bool {
-	if o != nil && !IsNil(o.DisplayName) {
-		return true
-	}
-
-	return false
-}
-
-// SetDisplayName gets a reference to the given string and assigns it to the DisplayName field.
-func (o *FlavorFields) SetDisplayName(v string) {
-	o.DisplayName = &v
-}
-
 // GetEphemeral returns the Ephemeral field value if set, zero value otherwise.
 func (o *FlavorFields) GetEphemeral() int32 {
 	if o == nil || IsNil(o.Ephemeral) {
@@ -209,6 +142,38 @@ func (o *FlavorFields) HasEphemeral() bool {
 // SetEphemeral gets a reference to the given int32 and assigns it to the Ephemeral field.
 func (o *FlavorFields) SetEphemeral(v int32) {
 	o.Ephemeral = &v
+}
+
+// GetFeatures returns the Features field value if set, zero value otherwise.
+func (o *FlavorFields) GetFeatures() map[string]interface{} {
+	if o == nil || IsNil(o.Features) {
+		var ret map[string]interface{}
+		return ret
+	}
+	return o.Features
+}
+
+// GetFeaturesOk returns a tuple with the Features field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *FlavorFields) GetFeaturesOk() (map[string]interface{}, bool) {
+	if o == nil || IsNil(o.Features) {
+		return map[string]interface{}{}, false
+	}
+	return o.Features, true
+}
+
+// HasFeatures returns a boolean if a field has been set.
+func (o *FlavorFields) HasFeatures() bool {
+	if o != nil && !IsNil(o.Features) {
+		return true
+	}
+
+	return false
+}
+
+// SetFeatures gets a reference to the given map[string]interface{} and assigns it to the Features field.
+func (o *FlavorFields) SetFeatures(v map[string]interface{}) {
+	o.Features = v
 }
 
 // GetGpu returns the Gpu field value if set, zero value otherwise.
@@ -403,70 +368,6 @@ func (o *FlavorFields) SetRam(v float32) {
 	o.Ram = &v
 }
 
-// GetRegionName returns the RegionName field value if set, zero value otherwise.
-func (o *FlavorFields) GetRegionName() string {
-	if o == nil || IsNil(o.RegionName) {
-		var ret string
-		return ret
-	}
-	return *o.RegionName
-}
-
-// GetRegionNameOk returns a tuple with the RegionName field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *FlavorFields) GetRegionNameOk() (*string, bool) {
-	if o == nil || IsNil(o.RegionName) {
-		return nil, false
-	}
-	return o.RegionName, true
-}
-
-// HasRegionName returns a boolean if a field has been set.
-func (o *FlavorFields) HasRegionName() bool {
-	if o != nil && !IsNil(o.RegionName) {
-		return true
-	}
-
-	return false
-}
-
-// SetRegionName gets a reference to the given string and assigns it to the RegionName field.
-func (o *FlavorFields) SetRegionName(v string) {
-	o.RegionName = &v
-}
-
-// GetStockAvailable returns the StockAvailable field value if set, zero value otherwise.
-func (o *FlavorFields) GetStockAvailable() bool {
-	if o == nil || IsNil(o.StockAvailable) {
-		var ret bool
-		return ret
-	}
-	return *o.StockAvailable
-}
-
-// GetStockAvailableOk returns a tuple with the StockAvailable field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *FlavorFields) GetStockAvailableOk() (*bool, bool) {
-	if o == nil || IsNil(o.StockAvailable) {
-		return nil, false
-	}
-	return o.StockAvailable, true
-}
-
-// HasStockAvailable returns a boolean if a field has been set.
-func (o *FlavorFields) HasStockAvailable() bool {
-	if o != nil && !IsNil(o.StockAvailable) {
-		return true
-	}
-
-	return false
-}
-
-// SetStockAvailable gets a reference to the given bool and assigns it to the StockAvailable field.
-func (o *FlavorFields) SetStockAvailable(v bool) {
-	o.StockAvailable = &v
-}
-
 func (o FlavorFields) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -480,17 +381,14 @@ func (o FlavorFields) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Cpu) {
 		toSerialize["cpu"] = o.Cpu
 	}
-	if !IsNil(o.CreatedAt) {
-		toSerialize["created_at"] = o.CreatedAt
-	}
 	if !IsNil(o.Disk) {
 		toSerialize["disk"] = o.Disk
 	}
-	if !IsNil(o.DisplayName) {
-		toSerialize["display_name"] = o.DisplayName
-	}
 	if !IsNil(o.Ephemeral) {
 		toSerialize["ephemeral"] = o.Ephemeral
+	}
+	if !IsNil(o.Features) {
+		toSerialize["features"] = o.Features
 	}
 	if !IsNil(o.Gpu) {
 		toSerialize["gpu"] = o.Gpu
@@ -509,12 +407,6 @@ func (o FlavorFields) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Ram) {
 		toSerialize["ram"] = o.Ram
-	}
-	if !IsNil(o.RegionName) {
-		toSerialize["region_name"] = o.RegionName
-	}
-	if !IsNil(o.StockAvailable) {
-		toSerialize["stock_available"] = o.StockAvailable
 	}
 	return toSerialize, nil
 }

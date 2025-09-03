@@ -19,9 +19,9 @@ var _ MappedNullable = &Volume{}
 
 // Volume struct for Volume
 type Volume struct {
-	Message *string       `json:"message,omitempty"`
-	Status  *bool         `json:"status,omitempty"`
-	Volume  *VolumeFields `json:"volume,omitempty"`
+	Message *string        `json:"message,omitempty"`
+	Status  *bool          `json:"status,omitempty"`
+	Volume  []VolumeFields `json:"volume,omitempty"`
 }
 
 // NewVolume instantiates a new Volume object
@@ -106,17 +106,17 @@ func (o *Volume) SetStatus(v bool) {
 }
 
 // GetVolume returns the Volume field value if set, zero value otherwise.
-func (o *Volume) GetVolume() VolumeFields {
+func (o *Volume) GetVolume() []VolumeFields {
 	if o == nil || IsNil(o.Volume) {
-		var ret VolumeFields
+		var ret []VolumeFields
 		return ret
 	}
-	return *o.Volume
+	return o.Volume
 }
 
 // GetVolumeOk returns a tuple with the Volume field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Volume) GetVolumeOk() (*VolumeFields, bool) {
+func (o *Volume) GetVolumeOk() ([]VolumeFields, bool) {
 	if o == nil || IsNil(o.Volume) {
 		return nil, false
 	}
@@ -132,9 +132,9 @@ func (o *Volume) HasVolume() bool {
 	return false
 }
 
-// SetVolume gets a reference to the given VolumeFields and assigns it to the Volume field.
-func (o *Volume) SetVolume(v VolumeFields) {
-	o.Volume = &v
+// SetVolume gets a reference to the given []VolumeFields and assigns it to the Volume field.
+func (o *Volume) SetVolume(v []VolumeFields) {
+	o.Volume = v
 }
 
 func (o Volume) MarshalJSON() ([]byte, error) {

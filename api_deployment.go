@@ -101,20 +101,6 @@ func (a *DeploymentAPIService) DeleteDeploymentExecute(r ApiDeleteDeploymentRequ
 			}
 		}
 	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
-			}
-		}
-	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -185,25 +171,25 @@ func (a *DeploymentAPIService) DeleteDeploymentExecute(r ApiDeleteDeploymentRequ
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiDetailsOfDeploymentByIdRequest struct {
+type ApiDetailsOfDeploymentByIDRequest struct {
 	ctx        context.Context
 	ApiService *DeploymentAPIService
 	id         int32
 }
 
-func (r ApiDetailsOfDeploymentByIdRequest) Execute() (*StartDeployment, *http.Response, error) {
-	return r.ApiService.DetailsOfDeploymentByIdExecute(r)
+func (r ApiDetailsOfDeploymentByIDRequest) Execute() (*StartDeployment, *http.Response, error) {
+	return r.ApiService.DetailsOfDeploymentByIDExecute(r)
 }
 
 /*
-DetailsOfDeploymentById Details of Deployment by ID
+DetailsOfDeploymentByID Details of Deployment by ID
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param id
-	@return ApiDetailsOfDeploymentByIdRequest
+	@return ApiDetailsOfDeploymentByIDRequest
 */
-func (a *DeploymentAPIService) DetailsOfDeploymentById(ctx context.Context, id int32) ApiDetailsOfDeploymentByIdRequest {
-	return ApiDetailsOfDeploymentByIdRequest{
+func (a *DeploymentAPIService) DetailsOfDeploymentByID(ctx context.Context, id int32) ApiDetailsOfDeploymentByIDRequest {
+	return ApiDetailsOfDeploymentByIDRequest{
 		ApiService: a,
 		ctx:        ctx,
 		id:         id,
@@ -213,7 +199,7 @@ func (a *DeploymentAPIService) DetailsOfDeploymentById(ctx context.Context, id i
 // Execute executes the request
 //
 //	@return StartDeployment
-func (a *DeploymentAPIService) DetailsOfDeploymentByIdExecute(r ApiDetailsOfDeploymentByIdRequest) (*StartDeployment, *http.Response, error) {
+func (a *DeploymentAPIService) DetailsOfDeploymentByIDExecute(r ApiDetailsOfDeploymentByIDRequest) (*StartDeployment, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -221,7 +207,7 @@ func (a *DeploymentAPIService) DetailsOfDeploymentByIdExecute(r ApiDetailsOfDepl
 		localVarReturnValue *StartDeployment
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.DetailsOfDeploymentById")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.DetailsOfDeploymentByID")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -261,20 +247,6 @@ func (a *DeploymentAPIService) DetailsOfDeploymentByIdExecute(r ApiDetailsOfDepl
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -423,20 +395,6 @@ func (a *DeploymentAPIService) ListDeploymentsExecute(r ApiListDeploymentsReques
 			}
 		}
 	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
-			}
-		}
-	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -579,20 +537,6 @@ func (a *DeploymentAPIService) StartDeploymentExecute(r ApiStartDeploymentReques
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

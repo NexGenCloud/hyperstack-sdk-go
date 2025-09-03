@@ -19,14 +19,16 @@ var _ MappedNullable = &InstanceFlavorFields{}
 
 // InstanceFlavorFields struct for InstanceFlavorFields
 type InstanceFlavorFields struct {
-	Cpu       *int32   `json:"cpu,omitempty"`
-	Disk      *int32   `json:"disk,omitempty"`
-	Ephemeral *int32   `json:"ephemeral,omitempty"`
-	Gpu       *string  `json:"gpu,omitempty"`
-	GpuCount  *int32   `json:"gpu_count,omitempty"`
-	Id        *int32   `json:"id,omitempty"`
-	Name      *string  `json:"name,omitempty"`
-	Ram       *float32 `json:"ram,omitempty"`
+	Cpu       *int32                 `json:"cpu,omitempty"`
+	Disk      *int32                 `json:"disk,omitempty"`
+	Ephemeral *int32                 `json:"ephemeral,omitempty"`
+	Features  map[string]interface{} `json:"features,omitempty"`
+	Gpu       *string                `json:"gpu,omitempty"`
+	GpuCount  *int32                 `json:"gpu_count,omitempty"`
+	Id        *int32                 `json:"id,omitempty"`
+	Labels    []FlavorLabelFields    `json:"labels,omitempty"`
+	Name      *string                `json:"name,omitempty"`
+	Ram       *float32               `json:"ram,omitempty"`
 }
 
 // NewInstanceFlavorFields instantiates a new InstanceFlavorFields object
@@ -142,6 +144,38 @@ func (o *InstanceFlavorFields) SetEphemeral(v int32) {
 	o.Ephemeral = &v
 }
 
+// GetFeatures returns the Features field value if set, zero value otherwise.
+func (o *InstanceFlavorFields) GetFeatures() map[string]interface{} {
+	if o == nil || IsNil(o.Features) {
+		var ret map[string]interface{}
+		return ret
+	}
+	return o.Features
+}
+
+// GetFeaturesOk returns a tuple with the Features field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *InstanceFlavorFields) GetFeaturesOk() (map[string]interface{}, bool) {
+	if o == nil || IsNil(o.Features) {
+		return map[string]interface{}{}, false
+	}
+	return o.Features, true
+}
+
+// HasFeatures returns a boolean if a field has been set.
+func (o *InstanceFlavorFields) HasFeatures() bool {
+	if o != nil && !IsNil(o.Features) {
+		return true
+	}
+
+	return false
+}
+
+// SetFeatures gets a reference to the given map[string]interface{} and assigns it to the Features field.
+func (o *InstanceFlavorFields) SetFeatures(v map[string]interface{}) {
+	o.Features = v
+}
+
 // GetGpu returns the Gpu field value if set, zero value otherwise.
 func (o *InstanceFlavorFields) GetGpu() string {
 	if o == nil || IsNil(o.Gpu) {
@@ -238,6 +272,38 @@ func (o *InstanceFlavorFields) SetId(v int32) {
 	o.Id = &v
 }
 
+// GetLabels returns the Labels field value if set, zero value otherwise.
+func (o *InstanceFlavorFields) GetLabels() []FlavorLabelFields {
+	if o == nil || IsNil(o.Labels) {
+		var ret []FlavorLabelFields
+		return ret
+	}
+	return o.Labels
+}
+
+// GetLabelsOk returns a tuple with the Labels field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *InstanceFlavorFields) GetLabelsOk() ([]FlavorLabelFields, bool) {
+	if o == nil || IsNil(o.Labels) {
+		return nil, false
+	}
+	return o.Labels, true
+}
+
+// HasLabels returns a boolean if a field has been set.
+func (o *InstanceFlavorFields) HasLabels() bool {
+	if o != nil && !IsNil(o.Labels) {
+		return true
+	}
+
+	return false
+}
+
+// SetLabels gets a reference to the given []FlavorLabelFields and assigns it to the Labels field.
+func (o *InstanceFlavorFields) SetLabels(v []FlavorLabelFields) {
+	o.Labels = v
+}
+
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *InstanceFlavorFields) GetName() string {
 	if o == nil || IsNil(o.Name) {
@@ -321,6 +387,9 @@ func (o InstanceFlavorFields) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Ephemeral) {
 		toSerialize["ephemeral"] = o.Ephemeral
 	}
+	if !IsNil(o.Features) {
+		toSerialize["features"] = o.Features
+	}
 	if !IsNil(o.Gpu) {
 		toSerialize["gpu"] = o.Gpu
 	}
@@ -329,6 +398,9 @@ func (o InstanceFlavorFields) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Id) {
 		toSerialize["id"] = o.Id
+	}
+	if !IsNil(o.Labels) {
+		toSerialize["labels"] = o.Labels
 	}
 	if !IsNil(o.Name) {
 		toSerialize["name"] = o.Name

@@ -4,13 +4,13 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**ListGpus**](GpuAPI.md#ListGpus) | **Get** /core/gpus | List GPUs
+[**ListGPUs**](GpuAPI.md#ListGPUs) | **Get** /core/gpus | List GPUs
 
 
 
-## ListGpus
+## ListGPUs
 
-> GPUList ListGpus(ctx).Execute()
+> GPUList ListGPUs(ctx).Execute()
 
 List GPUs
 
@@ -32,13 +32,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.GpuAPI.ListGpus(context.Background()).Execute()
+	resp, r, err := apiClient.GpuAPI.ListGPUs(context.Background()).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `GpuAPI.ListGpus``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `GpuAPI.ListGPUs``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ListGpus`: GPUList
-	fmt.Fprintf(os.Stdout, "Response from `GpuAPI.ListGpus`: %v\n", resp)
+	// response from `ListGPUs`: GPUList
+	fmt.Fprintf(os.Stdout, "Response from `GpuAPI.ListGPUs`: %v\n", resp)
 }
 ```
 
@@ -48,7 +48,7 @@ This endpoint does not need any parameter.
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiListGpusRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiListGPUsRequest struct via the builder pattern
 
 
 ### Return type
@@ -57,7 +57,7 @@ Other parameters are passed through a pointer to a apiListGpusRequest struct via
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 

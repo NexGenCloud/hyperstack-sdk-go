@@ -4,20 +4,22 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**DeploymentMode** | Pointer to **string** |  | [optional] [default to "full"]
 **EnvironmentName** | **string** |  | 
 **ImageName** | **string** |  | 
 **KeypairName** | **string** |  | 
 **KubernetesVersion** | **string** |  | 
 **MasterFlavorName** | **string** |  | 
 **Name** | **string** |  | 
-**NodeCount** | **int32** |  | 
-**NodeFlavorName** | **string** |  | 
+**NodeCount** | Pointer to **int32** |  | [optional] 
+**NodeFlavorName** | Pointer to **string** |  | [optional] 
+**NodeGroups** | Pointer to [**[]CreateClusterNodeGroupPayload**](CreateClusterNodeGroupPayload.md) |  | [optional] 
 
 ## Methods
 
 ### NewCreateClusterPayload
 
-`func NewCreateClusterPayload(environmentName string, imageName string, keypairName string, kubernetesVersion string, masterFlavorName string, name string, nodeCount int32, nodeFlavorName string, ) *CreateClusterPayload`
+`func NewCreateClusterPayload(environmentName string, imageName string, keypairName string, kubernetesVersion string, masterFlavorName string, name string, ) *CreateClusterPayload`
 
 NewCreateClusterPayload instantiates a new CreateClusterPayload object
 This constructor will assign default values to properties that have it defined,
@@ -31,6 +33,31 @@ will change when the set of required properties is changed
 NewCreateClusterPayloadWithDefaults instantiates a new CreateClusterPayload object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetDeploymentMode
+
+`func (o *CreateClusterPayload) GetDeploymentMode() string`
+
+GetDeploymentMode returns the DeploymentMode field if non-nil, zero value otherwise.
+
+### GetDeploymentModeOk
+
+`func (o *CreateClusterPayload) GetDeploymentModeOk() (*string, bool)`
+
+GetDeploymentModeOk returns a tuple with the DeploymentMode field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDeploymentMode
+
+`func (o *CreateClusterPayload) SetDeploymentMode(v string)`
+
+SetDeploymentMode sets DeploymentMode field to given value.
+
+### HasDeploymentMode
+
+`func (o *CreateClusterPayload) HasDeploymentMode() bool`
+
+HasDeploymentMode returns a boolean if a field has been set.
 
 ### GetEnvironmentName
 
@@ -171,6 +198,11 @@ and a boolean to check if the value has been set.
 
 SetNodeCount sets NodeCount field to given value.
 
+### HasNodeCount
+
+`func (o *CreateClusterPayload) HasNodeCount() bool`
+
+HasNodeCount returns a boolean if a field has been set.
 
 ### GetNodeFlavorName
 
@@ -191,6 +223,36 @@ and a boolean to check if the value has been set.
 
 SetNodeFlavorName sets NodeFlavorName field to given value.
 
+### HasNodeFlavorName
+
+`func (o *CreateClusterPayload) HasNodeFlavorName() bool`
+
+HasNodeFlavorName returns a boolean if a field has been set.
+
+### GetNodeGroups
+
+`func (o *CreateClusterPayload) GetNodeGroups() []CreateClusterNodeGroupPayload`
+
+GetNodeGroups returns the NodeGroups field if non-nil, zero value otherwise.
+
+### GetNodeGroupsOk
+
+`func (o *CreateClusterPayload) GetNodeGroupsOk() (*[]CreateClusterNodeGroupPayload, bool)`
+
+GetNodeGroupsOk returns a tuple with the NodeGroups field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetNodeGroups
+
+`func (o *CreateClusterPayload) SetNodeGroups(v []CreateClusterNodeGroupPayload)`
+
+SetNodeGroups sets NodeGroups field to given value.
+
+### HasNodeGroups
+
+`func (o *CreateClusterPayload) HasNodeGroups() bool`
+
+HasNodeGroups returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

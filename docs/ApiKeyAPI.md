@@ -4,16 +4,16 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteApiKey**](ApiKeyAPI.md#DeleteApiKey) | **Delete** /api-key/{api_key_id} | Delete API Key
-[**GenerateApiKey**](ApiKeyAPI.md#GenerateApiKey) | **Post** /api-key/generate | Generate API Key
-[**RetrieveApiKeys**](ApiKeyAPI.md#RetrieveApiKeys) | **Get** /api-key | Retrieve API Keys
-[**UpdateApiKey**](ApiKeyAPI.md#UpdateApiKey) | **Put** /api-key/{api_key_id} | Update API Key
+[**DeleteAPIKey**](ApiKeyAPI.md#DeleteAPIKey) | **Delete** /api-key/{api_key_id} | Delete API Key
+[**GenerateAPIKey**](ApiKeyAPI.md#GenerateAPIKey) | **Post** /api-key/generate | Generate API Key
+[**RetrieveAPIKey**](ApiKeyAPI.md#RetrieveAPIKey) | **Get** /api-key | Retrieve API Keys
+[**UpdateAPIKey**](ApiKeyAPI.md#UpdateAPIKey) | **Put** /api-key/{api_key_id} | Update API Key
 
 
 
-## DeleteApiKey
+## DeleteAPIKey
 
-> CommonResponseModel DeleteApiKey(ctx, apiKeyId).Execute()
+> CommonResponseModel DeleteAPIKey(ctx, apiKeyId).Execute()
 
 Delete API Key
 
@@ -36,13 +36,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ApiKeyAPI.DeleteApiKey(context.Background(), apiKeyId).Execute()
+	resp, r, err := apiClient.ApiKeyAPI.DeleteAPIKey(context.Background(), apiKeyId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ApiKeyAPI.DeleteApiKey``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ApiKeyAPI.DeleteAPIKey``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `DeleteApiKey`: CommonResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `ApiKeyAPI.DeleteApiKey`: %v\n", resp)
+	// response from `DeleteAPIKey`: CommonResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `ApiKeyAPI.DeleteAPIKey`: %v\n", resp)
 }
 ```
 
@@ -56,7 +56,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiDeleteApiKeyRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiDeleteAPIKeyRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -69,7 +69,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -81,9 +81,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GenerateApiKey
+## GenerateAPIKey
 
-> GenerateUpdateApiKeyResponseModel GenerateApiKey(ctx).Payload(payload).Execute()
+> GenerateUpdateApiKeyResponseModel GenerateAPIKey(ctx).Payload(payload).Execute()
 
 Generate API Key
 
@@ -106,13 +106,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ApiKeyAPI.GenerateApiKey(context.Background()).Payload(payload).Execute()
+	resp, r, err := apiClient.ApiKeyAPI.GenerateAPIKey(context.Background()).Payload(payload).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ApiKeyAPI.GenerateApiKey``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ApiKeyAPI.GenerateAPIKey``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GenerateApiKey`: GenerateUpdateApiKeyResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `ApiKeyAPI.GenerateApiKey`: %v\n", resp)
+	// response from `GenerateAPIKey`: GenerateUpdateApiKeyResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `ApiKeyAPI.GenerateAPIKey`: %v\n", resp)
 }
 ```
 
@@ -122,7 +122,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGenerateApiKeyRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGenerateAPIKeyRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -135,7 +135,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[accessToken](../README.md#accessToken)
+No authorization required
 
 ### HTTP request headers
 
@@ -147,9 +147,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## RetrieveApiKeys
+## RetrieveAPIKey
 
-> GetApiKeysResponseModel RetrieveApiKeys(ctx).Execute()
+> GetApiKeysResponseModel RetrieveAPIKey(ctx).Execute()
 
 Retrieve API Keys
 
@@ -171,13 +171,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ApiKeyAPI.RetrieveApiKeys(context.Background()).Execute()
+	resp, r, err := apiClient.ApiKeyAPI.RetrieveAPIKey(context.Background()).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ApiKeyAPI.RetrieveApiKeys``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ApiKeyAPI.RetrieveAPIKey``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `RetrieveApiKeys`: GetApiKeysResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `ApiKeyAPI.RetrieveApiKeys`: %v\n", resp)
+	// response from `RetrieveAPIKey`: GetApiKeysResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `ApiKeyAPI.RetrieveAPIKey`: %v\n", resp)
 }
 ```
 
@@ -187,7 +187,7 @@ This endpoint does not need any parameter.
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiRetrieveApiKeysRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiRetrieveAPIKeyRequest struct via the builder pattern
 
 
 ### Return type
@@ -196,7 +196,7 @@ Other parameters are passed through a pointer to a apiRetrieveApiKeysRequest str
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 
@@ -208,9 +208,9 @@ Other parameters are passed through a pointer to a apiRetrieveApiKeysRequest str
 [[Back to README]](../README.md)
 
 
-## UpdateApiKey
+## UpdateAPIKey
 
-> GenerateUpdateApiKeyResponseModel UpdateApiKey(ctx, apiKeyId).Payload(payload).Execute()
+> GenerateUpdateApiKeyResponseModel UpdateAPIKey(ctx, apiKeyId).Payload(payload).Execute()
 
 Update API Key
 
@@ -234,13 +234,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ApiKeyAPI.UpdateApiKey(context.Background(), apiKeyId).Payload(payload).Execute()
+	resp, r, err := apiClient.ApiKeyAPI.UpdateAPIKey(context.Background(), apiKeyId).Payload(payload).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ApiKeyAPI.UpdateApiKey``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ApiKeyAPI.UpdateAPIKey``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `UpdateApiKey`: GenerateUpdateApiKeyResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `ApiKeyAPI.UpdateApiKey`: %v\n", resp)
+	// response from `UpdateAPIKey`: GenerateUpdateApiKeyResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `ApiKeyAPI.UpdateAPIKey`: %v\n", resp)
 }
 ```
 
@@ -254,7 +254,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiUpdateApiKeyRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiUpdateAPIKeyRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -268,7 +268,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 

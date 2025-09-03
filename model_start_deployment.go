@@ -19,7 +19,7 @@ var _ MappedNullable = &StartDeployment{}
 
 // StartDeployment struct for StartDeployment
 type StartDeployment struct {
-	Deployment *DeploymentFieldsforstartdeployments `json:"deployment,omitempty"`
+	Deployment *DeploymentFieldsForStartDeployments `json:"deployment,omitempty"`
 	Message    *string                              `json:"message,omitempty"`
 	Status     *bool                                `json:"status,omitempty"`
 }
@@ -42,9 +42,9 @@ func NewStartDeploymentWithDefaults() *StartDeployment {
 }
 
 // GetDeployment returns the Deployment field value if set, zero value otherwise.
-func (o *StartDeployment) GetDeployment() DeploymentFieldsforstartdeployments {
+func (o *StartDeployment) GetDeployment() DeploymentFieldsForStartDeployments {
 	if o == nil || IsNil(o.Deployment) {
-		var ret DeploymentFieldsforstartdeployments
+		var ret DeploymentFieldsForStartDeployments
 		return ret
 	}
 	return *o.Deployment
@@ -52,7 +52,7 @@ func (o *StartDeployment) GetDeployment() DeploymentFieldsforstartdeployments {
 
 // GetDeploymentOk returns a tuple with the Deployment field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *StartDeployment) GetDeploymentOk() (*DeploymentFieldsforstartdeployments, bool) {
+func (o *StartDeployment) GetDeploymentOk() (*DeploymentFieldsForStartDeployments, bool) {
 	if o == nil || IsNil(o.Deployment) {
 		return nil, false
 	}
@@ -68,8 +68,8 @@ func (o *StartDeployment) HasDeployment() bool {
 	return false
 }
 
-// SetDeployment gets a reference to the given DeploymentFieldsforstartdeployments and assigns it to the Deployment field.
-func (o *StartDeployment) SetDeployment(v DeploymentFieldsforstartdeployments) {
+// SetDeployment gets a reference to the given DeploymentFieldsForStartDeployments and assigns it to the Deployment field.
+func (o *StartDeployment) SetDeployment(v DeploymentFieldsForStartDeployments) {
 	o.Deployment = &v
 }
 

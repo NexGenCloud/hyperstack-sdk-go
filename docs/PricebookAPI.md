@@ -4,13 +4,15 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**RetrivePricebook**](PricebookAPI.md#RetrivePricebook) | **Get** /pricebook | 
+[**GetPricebook**](PricebookAPI.md#GetPricebook) | **Get** /pricebook | 
 
 
 
-## RetrivePricebook
+## GetPricebook
 
-> []PricebookModel RetrivePricebook(ctx).Execute()
+> []PricebookModel GetPricebook(ctx).Execute()
+
+
 
 
 
@@ -30,13 +32,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.PricebookAPI.RetrivePricebook(context.Background()).Execute()
+	resp, r, err := apiClient.PricebookAPI.GetPricebook(context.Background()).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `PricebookAPI.RetrivePricebook``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `PricebookAPI.GetPricebook``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `RetrivePricebook`: []PricebookModel
-	fmt.Fprintf(os.Stdout, "Response from `PricebookAPI.RetrivePricebook`: %v\n", resp)
+	// response from `GetPricebook`: []PricebookModel
+	fmt.Fprintf(os.Stdout, "Response from `PricebookAPI.GetPricebook`: %v\n", resp)
 }
 ```
 
@@ -46,7 +48,7 @@ This endpoint does not need any parameter.
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiRetrivePricebookRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetPricebookRequest struct via the builder pattern
 
 
 ### Return type
@@ -55,7 +57,7 @@ Other parameters are passed through a pointer to a apiRetrivePricebookRequest st
 
 ### Authorization
 
-[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+[apiKey](../README.md#apiKey)
 
 ### HTTP request headers
 

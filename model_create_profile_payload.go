@@ -21,7 +21,7 @@ var _ MappedNullable = &CreateProfilePayload{}
 
 // CreateProfilePayload struct for CreateProfilePayload
 type CreateProfilePayload struct {
-	// The data object which contains the configuration of the virtual machine profile being created.
+	// The data object containing the configuration details of the virtual machine profile being created.
 	Data map[string]string `json:"data"`
 	// The optional description for the profile being created.
 	Description *string `json:"description,omitempty"`

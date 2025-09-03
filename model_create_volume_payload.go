@@ -25,7 +25,7 @@ type CreateVolumePayload struct {
 	CallbackUrl *string `json:"callback_url,omitempty"`
 	// A brief description or comment about the volume.
 	Description *string `json:"description,omitempty"`
-	// The name of the [environment](https://infrahub-doc.nexgencloud.com/docs/features/environments-available-features) within which the volume is being created.
+	// The name of the [environment](https://docs.hyperstack.cloud/docs/api-reference/core-resources/environments/) within which the volume is being created.
 	EnvironmentName string `json:"environment_name"`
 	// The ID of the operating system image that will be associated with the volume. By providing an `image_id` in the create volume request, you will create a bootable volume.
 	ImageId *int32 `json:"image_id,omitempty"`

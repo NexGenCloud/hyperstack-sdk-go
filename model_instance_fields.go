@@ -23,6 +23,7 @@ type InstanceFields struct {
 	ContractId              *int32                           `json:"contract_id,omitempty"`
 	CreatedAt               *CustomTime                      `json:"created_at,omitempty"`
 	Environment             *InstanceEnvironmentFields       `json:"environment,omitempty"`
+	Features                map[string]interface{}           `json:"features,omitempty"`
 	FixedIp                 *string                          `json:"fixed_ip,omitempty"`
 	Flavor                  *InstanceFlavorFields            `json:"flavor,omitempty"`
 	FloatingIp              *string                          `json:"floating_ip,omitempty"`
@@ -37,7 +38,8 @@ type InstanceFields struct {
 	PortRandomization       *bool                            `json:"port_randomization,omitempty"`
 	PortRandomizationStatus *string                          `json:"port_randomization_status,omitempty"`
 	PowerState              *string                          `json:"power_state,omitempty"`
-	SecurityRules           []SecurityRulesFieldsforInstance `json:"security_rules,omitempty"`
+	RequiresPublicIp        *bool                            `json:"requires_public_ip,omitempty"`
+	SecurityRules           []SecurityRulesFieldsForInstance `json:"security_rules,omitempty"`
 	Status                  *string                          `json:"status,omitempty"`
 	VmState                 *string                          `json:"vm_state,omitempty"`
 	VolumeAttachments       []VolumeAttachmentFields         `json:"volume_attachments,omitempty"`
@@ -186,6 +188,38 @@ func (o *InstanceFields) HasEnvironment() bool {
 // SetEnvironment gets a reference to the given InstanceEnvironmentFields and assigns it to the Environment field.
 func (o *InstanceFields) SetEnvironment(v InstanceEnvironmentFields) {
 	o.Environment = &v
+}
+
+// GetFeatures returns the Features field value if set, zero value otherwise.
+func (o *InstanceFields) GetFeatures() map[string]interface{} {
+	if o == nil || IsNil(o.Features) {
+		var ret map[string]interface{}
+		return ret
+	}
+	return o.Features
+}
+
+// GetFeaturesOk returns a tuple with the Features field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *InstanceFields) GetFeaturesOk() (map[string]interface{}, bool) {
+	if o == nil || IsNil(o.Features) {
+		return map[string]interface{}{}, false
+	}
+	return o.Features, true
+}
+
+// HasFeatures returns a boolean if a field has been set.
+func (o *InstanceFields) HasFeatures() bool {
+	if o != nil && !IsNil(o.Features) {
+		return true
+	}
+
+	return false
+}
+
+// SetFeatures gets a reference to the given map[string]interface{} and assigns it to the Features field.
+func (o *InstanceFields) SetFeatures(v map[string]interface{}) {
+	o.Features = v
 }
 
 // GetFixedIp returns the FixedIp field value if set, zero value otherwise.
@@ -636,10 +670,42 @@ func (o *InstanceFields) SetPowerState(v string) {
 	o.PowerState = &v
 }
 
+// GetRequiresPublicIp returns the RequiresPublicIp field value if set, zero value otherwise.
+func (o *InstanceFields) GetRequiresPublicIp() bool {
+	if o == nil || IsNil(o.RequiresPublicIp) {
+		var ret bool
+		return ret
+	}
+	return *o.RequiresPublicIp
+}
+
+// GetRequiresPublicIpOk returns a tuple with the RequiresPublicIp field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *InstanceFields) GetRequiresPublicIpOk() (*bool, bool) {
+	if o == nil || IsNil(o.RequiresPublicIp) {
+		return nil, false
+	}
+	return o.RequiresPublicIp, true
+}
+
+// HasRequiresPublicIp returns a boolean if a field has been set.
+func (o *InstanceFields) HasRequiresPublicIp() bool {
+	if o != nil && !IsNil(o.RequiresPublicIp) {
+		return true
+	}
+
+	return false
+}
+
+// SetRequiresPublicIp gets a reference to the given bool and assigns it to the RequiresPublicIp field.
+func (o *InstanceFields) SetRequiresPublicIp(v bool) {
+	o.RequiresPublicIp = &v
+}
+
 // GetSecurityRules returns the SecurityRules field value if set, zero value otherwise.
-func (o *InstanceFields) GetSecurityRules() []SecurityRulesFieldsforInstance {
+func (o *InstanceFields) GetSecurityRules() []SecurityRulesFieldsForInstance {
 	if o == nil || IsNil(o.SecurityRules) {
-		var ret []SecurityRulesFieldsforInstance
+		var ret []SecurityRulesFieldsForInstance
 		return ret
 	}
 	return o.SecurityRules
@@ -647,7 +713,7 @@ func (o *InstanceFields) GetSecurityRules() []SecurityRulesFieldsforInstance {
 
 // GetSecurityRulesOk returns a tuple with the SecurityRules field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *InstanceFields) GetSecurityRulesOk() ([]SecurityRulesFieldsforInstance, bool) {
+func (o *InstanceFields) GetSecurityRulesOk() ([]SecurityRulesFieldsForInstance, bool) {
 	if o == nil || IsNil(o.SecurityRules) {
 		return nil, false
 	}
@@ -663,8 +729,8 @@ func (o *InstanceFields) HasSecurityRules() bool {
 	return false
 }
 
-// SetSecurityRules gets a reference to the given []SecurityRulesFieldsforInstance and assigns it to the SecurityRules field.
-func (o *InstanceFields) SetSecurityRules(v []SecurityRulesFieldsforInstance) {
+// SetSecurityRules gets a reference to the given []SecurityRulesFieldsForInstance and assigns it to the SecurityRules field.
+func (o *InstanceFields) SetSecurityRules(v []SecurityRulesFieldsForInstance) {
 	o.SecurityRules = v
 }
 
@@ -786,6 +852,9 @@ func (o InstanceFields) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Environment) {
 		toSerialize["environment"] = o.Environment
 	}
+	if !IsNil(o.Features) {
+		toSerialize["features"] = o.Features
+	}
 	if !IsNil(o.FixedIp) {
 		toSerialize["fixed_ip"] = o.FixedIp
 	}
@@ -827,6 +896,9 @@ func (o InstanceFields) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.PowerState) {
 		toSerialize["power_state"] = o.PowerState
+	}
+	if !IsNil(o.RequiresPublicIp) {
+		toSerialize["requires_public_ip"] = o.RequiresPublicIp
 	}
 	if !IsNil(o.SecurityRules) {
 		toSerialize["security_rules"] = o.SecurityRules

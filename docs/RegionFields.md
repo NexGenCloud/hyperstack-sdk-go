@@ -4,7 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Country** | Pointer to **string** |  | [optional] 
 **Description** | Pointer to **string** |  | [optional] 
+**GreenStatus** | Pointer to **string** | Green status | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
 **Name** | Pointer to **string** |  | [optional] 
 
@@ -26,6 +28,31 @@ will change when the set of required properties is changed
 NewRegionFieldsWithDefaults instantiates a new RegionFields object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetCountry
+
+`func (o *RegionFields) GetCountry() string`
+
+GetCountry returns the Country field if non-nil, zero value otherwise.
+
+### GetCountryOk
+
+`func (o *RegionFields) GetCountryOk() (*string, bool)`
+
+GetCountryOk returns a tuple with the Country field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCountry
+
+`func (o *RegionFields) SetCountry(v string)`
+
+SetCountry sets Country field to given value.
+
+### HasCountry
+
+`func (o *RegionFields) HasCountry() bool`
+
+HasCountry returns a boolean if a field has been set.
 
 ### GetDescription
 
@@ -51,6 +78,31 @@ SetDescription sets Description field to given value.
 `func (o *RegionFields) HasDescription() bool`
 
 HasDescription returns a boolean if a field has been set.
+
+### GetGreenStatus
+
+`func (o *RegionFields) GetGreenStatus() string`
+
+GetGreenStatus returns the GreenStatus field if non-nil, zero value otherwise.
+
+### GetGreenStatusOk
+
+`func (o *RegionFields) GetGreenStatusOk() (*string, bool)`
+
+GetGreenStatusOk returns a tuple with the GreenStatus field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetGreenStatus
+
+`func (o *RegionFields) SetGreenStatus(v string)`
+
+SetGreenStatus sets GreenStatus field to given value.
+
+### HasGreenStatus
+
+`func (o *RegionFields) HasGreenStatus() bool`
+
+HasGreenStatus returns a boolean if a field has been set.
 
 ### GetId
 

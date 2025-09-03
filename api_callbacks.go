@@ -25,7 +25,7 @@ type CallbacksAPIService service
 type ApiAttachCallbackToVirtualMachineRequest struct {
 	ctx        context.Context
 	ApiService *CallbacksAPIService
-	id         int32
+	vmId       int32
 	payload    *AttachCallbackPayload
 }
 
@@ -41,17 +41,17 @@ func (r ApiAttachCallbackToVirtualMachineRequest) Execute() (*AttachCallbackResp
 /*
 AttachCallbackToVirtualMachine Attach callback to virtual machine
 
-Creates a callback URL for a specified virtual machine, enabling the posting of action events executed on the virtual machine to the specified URL. Provide the callback URL in the request body and the ID of the virtual machine to which it is being attached in the path. For more details on virtual machine callback URLs, [**click here**](https://infrahub-doc.nexgencloud.com/docs/features/webhooks-callbacks#attach-a-callback-url-to-an-existing-virtual-machine).
+Creates a callback URL for a specified virtual machine, enabling the posting of action events executed on the virtual machine to the specified URL. Provide the callback URL in the request body and the ID of the virtual machine to which it is being attached in the path. For more details on virtual machine callback URLs, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/callbacks-vms/attach-callback-vm).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param id
+	@param vmId
 	@return ApiAttachCallbackToVirtualMachineRequest
 */
-func (a *CallbacksAPIService) AttachCallbackToVirtualMachine(ctx context.Context, id int32) ApiAttachCallbackToVirtualMachineRequest {
+func (a *CallbacksAPIService) AttachCallbackToVirtualMachine(ctx context.Context, vmId int32) ApiAttachCallbackToVirtualMachineRequest {
 	return ApiAttachCallbackToVirtualMachineRequest{
 		ApiService: a,
 		ctx:        ctx,
-		id:         id,
+		vmId:       vmId,
 	}
 }
 
@@ -71,8 +71,8 @@ func (a *CallbacksAPIService) AttachCallbackToVirtualMachineExecute(r ApiAttachC
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/core/virtual-machines/{id}/attach-callback"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
+	localVarPath := localBasePath + "/core/virtual-machines/{vm_id}/attach-callback"
+	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -111,20 +111,6 @@ func (a *CallbacksAPIService) AttachCallbackToVirtualMachineExecute(r ApiAttachC
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -201,7 +187,7 @@ func (a *CallbacksAPIService) AttachCallbackToVirtualMachineExecute(r ApiAttachC
 type ApiAttachCallbackToVolumeRequest struct {
 	ctx        context.Context
 	ApiService *CallbacksAPIService
-	id         int32
+	volumeId   int32
 	payload    *AttachCallbackPayload
 }
 
@@ -217,17 +203,17 @@ func (r ApiAttachCallbackToVolumeRequest) Execute() (*AttachCallbackResponse, *h
 /*
 AttachCallbackToVolume Attach callback to volume
 
-Creates a callback URL for a specified volume, enabling the posting of action events executed on the volume to the specified URL. Provide the callback URL in the request body and the ID of the volume to which it is being attached in the path. For more details on volume callback URLs, [**click here**](https://infrahub-doc.nexgencloud.com/docs/features/webhooks-callbacks).
+Creates a callback URL for a specified volume, enabling the posting of action events executed on the volume to the specified URL. Provide the callback URL in the request body and the ID of the volume to which it is being attached in the path. For more details on volume callback URLs, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/volumes/volume-callbacks/attach-callback-volume).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param id
+	@param volumeId
 	@return ApiAttachCallbackToVolumeRequest
 */
-func (a *CallbacksAPIService) AttachCallbackToVolume(ctx context.Context, id int32) ApiAttachCallbackToVolumeRequest {
+func (a *CallbacksAPIService) AttachCallbackToVolume(ctx context.Context, volumeId int32) ApiAttachCallbackToVolumeRequest {
 	return ApiAttachCallbackToVolumeRequest{
 		ApiService: a,
 		ctx:        ctx,
-		id:         id,
+		volumeId:   volumeId,
 	}
 }
 
@@ -247,8 +233,8 @@ func (a *CallbacksAPIService) AttachCallbackToVolumeExecute(r ApiAttachCallbackT
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/core/volumes/{id}/attach-callback"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
+	localVarPath := localBasePath + "/core/volumes/{volume_id}/attach-callback"
+	localVarPath = strings.Replace(localVarPath, "{"+"volume_id"+"}", url.PathEscape(parameterValueToString(r.volumeId, "volumeId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -287,20 +273,6 @@ func (a *CallbacksAPIService) AttachCallbackToVolumeExecute(r ApiAttachCallbackT
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -377,7 +349,7 @@ func (a *CallbacksAPIService) AttachCallbackToVolumeExecute(r ApiAttachCallbackT
 type ApiDeleteVirtualMachineCallbackRequest struct {
 	ctx        context.Context
 	ApiService *CallbacksAPIService
-	id         int32
+	vmId       int32
 }
 
 func (r ApiDeleteVirtualMachineCallbackRequest) Execute() (*ResponseModel, *http.Response, error) {
@@ -387,17 +359,17 @@ func (r ApiDeleteVirtualMachineCallbackRequest) Execute() (*ResponseModel, *http
 /*
 DeleteVirtualMachineCallback Delete virtual machine callback
 
-Permanently deletes the callback URL associated with a specified virtual machine by providing the virtual machine ID in the request path. For additional information on virtual machine callback URLs, [**click here**](https://infrahub-doc.nexgencloud.com/docs/features/webhooks-callbacks).
+Permanently deletes the callback URL associated with a specified virtual machine by providing the virtual machine ID in the request path. For additional information on virtual machine callback URLs, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/callbacks-vms/delete-callback-vm).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param id
+	@param vmId
 	@return ApiDeleteVirtualMachineCallbackRequest
 */
-func (a *CallbacksAPIService) DeleteVirtualMachineCallback(ctx context.Context, id int32) ApiDeleteVirtualMachineCallbackRequest {
+func (a *CallbacksAPIService) DeleteVirtualMachineCallback(ctx context.Context, vmId int32) ApiDeleteVirtualMachineCallbackRequest {
 	return ApiDeleteVirtualMachineCallbackRequest{
 		ApiService: a,
 		ctx:        ctx,
-		id:         id,
+		vmId:       vmId,
 	}
 }
 
@@ -417,8 +389,8 @@ func (a *CallbacksAPIService) DeleteVirtualMachineCallbackExecute(r ApiDeleteVir
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/core/virtual-machines/{id}/delete-callback"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
+	localVarPath := localBasePath + "/core/virtual-machines/{vm_id}/delete-callback"
+	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -452,20 +424,6 @@ func (a *CallbacksAPIService) DeleteVirtualMachineCallbackExecute(r ApiDeleteVir
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -542,7 +500,7 @@ func (a *CallbacksAPIService) DeleteVirtualMachineCallbackExecute(r ApiDeleteVir
 type ApiDeleteVolumeCallbackRequest struct {
 	ctx        context.Context
 	ApiService *CallbacksAPIService
-	id         int32
+	volumeId   int32
 }
 
 func (r ApiDeleteVolumeCallbackRequest) Execute() (*ResponseModel, *http.Response, error) {
@@ -552,17 +510,17 @@ func (r ApiDeleteVolumeCallbackRequest) Execute() (*ResponseModel, *http.Respons
 /*
 DeleteVolumeCallback Delete volume callback
 
-Permanently deletes the callback URL associated with a specified volume by providing the volume ID in the request path. For additional information on volume callback URLs, [**click here**](https://infrahub-doc.nexgencloud.com/docs/features/webhooks-callbacks).
+Permanently deletes the callback URL associated with a specified volume by providing the volume ID in the request path. For additional information on volume callback URLs, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/volumes/volume-callbacks/delete-callback-volume).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param id
+	@param volumeId
 	@return ApiDeleteVolumeCallbackRequest
 */
-func (a *CallbacksAPIService) DeleteVolumeCallback(ctx context.Context, id int32) ApiDeleteVolumeCallbackRequest {
+func (a *CallbacksAPIService) DeleteVolumeCallback(ctx context.Context, volumeId int32) ApiDeleteVolumeCallbackRequest {
 	return ApiDeleteVolumeCallbackRequest{
 		ApiService: a,
 		ctx:        ctx,
-		id:         id,
+		volumeId:   volumeId,
 	}
 }
 
@@ -582,8 +540,8 @@ func (a *CallbacksAPIService) DeleteVolumeCallbackExecute(r ApiDeleteVolumeCallb
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/core/volumes/{id}/delete-callback"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
+	localVarPath := localBasePath + "/core/volumes/{volume_id}/delete-callback"
+	localVarPath = strings.Replace(localVarPath, "{"+"volume_id"+"}", url.PathEscape(parameterValueToString(r.volumeId, "volumeId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -617,20 +575,6 @@ func (a *CallbacksAPIService) DeleteVolumeCallbackExecute(r ApiDeleteVolumeCallb
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -707,7 +651,7 @@ func (a *CallbacksAPIService) DeleteVolumeCallbackExecute(r ApiDeleteVolumeCallb
 type ApiUpdateVirtualMachineCallbackRequest struct {
 	ctx        context.Context
 	ApiService *CallbacksAPIService
-	id         int32
+	vmId       int32
 	payload    *AttachCallbackPayload
 }
 
@@ -723,17 +667,17 @@ func (r ApiUpdateVirtualMachineCallbackRequest) Execute() (*AttachCallbackRespon
 /*
 UpdateVirtualMachineCallback Update virtual machine callback
 
-Updates the callback URL for a specified virtual machine. Provide the new callback URL in the request body, along with the ID of the associated virtual machine in the path. For additional information on virtual machine callback URLs, [**click here**](https://infrahub-doc.nexgencloud.com/docs/features/webhooks-callbacks).
+Updates the callback URL for a specified virtual machine. Provide the new callback URL in the request body, along with the ID of the associated virtual machine in the path. For additional information on virtual machine callback URLs, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/callbacks-vms).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param id
+	@param vmId
 	@return ApiUpdateVirtualMachineCallbackRequest
 */
-func (a *CallbacksAPIService) UpdateVirtualMachineCallback(ctx context.Context, id int32) ApiUpdateVirtualMachineCallbackRequest {
+func (a *CallbacksAPIService) UpdateVirtualMachineCallback(ctx context.Context, vmId int32) ApiUpdateVirtualMachineCallbackRequest {
 	return ApiUpdateVirtualMachineCallbackRequest{
 		ApiService: a,
 		ctx:        ctx,
-		id:         id,
+		vmId:       vmId,
 	}
 }
 
@@ -753,8 +697,8 @@ func (a *CallbacksAPIService) UpdateVirtualMachineCallbackExecute(r ApiUpdateVir
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/core/virtual-machines/{id}/update-callback"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
+	localVarPath := localBasePath + "/core/virtual-machines/{vm_id}/update-callback"
+	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -793,20 +737,6 @@ func (a *CallbacksAPIService) UpdateVirtualMachineCallbackExecute(r ApiUpdateVir
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -883,7 +813,7 @@ func (a *CallbacksAPIService) UpdateVirtualMachineCallbackExecute(r ApiUpdateVir
 type ApiUpdateVolumeCallbackRequest struct {
 	ctx        context.Context
 	ApiService *CallbacksAPIService
-	id         int32
+	volumeId   int32
 	payload    *AttachCallbackPayload
 }
 
@@ -899,17 +829,17 @@ func (r ApiUpdateVolumeCallbackRequest) Execute() (*AttachCallbackResponse, *htt
 /*
 UpdateVolumeCallback Update volume callback
 
-Updates the callback URL for a specified volume. Provide the new callback URL in the request body, along with the ID of the associated volume in the path. For additional information on volume callback URLs, [**click here**](https://infrahub-doc.nexgencloud.com/docs/features/webhooks-callbacks).
+Updates the callback URL for a specified volume. Provide the new callback URL in the request body, along with the ID of the associated volume in the path. For additional information on volume callback URLs, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/volumes/volume-callbacks/update-callback-volume/).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param id
+	@param volumeId
 	@return ApiUpdateVolumeCallbackRequest
 */
-func (a *CallbacksAPIService) UpdateVolumeCallback(ctx context.Context, id int32) ApiUpdateVolumeCallbackRequest {
+func (a *CallbacksAPIService) UpdateVolumeCallback(ctx context.Context, volumeId int32) ApiUpdateVolumeCallbackRequest {
 	return ApiUpdateVolumeCallbackRequest{
 		ApiService: a,
 		ctx:        ctx,
-		id:         id,
+		volumeId:   volumeId,
 	}
 }
 
@@ -929,8 +859,8 @@ func (a *CallbacksAPIService) UpdateVolumeCallbackExecute(r ApiUpdateVolumeCallb
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/core/volumes/{id}/update-callback"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
+	localVarPath := localBasePath + "/core/volumes/{volume_id}/update-callback"
+	localVarPath = strings.Replace(localVarPath, "{"+"volume_id"+"}", url.PathEscape(parameterValueToString(r.volumeId, "volumeId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -969,20 +899,6 @@ func (a *CallbacksAPIService) UpdateVolumeCallbackExecute(r ApiUpdateVolumeCallb
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

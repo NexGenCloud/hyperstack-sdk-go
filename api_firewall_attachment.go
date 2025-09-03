@@ -22,31 +22,33 @@ import (
 // FirewallAttachmentAPIService FirewallAttachmentAPI service
 type FirewallAttachmentAPIService service
 
-type ApiAttachFirewallsToVmsRequest struct {
+type ApiPostAttachSecurityGroupsRequest struct {
 	ctx        context.Context
 	ApiService *FirewallAttachmentAPIService
 	firewallId int32
 	payload    *AttachFirewallWithVM
 }
 
-func (r ApiAttachFirewallsToVmsRequest) Payload(payload AttachFirewallWithVM) ApiAttachFirewallsToVmsRequest {
+func (r ApiPostAttachSecurityGroupsRequest) Payload(payload AttachFirewallWithVM) ApiPostAttachSecurityGroupsRequest {
 	r.payload = &payload
 	return r
 }
 
-func (r ApiAttachFirewallsToVmsRequest) Execute() (*ResponseModel, *http.Response, error) {
-	return r.ApiService.AttachFirewallsToVmsExecute(r)
+func (r ApiPostAttachSecurityGroupsRequest) Execute() (*ResponseModel, *http.Response, error) {
+	return r.ApiService.PostAttachSecurityGroupsExecute(r)
 }
 
 /*
-AttachFirewallsToVms Attach Firewalls to VMs
+PostAttachSecurityGroups Attach Firewalls to VMs
+
+Attach a firewall to one or more virtual machines by providing the virtual machine IDs in the request body and the firewall ID in the path. For more information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/firewalls/attach-firewall-to-vms).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param firewallId
-	@return ApiAttachFirewallsToVmsRequest
+	@return ApiPostAttachSecurityGroupsRequest
 */
-func (a *FirewallAttachmentAPIService) AttachFirewallsToVms(ctx context.Context, firewallId int32) ApiAttachFirewallsToVmsRequest {
-	return ApiAttachFirewallsToVmsRequest{
+func (a *FirewallAttachmentAPIService) PostAttachSecurityGroups(ctx context.Context, firewallId int32) ApiPostAttachSecurityGroupsRequest {
+	return ApiPostAttachSecurityGroupsRequest{
 		ApiService: a,
 		ctx:        ctx,
 		firewallId: firewallId,
@@ -56,7 +58,7 @@ func (a *FirewallAttachmentAPIService) AttachFirewallsToVms(ctx context.Context,
 // Execute executes the request
 //
 //	@return ResponseModel
-func (a *FirewallAttachmentAPIService) AttachFirewallsToVmsExecute(r ApiAttachFirewallsToVmsRequest) (*ResponseModel, *http.Response, error) {
+func (a *FirewallAttachmentAPIService) PostAttachSecurityGroupsExecute(r ApiPostAttachSecurityGroupsRequest) (*ResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -64,7 +66,7 @@ func (a *FirewallAttachmentAPIService) AttachFirewallsToVmsExecute(r ApiAttachFi
 		localVarReturnValue *ResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FirewallAttachmentAPIService.AttachFirewallsToVms")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FirewallAttachmentAPIService.PostAttachSecurityGroups")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -109,20 +111,6 @@ func (a *FirewallAttachmentAPIService) AttachFirewallsToVmsExecute(r ApiAttachFi
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

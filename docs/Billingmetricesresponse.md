@@ -1,104 +1,104 @@
-# Billingmetricesresponse
+# BillingMetricesResponse
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Data** | Pointer to [**[]Billingmetricesfields**](Billingmetricesfields.md) |  | [optional] 
+**Data** | Pointer to [**[]BillingMetricesFields**](BillingMetricesFields.md) |  | [optional] 
 **Message** | Pointer to **string** |  | [optional] 
 **Status** | Pointer to **bool** |  | [optional] 
 
 ## Methods
 
-### NewBillingmetricesresponse
+### NewBillingMetricesResponse
 
-`func NewBillingmetricesresponse() *Billingmetricesresponse`
+`func NewBillingMetricesResponse() *BillingMetricesResponse`
 
-NewBillingmetricesresponse instantiates a new Billingmetricesresponse object
+NewBillingMetricesResponse instantiates a new BillingMetricesResponse object
 This constructor will assign default values to properties that have it defined,
 and makes sure properties required by API are set, but the set of arguments
 will change when the set of required properties is changed
 
-### NewBillingmetricesresponseWithDefaults
+### NewBillingMetricesResponseWithDefaults
 
-`func NewBillingmetricesresponseWithDefaults() *Billingmetricesresponse`
+`func NewBillingMetricesResponseWithDefaults() *BillingMetricesResponse`
 
-NewBillingmetricesresponseWithDefaults instantiates a new Billingmetricesresponse object
+NewBillingMetricesResponseWithDefaults instantiates a new BillingMetricesResponse object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
 ### GetData
 
-`func (o *Billingmetricesresponse) GetData() []Billingmetricesfields`
+`func (o *BillingMetricesResponse) GetData() []BillingMetricesFields`
 
 GetData returns the Data field if non-nil, zero value otherwise.
 
 ### GetDataOk
 
-`func (o *Billingmetricesresponse) GetDataOk() (*[]Billingmetricesfields, bool)`
+`func (o *BillingMetricesResponse) GetDataOk() (*[]BillingMetricesFields, bool)`
 
 GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetData
 
-`func (o *Billingmetricesresponse) SetData(v []Billingmetricesfields)`
+`func (o *BillingMetricesResponse) SetData(v []BillingMetricesFields)`
 
 SetData sets Data field to given value.
 
 ### HasData
 
-`func (o *Billingmetricesresponse) HasData() bool`
+`func (o *BillingMetricesResponse) HasData() bool`
 
 HasData returns a boolean if a field has been set.
 
 ### GetMessage
 
-`func (o *Billingmetricesresponse) GetMessage() string`
+`func (o *BillingMetricesResponse) GetMessage() string`
 
 GetMessage returns the Message field if non-nil, zero value otherwise.
 
 ### GetMessageOk
 
-`func (o *Billingmetricesresponse) GetMessageOk() (*string, bool)`
+`func (o *BillingMetricesResponse) GetMessageOk() (*string, bool)`
 
 GetMessageOk returns a tuple with the Message field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetMessage
 
-`func (o *Billingmetricesresponse) SetMessage(v string)`
+`func (o *BillingMetricesResponse) SetMessage(v string)`
 
 SetMessage sets Message field to given value.
 
 ### HasMessage
 
-`func (o *Billingmetricesresponse) HasMessage() bool`
+`func (o *BillingMetricesResponse) HasMessage() bool`
 
 HasMessage returns a boolean if a field has been set.
 
 ### GetStatus
 
-`func (o *Billingmetricesresponse) GetStatus() bool`
+`func (o *BillingMetricesResponse) GetStatus() bool`
 
 GetStatus returns the Status field if non-nil, zero value otherwise.
 
 ### GetStatusOk
 
-`func (o *Billingmetricesresponse) GetStatusOk() (*bool, bool)`
+`func (o *BillingMetricesResponse) GetStatusOk() (*bool, bool)`
 
 GetStatusOk returns a tuple with the Status field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetStatus
 
-`func (o *Billingmetricesresponse) SetStatus(v bool)`
+`func (o *BillingMetricesResponse) SetStatus(v bool)`
 
 SetStatus sets Status field to given value.
 
 ### HasStatus
 
-`func (o *Billingmetricesresponse) HasStatus() bool`
+`func (o *BillingMetricesResponse) HasStatus() bool`
 
 HasStatus returns a boolean if a field has been set.
 

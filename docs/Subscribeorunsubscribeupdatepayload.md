@@ -1,4 +1,4 @@
-# Subscribeorunsubscribeupdatepayload
+# SubscribeOrUnsubscribeUpdatePayload
 
 ## Properties
 
@@ -8,39 +8,39 @@ Name | Type | Description | Notes
 
 ## Methods
 
-### NewSubscribeorunsubscribeupdatepayload
+### NewSubscribeOrUnsubscribeUpdatePayload
 
-`func NewSubscribeorunsubscribeupdatepayload(subscribe bool, ) *Subscribeorunsubscribeupdatepayload`
+`func NewSubscribeOrUnsubscribeUpdatePayload(subscribe bool, ) *SubscribeOrUnsubscribeUpdatePayload`
 
-NewSubscribeorunsubscribeupdatepayload instantiates a new Subscribeorunsubscribeupdatepayload object
+NewSubscribeOrUnsubscribeUpdatePayload instantiates a new SubscribeOrUnsubscribeUpdatePayload object
 This constructor will assign default values to properties that have it defined,
 and makes sure properties required by API are set, but the set of arguments
 will change when the set of required properties is changed
 
-### NewSubscribeorunsubscribeupdatepayloadWithDefaults
+### NewSubscribeOrUnsubscribeUpdatePayloadWithDefaults
 
-`func NewSubscribeorunsubscribeupdatepayloadWithDefaults() *Subscribeorunsubscribeupdatepayload`
+`func NewSubscribeOrUnsubscribeUpdatePayloadWithDefaults() *SubscribeOrUnsubscribeUpdatePayload`
 
-NewSubscribeorunsubscribeupdatepayloadWithDefaults instantiates a new Subscribeorunsubscribeupdatepayload object
+NewSubscribeOrUnsubscribeUpdatePayloadWithDefaults instantiates a new SubscribeOrUnsubscribeUpdatePayload object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
 ### GetSubscribe
 
-`func (o *Subscribeorunsubscribeupdatepayload) GetSubscribe() bool`
+`func (o *SubscribeOrUnsubscribeUpdatePayload) GetSubscribe() bool`
 
 GetSubscribe returns the Subscribe field if non-nil, zero value otherwise.
 
 ### GetSubscribeOk
 
-`func (o *Subscribeorunsubscribeupdatepayload) GetSubscribeOk() (*bool, bool)`
+`func (o *SubscribeOrUnsubscribeUpdatePayload) GetSubscribeOk() (*bool, bool)`
 
 GetSubscribeOk returns a tuple with the Subscribe field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetSubscribe
 
-`func (o *Subscribeorunsubscribeupdatepayload) SetSubscribe(v bool)`
+`func (o *SubscribeOrUnsubscribeUpdatePayload) SetSubscribe(v bool)`
 
 SetSubscribe sets Subscribe field to given value.
 

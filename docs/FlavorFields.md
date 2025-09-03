@@ -5,18 +5,15 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Cpu** | Pointer to **int32** |  | [optional] 
-**CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **Disk** | Pointer to **int32** |  | [optional] 
-**DisplayName** | Pointer to **string** |  | [optional] 
 **Ephemeral** | Pointer to **int32** |  | [optional] 
+**Features** | Pointer to **map[string]interface{}** |  | [optional] 
 **Gpu** | Pointer to **string** |  | [optional] 
 **GpuCount** | Pointer to **int32** |  | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
 **Labels** | Pointer to [**[]LableResonse**](LableResonse.md) |  | [optional] 
 **Name** | Pointer to **string** |  | [optional] 
 **Ram** | Pointer to **float32** |  | [optional] 
-**RegionName** | Pointer to **string** |  | [optional] 
-**StockAvailable** | Pointer to **bool** |  | [optional] 
 
 ## Methods
 
@@ -62,31 +59,6 @@ SetCpu sets Cpu field to given value.
 
 HasCpu returns a boolean if a field has been set.
 
-### GetCreatedAt
-
-`func (o *FlavorFields) GetCreatedAt() time.Time`
-
-GetCreatedAt returns the CreatedAt field if non-nil, zero value otherwise.
-
-### GetCreatedAtOk
-
-`func (o *FlavorFields) GetCreatedAtOk() (*time.Time, bool)`
-
-GetCreatedAtOk returns a tuple with the CreatedAt field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetCreatedAt
-
-`func (o *FlavorFields) SetCreatedAt(v time.Time)`
-
-SetCreatedAt sets CreatedAt field to given value.
-
-### HasCreatedAt
-
-`func (o *FlavorFields) HasCreatedAt() bool`
-
-HasCreatedAt returns a boolean if a field has been set.
-
 ### GetDisk
 
 `func (o *FlavorFields) GetDisk() int32`
@@ -112,31 +84,6 @@ SetDisk sets Disk field to given value.
 
 HasDisk returns a boolean if a field has been set.
 
-### GetDisplayName
-
-`func (o *FlavorFields) GetDisplayName() string`
-
-GetDisplayName returns the DisplayName field if non-nil, zero value otherwise.
-
-### GetDisplayNameOk
-
-`func (o *FlavorFields) GetDisplayNameOk() (*string, bool)`
-
-GetDisplayNameOk returns a tuple with the DisplayName field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetDisplayName
-
-`func (o *FlavorFields) SetDisplayName(v string)`
-
-SetDisplayName sets DisplayName field to given value.
-
-### HasDisplayName
-
-`func (o *FlavorFields) HasDisplayName() bool`
-
-HasDisplayName returns a boolean if a field has been set.
-
 ### GetEphemeral
 
 `func (o *FlavorFields) GetEphemeral() int32`
@@ -161,6 +108,31 @@ SetEphemeral sets Ephemeral field to given value.
 `func (o *FlavorFields) HasEphemeral() bool`
 
 HasEphemeral returns a boolean if a field has been set.
+
+### GetFeatures
+
+`func (o *FlavorFields) GetFeatures() map[string]interface{}`
+
+GetFeatures returns the Features field if non-nil, zero value otherwise.
+
+### GetFeaturesOk
+
+`func (o *FlavorFields) GetFeaturesOk() (*map[string]interface{}, bool)`
+
+GetFeaturesOk returns a tuple with the Features field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFeatures
+
+`func (o *FlavorFields) SetFeatures(v map[string]interface{})`
+
+SetFeatures sets Features field to given value.
+
+### HasFeatures
+
+`func (o *FlavorFields) HasFeatures() bool`
+
+HasFeatures returns a boolean if a field has been set.
 
 ### GetGpu
 
@@ -311,56 +283,6 @@ SetRam sets Ram field to given value.
 `func (o *FlavorFields) HasRam() bool`
 
 HasRam returns a boolean if a field has been set.
-
-### GetRegionName
-
-`func (o *FlavorFields) GetRegionName() string`
-
-GetRegionName returns the RegionName field if non-nil, zero value otherwise.
-
-### GetRegionNameOk
-
-`func (o *FlavorFields) GetRegionNameOk() (*string, bool)`
-
-GetRegionNameOk returns a tuple with the RegionName field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetRegionName
-
-`func (o *FlavorFields) SetRegionName(v string)`
-
-SetRegionName sets RegionName field to given value.
-
-### HasRegionName
-
-`func (o *FlavorFields) HasRegionName() bool`
-
-HasRegionName returns a boolean if a field has been set.
-
-### GetStockAvailable
-
-`func (o *FlavorFields) GetStockAvailable() bool`
-
-GetStockAvailable returns the StockAvailable field if non-nil, zero value otherwise.
-
-### GetStockAvailableOk
-
-`func (o *FlavorFields) GetStockAvailableOk() (*bool, bool)`
-
-GetStockAvailableOk returns a tuple with the StockAvailable field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetStockAvailable
-
-`func (o *FlavorFields) SetStockAvailable(v bool)`
-
-SetStockAvailable sets StockAvailable field to given value.
-
-### HasStockAvailable
-
-`func (o *FlavorFields) HasStockAvailable() bool`
-
-HasStockAvailable returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

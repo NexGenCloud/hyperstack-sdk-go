@@ -21,25 +21,25 @@ import (
 // StockAPIService StockAPI service
 type StockAPIService service
 
-type ApiRetrieveGpuStocksRequest struct {
+type ApiRetrieveGPUStocksRequest struct {
 	ctx        context.Context
 	ApiService *StockAPIService
 }
 
-func (r ApiRetrieveGpuStocksRequest) Execute() (*NewStockRetriveResponse, *http.Response, error) {
-	return r.ApiService.RetrieveGpuStocksExecute(r)
+func (r ApiRetrieveGPUStocksRequest) Execute() (*NewStockRetriveResponse, *http.Response, error) {
+	return r.ApiService.RetrieveGPUStocksExecute(r)
 }
 
 /*
-RetrieveGpuStocks Retrieve GPU stocks
+RetrieveGPUStocks Retrieve GPU stocks
 
-Returns information on current and upcoming GPU availability, organized by region and GPU model. For additional information on GPU stocks, [**click here**](https://infrahub-doc.nexgencloud.com/docs/hardware/gpu-stock-information).
+Returns information on current and upcoming GPU availability, organized byregion and GPU model. For additional information on GPU stocks,[**click here**](https://docs.hyperstack.cloud/docs/hardware/gpu-stock-information).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiRetrieveGpuStocksRequest
+	@return ApiRetrieveGPUStocksRequest
 */
-func (a *StockAPIService) RetrieveGpuStocks(ctx context.Context) ApiRetrieveGpuStocksRequest {
-	return ApiRetrieveGpuStocksRequest{
+func (a *StockAPIService) RetrieveGPUStocks(ctx context.Context) ApiRetrieveGPUStocksRequest {
+	return ApiRetrieveGPUStocksRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -48,7 +48,7 @@ func (a *StockAPIService) RetrieveGpuStocks(ctx context.Context) ApiRetrieveGpuS
 // Execute executes the request
 //
 //	@return NewStockRetriveResponse
-func (a *StockAPIService) RetrieveGpuStocksExecute(r ApiRetrieveGpuStocksRequest) (*NewStockRetriveResponse, *http.Response, error) {
+func (a *StockAPIService) RetrieveGPUStocksExecute(r ApiRetrieveGPUStocksRequest) (*NewStockRetriveResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -56,7 +56,7 @@ func (a *StockAPIService) RetrieveGpuStocksExecute(r ApiRetrieveGpuStocksRequest
 		localVarReturnValue *NewStockRetriveResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "StockAPIService.RetrieveGpuStocks")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "StockAPIService.RetrieveGPUStocks")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -95,20 +95,6 @@ func (a *StockAPIService) RetrieveGpuStocksExecute(r ApiRetrieveGpuStocksRequest
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

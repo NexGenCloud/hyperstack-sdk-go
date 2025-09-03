@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**ContractId** | Pointer to **int32** |  | [optional] 
 **Id** | Pointer to **string** |  | [optional] 
 **InfrahubId** | Pointer to **int32** |  | [optional] 
 **ResourceName** | Pointer to **string** |  | [optional] 
@@ -27,6 +28,31 @@ will change when the set of required properties is changed
 NewResourceLevelBillingHistoryResponseAttributesWithDefaults instantiates a new ResourceLevelBillingHistoryResponseAttributes object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetContractId
+
+`func (o *ResourceLevelBillingHistoryResponseAttributes) GetContractId() int32`
+
+GetContractId returns the ContractId field if non-nil, zero value otherwise.
+
+### GetContractIdOk
+
+`func (o *ResourceLevelBillingHistoryResponseAttributes) GetContractIdOk() (*int32, bool)`
+
+GetContractIdOk returns a tuple with the ContractId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetContractId
+
+`func (o *ResourceLevelBillingHistoryResponseAttributes) SetContractId(v int32)`
+
+SetContractId sets ContractId field to given value.
+
+### HasContractId
+
+`func (o *ResourceLevelBillingHistoryResponseAttributes) HasContractId() bool`
+
+HasContractId returns a boolean if a field has been set.
 
 ### GetId
 

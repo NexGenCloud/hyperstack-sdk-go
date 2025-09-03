@@ -19,18 +19,18 @@ var _ MappedNullable = &ClusterFields{}
 
 // ClusterFields struct for ClusterFields
 type ClusterFields struct {
-	ApiAddress        *string               `json:"api_address,omitempty"`
-	CreatedAt         *CustomTime           `json:"created_at,omitempty"`
-	EnvironmentName   *string               `json:"environment_name,omitempty"`
-	Id                *int32                `json:"id,omitempty"`
-	KeypairName       *string               `json:"keypair_name,omitempty"`
-	KubeConfig        *string               `json:"kube_config,omitempty"`
-	KubernetesVersion *string               `json:"kubernetes_version,omitempty"`
-	Name              *string               `json:"name,omitempty"`
-	NodeCount         *int32                `json:"node_count,omitempty"`
-	NodeFlavor        *InstanceFlavorFields `json:"node_flavor,omitempty"`
-	Status            *string               `json:"status,omitempty"`
-	StatusReason      *string               `json:"status_reason,omitempty"`
+	ApiAddress        *string                  `json:"api_address,omitempty"`
+	CreatedAt         *CustomTime              `json:"created_at,omitempty"`
+	EnvironmentName   *string                  `json:"environment_name,omitempty"`
+	Id                *int32                   `json:"id,omitempty"`
+	KeypairName       *string                  `json:"keypair_name,omitempty"`
+	KubeConfig        *string                  `json:"kube_config,omitempty"`
+	KubernetesVersion *string                  `json:"kubernetes_version,omitempty"`
+	Name              *string                  `json:"name,omitempty"`
+	NodeGroups        []ClusterNodeGroupFields `json:"node_groups,omitempty"`
+	Nodes             []ClusterNodeFields      `json:"nodes,omitempty"`
+	Status            *string                  `json:"status,omitempty"`
+	StatusReason      *string                  `json:"status_reason,omitempty"`
 }
 
 // NewClusterFields instantiates a new ClusterFields object
@@ -306,68 +306,68 @@ func (o *ClusterFields) SetName(v string) {
 	o.Name = &v
 }
 
-// GetNodeCount returns the NodeCount field value if set, zero value otherwise.
-func (o *ClusterFields) GetNodeCount() int32 {
-	if o == nil || IsNil(o.NodeCount) {
-		var ret int32
+// GetNodeGroups returns the NodeGroups field value if set, zero value otherwise.
+func (o *ClusterFields) GetNodeGroups() []ClusterNodeGroupFields {
+	if o == nil || IsNil(o.NodeGroups) {
+		var ret []ClusterNodeGroupFields
 		return ret
 	}
-	return *o.NodeCount
+	return o.NodeGroups
 }
 
-// GetNodeCountOk returns a tuple with the NodeCount field value if set, nil otherwise
+// GetNodeGroupsOk returns a tuple with the NodeGroups field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ClusterFields) GetNodeCountOk() (*int32, bool) {
-	if o == nil || IsNil(o.NodeCount) {
+func (o *ClusterFields) GetNodeGroupsOk() ([]ClusterNodeGroupFields, bool) {
+	if o == nil || IsNil(o.NodeGroups) {
 		return nil, false
 	}
-	return o.NodeCount, true
+	return o.NodeGroups, true
 }
 
-// HasNodeCount returns a boolean if a field has been set.
-func (o *ClusterFields) HasNodeCount() bool {
-	if o != nil && !IsNil(o.NodeCount) {
+// HasNodeGroups returns a boolean if a field has been set.
+func (o *ClusterFields) HasNodeGroups() bool {
+	if o != nil && !IsNil(o.NodeGroups) {
 		return true
 	}
 
 	return false
 }
 
-// SetNodeCount gets a reference to the given int32 and assigns it to the NodeCount field.
-func (o *ClusterFields) SetNodeCount(v int32) {
-	o.NodeCount = &v
+// SetNodeGroups gets a reference to the given []ClusterNodeGroupFields and assigns it to the NodeGroups field.
+func (o *ClusterFields) SetNodeGroups(v []ClusterNodeGroupFields) {
+	o.NodeGroups = v
 }
 
-// GetNodeFlavor returns the NodeFlavor field value if set, zero value otherwise.
-func (o *ClusterFields) GetNodeFlavor() InstanceFlavorFields {
-	if o == nil || IsNil(o.NodeFlavor) {
-		var ret InstanceFlavorFields
+// GetNodes returns the Nodes field value if set, zero value otherwise.
+func (o *ClusterFields) GetNodes() []ClusterNodeFields {
+	if o == nil || IsNil(o.Nodes) {
+		var ret []ClusterNodeFields
 		return ret
 	}
-	return *o.NodeFlavor
+	return o.Nodes
 }
 
-// GetNodeFlavorOk returns a tuple with the NodeFlavor field value if set, nil otherwise
+// GetNodesOk returns a tuple with the Nodes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ClusterFields) GetNodeFlavorOk() (*InstanceFlavorFields, bool) {
-	if o == nil || IsNil(o.NodeFlavor) {
+func (o *ClusterFields) GetNodesOk() ([]ClusterNodeFields, bool) {
+	if o == nil || IsNil(o.Nodes) {
 		return nil, false
 	}
-	return o.NodeFlavor, true
+	return o.Nodes, true
 }
 
-// HasNodeFlavor returns a boolean if a field has been set.
-func (o *ClusterFields) HasNodeFlavor() bool {
-	if o != nil && !IsNil(o.NodeFlavor) {
+// HasNodes returns a boolean if a field has been set.
+func (o *ClusterFields) HasNodes() bool {
+	if o != nil && !IsNil(o.Nodes) {
 		return true
 	}
 
 	return false
 }
 
-// SetNodeFlavor gets a reference to the given InstanceFlavorFields and assigns it to the NodeFlavor field.
-func (o *ClusterFields) SetNodeFlavor(v InstanceFlavorFields) {
-	o.NodeFlavor = &v
+// SetNodes gets a reference to the given []ClusterNodeFields and assigns it to the Nodes field.
+func (o *ClusterFields) SetNodes(v []ClusterNodeFields) {
+	o.Nodes = v
 }
 
 // GetStatus returns the Status field value if set, zero value otherwise.
@@ -468,11 +468,11 @@ func (o ClusterFields) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Name) {
 		toSerialize["name"] = o.Name
 	}
-	if !IsNil(o.NodeCount) {
-		toSerialize["node_count"] = o.NodeCount
+	if !IsNil(o.NodeGroups) {
+		toSerialize["node_groups"] = o.NodeGroups
 	}
-	if !IsNil(o.NodeFlavor) {
-		toSerialize["node_flavor"] = o.NodeFlavor
+	if !IsNil(o.Nodes) {
+		toSerialize["nodes"] = o.Nodes
 	}
 	if !IsNil(o.Status) {
 		toSerialize["status"] = o.Status

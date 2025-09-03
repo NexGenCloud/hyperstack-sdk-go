@@ -108,20 +108,6 @@ func (a *ComplianceAPIService) CreateComplianceExecute(r ApiCreateComplianceRequ
 			}
 		}
 	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
-			}
-		}
-	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -293,20 +279,6 @@ func (a *ComplianceAPIService) DeleteAComplianceExecute(r ApiDeleteAComplianceRe
 			}
 		}
 	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
-			}
-		}
-	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -377,32 +349,32 @@ func (a *ComplianceAPIService) DeleteAComplianceExecute(r ApiDeleteAComplianceRe
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiRetrieveGpuComplianceRequest struct {
+type ApiRetrieveComplianceRequest struct {
 	ctx        context.Context
 	ApiService *ComplianceAPIService
 	gpu        *string
 }
 
 // This is for gpu model
-func (r ApiRetrieveGpuComplianceRequest) Gpu(gpu string) ApiRetrieveGpuComplianceRequest {
+func (r ApiRetrieveComplianceRequest) Gpu(gpu string) ApiRetrieveComplianceRequest {
 	r.gpu = &gpu
 	return r
 }
 
-func (r ApiRetrieveGpuComplianceRequest) Execute() (*ComplianceResponse, *http.Response, error) {
-	return r.ApiService.RetrieveGpuComplianceExecute(r)
+func (r ApiRetrieveComplianceRequest) Execute() (*ComplianceResponse, *http.Response, error) {
+	return r.ApiService.RetrieveComplianceExecute(r)
 }
 
 /*
-RetrieveGpuCompliance Retrieve GPU compliance
+RetrieveCompliance Retrieve GPU compliance
 
-Returns a list of compliance objects each corresponding to available GPU models. These compliance objects contain minimum and maximum values for RAM in GB, number of vCPUs, and system disk capacity in GB. Use the optional `gpu` model parameter in the query string to filter responses by GPU model. For additional details on GPU compliance, [**click here**](https://infrahub-doc.nexgencloud.com/docs/hardware/flavors#adhering-to-gpu-compliance).
+Returns a list of compliance objects each corresponding to available GPU models. These compliance objects contain minimum and maximum values for RAM in GB, number of vCPUs, and system disk capacity in GB. Use the optional `gpu` model parameter in the query string to filter responses by GPU model. For additional details on GPU compliance, [**click here**](https://docs.hyperstack.cloud/docs/hardware/flavors#adhering-to-gpu-compliance).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiRetrieveGpuComplianceRequest
+	@return ApiRetrieveComplianceRequest
 */
-func (a *ComplianceAPIService) RetrieveGpuCompliance(ctx context.Context) ApiRetrieveGpuComplianceRequest {
-	return ApiRetrieveGpuComplianceRequest{
+func (a *ComplianceAPIService) RetrieveCompliance(ctx context.Context) ApiRetrieveComplianceRequest {
+	return ApiRetrieveComplianceRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -411,7 +383,7 @@ func (a *ComplianceAPIService) RetrieveGpuCompliance(ctx context.Context) ApiRet
 // Execute executes the request
 //
 //	@return ComplianceResponse
-func (a *ComplianceAPIService) RetrieveGpuComplianceExecute(r ApiRetrieveGpuComplianceRequest) (*ComplianceResponse, *http.Response, error) {
+func (a *ComplianceAPIService) RetrieveComplianceExecute(r ApiRetrieveComplianceRequest) (*ComplianceResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -419,7 +391,7 @@ func (a *ComplianceAPIService) RetrieveGpuComplianceExecute(r ApiRetrieveGpuComp
 		localVarReturnValue *ComplianceResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComplianceAPIService.RetrieveGpuCompliance")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComplianceAPIService.RetrieveCompliance")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -461,20 +433,6 @@ func (a *ComplianceAPIService) RetrieveGpuComplianceExecute(r ApiRetrieveGpuComp
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
@@ -642,20 +600,6 @@ func (a *ComplianceAPIService) UpdateAComplianceExecute(r ApiUpdateAComplianceRe
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}

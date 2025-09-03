@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **CallbackUrl** | Pointer to **string** | A URL that can be attached to the volume you are creating. This &#x60;callback_url&#x60; will post any action events that occur to your volume to the provided URL. | [optional] 
 **Description** | Pointer to **string** | A brief description or comment about the volume. | [optional] 
-**EnvironmentName** | **string** | The name of the [environment](https://infrahub-doc.nexgencloud.com/docs/features/environments-available-features) within which the volume is being created. | 
+**EnvironmentName** | **string** | The name of the [environment](https://docs.hyperstack.cloud/docs/api-reference/core-resources/environments/) within which the volume is being created. | 
 **ImageId** | Pointer to **int32** | The ID of the operating system image that will be associated with the volume. By providing an &#x60;image_id&#x60; in the create volume request, you will create a bootable volume. | [optional] 
 **Name** | **string** | The name of the volume being created. | 
 **Size** | **int32** | The size of the volume in GB. 1048576GB storage capacity per volume. | 

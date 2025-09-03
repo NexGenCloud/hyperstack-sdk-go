@@ -7,9 +7,11 @@ Name | Type | Description | Notes
 **Cpu** | Pointer to **int32** |  | [optional] 
 **Disk** | Pointer to **int32** |  | [optional] 
 **Ephemeral** | Pointer to **int32** |  | [optional] 
+**Features** | Pointer to **map[string]interface{}** |  | [optional] 
 **Gpu** | Pointer to **string** |  | [optional] 
 **GpuCount** | Pointer to **int32** |  | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
+**Labels** | Pointer to [**[]FlavorLabelFields**](FlavorLabelFields.md) |  | [optional] 
 **Name** | Pointer to **string** |  | [optional] 
 **Ram** | Pointer to **float32** |  | [optional] 
 
@@ -107,6 +109,31 @@ SetEphemeral sets Ephemeral field to given value.
 
 HasEphemeral returns a boolean if a field has been set.
 
+### GetFeatures
+
+`func (o *InstanceFlavorFields) GetFeatures() map[string]interface{}`
+
+GetFeatures returns the Features field if non-nil, zero value otherwise.
+
+### GetFeaturesOk
+
+`func (o *InstanceFlavorFields) GetFeaturesOk() (*map[string]interface{}, bool)`
+
+GetFeaturesOk returns a tuple with the Features field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFeatures
+
+`func (o *InstanceFlavorFields) SetFeatures(v map[string]interface{})`
+
+SetFeatures sets Features field to given value.
+
+### HasFeatures
+
+`func (o *InstanceFlavorFields) HasFeatures() bool`
+
+HasFeatures returns a boolean if a field has been set.
+
 ### GetGpu
 
 `func (o *InstanceFlavorFields) GetGpu() string`
@@ -181,6 +208,31 @@ SetId sets Id field to given value.
 `func (o *InstanceFlavorFields) HasId() bool`
 
 HasId returns a boolean if a field has been set.
+
+### GetLabels
+
+`func (o *InstanceFlavorFields) GetLabels() []FlavorLabelFields`
+
+GetLabels returns the Labels field if non-nil, zero value otherwise.
+
+### GetLabelsOk
+
+`func (o *InstanceFlavorFields) GetLabelsOk() (*[]FlavorLabelFields, bool)`
+
+GetLabelsOk returns a tuple with the Labels field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLabels
+
+`func (o *InstanceFlavorFields) SetLabels(v []FlavorLabelFields)`
+
+SetLabels sets Labels field to given value.
+
+### HasLabels
+
+`func (o *InstanceFlavorFields) HasLabels() bool`
+
+HasLabels returns a boolean if a field has been set.
 
 ### GetName
 

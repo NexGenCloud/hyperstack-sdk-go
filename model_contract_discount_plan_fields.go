@@ -25,6 +25,7 @@ type ContractDiscountPlanFields struct {
 	DiscountStatus  *string  `json:"discount_status,omitempty"`
 	DiscountType    *string  `json:"discount_type,omitempty"`
 	Id              *int32   `json:"id,omitempty"`
+	RemainingCount  *int32   `json:"remaining_count,omitempty"`
 	ResourceCount   *int32   `json:"resource_count,omitempty"`
 	ResourceId      *int32   `json:"resource_id,omitempty"`
 	ResourceName    *string  `json:"resource_name,omitempty"`
@@ -239,6 +240,38 @@ func (o *ContractDiscountPlanFields) SetId(v int32) {
 	o.Id = &v
 }
 
+// GetRemainingCount returns the RemainingCount field value if set, zero value otherwise.
+func (o *ContractDiscountPlanFields) GetRemainingCount() int32 {
+	if o == nil || IsNil(o.RemainingCount) {
+		var ret int32
+		return ret
+	}
+	return *o.RemainingCount
+}
+
+// GetRemainingCountOk returns a tuple with the RemainingCount field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ContractDiscountPlanFields) GetRemainingCountOk() (*int32, bool) {
+	if o == nil || IsNil(o.RemainingCount) {
+		return nil, false
+	}
+	return o.RemainingCount, true
+}
+
+// HasRemainingCount returns a boolean if a field has been set.
+func (o *ContractDiscountPlanFields) HasRemainingCount() bool {
+	if o != nil && !IsNil(o.RemainingCount) {
+		return true
+	}
+
+	return false
+}
+
+// SetRemainingCount gets a reference to the given int32 and assigns it to the RemainingCount field.
+func (o *ContractDiscountPlanFields) SetRemainingCount(v int32) {
+	o.RemainingCount = &v
+}
+
 // GetResourceCount returns the ResourceCount field value if set, zero value otherwise.
 func (o *ContractDiscountPlanFields) GetResourceCount() int32 {
 	if o == nil || IsNil(o.ResourceCount) {
@@ -362,6 +395,9 @@ func (o ContractDiscountPlanFields) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Id) {
 		toSerialize["id"] = o.Id
+	}
+	if !IsNil(o.RemainingCount) {
+		toSerialize["remaining_count"] = o.RemainingCount
 	}
 	if !IsNil(o.ResourceCount) {
 		toSerialize["resource_count"] = o.ResourceCount

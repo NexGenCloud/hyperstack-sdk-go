@@ -1,4 +1,4 @@
-# Organizationthresholdupdateresponse
+# OrganizationThresholdUpdateResponse
 
 ## Properties
 
@@ -6,99 +6,99 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Message** | Pointer to **string** |  | [optional] 
 **Status** | Pointer to **bool** |  | [optional] 
-**Threshold** | Pointer to [**OrganizationThresholdfields**](OrganizationThresholdfields.md) |  | [optional] 
+**Threshold** | Pointer to [**OrganizationThresholdFields**](OrganizationThresholdFields.md) |  | [optional] 
 
 ## Methods
 
-### NewOrganizationthresholdupdateresponse
+### NewOrganizationThresholdUpdateResponse
 
-`func NewOrganizationthresholdupdateresponse() *Organizationthresholdupdateresponse`
+`func NewOrganizationThresholdUpdateResponse() *OrganizationThresholdUpdateResponse`
 
-NewOrganizationthresholdupdateresponse instantiates a new Organizationthresholdupdateresponse object
+NewOrganizationThresholdUpdateResponse instantiates a new OrganizationThresholdUpdateResponse object
 This constructor will assign default values to properties that have it defined,
 and makes sure properties required by API are set, but the set of arguments
 will change when the set of required properties is changed
 
-### NewOrganizationthresholdupdateresponseWithDefaults
+### NewOrganizationThresholdUpdateResponseWithDefaults
 
-`func NewOrganizationthresholdupdateresponseWithDefaults() *Organizationthresholdupdateresponse`
+`func NewOrganizationThresholdUpdateResponseWithDefaults() *OrganizationThresholdUpdateResponse`
 
-NewOrganizationthresholdupdateresponseWithDefaults instantiates a new Organizationthresholdupdateresponse object
+NewOrganizationThresholdUpdateResponseWithDefaults instantiates a new OrganizationThresholdUpdateResponse object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
 ### GetMessage
 
-`func (o *Organizationthresholdupdateresponse) GetMessage() string`
+`func (o *OrganizationThresholdUpdateResponse) GetMessage() string`
 
 GetMessage returns the Message field if non-nil, zero value otherwise.
 
 ### GetMessageOk
 
-`func (o *Organizationthresholdupdateresponse) GetMessageOk() (*string, bool)`
+`func (o *OrganizationThresholdUpdateResponse) GetMessageOk() (*string, bool)`
 
 GetMessageOk returns a tuple with the Message field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetMessage
 
-`func (o *Organizationthresholdupdateresponse) SetMessage(v string)`
+`func (o *OrganizationThresholdUpdateResponse) SetMessage(v string)`
 
 SetMessage sets Message field to given value.
 
 ### HasMessage
 
-`func (o *Organizationthresholdupdateresponse) HasMessage() bool`
+`func (o *OrganizationThresholdUpdateResponse) HasMessage() bool`
 
 HasMessage returns a boolean if a field has been set.
 
 ### GetStatus
 
-`func (o *Organizationthresholdupdateresponse) GetStatus() bool`
+`func (o *OrganizationThresholdUpdateResponse) GetStatus() bool`
 
 GetStatus returns the Status field if non-nil, zero value otherwise.
 
 ### GetStatusOk
 
-`func (o *Organizationthresholdupdateresponse) GetStatusOk() (*bool, bool)`
+`func (o *OrganizationThresholdUpdateResponse) GetStatusOk() (*bool, bool)`
 
 GetStatusOk returns a tuple with the Status field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetStatus
 
-`func (o *Organizationthresholdupdateresponse) SetStatus(v bool)`
+`func (o *OrganizationThresholdUpdateResponse) SetStatus(v bool)`
 
 SetStatus sets Status field to given value.
 
 ### HasStatus
 
-`func (o *Organizationthresholdupdateresponse) HasStatus() bool`
+`func (o *OrganizationThresholdUpdateResponse) HasStatus() bool`
 
 HasStatus returns a boolean if a field has been set.
 
 ### GetThreshold
 
-`func (o *Organizationthresholdupdateresponse) GetThreshold() OrganizationThresholdfields`
+`func (o *OrganizationThresholdUpdateResponse) GetThreshold() OrganizationThresholdFields`
 
 GetThreshold returns the Threshold field if non-nil, zero value otherwise.
 
 ### GetThresholdOk
 
-`func (o *Organizationthresholdupdateresponse) GetThresholdOk() (*OrganizationThresholdfields, bool)`
+`func (o *OrganizationThresholdUpdateResponse) GetThresholdOk() (*OrganizationThresholdFields, bool)`
 
 GetThresholdOk returns a tuple with the Threshold field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetThreshold
 
-`func (o *Organizationthresholdupdateresponse) SetThreshold(v OrganizationThresholdfields)`
+`func (o *OrganizationThresholdUpdateResponse) SetThreshold(v OrganizationThresholdFields)`
 
 SetThreshold sets Threshold field to given value.
 
 ### HasThreshold
 
-`func (o *Organizationthresholdupdateresponse) HasThreshold() bool`
+`func (o *OrganizationThresholdUpdateResponse) HasThreshold() bool`
 
 HasThreshold returns a boolean if a field has been set.
 

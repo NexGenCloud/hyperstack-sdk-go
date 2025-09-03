@@ -35,6 +35,34 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ClustersAPIService CreateNode", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var clusterId int32
+
+		resp, httpRes, err := apiClient.ClustersAPI.CreateNode(context.Background(), clusterId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test ClustersAPIService CreateNodeGroup", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var clusterId int32
+
+		resp, httpRes, err := apiClient.ClustersAPI.CreateNodeGroup(context.Background(), clusterId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ClustersAPIService DeleteACluster", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -49,6 +77,36 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ClustersAPIService DeleteANodeGroup", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var clusterId int32
+		var nodeGroupId int32
+
+		resp, httpRes, err := apiClient.ClustersAPI.DeleteANodeGroup(context.Background(), clusterId, nodeGroupId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test ClustersAPIService DeleteClusterNode", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var clusterId int32
+		var nodeId int32
+
+		resp, httpRes, err := apiClient.ClustersAPI.DeleteClusterNode(context.Background(), clusterId, nodeId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ClustersAPIService FetchClusterNameAvailability", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -56,6 +114,32 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 		var name string
 
 		resp, httpRes, err := apiClient.ClustersAPI.FetchClusterNameAvailability(context.Background(), name).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test ClustersAPIService GetClusterMasterFlavors", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.ClustersAPI.GetClusterMasterFlavors(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test ClustersAPIService GetClusterNodes", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var clusterId int32
+
+		resp, httpRes, err := apiClient.ClustersAPI.GetClusterNodes(context.Background(), clusterId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -94,6 +178,35 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.ClustersAPI.ListClusters(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test ClustersAPIService ListNodeGroups", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var clusterId int32
+
+		resp, httpRes, err := apiClient.ClustersAPI.ListNodeGroups(context.Background(), clusterId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test ClustersAPIService RetrieveANodeGroup", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var clusterId int32
+		var nodeGroupId int32
+
+		resp, httpRes, err := apiClient.ClustersAPI.RetrieveANodeGroup(context.Background(), clusterId, nodeGroupId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

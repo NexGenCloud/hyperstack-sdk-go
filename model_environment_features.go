@@ -19,7 +19,8 @@ var _ MappedNullable = &EnvironmentFeatures{}
 
 // EnvironmentFeatures struct for EnvironmentFeatures
 type EnvironmentFeatures struct {
-	NetworkOptimised *bool `json:"network_optimised,omitempty"`
+	GreenStatus      *string `json:"green_status,omitempty"`
+	NetworkOptimised *bool   `json:"network_optimised,omitempty"`
 }
 
 // NewEnvironmentFeatures instantiates a new EnvironmentFeatures object
@@ -37,6 +38,38 @@ func NewEnvironmentFeatures() *EnvironmentFeatures {
 func NewEnvironmentFeaturesWithDefaults() *EnvironmentFeatures {
 	this := EnvironmentFeatures{}
 	return &this
+}
+
+// GetGreenStatus returns the GreenStatus field value if set, zero value otherwise.
+func (o *EnvironmentFeatures) GetGreenStatus() string {
+	if o == nil || IsNil(o.GreenStatus) {
+		var ret string
+		return ret
+	}
+	return *o.GreenStatus
+}
+
+// GetGreenStatusOk returns a tuple with the GreenStatus field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *EnvironmentFeatures) GetGreenStatusOk() (*string, bool) {
+	if o == nil || IsNil(o.GreenStatus) {
+		return nil, false
+	}
+	return o.GreenStatus, true
+}
+
+// HasGreenStatus returns a boolean if a field has been set.
+func (o *EnvironmentFeatures) HasGreenStatus() bool {
+	if o != nil && !IsNil(o.GreenStatus) {
+		return true
+	}
+
+	return false
+}
+
+// SetGreenStatus gets a reference to the given string and assigns it to the GreenStatus field.
+func (o *EnvironmentFeatures) SetGreenStatus(v string) {
+	o.GreenStatus = &v
 }
 
 // GetNetworkOptimised returns the NetworkOptimised field value if set, zero value otherwise.
@@ -81,6 +114,9 @@ func (o EnvironmentFeatures) MarshalJSON() ([]byte, error) {
 
 func (o EnvironmentFeatures) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.GreenStatus) {
+		toSerialize["green_status"] = o.GreenStatus
+	}
 	if !IsNil(o.NetworkOptimised) {
 		toSerialize["network_optimised"] = o.NetworkOptimised
 	}

@@ -19,19 +19,19 @@ var _ MappedNullable = &VolumeFields{}
 
 // VolumeFields struct for VolumeFields
 type VolumeFields struct {
-	Bootable    *bool                       `json:"bootable,omitempty"`
-	CallbackUrl *string                     `json:"callback_url,omitempty"`
-	CreatedAt   *CustomTime                 `json:"created_at,omitempty"`
-	Description *string                     `json:"description,omitempty"`
-	Environment *EnvironmentFieldsforVolume `json:"environment,omitempty"`
-	Id          *int32                      `json:"id,omitempty"`
-	ImageId     *int32                      `json:"image_id,omitempty"`
-	Name        *string                     `json:"name,omitempty"`
-	OsImage     *string                     `json:"os_image,omitempty"`
-	Size        *int32                      `json:"size,omitempty"`
-	Status      *string                     `json:"status,omitempty"`
-	UpdatedAt   *CustomTime                 `json:"updated_at,omitempty"`
-	VolumeType  *string                     `json:"volume_type,omitempty"`
+	Attachments []AttachmentsFieldsForVolume `json:"attachments,omitempty"`
+	Bootable    *bool                        `json:"bootable,omitempty"`
+	CallbackUrl *string                      `json:"callback_url,omitempty"`
+	CreatedAt   *CustomTime                  `json:"created_at,omitempty"`
+	Description *string                      `json:"description,omitempty"`
+	Environment *EnvironmentFieldsForVolume  `json:"environment,omitempty"`
+	Id          *int32                       `json:"id,omitempty"`
+	ImageId     *int32                       `json:"image_id,omitempty"`
+	Name        *string                      `json:"name,omitempty"`
+	Size        *int32                       `json:"size,omitempty"`
+	Status      *string                      `json:"status,omitempty"`
+	UpdatedAt   *CustomTime                  `json:"updated_at,omitempty"`
+	VolumeType  *string                      `json:"volume_type,omitempty"`
 }
 
 // NewVolumeFields instantiates a new VolumeFields object
@@ -49,6 +49,38 @@ func NewVolumeFields() *VolumeFields {
 func NewVolumeFieldsWithDefaults() *VolumeFields {
 	this := VolumeFields{}
 	return &this
+}
+
+// GetAttachments returns the Attachments field value if set, zero value otherwise.
+func (o *VolumeFields) GetAttachments() []AttachmentsFieldsForVolume {
+	if o == nil || IsNil(o.Attachments) {
+		var ret []AttachmentsFieldsForVolume
+		return ret
+	}
+	return o.Attachments
+}
+
+// GetAttachmentsOk returns a tuple with the Attachments field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *VolumeFields) GetAttachmentsOk() ([]AttachmentsFieldsForVolume, bool) {
+	if o == nil || IsNil(o.Attachments) {
+		return nil, false
+	}
+	return o.Attachments, true
+}
+
+// HasAttachments returns a boolean if a field has been set.
+func (o *VolumeFields) HasAttachments() bool {
+	if o != nil && !IsNil(o.Attachments) {
+		return true
+	}
+
+	return false
+}
+
+// SetAttachments gets a reference to the given []AttachmentsFieldsForVolume and assigns it to the Attachments field.
+func (o *VolumeFields) SetAttachments(v []AttachmentsFieldsForVolume) {
+	o.Attachments = v
 }
 
 // GetBootable returns the Bootable field value if set, zero value otherwise.
@@ -180,9 +212,9 @@ func (o *VolumeFields) SetDescription(v string) {
 }
 
 // GetEnvironment returns the Environment field value if set, zero value otherwise.
-func (o *VolumeFields) GetEnvironment() EnvironmentFieldsforVolume {
+func (o *VolumeFields) GetEnvironment() EnvironmentFieldsForVolume {
 	if o == nil || IsNil(o.Environment) {
-		var ret EnvironmentFieldsforVolume
+		var ret EnvironmentFieldsForVolume
 		return ret
 	}
 	return *o.Environment
@@ -190,7 +222,7 @@ func (o *VolumeFields) GetEnvironment() EnvironmentFieldsforVolume {
 
 // GetEnvironmentOk returns a tuple with the Environment field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *VolumeFields) GetEnvironmentOk() (*EnvironmentFieldsforVolume, bool) {
+func (o *VolumeFields) GetEnvironmentOk() (*EnvironmentFieldsForVolume, bool) {
 	if o == nil || IsNil(o.Environment) {
 		return nil, false
 	}
@@ -206,8 +238,8 @@ func (o *VolumeFields) HasEnvironment() bool {
 	return false
 }
 
-// SetEnvironment gets a reference to the given EnvironmentFieldsforVolume and assigns it to the Environment field.
-func (o *VolumeFields) SetEnvironment(v EnvironmentFieldsforVolume) {
+// SetEnvironment gets a reference to the given EnvironmentFieldsForVolume and assigns it to the Environment field.
+func (o *VolumeFields) SetEnvironment(v EnvironmentFieldsForVolume) {
 	o.Environment = &v
 }
 
@@ -305,38 +337,6 @@ func (o *VolumeFields) HasName() bool {
 // SetName gets a reference to the given string and assigns it to the Name field.
 func (o *VolumeFields) SetName(v string) {
 	o.Name = &v
-}
-
-// GetOsImage returns the OsImage field value if set, zero value otherwise.
-func (o *VolumeFields) GetOsImage() string {
-	if o == nil || IsNil(o.OsImage) {
-		var ret string
-		return ret
-	}
-	return *o.OsImage
-}
-
-// GetOsImageOk returns a tuple with the OsImage field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *VolumeFields) GetOsImageOk() (*string, bool) {
-	if o == nil || IsNil(o.OsImage) {
-		return nil, false
-	}
-	return o.OsImage, true
-}
-
-// HasOsImage returns a boolean if a field has been set.
-func (o *VolumeFields) HasOsImage() bool {
-	if o != nil && !IsNil(o.OsImage) {
-		return true
-	}
-
-	return false
-}
-
-// SetOsImage gets a reference to the given string and assigns it to the OsImage field.
-func (o *VolumeFields) SetOsImage(v string) {
-	o.OsImage = &v
 }
 
 // GetSize returns the Size field value if set, zero value otherwise.
@@ -477,6 +477,9 @@ func (o VolumeFields) MarshalJSON() ([]byte, error) {
 
 func (o VolumeFields) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Attachments) {
+		toSerialize["attachments"] = o.Attachments
+	}
 	if !IsNil(o.Bootable) {
 		toSerialize["bootable"] = o.Bootable
 	}
@@ -500,9 +503,6 @@ func (o VolumeFields) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Name) {
 		toSerialize["name"] = o.Name
-	}
-	if !IsNil(o.OsImage) {
-		toSerialize["os_image"] = o.OsImage
 	}
 	if !IsNil(o.Size) {
 		toSerialize["size"] = o.Size

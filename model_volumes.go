@@ -19,9 +19,12 @@ var _ MappedNullable = &Volumes{}
 
 // Volumes struct for Volumes
 type Volumes struct {
-	Message *string        `json:"message,omitempty"`
-	Status  *bool          `json:"status,omitempty"`
-	Volume  []VolumeFields `json:"volume,omitempty"`
+	Count    *int32         `json:"count,omitempty"`
+	Message  *string        `json:"message,omitempty"`
+	Page     *int32         `json:"page,omitempty"`
+	PageSize *int32         `json:"page_size,omitempty"`
+	Status   *bool          `json:"status,omitempty"`
+	Volumes  []VolumeFields `json:"volumes,omitempty"`
 }
 
 // NewVolumes instantiates a new Volumes object
@@ -39,6 +42,38 @@ func NewVolumes() *Volumes {
 func NewVolumesWithDefaults() *Volumes {
 	this := Volumes{}
 	return &this
+}
+
+// GetCount returns the Count field value if set, zero value otherwise.
+func (o *Volumes) GetCount() int32 {
+	if o == nil || IsNil(o.Count) {
+		var ret int32
+		return ret
+	}
+	return *o.Count
+}
+
+// GetCountOk returns a tuple with the Count field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Volumes) GetCountOk() (*int32, bool) {
+	if o == nil || IsNil(o.Count) {
+		return nil, false
+	}
+	return o.Count, true
+}
+
+// HasCount returns a boolean if a field has been set.
+func (o *Volumes) HasCount() bool {
+	if o != nil && !IsNil(o.Count) {
+		return true
+	}
+
+	return false
+}
+
+// SetCount gets a reference to the given int32 and assigns it to the Count field.
+func (o *Volumes) SetCount(v int32) {
+	o.Count = &v
 }
 
 // GetMessage returns the Message field value if set, zero value otherwise.
@@ -73,6 +108,70 @@ func (o *Volumes) SetMessage(v string) {
 	o.Message = &v
 }
 
+// GetPage returns the Page field value if set, zero value otherwise.
+func (o *Volumes) GetPage() int32 {
+	if o == nil || IsNil(o.Page) {
+		var ret int32
+		return ret
+	}
+	return *o.Page
+}
+
+// GetPageOk returns a tuple with the Page field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Volumes) GetPageOk() (*int32, bool) {
+	if o == nil || IsNil(o.Page) {
+		return nil, false
+	}
+	return o.Page, true
+}
+
+// HasPage returns a boolean if a field has been set.
+func (o *Volumes) HasPage() bool {
+	if o != nil && !IsNil(o.Page) {
+		return true
+	}
+
+	return false
+}
+
+// SetPage gets a reference to the given int32 and assigns it to the Page field.
+func (o *Volumes) SetPage(v int32) {
+	o.Page = &v
+}
+
+// GetPageSize returns the PageSize field value if set, zero value otherwise.
+func (o *Volumes) GetPageSize() int32 {
+	if o == nil || IsNil(o.PageSize) {
+		var ret int32
+		return ret
+	}
+	return *o.PageSize
+}
+
+// GetPageSizeOk returns a tuple with the PageSize field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Volumes) GetPageSizeOk() (*int32, bool) {
+	if o == nil || IsNil(o.PageSize) {
+		return nil, false
+	}
+	return o.PageSize, true
+}
+
+// HasPageSize returns a boolean if a field has been set.
+func (o *Volumes) HasPageSize() bool {
+	if o != nil && !IsNil(o.PageSize) {
+		return true
+	}
+
+	return false
+}
+
+// SetPageSize gets a reference to the given int32 and assigns it to the PageSize field.
+func (o *Volumes) SetPageSize(v int32) {
+	o.PageSize = &v
+}
+
 // GetStatus returns the Status field value if set, zero value otherwise.
 func (o *Volumes) GetStatus() bool {
 	if o == nil || IsNil(o.Status) {
@@ -105,36 +204,36 @@ func (o *Volumes) SetStatus(v bool) {
 	o.Status = &v
 }
 
-// GetVolume returns the Volume field value if set, zero value otherwise.
-func (o *Volumes) GetVolume() []VolumeFields {
-	if o == nil || IsNil(o.Volume) {
+// GetVolumes returns the Volumes field value if set, zero value otherwise.
+func (o *Volumes) GetVolumes() []VolumeFields {
+	if o == nil || IsNil(o.Volumes) {
 		var ret []VolumeFields
 		return ret
 	}
-	return o.Volume
+	return o.Volumes
 }
 
-// GetVolumeOk returns a tuple with the Volume field value if set, nil otherwise
+// GetVolumesOk returns a tuple with the Volumes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Volumes) GetVolumeOk() ([]VolumeFields, bool) {
-	if o == nil || IsNil(o.Volume) {
+func (o *Volumes) GetVolumesOk() ([]VolumeFields, bool) {
+	if o == nil || IsNil(o.Volumes) {
 		return nil, false
 	}
-	return o.Volume, true
+	return o.Volumes, true
 }
 
-// HasVolume returns a boolean if a field has been set.
-func (o *Volumes) HasVolume() bool {
-	if o != nil && !IsNil(o.Volume) {
+// HasVolumes returns a boolean if a field has been set.
+func (o *Volumes) HasVolumes() bool {
+	if o != nil && !IsNil(o.Volumes) {
 		return true
 	}
 
 	return false
 }
 
-// SetVolume gets a reference to the given []VolumeFields and assigns it to the Volume field.
-func (o *Volumes) SetVolume(v []VolumeFields) {
-	o.Volume = v
+// SetVolumes gets a reference to the given []VolumeFields and assigns it to the Volumes field.
+func (o *Volumes) SetVolumes(v []VolumeFields) {
+	o.Volumes = v
 }
 
 func (o Volumes) MarshalJSON() ([]byte, error) {
@@ -147,14 +246,23 @@ func (o Volumes) MarshalJSON() ([]byte, error) {
 
 func (o Volumes) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Count) {
+		toSerialize["count"] = o.Count
+	}
 	if !IsNil(o.Message) {
 		toSerialize["message"] = o.Message
+	}
+	if !IsNil(o.Page) {
+		toSerialize["page"] = o.Page
+	}
+	if !IsNil(o.PageSize) {
+		toSerialize["page_size"] = o.PageSize
 	}
 	if !IsNil(o.Status) {
 		toSerialize["status"] = o.Status
 	}
-	if !IsNil(o.Volume) {
-		toSerialize["volume"] = o.Volume
+	if !IsNil(o.Volumes) {
+		toSerialize["volumes"] = o.Volumes
 	}
 	return toSerialize, nil
 }

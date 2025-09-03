@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Cluster** | Pointer to [**ClusterFields**](ClusterFields.md) |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **FlavorName** | Pointer to **string** |  | [optional] 
 **GpuCount** | Pointer to **int32** |  | [optional] 
@@ -31,6 +32,31 @@ will change when the set of required properties is changed
 NewContractInstanceFieldsWithDefaults instantiates a new ContractInstanceFields object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetCluster
+
+`func (o *ContractInstanceFields) GetCluster() ClusterFields`
+
+GetCluster returns the Cluster field if non-nil, zero value otherwise.
+
+### GetClusterOk
+
+`func (o *ContractInstanceFields) GetClusterOk() (*ClusterFields, bool)`
+
+GetClusterOk returns a tuple with the Cluster field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCluster
+
+`func (o *ContractInstanceFields) SetCluster(v ClusterFields)`
+
+SetCluster sets Cluster field to given value.
+
+### HasCluster
+
+`func (o *ContractInstanceFields) HasCluster() bool`
+
+HasCluster returns a boolean if a field has been set.
 
 ### GetCreatedAt
 

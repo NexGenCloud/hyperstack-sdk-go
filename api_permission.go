@@ -33,7 +33,7 @@ func (r ApiListPermissionsRequest) Execute() (*GetPermissionsResponseModel, *htt
 /*
 ListPermissions List Permissions
 
-Retrieves a list of permissions that users can be granted to access a particular resource action. For additional information on permissions, [click here](https://infrahub-doc.nexgencloud.com/docs/api-reference/auth-resources/permission/permissions).
+Retrieves a list of permissions that users can be granted to access a particular resource action. For additional information on permissions, [click here](https://docs.hyperstack.cloud/docs/api-reference/auth-resources/permission/permissions).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiListPermissionsRequest
@@ -95,20 +95,6 @@ func (a *PermissionAPIService) ListPermissionsExecute(r ApiListPermissionsReques
 					key = apiKey.Key
 				}
 				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["accessToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
 			}
 		}
 	}
