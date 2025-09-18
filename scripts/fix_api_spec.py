@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3.11
 
 """
@@ -28,6 +29,28 @@ import copy
 from typing import Dict, Any
 
 AttrType = Dict[str, Any]
+
+
+def attr_update_refs(data: AttrType, old_name: str, new_name: str) -> None:
+  """
+  Recursively updates all $ref references from old_name to new_name.
+
+  Args:
+      data: Data chunk to process.
+      old_name: Old reference name to replace.
+      new_name: New reference name to use.
+  """
+  if isinstance(data, dict):
+    for key, value in list(data.items()):
+      if key == "$ref" and isinstance(value, str):
+        # Update the reference if it points to the old schema name
+        if f"#/components/schemas/{old_name}" in value:
+          data[key] = value.replace(f"#/components/schemas/{old_name}", f"#/components/schemas/{new_name}")
+      else:
+        attr_update_refs(value, old_name, new_name)
+  elif isinstance(data, list):
+    for item in data:
+      attr_update_refs(item, old_name, new_name)
 
 
 def attr_remove_ref_spaces(data: AttrType) -> None:
@@ -86,6 +109,20 @@ def attr_fix_components(data: AttrType) -> None:
     if new_key != key:
       schemas[new_key] = schemas.pop(key)
 
+  # Fix duplicate type names that conflict with generated HTTP response wrappers
+  # Rename data model types to avoid conflicts with generated response wrapper types
+  type_renames = {
+    "GetInstanceLogsResponse": "GetInstanceLogsData",
+    "Update_Volume_Response": "UpdateVolumeData",
+    "Create_Profile_Response": "CreateProfileData"  # Add this line
+}
+  
+  for old_name, new_name in type_renames.items():
+    if old_name in schemas:
+      schemas[new_name] = schemas.pop(old_name)
+      # Update all references to the old name
+      attr_update_refs(data, old_name, new_name)
+
     # TODO: UNSYNCED see tf provider
     continue
     props = schemas[new_key]["properties"]
@@ -128,26 +165,26 @@ def attr_fix_components(data: AttrType) -> None:
   del schemas["RbacRoleDetailResponseModelFixed"]["properties"]["role"]
   paths["/auth/roles/{id}"]["get"]["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] = "#/components/schemas/RbacRoleDetailResponseModelFixed"
 
-  schemas["FlavorFields"]["properties"]["ram"]["type"] = "number"
+  schemas["Flavor_Fields"]["properties"]["ram"]["type"] = "number"
 
-  schemas["InstanceOverviewFields"]["properties"]["ram"]["type"] = "number"
-  schemas["ContainerOverviewFields"]["properties"]["ram"]["type"] = "number"
-  schemas["InstanceFlavorFields"]["properties"]["ram"]["type"] = "number"
-  schemas["FlavorFields"]["properties"]["ram"]["type"] = "number"
+  schemas["Instance_Overview_Fields"]["properties"]["ram"]["type"] = "number"
+  schemas["Container_Overview_Fields"]["properties"]["ram"]["type"] = "number"
+  schemas["Instance_Flavor_Fields"]["properties"]["ram"]["type"] = "number"
+  schemas["Cluster_Flavor_Fields"]["properties"]["ram"]["type"] = "number"
 
   # TODO: UNSYNCED see tf provider
   #schemas["ImportKeypairPayload"]["properties"]["environment"] = schemas["ImportKeypairPayload"]["properties"]["environment_name"]
   #del schemas["ImportKeypairPayload"]["properties"]["environment_name"]
 
   # TODO: UNSYNCED see tf provider
-  schemas["CreateSecurityRulePayload"]["required"].append("virtual_machine_id")
-  # schemas["CreateSecurityRulePayload"]["properties"]["virtual_machine_id"] = {
+  schemas["Create_Security_Rule_Payload"]["required"].append("virtual_machine_id")
+  # schemas["Create_Security_Rule_Payload"]["properties"]["virtual_machine_id"] = {
   #   "type": "integer",
   # }
-  schemas["CreateSecurityRulePayload"]["properties"]["port_range_min"] = {
+  schemas["Create_Security_Rule_Payload"]["properties"]["port_range_min"] = {
     "type": "integer",
   }
-  schemas["CreateSecurityRulePayload"]["properties"]["port_range_max"] = {
+  schemas["Create_Security_Rule_Payload"]["properties"]["port_range_max"] = {
     "type": "integer",
   }
 
@@ -162,17 +199,20 @@ def attr_fix_components(data: AttrType) -> None:
   #  props["N%s" % p] = props.pop(p)
 
   # TODO: UNSYNCED see tf provider
-  paths["/core/virtual-machines/{virtual_machine_id}/sg-rules"] = paths["/core/virtual-machines/{id}/sg-rules"]
-  del paths["/core/virtual-machines/{id}/sg-rules"]
-  paths["/core/virtual-machines/{virtual_machine_id}/sg-rules"]["post"]["parameters"][0]["name"] = "virtual_machine_id"
+  # The API spec now uses {vm_id} instead of {id}
+  # paths["/core/virtual-machines/{virtual_machine_id}/sg-rules"] = paths["/core/virtual-machines/{id}/sg-rules"]
+  # del paths["/core/virtual-machines/{id}/sg-rules"]
+  # Commented out because the API spec now uses different path parameters
+  # paths["/core/virtual-machines/{virtual_machine_id}/sg-rules"]["post"]["parameters"][0]["name"] = "virtual_machine_id"
 
   # TODO: UNSYNCED see tf provider
-  paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"] = paths[
-    "/core/virtual-machines/{virtual_machine_id}/sg-rules/{sg_rule_id}"]
-  del paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{sg_rule_id}"]
-  paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"]["delete"]["parameters"][0][
-    "name"] = "virtual_machine_id"
-  paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"]["delete"]["parameters"][1]["name"] = "id"
+  # The API spec now uses {sg_rule_id} instead of {id}
+  # paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"] = paths[
+  #   "/core/virtual-machines/{virtual_machine_id}/sg-rules/{sg_rule_id}"]
+  # del paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{sg_rule_id}"]
+  # paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"]["delete"]["parameters"][0][
+  #   "name"] = "virtual_machine_id"
+  # paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"]["delete"]["parameters"][1]["name"] = "id"
 
 
 def fix_api_spec(spec_file: str) -> None:

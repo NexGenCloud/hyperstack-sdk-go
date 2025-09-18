@@ -52,12 +52,10 @@ tasks:
         mkdir -p "{{.DIR_PACKAGE}}/{{.TIME_PACKAGE}}"
         find "{{.DIR_PACKAGE}}" \
           -name "*.go" \
-          -exec bash -c 'sed -i.tmp -e "s/*time.Time/*{{.TIME_PACKAGE}}.CustomTime/g" {} &&
-            rm {}.tmp' \;
+          -exec bash -c 'sed -i.tmp -e "s/time\.Time/{{.TIME_PACKAGE}}.CustomTime/g" "$1" && rm "$1.tmp"' _ {} \;
         find "{{.DIR_PACKAGE}}" \
           -name "*.go" \
-          -exec bash -c 'sed -i.tmp -e '"'"'s/"time"/"{{.PROJECT}}\/{{.LIB_DIR}}\/{{.TIME_PACKAGE}}"/g'"'"' {} &&
-            rm {}.tmp' \;
+          -exec bash -c 'sed -i.tmp -e '"'"'s/"time"/"{{.PROJECT}}\/{{.LIB_DIR}}\/{{.TIME_PACKAGE}}"/g'"'"' "$1" && rm "$1.tmp"' _ {} \;
         sed 's/PACKAGE_REPLACE/{{.TIME_PACKAGE}}/g' "{{.DIR_DATA}}/CustomTime.go" \
           > "{{.DIR_PACKAGE}}/{{.TIME_PACKAGE}}/CustomTime.go"
         echo "done"
@@ -77,8 +75,8 @@ tasks:
         curl -s "${HYPERSTACK_API_SPEC_ADDRESS}" > "{{.API_SPEC_PATH}}"
         echo "done"
         echo -n "Fixing api spec... "
-        python3.11 "{{.SORT_SCHEMAS}}" "{{.API_SPEC_PATH}}"
-        python3.11 "{{.FIX_API_SPEC}}" "{{.API_SPEC_PATH}}"
+        python3 "{{.SORT_SCHEMAS}}" "{{.API_SPEC_PATH}}"
+        python3 "{{.FIX_API_SPEC}}" "{{.API_SPEC_PATH}}"
         echo "done"
 
   test:

@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/NexGenCloud/hyperstack-sdk-go/lib/auth"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -11,6 +10,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/NexGenCloud/hyperstack-sdk-go/lib/auth"
 )
 
 var (
@@ -51,7 +52,7 @@ type UserFields struct {
 
 func createAuthClient() (*auth.ClientWithResponses, error) {
 	apiKey := os.Getenv("HYPERSTACK_API_KEY")
-	staging := os.Getenv("HYPERSTACK_STAGING") == "true"
+	staging := os.Getenv("HYPERSTACK_STAGING") == "false"
 
 	apiServer := API_SERVER
 	if staging {
@@ -83,7 +84,7 @@ func TestAuthUserInformation(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to create auth client: %s", err)
 	}
-	resp, err := authClient.AuthUserInformationWithResponse(context.Background())
+	resp, err := authClient.RetrieveAuthenticatedUserDetailsWithResponse(context.Background())
 
 	if err != nil {
 		t.Fatalf("failed to get user information: %s", err)
