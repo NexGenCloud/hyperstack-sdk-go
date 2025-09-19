@@ -6,10 +6,15 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **Device** | Pointer to **string** |  | [optional] 
+<<<<<<< HEAD
 **Id** | Pointer to **int32** |  | [optional] 
 **Protected** | Pointer to **bool** |  | [optional] 
 **Status** | Pointer to **string** |  | [optional] 
 **Volume** | Pointer to [**VolumeFieldsForInstance**](VolumeFieldsForInstance.md) |  | [optional] 
+=======
+**Status** | Pointer to **string** |  | [optional] 
+**Volume** | Pointer to [**VolumeFieldsforInstance**](VolumeFieldsforInstance.md) |  | [optional] 
+>>>>>>> main
 
 ## Methods
 
@@ -80,6 +85,7 @@ SetDevice sets Device field to given value.
 
 HasDevice returns a boolean if a field has been set.
 
+<<<<<<< HEAD
 ### GetId
 
 `func (o *VolumeAttachmentFields) GetId() int32`
@@ -130,6 +136,8 @@ SetProtected sets Protected field to given value.
 
 HasProtected returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetStatus
 
 `func (o *VolumeAttachmentFields) GetStatus() string`
@@ -157,20 +165,32 @@ HasStatus returns a boolean if a field has been set.
 
 ### GetVolume
 
+<<<<<<< HEAD
 `func (o *VolumeAttachmentFields) GetVolume() VolumeFieldsForInstance`
+=======
+`func (o *VolumeAttachmentFields) GetVolume() VolumeFieldsforInstance`
+>>>>>>> main
 
 GetVolume returns the Volume field if non-nil, zero value otherwise.
 
 ### GetVolumeOk
 
+<<<<<<< HEAD
 `func (o *VolumeAttachmentFields) GetVolumeOk() (*VolumeFieldsForInstance, bool)`
+=======
+`func (o *VolumeAttachmentFields) GetVolumeOk() (*VolumeFieldsforInstance, bool)`
+>>>>>>> main
 
 GetVolumeOk returns a tuple with the Volume field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetVolume
 
+<<<<<<< HEAD
 `func (o *VolumeAttachmentFields) SetVolume(v VolumeFieldsForInstance)`
+=======
+`func (o *VolumeAttachmentFields) SetVolume(v VolumeFieldsforInstance)`
+>>>>>>> main
 
 SetVolume sets Volume field to given value.
 

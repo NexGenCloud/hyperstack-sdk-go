@@ -16,7 +16,10 @@ Name | Type | Description | Notes
 **OrganizationId** | Pointer to **int32** |  | [optional] 
 **Phone** | Pointer to **string** |  | [optional] 
 **State** | Pointer to **string** |  | [optional] 
+<<<<<<< HEAD
 **StripeUserId** | Pointer to **string** |  | [optional] 
+=======
+>>>>>>> main
 **VatNumber** | Pointer to **string** |  | [optional] 
 **ZipCode** | Pointer to **string** |  | [optional] 
 
@@ -339,6 +342,7 @@ SetState sets State field to given value.
 
 HasState returns a boolean if a field has been set.
 
+<<<<<<< HEAD
 ### GetStripeUserId
 
 `func (o *UsersInfoFields) GetStripeUserId() string`
@@ -364,6 +368,8 @@ SetStripeUserId sets StripeUserId field to given value.
 
 HasStripeUserId returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetVatNumber
 
 `func (o *UsersInfoFields) GetVatNumber() string`

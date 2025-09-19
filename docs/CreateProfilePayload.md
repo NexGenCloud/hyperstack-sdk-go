@@ -4,7 +4,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+<<<<<<< HEAD
 **Data** | **map[string]string** | The data object containing the configuration details of the virtual machine profile being created. | 
+=======
+**Data** | **map[string]string** | The data object which contains the configuration of the virtual machine profile being created. | 
+>>>>>>> main
 **Description** | Pointer to **string** | The optional description for the profile being created. | [optional] 
 **Name** | **string** | The name of the profile being created. | 
 

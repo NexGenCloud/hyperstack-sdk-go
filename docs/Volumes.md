@@ -4,12 +4,18 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+<<<<<<< HEAD
 **Count** | Pointer to **int32** |  | [optional] 
 **Message** | Pointer to **string** |  | [optional] 
 **Page** | Pointer to **int32** |  | [optional] 
 **PageSize** | Pointer to **int32** |  | [optional] 
 **Status** | Pointer to **bool** |  | [optional] 
 **Volumes** | Pointer to [**[]VolumesFields**](VolumesFields.md) |  | [optional] 
+=======
+**Message** | Pointer to **string** |  | [optional] 
+**Status** | Pointer to **bool** |  | [optional] 
+**Volume** | Pointer to [**[]VolumeFields**](VolumeFields.md) |  | [optional] 
+>>>>>>> main
 
 ## Methods
 
@@ -30,6 +36,7 @@ NewVolumesWithDefaults instantiates a new Volumes object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
+<<<<<<< HEAD
 ### GetCount
 
 `func (o *Volumes) GetCount() int32`
@@ -55,6 +62,8 @@ SetCount sets Count field to given value.
 
 HasCount returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetMessage
 
 `func (o *Volumes) GetMessage() string`
@@ -80,6 +89,7 @@ SetMessage sets Message field to given value.
 
 HasMessage returns a boolean if a field has been set.
 
+<<<<<<< HEAD
 ### GetPage
 
 `func (o *Volumes) GetPage() int32`
@@ -130,6 +140,8 @@ SetPageSize sets PageSize field to given value.
 
 HasPageSize returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetStatus
 
 `func (o *Volumes) GetStatus() bool`
@@ -155,6 +167,7 @@ SetStatus sets Status field to given value.
 
 HasStatus returns a boolean if a field has been set.
 
+<<<<<<< HEAD
 ### GetVolumes
 
 `func (o *Volumes) GetVolumes() []VolumesFields`
@@ -179,6 +192,32 @@ SetVolumes sets Volumes field to given value.
 `func (o *Volumes) HasVolumes() bool`
 
 HasVolumes returns a boolean if a field has been set.
+=======
+### GetVolume
+
+`func (o *Volumes) GetVolume() []VolumeFields`
+
+GetVolume returns the Volume field if non-nil, zero value otherwise.
+
+### GetVolumeOk
+
+`func (o *Volumes) GetVolumeOk() (*[]VolumeFields, bool)`
+
+GetVolumeOk returns a tuple with the Volume field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetVolume
+
+`func (o *Volumes) SetVolume(v []VolumeFields)`
+
+SetVolume sets Volume field to given value.
+
+### HasVolume
+
+`func (o *Volumes) HasVolume() bool`
+
+HasVolume returns a boolean if a field has been set.
+>>>>>>> main
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

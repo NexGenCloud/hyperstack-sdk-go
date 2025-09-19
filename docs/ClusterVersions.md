@@ -6,7 +6,11 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Message** | Pointer to **string** |  | [optional] 
 **Status** | Pointer to **bool** |  | [optional] 
+<<<<<<< HEAD
 **Versions** | Pointer to [**[]ClusterVersion**](ClusterVersion.md) |  | [optional] 
+=======
+**Versions** | Pointer to **[]string** |  | [optional] 
+>>>>>>> main
 
 ## Methods
 
@@ -79,20 +83,32 @@ HasStatus returns a boolean if a field has been set.
 
 ### GetVersions
 
+<<<<<<< HEAD
 `func (o *ClusterVersions) GetVersions() []ClusterVersion`
+=======
+`func (o *ClusterVersions) GetVersions() []string`
+>>>>>>> main
 
 GetVersions returns the Versions field if non-nil, zero value otherwise.
 
 ### GetVersionsOk
 
+<<<<<<< HEAD
 `func (o *ClusterVersions) GetVersionsOk() (*[]ClusterVersion, bool)`
+=======
+`func (o *ClusterVersions) GetVersionsOk() (*[]string, bool)`
+>>>>>>> main
 
 GetVersionsOk returns a tuple with the Versions field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetVersions
 
+<<<<<<< HEAD
 `func (o *ClusterVersions) SetVersions(v []ClusterVersion)`
+=======
+`func (o *ClusterVersions) SetVersions(v []string)`
+>>>>>>> main
 
 SetVersions sets Versions field to given value.
 

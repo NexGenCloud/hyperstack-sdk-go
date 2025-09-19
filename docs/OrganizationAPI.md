@@ -64,7 +64,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -125,7 +129,11 @@ Other parameters are passed through a pointer to a apiRetrieveOrganizationInform
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -191,7 +199,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 

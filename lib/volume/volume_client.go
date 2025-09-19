@@ -102,6 +102,7 @@ type Volume struct {
 
 // VolumeFields defines model for Volume_Fields.
 type VolumeFields struct {
+<<<<<<< HEAD
 	Attachments *[]AttachmentsFieldsForVolume `json:"attachments,omitempty"`
 	Bootable    *bool                         `json:"bootable,omitempty"`
 	CallbackUrl *string                       `json:"callback_url,omitempty"`
@@ -116,6 +117,21 @@ type VolumeFields struct {
 	Status      *string                       `json:"status,omitempty"`
 	UpdatedAt   *time.CustomTime                    `json:"updated_at,omitempty"`
 	VolumeType  *string                       `json:"volume_type,omitempty"`
+=======
+	Bootable    *bool                       `json:"bootable,omitempty"`
+	CallbackUrl *string                     `json:"callback_url,omitempty"`
+	CreatedAt   *time.CustomTime                  `json:"created_at,omitempty"`
+	Description *string                     `json:"description,omitempty"`
+	Environment *EnvironmentFieldsforVolume `json:"environment,omitempty"`
+	Id          *int                        `json:"id,omitempty"`
+	ImageId     *int                        `json:"image_id,omitempty"`
+	Name        *string                     `json:"name,omitempty"`
+	OsImage     *string                     `json:"os_image,omitempty"`
+	Size        *int                        `json:"size,omitempty"`
+	Status      *string                     `json:"status,omitempty"`
+	UpdatedAt   *time.CustomTime                  `json:"updated_at,omitempty"`
+	VolumeType  *string                     `json:"volume_type,omitempty"`
+>>>>>>> main
 }
 
 // VolumeTypes defines model for Volume_Types.
@@ -127,6 +143,7 @@ type VolumeTypes struct {
 
 // Volumes defines model for Volumes.
 type Volumes struct {
+<<<<<<< HEAD
 	Count    *int             `json:"count,omitempty"`
 	Message  *string          `json:"message,omitempty"`
 	Page     *int             `json:"page,omitempty"`
@@ -150,6 +167,11 @@ type VolumesFields struct {
 	Status      *string                       `json:"status,omitempty"`
 	UpdatedAt   *time.CustomTime                    `json:"updated_at,omitempty"`
 	VolumeType  *string                       `json:"volume_type,omitempty"`
+=======
+	Message *string         `json:"message,omitempty"`
+	Status  *bool           `json:"status,omitempty"`
+	Volumes *[]VolumeFields `json:"volumes,omitempty"`
+>>>>>>> main
 }
 
 // ListVolumesParams defines parameters for ListVolumes.
@@ -245,6 +267,12 @@ type ClientInterface interface {
 	// FetchVolumeNameAvailability request
 	FetchVolumeNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+<<<<<<< HEAD
+=======
+	// FetchVolumeDetails request
+	FetchVolumeDetails(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+>>>>>>> main
 	// ListVolumes request
 	ListVolumes(ctx context.Context, params *ListVolumesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -289,6 +317,21 @@ func (c *Client) FetchVolumeNameAvailability(ctx context.Context, name string, r
 	return c.Client.Do(req)
 }
 
+<<<<<<< HEAD
+=======
+func (c *Client) FetchVolumeDetails(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFetchVolumeDetailsRequest(c.Server, volumeId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+>>>>>>> main
 func (c *Client) ListVolumes(ctx context.Context, params *ListVolumesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListVolumesRequest(c.Server, params)
 	if err != nil {
@@ -434,6 +477,43 @@ func NewFetchVolumeNameAvailabilityRequest(server string, name string) (*http.Re
 	return req, nil
 }
 
+<<<<<<< HEAD
+=======
+// NewFetchVolumeDetailsRequest generates requests for FetchVolumeDetails
+func NewFetchVolumeDetailsRequest(server string, volumeId int) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "volume_id", runtime.ParamLocationPath, volumeId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/volume/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+>>>>>>> main
 // NewListVolumesRequest generates requests for ListVolumes
 func NewListVolumesRequest(server string, params *ListVolumesParams) (*http.Request, error) {
 	var err error
@@ -735,6 +815,12 @@ type ClientWithResponsesInterface interface {
 	// FetchVolumeNameAvailabilityWithResponse request
 	FetchVolumeNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*FetchVolumeNameAvailabilityResponse, error)
 
+<<<<<<< HEAD
+=======
+	// FetchVolumeDetailsWithResponse request
+	FetchVolumeDetailsWithResponse(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*FetchVolumeDetailsResponse, error)
+
+>>>>>>> main
 	// ListVolumesWithResponse request
 	ListVolumesWithResponse(ctx context.Context, params *ListVolumesParams, reqEditors ...RequestEditorFn) (*ListVolumesResponse, error)
 
@@ -804,6 +890,35 @@ func (r FetchVolumeNameAvailabilityResponse) StatusCode() int {
 	return 0
 }
 
+<<<<<<< HEAD
+=======
+type FetchVolumeDetailsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *Volumes
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON403      *ErrorResponseModel
+	JSON405      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r FetchVolumeDetailsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FetchVolumeDetailsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+>>>>>>> main
 type ListVolumesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -950,6 +1065,18 @@ func (c *ClientWithResponses) FetchVolumeNameAvailabilityWithResponse(ctx contex
 	return ParseFetchVolumeNameAvailabilityResponse(rsp)
 }
 
+<<<<<<< HEAD
+=======
+// FetchVolumeDetailsWithResponse request returning *FetchVolumeDetailsResponse
+func (c *ClientWithResponses) FetchVolumeDetailsWithResponse(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*FetchVolumeDetailsResponse, error) {
+	rsp, err := c.FetchVolumeDetails(ctx, volumeId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFetchVolumeDetailsResponse(rsp)
+}
+
+>>>>>>> main
 // ListVolumesWithResponse request returning *ListVolumesResponse
 func (c *ClientWithResponses) ListVolumesWithResponse(ctx context.Context, params *ListVolumesParams, reqEditors ...RequestEditorFn) (*ListVolumesResponse, error) {
 	rsp, err := c.ListVolumes(ctx, params, reqEditors...)
@@ -1098,6 +1225,63 @@ func ParseFetchVolumeNameAvailabilityResponse(rsp *http.Response) (*FetchVolumeN
 	return response, nil
 }
 
+<<<<<<< HEAD
+=======
+// ParseFetchVolumeDetailsResponse parses an HTTP response from a FetchVolumeDetailsWithResponse call
+func ParseFetchVolumeDetailsResponse(rsp *http.Response) (*FetchVolumeDetailsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FetchVolumeDetailsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Volumes
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 405:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON405 = &dest
+
+	}
+
+	return response, nil
+}
+
+>>>>>>> main
 // ParseListVolumesResponse parses an HTTP response from a ListVolumesWithResponse call
 func ParseListVolumesResponse(rsp *http.Response) (*ListVolumesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)

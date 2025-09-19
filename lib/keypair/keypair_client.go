@@ -50,7 +50,11 @@ type ImportKeypairResponse struct {
 	Status  *bool          `json:"status,omitempty"`
 }
 
+<<<<<<< HEAD
 // KeypairEnvironmentFeatures defines model for Keypair_Environment_Features.
+=======
+// KeypairEnvironmentFeatures defines model for KeypairEnvironmentFeatures.
+>>>>>>> main
 type KeypairEnvironmentFeatures struct {
 	GreenStatus      *KeypairEnvironmentFeaturesGreenStatus `json:"green_status,omitempty"`
 	NetworkOptimised *bool                                  `json:"network_optimised,omitempty"`
@@ -59,7 +63,11 @@ type KeypairEnvironmentFeatures struct {
 // KeypairEnvironmentFeaturesGreenStatus defines model for KeypairEnvironmentFeatures.GreenStatus.
 type KeypairEnvironmentFeaturesGreenStatus string
 
+<<<<<<< HEAD
 // KeypairEnvironmentFields defines model for Keypair_Environment_Fields.
+=======
+// KeypairEnvironmentFields defines model for KeypairEnvironmentFields.
+>>>>>>> main
 type KeypairEnvironmentFields struct {
 	CreatedAt *time.CustomTime                  `json:"created_at,omitempty"`
 	Features  *KeypairEnvironmentFeatures `json:"features,omitempty"`
@@ -68,7 +76,11 @@ type KeypairEnvironmentFields struct {
 	Region    *string                     `json:"region,omitempty"`
 }
 
+<<<<<<< HEAD
 // KeypairFields defines model for Keypair_Fields.
+=======
+// KeypairFields defines model for KeypairFields.
+>>>>>>> main
 type KeypairFields struct {
 	CreatedAt   *time.CustomTime                `json:"created_at,omitempty"`
 	Environment *KeypairEnvironmentFields `json:"environment,omitempty"`

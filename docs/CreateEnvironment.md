@@ -5,7 +5,11 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Name** | **string** | The name of the environment being created. | 
+<<<<<<< HEAD
 **Region** | **string** | The geographic location of the data center where the environment is being created. To learn more about regions, [**click here**]({Config.INFRAHUB_DOCS_BASE}/docs/features/regions). | 
+=======
+**Region** | **string** | The geographic location of the data center where the environment is being created. To learn more about regions, [**click here**](https://infrahub-doc.nexgencloud.com/docs/features/regions). | 
+>>>>>>> main
 
 ## Methods
 

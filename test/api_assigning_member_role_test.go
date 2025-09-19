@@ -23,13 +23,21 @@ func Test_hyperstack_AssigningMemberRoleAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
+<<<<<<< HEAD
 	t.Run("Test AssigningMemberRoleAPIService AssignRBACRoleToUser", func(t *testing.T) {
+=======
+	t.Run("Test AssigningMemberRoleAPIService AssignRbacRole", func(t *testing.T) {
+>>>>>>> main
 
 		t.Skip("skip test") // remove to run test
 
 		var userId int32
 
+<<<<<<< HEAD
 		resp, httpRes, err := apiClient.AssigningMemberRoleAPI.AssignRBACRoleToUser(context.Background(), userId).Execute()
+=======
+		resp, httpRes, err := apiClient.AssigningMemberRoleAPI.AssignRbacRole(context.Background(), userId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -37,13 +45,21 @@ func Test_hyperstack_AssigningMemberRoleAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test AssigningMemberRoleAPIService RemoveRBACRoleFromUser", func(t *testing.T) {
+=======
+	t.Run("Test AssigningMemberRoleAPIService RemoveRbacRoleFromUser", func(t *testing.T) {
+>>>>>>> main
 
 		t.Skip("skip test") // remove to run test
 
 		var userId int32
 
+<<<<<<< HEAD
 		resp, httpRes, err := apiClient.AssigningMemberRoleAPI.RemoveRBACRoleFromUser(context.Background(), userId).Execute()
+=======
+		resp, httpRes, err := apiClient.AssigningMemberRoleAPI.RemoveRbacRoleFromUser(context.Background(), userId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

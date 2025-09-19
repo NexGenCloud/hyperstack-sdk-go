@@ -9,7 +9,10 @@ Name | Type | Description | Notes
 **Disk** | Pointer to **int32** |  | [optional] 
 **DisplayName** | Pointer to **string** |  | [optional] 
 **Ephemeral** | Pointer to **int32** |  | [optional] 
+<<<<<<< HEAD
 **Features** | Pointer to **map[string]interface{}** |  | [optional] 
+=======
+>>>>>>> main
 **Gpu** | Pointer to **string** |  | [optional] 
 **GpuCount** | Pointer to **int32** |  | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
@@ -163,6 +166,7 @@ SetEphemeral sets Ephemeral field to given value.
 
 HasEphemeral returns a boolean if a field has been set.
 
+<<<<<<< HEAD
 ### GetFeatures
 
 `func (o *FlavorFields) GetFeatures() map[string]interface{}`
@@ -188,6 +192,8 @@ SetFeatures sets Features field to given value.
 
 HasFeatures returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetGpu
 
 `func (o *FlavorFields) GetGpu() string`

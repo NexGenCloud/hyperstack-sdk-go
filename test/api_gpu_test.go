@@ -23,11 +23,19 @@ func Test_hyperstack_GpuAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
+<<<<<<< HEAD
 	t.Run("Test GpuAPIService ListGPUs", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.GpuAPI.ListGPUs(context.Background()).Execute()
+=======
+	t.Run("Test GpuAPIService ListGpus", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.GpuAPI.ListGpus(context.Background()).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

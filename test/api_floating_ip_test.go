@@ -23,6 +23,7 @@ func Test_hyperstack_FloatingIpAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
+<<<<<<< HEAD
 	t.Run("Test FloatingIpAPIService AttachPublicIPToVirtualMachine", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -30,6 +31,15 @@ func Test_hyperstack_FloatingIpAPIService(t *testing.T) {
 		var vmId int32
 
 		resp, httpRes, err := apiClient.FloatingIpAPI.AttachPublicIPToVirtualMachine(context.Background(), vmId).Execute()
+=======
+	t.Run("Test FloatingIpAPIService AttachPublicIpToVirtualMachine", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var id int32
+
+		resp, httpRes, err := apiClient.FloatingIpAPI.AttachPublicIpToVirtualMachine(context.Background(), id).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -37,6 +47,7 @@ func Test_hyperstack_FloatingIpAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test FloatingIpAPIService DetachPublicIPFromVirtualMachine", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -44,6 +55,15 @@ func Test_hyperstack_FloatingIpAPIService(t *testing.T) {
 		var vmId int32
 
 		resp, httpRes, err := apiClient.FloatingIpAPI.DetachPublicIPFromVirtualMachine(context.Background(), vmId).Execute()
+=======
+	t.Run("Test FloatingIpAPIService DetachPublicIpFromVirtualMachine", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var id int32
+
+		resp, httpRes, err := apiClient.FloatingIpAPI.DetachPublicIpFromVirtualMachine(context.Background(), id).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

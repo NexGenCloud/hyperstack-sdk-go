@@ -3,3 +3,8 @@ venv
 .venv
 artifacts/
 time/
+.DS_Store
+./dist
+.idea/
+.local-actions-env.json
+data/temp.md

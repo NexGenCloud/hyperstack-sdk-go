@@ -35,6 +35,7 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test ClustersAPIService CreateNode", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -63,6 +64,8 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 
 	})
 
+=======
+>>>>>>> main
 	t.Run("Test ClustersAPIService DeleteACluster", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -77,6 +80,7 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test ClustersAPIService DeleteANodeGroup", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -107,6 +111,8 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 
 	})
 
+=======
+>>>>>>> main
 	t.Run("Test ClustersAPIService FetchClusterNameAvailability", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -121,6 +127,7 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test ClustersAPIService GetClusterMasterFlavors", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -147,6 +154,8 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 
 	})
 
+=======
+>>>>>>> main
 	t.Run("Test ClustersAPIService GetClusterVersions", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -185,6 +194,7 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test ClustersAPIService ListNodeGroups", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -214,4 +224,6 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 
 	})
 
+=======
+>>>>>>> main
 }

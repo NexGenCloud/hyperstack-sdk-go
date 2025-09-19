@@ -4,12 +4,19 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+<<<<<<< HEAD
 **Attachments** | Pointer to [**[]AttachmentsFieldsForVolume**](AttachmentsFieldsForVolume.md) |  | [optional] 
+=======
+>>>>>>> main
 **Bootable** | Pointer to **bool** |  | [optional] 
 **CallbackUrl** | Pointer to **string** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **Description** | Pointer to **string** |  | [optional] 
+<<<<<<< HEAD
 **Environment** | Pointer to [**EnvironmentFieldsForVolume**](EnvironmentFieldsForVolume.md) |  | [optional] 
+=======
+**Environment** | Pointer to [**EnvironmentFieldsforVolume**](EnvironmentFieldsforVolume.md) |  | [optional] 
+>>>>>>> main
 **Id** | Pointer to **int32** |  | [optional] 
 **ImageId** | Pointer to **int32** |  | [optional] 
 **Name** | Pointer to **string** |  | [optional] 
@@ -38,6 +45,7 @@ NewVolumeFieldsWithDefaults instantiates a new VolumeFields object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
+<<<<<<< HEAD
 ### GetAttachments
 
 `func (o *VolumeFields) GetAttachments() []AttachmentsFieldsForVolume`
@@ -63,6 +71,8 @@ SetAttachments sets Attachments field to given value.
 
 HasAttachments returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetBootable
 
 `func (o *VolumeFields) GetBootable() bool`
@@ -165,20 +175,32 @@ HasDescription returns a boolean if a field has been set.
 
 ### GetEnvironment
 
+<<<<<<< HEAD
 `func (o *VolumeFields) GetEnvironment() EnvironmentFieldsForVolume`
+=======
+`func (o *VolumeFields) GetEnvironment() EnvironmentFieldsforVolume`
+>>>>>>> main
 
 GetEnvironment returns the Environment field if non-nil, zero value otherwise.
 
 ### GetEnvironmentOk
 
+<<<<<<< HEAD
 `func (o *VolumeFields) GetEnvironmentOk() (*EnvironmentFieldsForVolume, bool)`
+=======
+`func (o *VolumeFields) GetEnvironmentOk() (*EnvironmentFieldsforVolume, bool)`
+>>>>>>> main
 
 GetEnvironmentOk returns a tuple with the Environment field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetEnvironment
 
+<<<<<<< HEAD
 `func (o *VolumeFields) SetEnvironment(v EnvironmentFieldsForVolume)`
+=======
+`func (o *VolumeFields) SetEnvironment(v EnvironmentFieldsforVolume)`
+>>>>>>> main
 
 SetEnvironment sets Environment field to given value.
 

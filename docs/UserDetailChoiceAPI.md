@@ -57,7 +57,11 @@ Other parameters are passed through a pointer to a apiRetrieveDefaultFlavorsAndI
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 

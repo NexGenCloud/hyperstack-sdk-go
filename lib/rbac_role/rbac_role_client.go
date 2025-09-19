@@ -86,11 +86,11 @@ type RolePolicyFields struct {
 	Name        *string `json:"name,omitempty"`
 }
 
-// CreateRBACRoleJSONRequestBody defines body for CreateRBACRole for application/json ContentType.
-type CreateRBACRoleJSONRequestBody = CreateUpdateRbacRolePayload
+// CreateRbacRoleJSONRequestBody defines body for CreateRbacRole for application/json ContentType.
+type CreateRbacRoleJSONRequestBody = CreateUpdateRbacRolePayload
 
-// UpdateRBACRoleJSONRequestBody defines body for UpdateRBACRole for application/json ContentType.
-type UpdateRBACRoleJSONRequestBody = CreateUpdateRbacRolePayload
+// UpdateRbacRoleJSONRequestBody defines body for UpdateRbacRole for application/json ContentType.
+type UpdateRbacRoleJSONRequestBody = CreateUpdateRbacRolePayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -165,28 +165,28 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// ListRBACRoles request
-	ListRBACRoles(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListRbacRoles request
+	ListRbacRoles(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateRBACRoleWithBody request with any body
-	CreateRBACRoleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateRbacRoleWithBody request with any body
+	CreateRbacRoleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	CreateRBACRole(ctx context.Context, body CreateRBACRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateRbacRole(ctx context.Context, body CreateRbacRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteRBACRole request
-	DeleteRBACRole(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteRbacRole request
+	DeleteRbacRole(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RetrieveRBACRoleDetails request
-	RetrieveRBACRoleDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RetrieveRbacRoleDetails request
+	RetrieveRbacRoleDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateRBACRoleWithBody request with any body
-	UpdateRBACRoleWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdateRbacRoleWithBody request with any body
+	UpdateRbacRoleWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateRBACRole(ctx context.Context, id int, body UpdateRBACRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateRbacRole(ctx context.Context, id int, body UpdateRbacRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) ListRBACRoles(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListRBACRolesRequest(c.Server)
+func (c *Client) ListRbacRoles(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListRbacRolesRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -197,8 +197,8 @@ func (c *Client) ListRBACRoles(ctx context.Context, reqEditors ...RequestEditorF
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateRBACRoleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateRBACRoleRequestWithBody(c.Server, contentType, body)
+func (c *Client) CreateRbacRoleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateRbacRoleRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -209,8 +209,8 @@ func (c *Client) CreateRBACRoleWithBody(ctx context.Context, contentType string,
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateRBACRole(ctx context.Context, body CreateRBACRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateRBACRoleRequest(c.Server, body)
+func (c *Client) CreateRbacRole(ctx context.Context, body CreateRbacRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateRbacRoleRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -221,8 +221,8 @@ func (c *Client) CreateRBACRole(ctx context.Context, body CreateRBACRoleJSONRequ
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteRBACRole(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteRBACRoleRequest(c.Server, id)
+func (c *Client) DeleteRbacRole(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteRbacRoleRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -233,8 +233,8 @@ func (c *Client) DeleteRBACRole(ctx context.Context, id int, reqEditors ...Reque
 	return c.Client.Do(req)
 }
 
-func (c *Client) RetrieveRBACRoleDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveRBACRoleDetailsRequest(c.Server, id)
+func (c *Client) RetrieveRbacRoleDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveRbacRoleDetailsRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -245,8 +245,8 @@ func (c *Client) RetrieveRBACRoleDetails(ctx context.Context, id int, reqEditors
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateRBACRoleWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateRBACRoleRequestWithBody(c.Server, id, contentType, body)
+func (c *Client) UpdateRbacRoleWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateRbacRoleRequestWithBody(c.Server, id, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -257,8 +257,8 @@ func (c *Client) UpdateRBACRoleWithBody(ctx context.Context, id int, contentType
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateRBACRole(ctx context.Context, id int, body UpdateRBACRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateRBACRoleRequest(c.Server, id, body)
+func (c *Client) UpdateRbacRole(ctx context.Context, id int, body UpdateRbacRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateRbacRoleRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -269,8 +269,8 @@ func (c *Client) UpdateRBACRole(ctx context.Context, id int, body UpdateRBACRole
 	return c.Client.Do(req)
 }
 
-// NewListRBACRolesRequest generates requests for ListRBACRoles
-func NewListRBACRolesRequest(server string) (*http.Request, error) {
+// NewListRbacRolesRequest generates requests for ListRbacRoles
+func NewListRbacRolesRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -296,19 +296,19 @@ func NewListRBACRolesRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewCreateRBACRoleRequest calls the generic CreateRBACRole builder with application/json body
-func NewCreateRBACRoleRequest(server string, body CreateRBACRoleJSONRequestBody) (*http.Request, error) {
+// NewCreateRbacRoleRequest calls the generic CreateRbacRole builder with application/json body
+func NewCreateRbacRoleRequest(server string, body CreateRbacRoleJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewCreateRBACRoleRequestWithBody(server, "application/json", bodyReader)
+	return NewCreateRbacRoleRequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewCreateRBACRoleRequestWithBody generates requests for CreateRBACRole with any type of body
-func NewCreateRBACRoleRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewCreateRbacRoleRequestWithBody generates requests for CreateRbacRole with any type of body
+func NewCreateRbacRoleRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -336,8 +336,8 @@ func NewCreateRBACRoleRequestWithBody(server string, contentType string, body io
 	return req, nil
 }
 
-// NewDeleteRBACRoleRequest generates requests for DeleteRBACRole
-func NewDeleteRBACRoleRequest(server string, id int) (*http.Request, error) {
+// NewDeleteRbacRoleRequest generates requests for DeleteRbacRole
+func NewDeleteRbacRoleRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -370,8 +370,8 @@ func NewDeleteRBACRoleRequest(server string, id int) (*http.Request, error) {
 	return req, nil
 }
 
-// NewRetrieveRBACRoleDetailsRequest generates requests for RetrieveRBACRoleDetails
-func NewRetrieveRBACRoleDetailsRequest(server string, id int) (*http.Request, error) {
+// NewRetrieveRbacRoleDetailsRequest generates requests for RetrieveRbacRoleDetails
+func NewRetrieveRbacRoleDetailsRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -404,19 +404,19 @@ func NewRetrieveRBACRoleDetailsRequest(server string, id int) (*http.Request, er
 	return req, nil
 }
 
-// NewUpdateRBACRoleRequest calls the generic UpdateRBACRole builder with application/json body
-func NewUpdateRBACRoleRequest(server string, id int, body UpdateRBACRoleJSONRequestBody) (*http.Request, error) {
+// NewUpdateRbacRoleRequest calls the generic UpdateRbacRole builder with application/json body
+func NewUpdateRbacRoleRequest(server string, id int, body UpdateRbacRoleJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUpdateRBACRoleRequestWithBody(server, id, "application/json", bodyReader)
+	return NewUpdateRbacRoleRequestWithBody(server, id, "application/json", bodyReader)
 }
 
-// NewUpdateRBACRoleRequestWithBody generates requests for UpdateRBACRole with any type of body
-func NewUpdateRBACRoleRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
+// NewUpdateRbacRoleRequestWithBody generates requests for UpdateRbacRole with any type of body
+func NewUpdateRbacRoleRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -494,27 +494,27 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// ListRBACRolesWithResponse request
-	ListRBACRolesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListRBACRolesResponse, error)
+	// ListRbacRolesWithResponse request
+	ListRbacRolesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListRbacRolesResponse, error)
 
-	// CreateRBACRoleWithBodyWithResponse request with any body
-	CreateRBACRoleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateRBACRoleResponse, error)
+	// CreateRbacRoleWithBodyWithResponse request with any body
+	CreateRbacRoleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateRbacRoleResponse, error)
 
-	CreateRBACRoleWithResponse(ctx context.Context, body CreateRBACRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateRBACRoleResponse, error)
+	CreateRbacRoleWithResponse(ctx context.Context, body CreateRbacRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateRbacRoleResponse, error)
 
-	// DeleteRBACRoleWithResponse request
-	DeleteRBACRoleWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteRBACRoleResponse, error)
+	// DeleteRbacRoleWithResponse request
+	DeleteRbacRoleWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteRbacRoleResponse, error)
 
-	// RetrieveRBACRoleDetailsWithResponse request
-	RetrieveRBACRoleDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveRBACRoleDetailsResponse, error)
+	// RetrieveRbacRoleDetailsWithResponse request
+	RetrieveRbacRoleDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveRbacRoleDetailsResponse, error)
 
-	// UpdateRBACRoleWithBodyWithResponse request with any body
-	UpdateRBACRoleWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateRBACRoleResponse, error)
+	// UpdateRbacRoleWithBodyWithResponse request with any body
+	UpdateRbacRoleWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateRbacRoleResponse, error)
 
-	UpdateRBACRoleWithResponse(ctx context.Context, id int, body UpdateRBACRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRBACRoleResponse, error)
+	UpdateRbacRoleWithResponse(ctx context.Context, id int, body UpdateRbacRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRbacRoleResponse, error)
 }
 
-type ListRBACRolesResponse struct {
+type ListRbacRolesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *GetRbacRolesResponseModel
@@ -523,7 +523,7 @@ type ListRBACRolesResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ListRBACRolesResponse) Status() string {
+func (r ListRbacRolesResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -531,14 +531,14 @@ func (r ListRBACRolesResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ListRBACRolesResponse) StatusCode() int {
+func (r ListRbacRolesResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type CreateRBACRoleResponse struct {
+type CreateRbacRoleResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *RbacRoleDetailResponseModel
@@ -548,7 +548,7 @@ type CreateRBACRoleResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r CreateRBACRoleResponse) Status() string {
+func (r CreateRbacRoleResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -556,14 +556,14 @@ func (r CreateRBACRoleResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CreateRBACRoleResponse) StatusCode() int {
+func (r CreateRbacRoleResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type DeleteRBACRoleResponse struct {
+type DeleteRbacRoleResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *CommonResponseModel
@@ -573,7 +573,7 @@ type DeleteRBACRoleResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteRBACRoleResponse) Status() string {
+func (r DeleteRbacRoleResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -581,14 +581,14 @@ func (r DeleteRBACRoleResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteRBACRoleResponse) StatusCode() int {
+func (r DeleteRbacRoleResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type RetrieveRBACRoleDetailsResponse struct {
+type RetrieveRbacRoleDetailsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *RbacRoleDetailResponseModelFixed
@@ -598,7 +598,7 @@ type RetrieveRBACRoleDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrieveRBACRoleDetailsResponse) Status() string {
+func (r RetrieveRbacRoleDetailsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -606,14 +606,14 @@ func (r RetrieveRBACRoleDetailsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrieveRBACRoleDetailsResponse) StatusCode() int {
+func (r RetrieveRbacRoleDetailsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type UpdateRBACRoleResponse struct {
+type UpdateRbacRoleResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *RbacRoleDetailResponseModel
@@ -623,7 +623,7 @@ type UpdateRBACRoleResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r UpdateRBACRoleResponse) Status() string {
+func (r UpdateRbacRoleResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -631,83 +631,83 @@ func (r UpdateRBACRoleResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r UpdateRBACRoleResponse) StatusCode() int {
+func (r UpdateRbacRoleResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// ListRBACRolesWithResponse request returning *ListRBACRolesResponse
-func (c *ClientWithResponses) ListRBACRolesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListRBACRolesResponse, error) {
-	rsp, err := c.ListRBACRoles(ctx, reqEditors...)
+// ListRbacRolesWithResponse request returning *ListRbacRolesResponse
+func (c *ClientWithResponses) ListRbacRolesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListRbacRolesResponse, error) {
+	rsp, err := c.ListRbacRoles(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseListRBACRolesResponse(rsp)
+	return ParseListRbacRolesResponse(rsp)
 }
 
-// CreateRBACRoleWithBodyWithResponse request with arbitrary body returning *CreateRBACRoleResponse
-func (c *ClientWithResponses) CreateRBACRoleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateRBACRoleResponse, error) {
-	rsp, err := c.CreateRBACRoleWithBody(ctx, contentType, body, reqEditors...)
+// CreateRbacRoleWithBodyWithResponse request with arbitrary body returning *CreateRbacRoleResponse
+func (c *ClientWithResponses) CreateRbacRoleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateRbacRoleResponse, error) {
+	rsp, err := c.CreateRbacRoleWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreateRBACRoleResponse(rsp)
+	return ParseCreateRbacRoleResponse(rsp)
 }
 
-func (c *ClientWithResponses) CreateRBACRoleWithResponse(ctx context.Context, body CreateRBACRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateRBACRoleResponse, error) {
-	rsp, err := c.CreateRBACRole(ctx, body, reqEditors...)
+func (c *ClientWithResponses) CreateRbacRoleWithResponse(ctx context.Context, body CreateRbacRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateRbacRoleResponse, error) {
+	rsp, err := c.CreateRbacRole(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreateRBACRoleResponse(rsp)
+	return ParseCreateRbacRoleResponse(rsp)
 }
 
-// DeleteRBACRoleWithResponse request returning *DeleteRBACRoleResponse
-func (c *ClientWithResponses) DeleteRBACRoleWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteRBACRoleResponse, error) {
-	rsp, err := c.DeleteRBACRole(ctx, id, reqEditors...)
+// DeleteRbacRoleWithResponse request returning *DeleteRbacRoleResponse
+func (c *ClientWithResponses) DeleteRbacRoleWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteRbacRoleResponse, error) {
+	rsp, err := c.DeleteRbacRole(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteRBACRoleResponse(rsp)
+	return ParseDeleteRbacRoleResponse(rsp)
 }
 
-// RetrieveRBACRoleDetailsWithResponse request returning *RetrieveRBACRoleDetailsResponse
-func (c *ClientWithResponses) RetrieveRBACRoleDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveRBACRoleDetailsResponse, error) {
-	rsp, err := c.RetrieveRBACRoleDetails(ctx, id, reqEditors...)
+// RetrieveRbacRoleDetailsWithResponse request returning *RetrieveRbacRoleDetailsResponse
+func (c *ClientWithResponses) RetrieveRbacRoleDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveRbacRoleDetailsResponse, error) {
+	rsp, err := c.RetrieveRbacRoleDetails(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveRBACRoleDetailsResponse(rsp)
+	return ParseRetrieveRbacRoleDetailsResponse(rsp)
 }
 
-// UpdateRBACRoleWithBodyWithResponse request with arbitrary body returning *UpdateRBACRoleResponse
-func (c *ClientWithResponses) UpdateRBACRoleWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateRBACRoleResponse, error) {
-	rsp, err := c.UpdateRBACRoleWithBody(ctx, id, contentType, body, reqEditors...)
+// UpdateRbacRoleWithBodyWithResponse request with arbitrary body returning *UpdateRbacRoleResponse
+func (c *ClientWithResponses) UpdateRbacRoleWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateRbacRoleResponse, error) {
+	rsp, err := c.UpdateRbacRoleWithBody(ctx, id, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUpdateRBACRoleResponse(rsp)
+	return ParseUpdateRbacRoleResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateRBACRoleWithResponse(ctx context.Context, id int, body UpdateRBACRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRBACRoleResponse, error) {
-	rsp, err := c.UpdateRBACRole(ctx, id, body, reqEditors...)
+func (c *ClientWithResponses) UpdateRbacRoleWithResponse(ctx context.Context, id int, body UpdateRbacRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRbacRoleResponse, error) {
+	rsp, err := c.UpdateRbacRole(ctx, id, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUpdateRBACRoleResponse(rsp)
+	return ParseUpdateRbacRoleResponse(rsp)
 }
 
-// ParseListRBACRolesResponse parses an HTTP response from a ListRBACRolesWithResponse call
-func ParseListRBACRolesResponse(rsp *http.Response) (*ListRBACRolesResponse, error) {
+// ParseListRbacRolesResponse parses an HTTP response from a ListRbacRolesWithResponse call
+func ParseListRbacRolesResponse(rsp *http.Response) (*ListRbacRolesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ListRBACRolesResponse{
+	response := &ListRbacRolesResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -739,15 +739,15 @@ func ParseListRBACRolesResponse(rsp *http.Response) (*ListRBACRolesResponse, err
 	return response, nil
 }
 
-// ParseCreateRBACRoleResponse parses an HTTP response from a CreateRBACRoleWithResponse call
-func ParseCreateRBACRoleResponse(rsp *http.Response) (*CreateRBACRoleResponse, error) {
+// ParseCreateRbacRoleResponse parses an HTTP response from a CreateRbacRoleWithResponse call
+func ParseCreateRbacRoleResponse(rsp *http.Response) (*CreateRbacRoleResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CreateRBACRoleResponse{
+	response := &CreateRbacRoleResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -786,15 +786,15 @@ func ParseCreateRBACRoleResponse(rsp *http.Response) (*CreateRBACRoleResponse, e
 	return response, nil
 }
 
-// ParseDeleteRBACRoleResponse parses an HTTP response from a DeleteRBACRoleWithResponse call
-func ParseDeleteRBACRoleResponse(rsp *http.Response) (*DeleteRBACRoleResponse, error) {
+// ParseDeleteRbacRoleResponse parses an HTTP response from a DeleteRbacRoleWithResponse call
+func ParseDeleteRbacRoleResponse(rsp *http.Response) (*DeleteRbacRoleResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteRBACRoleResponse{
+	response := &DeleteRbacRoleResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -833,15 +833,15 @@ func ParseDeleteRBACRoleResponse(rsp *http.Response) (*DeleteRBACRoleResponse, e
 	return response, nil
 }
 
-// ParseRetrieveRBACRoleDetailsResponse parses an HTTP response from a RetrieveRBACRoleDetailsWithResponse call
-func ParseRetrieveRBACRoleDetailsResponse(rsp *http.Response) (*RetrieveRBACRoleDetailsResponse, error) {
+// ParseRetrieveRbacRoleDetailsResponse parses an HTTP response from a RetrieveRbacRoleDetailsWithResponse call
+func ParseRetrieveRbacRoleDetailsResponse(rsp *http.Response) (*RetrieveRbacRoleDetailsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrieveRBACRoleDetailsResponse{
+	response := &RetrieveRbacRoleDetailsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -880,15 +880,15 @@ func ParseRetrieveRBACRoleDetailsResponse(rsp *http.Response) (*RetrieveRBACRole
 	return response, nil
 }
 
-// ParseUpdateRBACRoleResponse parses an HTTP response from a UpdateRBACRoleWithResponse call
-func ParseUpdateRBACRoleResponse(rsp *http.Response) (*UpdateRBACRoleResponse, error) {
+// ParseUpdateRbacRoleResponse parses an HTTP response from a UpdateRbacRoleWithResponse call
+func ParseUpdateRbacRoleResponse(rsp *http.Response) (*UpdateRbacRoleResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &UpdateRBACRoleResponse{
+	response := &UpdateRbacRoleResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

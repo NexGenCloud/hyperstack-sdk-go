@@ -5,12 +5,20 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateVolume**](VolumeAPI.md#CreateVolume) | **Post** /core/volumes | Create volume
+<<<<<<< HEAD
 [**DeleteVolume**](VolumeAPI.md#DeleteVolume) | **Delete** /core/volumes/{volume_id} | Delete volume
 [**FetchVolumeDetails**](VolumeAPI.md#FetchVolumeDetails) | **Get** /core/volumes/{volume_id} | Fetch Volume Details
 [**FetchVolumeNameAvailability**](VolumeAPI.md#FetchVolumeNameAvailability) | **Get** /core/volume/name-availability/{name} | Fetch volume name availability
 [**ListVolumeTypes**](VolumeAPI.md#ListVolumeTypes) | **Get** /core/volume-types | List volume types
 [**ListVolumes**](VolumeAPI.md#ListVolumes) | **Get** /core/volumes | List volumes
 [**UpdateVolume**](VolumeAPI.md#UpdateVolume) | **Patch** /core/volumes/{volume_id} | Update volume fields
+=======
+[**DeleteVolume**](VolumeAPI.md#DeleteVolume) | **Delete** /core/volumes/{id} | Delete volume
+[**FetchVolumeDetails**](VolumeAPI.md#FetchVolumeDetails) | **Get** /core/volume/{volume_id} | Fetch Volume Details
+[**FetchVolumeNameAvailability**](VolumeAPI.md#FetchVolumeNameAvailability) | **Get** /core/volume/name-availability/{name} | Fetch volume name availability
+[**ListVolumeTypes**](VolumeAPI.md#ListVolumeTypes) | **Get** /core/volume-types | List volume types
+[**ListVolumes**](VolumeAPI.md#ListVolumes) | **Get** /core/volumes | List volumes
+>>>>>>> main
 
 
 
@@ -68,7 +76,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -82,7 +94,11 @@ Name | Type | Description  | Notes
 
 ## DeleteVolume
 
+<<<<<<< HEAD
 > ResponseModel DeleteVolume(ctx, volumeId).Execute()
+=======
+> ResponseModel DeleteVolume(ctx, id).Execute()
+>>>>>>> main
 
 Delete volume
 
@@ -101,11 +117,19 @@ import (
 )
 
 func main() {
+<<<<<<< HEAD
 	volumeId := int32(56) // int32 | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 	resp, r, err := apiClient.VolumeAPI.DeleteVolume(context.Background(), volumeId).Execute()
+=======
+	id := int32(56) // int32 | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.VolumeAPI.DeleteVolume(context.Background(), id).Execute()
+>>>>>>> main
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `VolumeAPI.DeleteVolume``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -121,7 +145,11 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+<<<<<<< HEAD
 **volumeId** | **int32** |  | 
+=======
+**id** | **int32** |  | 
+>>>>>>> main
 
 ### Other Parameters
 
@@ -138,7 +166,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -152,7 +184,11 @@ Name | Type | Description  | Notes
 
 ## FetchVolumeDetails
 
+<<<<<<< HEAD
 > Volume FetchVolumeDetails(ctx, volumeId).Execute()
+=======
+> Volumes FetchVolumeDetails(ctx, volumeId).Execute()
+>>>>>>> main
 
 Fetch Volume Details
 
@@ -180,7 +216,11 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error when calling `VolumeAPI.FetchVolumeDetails``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+<<<<<<< HEAD
 	// response from `FetchVolumeDetails`: Volume
+=======
+	// response from `FetchVolumeDetails`: Volumes
+>>>>>>> main
 	fmt.Fprintf(os.Stdout, "Response from `VolumeAPI.FetchVolumeDetails`: %v\n", resp)
 }
 ```
@@ -204,11 +244,19 @@ Name | Type | Description  | Notes
 
 ### Return type
 
+<<<<<<< HEAD
 [**Volume**](Volume.md)
 
 ### Authorization
 
 [apiKey](../README.md#apiKey)
+=======
+[**Volumes**](Volumes.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -278,7 +326,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -339,7 +391,11 @@ Other parameters are passed through a pointer to a apiListVolumeTypesRequest str
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -411,7 +467,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -422,6 +482,7 @@ Name | Type | Description  | Notes
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to README]](../README.md)
 
+<<<<<<< HEAD
 
 ## UpdateVolume
 
@@ -494,3 +555,5 @@ Name | Type | Description  | Notes
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to README]](../README.md)
 
+=======
+>>>>>>> main

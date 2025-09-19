@@ -49,11 +49,19 @@ func Test_hyperstack_ComplianceAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test ComplianceAPIService RetrieveCompliance", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.ComplianceAPI.RetrieveCompliance(context.Background()).Execute()
+=======
+	t.Run("Test ComplianceAPIService RetrieveGpuCompliance", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.ComplianceAPI.RetrieveGpuCompliance(context.Background()).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

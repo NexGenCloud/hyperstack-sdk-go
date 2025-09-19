@@ -49,6 +49,7 @@ func Test_hyperstack_EnvironmentAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test EnvironmentAPIService FetchEnvironmentNameAvailability", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -63,6 +64,8 @@ func Test_hyperstack_EnvironmentAPIService(t *testing.T) {
 
 	})
 
+=======
+>>>>>>> main
 	t.Run("Test EnvironmentAPIService ListEnvironments", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test

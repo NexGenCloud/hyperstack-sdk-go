@@ -25,6 +25,7 @@ type ErrorResponseModel struct {
 
 // FlavorFields defines model for Flavor_Fields.
 type FlavorFields struct {
+<<<<<<< HEAD
 	Cpu            *int                    `json:"cpu,omitempty"`
 	CreatedAt      *time.CustomTime              `json:"created_at,omitempty"`
 	Disk           *int                    `json:"disk,omitempty"`
@@ -39,6 +40,21 @@ type FlavorFields struct {
 	Ram            *float32                `json:"ram,omitempty"`
 	RegionName     *string                 `json:"region_name,omitempty"`
 	StockAvailable *bool                   `json:"stock_available,omitempty"`
+=======
+	Cpu            *int            `json:"cpu,omitempty"`
+	CreatedAt      *time.CustomTime      `json:"created_at,omitempty"`
+	Disk           *int            `json:"disk,omitempty"`
+	DisplayName    *string         `json:"display_name,omitempty"`
+	Ephemeral      *int            `json:"ephemeral,omitempty"`
+	Gpu            *string         `json:"gpu,omitempty"`
+	GpuCount       *int            `json:"gpu_count,omitempty"`
+	Id             *int            `json:"id,omitempty"`
+	Labels         *[]LableResonse `json:"labels,omitempty"`
+	Name           *string         `json:"name,omitempty"`
+	Ram            *float32        `json:"ram,omitempty"`
+	RegionName     *string         `json:"region_name,omitempty"`
+	StockAvailable *bool           `json:"stock_available,omitempty"`
+>>>>>>> main
 }
 
 // FlavorItemGetResponse defines model for Flavor_Item_Get_Response.

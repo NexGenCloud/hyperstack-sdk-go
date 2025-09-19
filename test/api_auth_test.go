@@ -23,6 +23,7 @@ func Test_hyperstack_AuthAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
+<<<<<<< HEAD
 	t.Run("Test AuthAPIService ChangeOrganizationForToken", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -73,6 +74,8 @@ func Test_hyperstack_AuthAPIService(t *testing.T) {
 
 	})
 
+=======
+>>>>>>> main
 	t.Run("Test AuthAPIService RetrieveAuthenticatedUserDetails", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test

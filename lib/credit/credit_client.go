@@ -107,12 +107,21 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
+<<<<<<< HEAD
 	// GetCredit2 request
 	GetCredit2(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) GetCredit2(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetCredit2Request(c.Server)
+=======
+	// GetViewCreditAndThreshold request
+	GetViewCreditAndThreshold(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+}
+
+func (c *Client) GetViewCreditAndThreshold(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetViewCreditAndThresholdRequest(c.Server)
+>>>>>>> main
 	if err != nil {
 		return nil, err
 	}
@@ -123,8 +132,13 @@ func (c *Client) GetCredit2(ctx context.Context, reqEditors ...RequestEditorFn) 
 	return c.Client.Do(req)
 }
 
+<<<<<<< HEAD
 // NewGetCredit2Request generates requests for GetCredit2
 func NewGetCredit2Request(server string) (*http.Request, error) {
+=======
+// NewGetViewCreditAndThresholdRequest generates requests for GetViewCreditAndThreshold
+func NewGetViewCreditAndThresholdRequest(server string) (*http.Request, error) {
+>>>>>>> main
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -193,11 +207,19 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
+<<<<<<< HEAD
 	// GetCredit2WithResponse request
 	GetCredit2WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetCredit2Response, error)
 }
 
 type GetCredit2Response struct {
+=======
+	// GetViewCreditAndThresholdWithResponse request
+	GetViewCreditAndThresholdWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetViewCreditAndThresholdResponse, error)
+}
+
+type GetViewCreditAndThresholdResponse struct {
+>>>>>>> main
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *GetCreditAndThresholdInfoInResponse
@@ -208,7 +230,11 @@ type GetCredit2Response struct {
 }
 
 // Status returns HTTPResponse.Status
+<<<<<<< HEAD
 func (r GetCredit2Response) Status() string {
+=======
+func (r GetViewCreditAndThresholdResponse) Status() string {
+>>>>>>> main
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -216,13 +242,18 @@ func (r GetCredit2Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
+<<<<<<< HEAD
 func (r GetCredit2Response) StatusCode() int {
+=======
+func (r GetViewCreditAndThresholdResponse) StatusCode() int {
+>>>>>>> main
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
+<<<<<<< HEAD
 // GetCredit2WithResponse request returning *GetCredit2Response
 func (c *ClientWithResponses) GetCredit2WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetCredit2Response, error) {
 	rsp, err := c.GetCredit2(ctx, reqEditors...)
@@ -234,13 +265,30 @@ func (c *ClientWithResponses) GetCredit2WithResponse(ctx context.Context, reqEdi
 
 // ParseGetCredit2Response parses an HTTP response from a GetCredit2WithResponse call
 func ParseGetCredit2Response(rsp *http.Response) (*GetCredit2Response, error) {
+=======
+// GetViewCreditAndThresholdWithResponse request returning *GetViewCreditAndThresholdResponse
+func (c *ClientWithResponses) GetViewCreditAndThresholdWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetViewCreditAndThresholdResponse, error) {
+	rsp, err := c.GetViewCreditAndThreshold(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetViewCreditAndThresholdResponse(rsp)
+}
+
+// ParseGetViewCreditAndThresholdResponse parses an HTTP response from a GetViewCreditAndThresholdWithResponse call
+func ParseGetViewCreditAndThresholdResponse(rsp *http.Response) (*GetViewCreditAndThresholdResponse, error) {
+>>>>>>> main
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	response := &GetCredit2Response{
+=======
+	response := &GetViewCreditAndThresholdResponse{
+>>>>>>> main
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

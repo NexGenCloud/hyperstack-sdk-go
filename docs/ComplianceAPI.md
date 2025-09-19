@@ -6,7 +6,11 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateCompliance**](ComplianceAPI.md#CreateCompliance) | **Post** /core/compliance | Create compliance
 [**DeleteACompliance**](ComplianceAPI.md#DeleteACompliance) | **Delete** /core/compliance/{gpu_model} | Delete a compliance
+<<<<<<< HEAD
 [**RetrieveCompliance**](ComplianceAPI.md#RetrieveCompliance) | **Get** /core/compliance | Retrieve GPU compliance
+=======
+[**RetrieveGpuCompliance**](ComplianceAPI.md#RetrieveGpuCompliance) | **Get** /core/compliance | Retrieve GPU compliance
+>>>>>>> main
 [**UpdateACompliance**](ComplianceAPI.md#UpdateACompliance) | **Put** /core/compliance | Update a compliance
 
 
@@ -63,7 +67,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -131,7 +139,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -143,9 +155,15 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+<<<<<<< HEAD
 ## RetrieveCompliance
 
 > ComplianceResponse RetrieveCompliance(ctx).Gpu(gpu).Execute()
+=======
+## RetrieveGpuCompliance
+
+> ComplianceResponse RetrieveGpuCompliance(ctx).Gpu(gpu).Execute()
+>>>>>>> main
 
 Retrieve GPU compliance
 
@@ -168,6 +186,7 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
+<<<<<<< HEAD
 	resp, r, err := apiClient.ComplianceAPI.RetrieveCompliance(context.Background()).Gpu(gpu).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ComplianceAPI.RetrieveCompliance``: %v\n", err)
@@ -175,6 +194,15 @@ func main() {
 	}
 	// response from `RetrieveCompliance`: ComplianceResponse
 	fmt.Fprintf(os.Stdout, "Response from `ComplianceAPI.RetrieveCompliance`: %v\n", resp)
+=======
+	resp, r, err := apiClient.ComplianceAPI.RetrieveGpuCompliance(context.Background()).Gpu(gpu).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ComplianceAPI.RetrieveGpuCompliance``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `RetrieveGpuCompliance`: ComplianceResponse
+	fmt.Fprintf(os.Stdout, "Response from `ComplianceAPI.RetrieveGpuCompliance`: %v\n", resp)
+>>>>>>> main
 }
 ```
 
@@ -184,7 +212,11 @@ func main() {
 
 ### Other Parameters
 
+<<<<<<< HEAD
 Other parameters are passed through a pointer to a apiRetrieveComplianceRequest struct via the builder pattern
+=======
+Other parameters are passed through a pointer to a apiRetrieveGpuComplianceRequest struct via the builder pattern
+>>>>>>> main
 
 
 Name | Type | Description  | Notes
@@ -197,7 +229,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -261,7 +297,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 

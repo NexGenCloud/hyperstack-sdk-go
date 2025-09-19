@@ -4,6 +4,7 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+<<<<<<< HEAD
 [**GetPricebook**](PricebookAPI.md#GetPricebook) | **Get** /pricebook | 
 
 
@@ -13,6 +14,15 @@ Method | HTTP request | Description
 > []PricebookModel GetPricebook(ctx).Execute()
 
 
+=======
+[**RetrivePricebook**](PricebookAPI.md#RetrivePricebook) | **Get** /pricebook | 
+
+
+
+## RetrivePricebook
+
+> []PricebookModel RetrivePricebook(ctx).Execute()
+>>>>>>> main
 
 
 
@@ -32,6 +42,7 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
+<<<<<<< HEAD
 	resp, r, err := apiClient.PricebookAPI.GetPricebook(context.Background()).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `PricebookAPI.GetPricebook``: %v\n", err)
@@ -39,6 +50,15 @@ func main() {
 	}
 	// response from `GetPricebook`: []PricebookModel
 	fmt.Fprintf(os.Stdout, "Response from `PricebookAPI.GetPricebook`: %v\n", resp)
+=======
+	resp, r, err := apiClient.PricebookAPI.RetrivePricebook(context.Background()).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `PricebookAPI.RetrivePricebook``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `RetrivePricebook`: []PricebookModel
+	fmt.Fprintf(os.Stdout, "Response from `PricebookAPI.RetrivePricebook`: %v\n", resp)
+>>>>>>> main
 }
 ```
 
@@ -48,7 +68,11 @@ This endpoint does not need any parameter.
 
 ### Other Parameters
 
+<<<<<<< HEAD
 Other parameters are passed through a pointer to a apiGetPricebookRequest struct via the builder pattern
+=======
+Other parameters are passed through a pointer to a apiRetrivePricebookRequest struct via the builder pattern
+>>>>>>> main
 
 
 ### Return type
@@ -57,7 +81,11 @@ Other parameters are passed through a pointer to a apiGetPricebookRequest struct
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 

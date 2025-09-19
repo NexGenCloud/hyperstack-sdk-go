@@ -23,11 +23,19 @@ func Test_hyperstack_CustomerContractAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
+<<<<<<< HEAD
 	t.Run("Test CustomerContractAPIService GetCustomerContract", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.CustomerContractAPI.GetCustomerContract(context.Background()).Execute()
+=======
+	t.Run("Test CustomerContractAPIService ListContracts", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.CustomerContractAPI.ListContracts(context.Background()).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -35,13 +43,21 @@ func Test_hyperstack_CustomerContractAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test CustomerContractAPIService GetCustomerContractDetails", func(t *testing.T) {
+=======
+	t.Run("Test CustomerContractAPIService RetrieveContractDetails", func(t *testing.T) {
+>>>>>>> main
 
 		t.Skip("skip test") // remove to run test
 
 		var contractId int32
 
+<<<<<<< HEAD
 		resp, httpRes, err := apiClient.CustomerContractAPI.GetCustomerContractDetails(context.Background(), contractId).Execute()
+=======
+		resp, httpRes, err := apiClient.CustomerContractAPI.RetrieveContractDetails(context.Background(), contractId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -49,13 +65,21 @@ func Test_hyperstack_CustomerContractAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test CustomerContractAPIService GetCustomerContractGpuAllocationGraph", func(t *testing.T) {
+=======
+	t.Run("Test CustomerContractAPIService RetrieveGpuAllocationGraphForContract", func(t *testing.T) {
+>>>>>>> main
 
 		t.Skip("skip test") // remove to run test
 
 		var contractId int32
 
+<<<<<<< HEAD
 		resp, httpRes, err := apiClient.CustomerContractAPI.GetCustomerContractGpuAllocationGraph(context.Background(), contractId).Execute()
+=======
+		resp, httpRes, err := apiClient.CustomerContractAPI.RetrieveGpuAllocationGraphForContract(context.Background(), contractId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

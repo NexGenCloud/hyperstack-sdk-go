@@ -23,6 +23,33 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
+<<<<<<< HEAD
+=======
+	t.Run("Test BillingAPIService GetAllThresholdsForOrganization", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.GetAllThresholdsForOrganization(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetBillingUsage", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.GetBillingUsage(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+>>>>>>> main
 	t.Run("Test BillingAPIService GetLastDayCost", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -35,11 +62,19 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test BillingAPIService GetOrganizationThreshold", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.BillingAPI.GetOrganizationThreshold(context.Background()).Execute()
+=======
+	t.Run("Test BillingAPIService RetrieveBillingHistoryForASpecificBillingCycle", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.RetrieveBillingHistoryForASpecificBillingCycle(context.Background()).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -47,6 +82,7 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test BillingAPIService GetUsage2", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -307,12 +343,19 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 	})
 
 	t.Run("Test BillingAPIService GetUserBillingHistorySnapshotDetails", func(t *testing.T) {
+=======
+	t.Run("Test BillingAPIService RetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycle", func(t *testing.T) {
+>>>>>>> main
 
 		t.Skip("skip test") // remove to run test
 
 		var snapshotId int32
 
+<<<<<<< HEAD
 		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistorySnapshotDetails(context.Background(), snapshotId).Execute()
+=======
+		resp, httpRes, err := apiClient.BillingAPI.RetrieveBillingHistoryOfASpecificSnapshotForASpecificBillingCycle(context.Background(), snapshotId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -320,6 +363,7 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test BillingAPIService GetUserBillingHistoryVm2", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -333,12 +377,19 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 	})
 
 	t.Run("Test BillingAPIService GetUserBillingHistoryVmDetails2", func(t *testing.T) {
+=======
+	t.Run("Test BillingAPIService RetrieveBillingHistoryOfASpecificVirtualMachineForASpecificBillingCycle", func(t *testing.T) {
+>>>>>>> main
 
 		t.Skip("skip test") // remove to run test
 
 		var vmId int32
 
+<<<<<<< HEAD
 		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryVmDetails2(context.Background(), vmId).Execute()
+=======
+		resp, httpRes, err := apiClient.BillingAPI.RetrieveBillingHistoryOfASpecificVirtualMachineForASpecificBillingCycle(context.Background(), vmId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -346,6 +397,7 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test BillingAPIService GetUserBillingHistoryVmSubResourceGraph2", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -387,12 +439,19 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 	})
 
 	t.Run("Test BillingAPIService GetUserBillingHistoryVolumeDetails2", func(t *testing.T) {
+=======
+	t.Run("Test BillingAPIService RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle", func(t *testing.T) {
+>>>>>>> main
 
 		t.Skip("skip test") // remove to run test
 
 		var volumeId int32
 
+<<<<<<< HEAD
 		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryVolumeDetails2(context.Background(), volumeId).Execute()
+=======
+		resp, httpRes, err := apiClient.BillingAPI.RetrieveBillingHistoryOfASpecificVolumeForASpecificBillingCycle(context.Background(), volumeId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -400,6 +459,7 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test BillingAPIService GetUserBillingModelEvaluationDetailsGraph", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -410,10 +470,20 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
+=======
+	t.Run("Test BillingAPIService RetrieveBillingHistoryOfContractForASpecificBillingCycle", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		httpRes, err := apiClient.BillingAPI.RetrieveBillingHistoryOfContractForASpecificBillingCycle(context.Background()).Execute()
+
+		require.Nil(t, err)
+>>>>>>> main
 		assert.Equal(t, 200, httpRes.StatusCode)
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test BillingAPIService GetUserBillingServerlessInferenceDetailsGraph", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -421,6 +491,13 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 		var resourceId int32
 
 		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingServerlessInferenceDetailsGraph(context.Background(), resourceId).Execute()
+=======
+	t.Run("Test BillingAPIService RetrieveBillingHistoryOfSnapshotForASpecificBillingCycle", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.RetrieveBillingHistoryOfSnapshotForASpecificBillingCycle(context.Background()).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -428,13 +505,45 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test BillingAPIService GetUserBillingSnapshotDetailsGraph", func(t *testing.T) {
+=======
+	t.Run("Test BillingAPIService RetrieveBillingHistoryOfVirtualMachineForASpecificBillingCycle", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.RetrieveBillingHistoryOfVirtualMachineForASpecificBillingCycle(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService RetrieveBillingHistoryOfVolumeForASpecificBillingCycle", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.RetrieveBillingHistoryOfVolumeForASpecificBillingCycle(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService RetrieveHourlyCostDatapointsOfASpecificSnapshotForASpecificBillingCycle", func(t *testing.T) {
+>>>>>>> main
 
 		t.Skip("skip test") // remove to run test
 
 		var snapshotId int32
 
+<<<<<<< HEAD
 		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingSnapshotDetailsGraph(context.Background(), snapshotId).Execute()
+=======
+		resp, httpRes, err := apiClient.BillingAPI.RetrieveHourlyCostDatapointsOfASpecificSnapshotForASpecificBillingCycle(context.Background(), snapshotId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -442,13 +551,21 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test BillingAPIService GetUserBillingVmDetailsGraph2", func(t *testing.T) {
+=======
+	t.Run("Test BillingAPIService RetrieveHourlyCostDatapointsOfASpecificVirtualMachineForASpecificBillingCycle", func(t *testing.T) {
+>>>>>>> main
 
 		t.Skip("skip test") // remove to run test
 
 		var vmId int32
 
+<<<<<<< HEAD
 		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingVmDetailsGraph2(context.Background(), vmId).Execute()
+=======
+		resp, httpRes, err := apiClient.BillingAPI.RetrieveHourlyCostDatapointsOfASpecificVirtualMachineForASpecificBillingCycle(context.Background(), vmId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -456,13 +573,21 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test BillingAPIService GetUserBillingVolumeDetailsGraph", func(t *testing.T) {
+=======
+	t.Run("Test BillingAPIService RetrieveHourlyCostDatapointsOfASpecificVolumeForASpecificBillingCycle", func(t *testing.T) {
+>>>>>>> main
 
 		t.Skip("skip test") // remove to run test
 
 		var volumeId int32
 
+<<<<<<< HEAD
 		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingVolumeDetailsGraph(context.Background(), volumeId).Execute()
+=======
+		resp, httpRes, err := apiClient.BillingAPI.RetrieveHourlyCostDatapointsOfASpecificVolumeForASpecificBillingCycle(context.Background(), volumeId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -470,13 +595,21 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test BillingAPIService GetUserVmBillingEvents", func(t *testing.T) {
+=======
+	t.Run("Test BillingAPIService RetrieveSubResourcesHistoricalCostDatapointsOfAVirtual", func(t *testing.T) {
+>>>>>>> main
 
 		t.Skip("skip test") // remove to run test
 
 		var vmId int32
 
+<<<<<<< HEAD
 		resp, httpRes, err := apiClient.BillingAPI.GetUserVmBillingEvents(context.Background(), vmId).Execute()
+=======
+		resp, httpRes, err := apiClient.BillingAPI.RetrieveSubResourcesHistoricalCostDatapointsOfAVirtual(context.Background(), vmId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -484,13 +617,49 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test BillingAPIService GetUserVolumeBillingEvents", func(t *testing.T) {
+=======
+	t.Run("Test BillingAPIService RetrieveTotalCostsAndNonDiscountCostsForSubResources", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.RetrieveTotalCostsAndNonDiscountCostsForSubResources(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService RetrieveVmBillingEventsHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.RetrieveVmBillingEventsHistory(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService RetrieveVolumeBillingEventsHistory", func(t *testing.T) {
+>>>>>>> main
 
 		t.Skip("skip test") // remove to run test
 
 		var volumeId int32
 
+<<<<<<< HEAD
 		resp, httpRes, err := apiClient.BillingAPI.GetUserVolumeBillingEvents(context.Background(), volumeId).Execute()
+=======
+		resp, httpRes, err := apiClient.BillingAPI.RetrieveVolumeBillingEventsHistory(context.Background(), volumeId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -498,13 +667,21 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test BillingAPIService PutOrganizationThreshold", func(t *testing.T) {
+=======
+	t.Run("Test BillingAPIService UpdateSubscribeOrUnsubscribeNotificationThreshold", func(t *testing.T) {
+>>>>>>> main
 
 		t.Skip("skip test") // remove to run test
 
 		var thresholdId int32
 
+<<<<<<< HEAD
 		resp, httpRes, err := apiClient.BillingAPI.PutOrganizationThreshold(context.Background(), thresholdId).Execute()
+=======
+		resp, httpRes, err := apiClient.BillingAPI.UpdateSubscribeOrUnsubscribeNotificationThreshold(context.Background(), thresholdId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

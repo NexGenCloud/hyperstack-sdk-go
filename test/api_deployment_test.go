@@ -37,13 +37,21 @@ func Test_hyperstack_DeploymentAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test DeploymentAPIService DetailsOfDeploymentByID", func(t *testing.T) {
+=======
+	t.Run("Test DeploymentAPIService DetailsOfDeploymentById", func(t *testing.T) {
+>>>>>>> main
 
 		t.Skip("skip test") // remove to run test
 
 		var id int32
 
+<<<<<<< HEAD
 		resp, httpRes, err := apiClient.DeploymentAPI.DetailsOfDeploymentByID(context.Background(), id).Execute()
+=======
+		resp, httpRes, err := apiClient.DeploymentAPI.DetailsOfDeploymentById(context.Background(), id).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

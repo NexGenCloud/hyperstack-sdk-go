@@ -5,6 +5,7 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateCluster**](ClustersAPI.md#CreateCluster) | **Post** /core/clusters | Create Cluster
+<<<<<<< HEAD
 [**CreateNode**](ClustersAPI.md#CreateNode) | **Post** /core/clusters/{cluster_id}/nodes | Create Node
 [**CreateNodeGroup**](ClustersAPI.md#CreateNodeGroup) | **Post** /core/clusters/{cluster_id}/node-groups | Create a node group in a cluster
 [**DeleteACluster**](ClustersAPI.md#DeleteACluster) | **Delete** /core/clusters/{id} | Delete a cluster
@@ -18,6 +19,13 @@ Method | HTTP request | Description
 [**ListClusters**](ClustersAPI.md#ListClusters) | **Get** /core/clusters | List Clusters
 [**ListNodeGroups**](ClustersAPI.md#ListNodeGroups) | **Get** /core/clusters/{cluster_id}/node-groups | List node groups for a cluster
 [**RetrieveANodeGroup**](ClustersAPI.md#RetrieveANodeGroup) | **Get** /core/clusters/{cluster_id}/node-groups/{node_group_id} | Retrieve a node group in a cluster
+=======
+[**DeleteACluster**](ClustersAPI.md#DeleteACluster) | **Delete** /core/clusters/{id} | Delete a cluster
+[**FetchClusterNameAvailability**](ClustersAPI.md#FetchClusterNameAvailability) | **Get** /core/clusters/name-availability/{name} | Fetch cluster name availability
+[**GetClusterVersions**](ClustersAPI.md#GetClusterVersions) | **Get** /core/clusters/versions | GET Cluster Versions
+[**GettingClusterDetail**](ClustersAPI.md#GettingClusterDetail) | **Get** /core/clusters/{id} | Getting Cluster Detail
+[**ListClusters**](ClustersAPI.md#ListClusters) | **Get** /core/clusters | List Clusters
+>>>>>>> main
 
 
 
@@ -40,7 +48,11 @@ import (
 )
 
 func main() {
+<<<<<<< HEAD
 	payload := *openapiclient.NewCreateClusterPayload("EnvironmentName_example", "KeypairName_example", "KubernetesVersion_example", "MasterFlavorName_example", "Name_example") // CreateClusterPayload | 
+=======
+	payload := *openapiclient.NewCreateClusterPayload("EnvironmentName_example", "ImageName_example", "KeypairName_example", "KubernetesVersion_example", "MasterFlavorName_example", "Name_example", int32(123), "NodeFlavorName_example") // CreateClusterPayload | 
+>>>>>>> main
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -73,6 +85,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
 
 ### HTTP request headers
@@ -214,6 +227,9 @@ Name | Type | Description  | Notes
 ### Authorization
 
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -281,6 +297,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
 
 ### HTTP request headers
@@ -424,6 +441,9 @@ Name | Type | Description  | Notes
 ### Authorization
 
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -493,6 +513,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
 
 ### HTTP request headers
@@ -621,6 +642,9 @@ Name | Type | Description  | Notes
 ### Authorization
 
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -634,11 +658,17 @@ Name | Type | Description  | Notes
 
 ## GetClusterVersions
 
+<<<<<<< HEAD
 > ClusterVersions GetClusterVersions(ctx).Region(region).Execute()
 
 List Cluster Versions
 
 
+=======
+> ClusterVersions GetClusterVersions(ctx).Execute()
+
+GET Cluster Versions
+>>>>>>> main
 
 ### Example
 
@@ -653,11 +683,18 @@ import (
 )
 
 func main() {
+<<<<<<< HEAD
 	region := "region_example" // string | Filter versions by region name (optional) (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 	resp, r, err := apiClient.ClustersAPI.GetClusterVersions(context.Background()).Region(region).Execute()
+=======
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ClustersAPI.GetClusterVersions(context.Background()).Execute()
+>>>>>>> main
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.GetClusterVersions``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -669,24 +706,35 @@ func main() {
 
 ### Path Parameters
 
+<<<<<<< HEAD
 
+=======
+This endpoint does not need any parameter.
+>>>>>>> main
 
 ### Other Parameters
 
 Other parameters are passed through a pointer to a apiGetClusterVersionsRequest struct via the builder pattern
 
 
+<<<<<<< HEAD
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **region** | **string** | Filter versions by region name (optional) | 
 
+=======
+>>>>>>> main
 ### Return type
 
 [**ClusterVersions**](ClusterVersions.md)
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -754,7 +802,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -768,7 +820,11 @@ Name | Type | Description  | Notes
 
 ## ListClusters
 
+<<<<<<< HEAD
 > ClusterListResponse ListClusters(ctx).Page(page).PageSize(pageSize).Environment(environment).Search(search).Execute()
+=======
+> ClusterListResponse ListClusters(ctx).Execute()
+>>>>>>> main
 
 List Clusters
 
@@ -785,6 +841,7 @@ import (
 )
 
 func main() {
+<<<<<<< HEAD
 	page := int32(56) // int32 | Page number for pagination (optional)
 	pageSize := int32(56) // int32 | Number of items per page (optional)
 	environment := "environment_example" // string | Environment Filter (optional)
@@ -793,6 +850,12 @@ func main() {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 	resp, r, err := apiClient.ClustersAPI.ListClusters(context.Background()).Page(page).PageSize(pageSize).Environment(environment).Search(search).Execute()
+=======
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ClustersAPI.ListClusters(context.Background()).Execute()
+>>>>>>> main
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.ListClusters``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -804,13 +867,18 @@ func main() {
 
 ### Path Parameters
 
+<<<<<<< HEAD
 
+=======
+This endpoint does not need any parameter.
+>>>>>>> main
 
 ### Other Parameters
 
 Other parameters are passed through a pointer to a apiListClustersRequest struct via the builder pattern
 
 
+<<<<<<< HEAD
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **page** | **int32** | Page number for pagination | 
@@ -818,12 +886,15 @@ Name | Type | Description  | Notes
  **environment** | **string** | Environment Filter | 
  **search** | **string** | Search query to filter cluster by name | 
 
+=======
+>>>>>>> main
 ### Return type
 
 [**ClusterListResponse**](ClusterListResponse.md)
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
 
 ### HTTP request headers
@@ -964,6 +1035,9 @@ Name | Type | Description  | Notes
 ### Authorization
 
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 

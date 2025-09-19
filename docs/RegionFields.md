@@ -4,9 +4,13 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+<<<<<<< HEAD
 **Country** | Pointer to **string** |  | [optional] 
 **Description** | Pointer to **string** |  | [optional] 
 **GreenStatus** | Pointer to **string** | Green status | [optional] 
+=======
+**Description** | Pointer to **string** |  | [optional] 
+>>>>>>> main
 **Id** | Pointer to **int32** |  | [optional] 
 **Name** | Pointer to **string** |  | [optional] 
 
@@ -29,6 +33,7 @@ NewRegionFieldsWithDefaults instantiates a new RegionFields object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
+<<<<<<< HEAD
 ### GetCountry
 
 `func (o *RegionFields) GetCountry() string`
@@ -54,6 +59,8 @@ SetCountry sets Country field to given value.
 
 HasCountry returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetDescription
 
 `func (o *RegionFields) GetDescription() string`
@@ -79,6 +86,7 @@ SetDescription sets Description field to given value.
 
 HasDescription returns a boolean if a field has been set.
 
+<<<<<<< HEAD
 ### GetGreenStatus
 
 `func (o *RegionFields) GetGreenStatus() string`
@@ -104,6 +112,8 @@ SetGreenStatus sets GreenStatus field to given value.
 
 HasGreenStatus returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetId
 
 `func (o *RegionFields) GetId() int32`

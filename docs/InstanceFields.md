@@ -8,7 +8,10 @@ Name | Type | Description | Notes
 **ContractId** | Pointer to **int32** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **Environment** | Pointer to [**InstanceEnvironmentFields**](InstanceEnvironmentFields.md) |  | [optional] 
+<<<<<<< HEAD
 **Features** | Pointer to **map[string]interface{}** |  | [optional] 
+=======
+>>>>>>> main
 **FixedIp** | Pointer to **string** |  | [optional] 
 **Flavor** | Pointer to [**InstanceFlavorFields**](InstanceFlavorFields.md) |  | [optional] 
 **FloatingIp** | Pointer to **string** |  | [optional] 
@@ -23,8 +26,12 @@ Name | Type | Description | Notes
 **PortRandomization** | Pointer to **bool** |  | [optional] 
 **PortRandomizationStatus** | Pointer to **string** |  | [optional] 
 **PowerState** | Pointer to **string** |  | [optional] 
+<<<<<<< HEAD
 **RequiresPublicIp** | Pointer to **bool** |  | [optional] 
 **SecurityRules** | Pointer to [**[]SecurityRulesFieldsForInstance**](SecurityRulesFieldsForInstance.md) |  | [optional] 
+=======
+**SecurityRules** | Pointer to [**[]SecurityRulesFieldsforInstance**](SecurityRulesFieldsforInstance.md) |  | [optional] 
+>>>>>>> main
 **Status** | Pointer to **string** |  | [optional] 
 **VmState** | Pointer to **string** |  | [optional] 
 **VolumeAttachments** | Pointer to [**[]VolumeAttachmentFields**](VolumeAttachmentFields.md) |  | [optional] 
@@ -148,6 +155,7 @@ SetEnvironment sets Environment field to given value.
 
 HasEnvironment returns a boolean if a field has been set.
 
+<<<<<<< HEAD
 ### GetFeatures
 
 `func (o *InstanceFields) GetFeatures() map[string]interface{}`
@@ -173,6 +181,8 @@ SetFeatures sets Features field to given value.
 
 HasFeatures returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetFixedIp
 
 `func (o *InstanceFields) GetFixedIp() string`
@@ -523,6 +533,7 @@ SetPowerState sets PowerState field to given value.
 
 HasPowerState returns a boolean if a field has been set.
 
+<<<<<<< HEAD
 ### GetRequiresPublicIp
 
 `func (o *InstanceFields) GetRequiresPublicIp() bool`
@@ -551,19 +562,32 @@ HasRequiresPublicIp returns a boolean if a field has been set.
 ### GetSecurityRules
 
 `func (o *InstanceFields) GetSecurityRules() []SecurityRulesFieldsForInstance`
+=======
+### GetSecurityRules
+
+`func (o *InstanceFields) GetSecurityRules() []SecurityRulesFieldsforInstance`
+>>>>>>> main
 
 GetSecurityRules returns the SecurityRules field if non-nil, zero value otherwise.
 
 ### GetSecurityRulesOk
 
+<<<<<<< HEAD
 `func (o *InstanceFields) GetSecurityRulesOk() (*[]SecurityRulesFieldsForInstance, bool)`
+=======
+`func (o *InstanceFields) GetSecurityRulesOk() (*[]SecurityRulesFieldsforInstance, bool)`
+>>>>>>> main
 
 GetSecurityRulesOk returns a tuple with the SecurityRules field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetSecurityRules
 
+<<<<<<< HEAD
 `func (o *InstanceFields) SetSecurityRules(v []SecurityRulesFieldsForInstance)`
+=======
+`func (o *InstanceFields) SetSecurityRules(v []SecurityRulesFieldsforInstance)`
+>>>>>>> main
 
 SetSecurityRules sets SecurityRules field to given value.
 

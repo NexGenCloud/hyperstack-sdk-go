@@ -7,11 +7,17 @@ Name | Type | Description | Notes
 **Cpu** | Pointer to **int32** |  | [optional] 
 **Disk** | Pointer to **int32** |  | [optional] 
 **Ephemeral** | Pointer to **int32** |  | [optional] 
+<<<<<<< HEAD
 **Features** | Pointer to **map[string]interface{}** |  | [optional] 
 **Gpu** | Pointer to **string** |  | [optional] 
 **GpuCount** | Pointer to **int32** |  | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
 **Labels** | Pointer to [**[]FlavorLabelFields**](FlavorLabelFields.md) |  | [optional] 
+=======
+**Gpu** | Pointer to **string** |  | [optional] 
+**GpuCount** | Pointer to **int32** |  | [optional] 
+**Id** | Pointer to **int32** |  | [optional] 
+>>>>>>> main
 **Name** | Pointer to **string** |  | [optional] 
 **Ram** | Pointer to **float32** |  | [optional] 
 
@@ -109,6 +115,7 @@ SetEphemeral sets Ephemeral field to given value.
 
 HasEphemeral returns a boolean if a field has been set.
 
+<<<<<<< HEAD
 ### GetFeatures
 
 `func (o *InstanceFlavorFields) GetFeatures() map[string]interface{}`
@@ -134,6 +141,8 @@ SetFeatures sets Features field to given value.
 
 HasFeatures returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetGpu
 
 `func (o *InstanceFlavorFields) GetGpu() string`
@@ -209,6 +218,7 @@ SetId sets Id field to given value.
 
 HasId returns a boolean if a field has been set.
 
+<<<<<<< HEAD
 ### GetLabels
 
 `func (o *InstanceFlavorFields) GetLabels() []FlavorLabelFields`
@@ -234,6 +244,8 @@ SetLabels sets Labels field to given value.
 
 HasLabels returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetName
 
 `func (o *InstanceFlavorFields) GetName() string`

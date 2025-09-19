@@ -10,7 +10,10 @@ Name | Type | Description | Notes
 **DiscountStatus** | Pointer to **string** |  | [optional] 
 **DiscountType** | Pointer to **string** |  | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
+<<<<<<< HEAD
 **RemainingCount** | Pointer to **int32** |  | [optional] 
+=======
+>>>>>>> main
 **ResourceCount** | Pointer to **int32** |  | [optional] 
 **ResourceId** | Pointer to **int32** |  | [optional] 
 **ResourceName** | Pointer to **string** |  | [optional] 
@@ -184,6 +187,7 @@ SetId sets Id field to given value.
 
 HasId returns a boolean if a field has been set.
 
+<<<<<<< HEAD
 ### GetRemainingCount
 
 `func (o *ContractDiscountPlanFields) GetRemainingCount() int32`
@@ -209,6 +213,8 @@ SetRemainingCount sets RemainingCount field to given value.
 
 HasRemainingCount returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetResourceCount
 
 `func (o *ContractDiscountPlanFields) GetResourceCount() int32`

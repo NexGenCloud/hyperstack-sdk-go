@@ -11,10 +11,16 @@ Name | Type | Description | Notes
 **KeypairName** | Pointer to **string** |  | [optional] 
 **KubeConfig** | Pointer to **string** |  | [optional] 
 **KubernetesVersion** | Pointer to **string** |  | [optional] 
+<<<<<<< HEAD
 **MasterFlavor** | Pointer to [**ClusterFlavorFields**](ClusterFlavorFields.md) |  | [optional] 
 **Name** | Pointer to **string** |  | [optional] 
 **NodeGroups** | Pointer to [**[]ClusterNodeGroupFields**](ClusterNodeGroupFields.md) |  | [optional] 
 **Nodes** | Pointer to [**[]ClusterNodeFields**](ClusterNodeFields.md) |  | [optional] 
+=======
+**Name** | Pointer to **string** |  | [optional] 
+**NodeCount** | Pointer to **int32** |  | [optional] 
+**NodeFlavor** | Pointer to [**InstanceFlavorFields**](InstanceFlavorFields.md) |  | [optional] 
+>>>>>>> main
 **Status** | Pointer to **string** |  | [optional] 
 **StatusReason** | Pointer to **string** |  | [optional] 
 
@@ -212,6 +218,7 @@ SetKubernetesVersion sets KubernetesVersion field to given value.
 
 HasKubernetesVersion returns a boolean if a field has been set.
 
+<<<<<<< HEAD
 ### GetMasterFlavor
 
 `func (o *ClusterFields) GetMasterFlavor() ClusterFlavorFields`
@@ -237,6 +244,8 @@ SetMasterFlavor sets MasterFlavor field to given value.
 
 HasMasterFlavor returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetName
 
 `func (o *ClusterFields) GetName() string`
@@ -262,6 +271,7 @@ SetName sets Name field to given value.
 
 HasName returns a boolean if a field has been set.
 
+<<<<<<< HEAD
 ### GetNodeGroups
 
 `func (o *ClusterFields) GetNodeGroups() []ClusterNodeGroupFields`
@@ -311,6 +321,57 @@ SetNodes sets Nodes field to given value.
 `func (o *ClusterFields) HasNodes() bool`
 
 HasNodes returns a boolean if a field has been set.
+=======
+### GetNodeCount
+
+`func (o *ClusterFields) GetNodeCount() int32`
+
+GetNodeCount returns the NodeCount field if non-nil, zero value otherwise.
+
+### GetNodeCountOk
+
+`func (o *ClusterFields) GetNodeCountOk() (*int32, bool)`
+
+GetNodeCountOk returns a tuple with the NodeCount field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetNodeCount
+
+`func (o *ClusterFields) SetNodeCount(v int32)`
+
+SetNodeCount sets NodeCount field to given value.
+
+### HasNodeCount
+
+`func (o *ClusterFields) HasNodeCount() bool`
+
+HasNodeCount returns a boolean if a field has been set.
+
+### GetNodeFlavor
+
+`func (o *ClusterFields) GetNodeFlavor() InstanceFlavorFields`
+
+GetNodeFlavor returns the NodeFlavor field if non-nil, zero value otherwise.
+
+### GetNodeFlavorOk
+
+`func (o *ClusterFields) GetNodeFlavorOk() (*InstanceFlavorFields, bool)`
+
+GetNodeFlavorOk returns a tuple with the NodeFlavor field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetNodeFlavor
+
+`func (o *ClusterFields) SetNodeFlavor(v InstanceFlavorFields)`
+
+SetNodeFlavor sets NodeFlavor field to given value.
+
+### HasNodeFlavor
+
+`func (o *ClusterFields) HasNodeFlavor() bool`
+
+HasNodeFlavor returns a boolean if a field has been set.
+>>>>>>> main
 
 ### GetStatus
 

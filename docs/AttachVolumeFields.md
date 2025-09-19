@@ -5,10 +5,15 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
+<<<<<<< HEAD
 **Device** | Pointer to **string** |  | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
 **InstanceId** | Pointer to **int32** |  | [optional] 
 **Protected** | Pointer to **bool** |  | [optional] 
+=======
+**Id** | Pointer to **int32** |  | [optional] 
+**InstanceId** | Pointer to **int32** |  | [optional] 
+>>>>>>> main
 **Status** | Pointer to **string** |  | [optional] 
 **VolumeId** | Pointer to **int32** |  | [optional] 
 
@@ -56,6 +61,7 @@ SetCreatedAt sets CreatedAt field to given value.
 
 HasCreatedAt returns a boolean if a field has been set.
 
+<<<<<<< HEAD
 ### GetDevice
 
 `func (o *AttachVolumeFields) GetDevice() string`
@@ -81,6 +87,8 @@ SetDevice sets Device field to given value.
 
 HasDevice returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetId
 
 `func (o *AttachVolumeFields) GetId() int32`
@@ -131,6 +139,7 @@ SetInstanceId sets InstanceId field to given value.
 
 HasInstanceId returns a boolean if a field has been set.
 
+<<<<<<< HEAD
 ### GetProtected
 
 `func (o *AttachVolumeFields) GetProtected() bool`
@@ -156,6 +165,8 @@ SetProtected sets Protected field to given value.
 
 HasProtected returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetStatus
 
 `func (o *AttachVolumeFields) GetStatus() string`

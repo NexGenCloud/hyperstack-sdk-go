@@ -4,7 +4,10 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+<<<<<<< HEAD
 **Protected** | Pointer to **bool** |  | [optional] [default to false]
+=======
+>>>>>>> main
 **VolumeIds** | Pointer to **[]int32** |  | [optional] 
 
 ## Methods
@@ -26,6 +29,7 @@ NewAttachVolumesPayloadWithDefaults instantiates a new AttachVolumesPayload obje
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
+<<<<<<< HEAD
 ### GetProtected
 
 `func (o *AttachVolumesPayload) GetProtected() bool`
@@ -51,6 +55,8 @@ SetProtected sets Protected field to given value.
 
 HasProtected returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetVolumeIds
 
 `func (o *AttachVolumesPayload) GetVolumeIds() []int32`

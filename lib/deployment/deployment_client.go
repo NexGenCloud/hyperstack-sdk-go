@@ -160,8 +160,8 @@ type ClientInterface interface {
 	// DeleteDeployment request
 	DeleteDeployment(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DetailsOfDeploymentByID request
-	DetailsOfDeploymentByID(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DetailsOfDeploymentById request
+	DetailsOfDeploymentById(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) ListDeployments(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -212,8 +212,8 @@ func (c *Client) DeleteDeployment(ctx context.Context, id int, reqEditors ...Req
 	return c.Client.Do(req)
 }
 
-func (c *Client) DetailsOfDeploymentByID(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDetailsOfDeploymentByIDRequest(c.Server, id)
+func (c *Client) DetailsOfDeploymentById(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDetailsOfDeploymentByIdRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -325,8 +325,8 @@ func NewDeleteDeploymentRequest(server string, id int) (*http.Request, error) {
 	return req, nil
 }
 
-// NewDetailsOfDeploymentByIDRequest generates requests for DetailsOfDeploymentByID
-func NewDetailsOfDeploymentByIDRequest(server string, id int) (*http.Request, error) {
+// NewDetailsOfDeploymentByIdRequest generates requests for DetailsOfDeploymentById
+func NewDetailsOfDeploymentByIdRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -413,8 +413,8 @@ type ClientWithResponsesInterface interface {
 	// DeleteDeploymentWithResponse request
 	DeleteDeploymentWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteDeploymentResponse, error)
 
-	// DetailsOfDeploymentByIDWithResponse request
-	DetailsOfDeploymentByIDWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DetailsOfDeploymentByIDResponse, error)
+	// DetailsOfDeploymentByIdWithResponse request
+	DetailsOfDeploymentByIdWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DetailsOfDeploymentByIdResponse, error)
 }
 
 type ListDeploymentsResponse struct {
@@ -492,7 +492,7 @@ func (r DeleteDeploymentResponse) StatusCode() int {
 	return 0
 }
 
-type DetailsOfDeploymentByIDResponse struct {
+type DetailsOfDeploymentByIdResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *StartDeployment
@@ -502,7 +502,7 @@ type DetailsOfDeploymentByIDResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DetailsOfDeploymentByIDResponse) Status() string {
+func (r DetailsOfDeploymentByIdResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -510,7 +510,7 @@ func (r DetailsOfDeploymentByIDResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DetailsOfDeploymentByIDResponse) StatusCode() int {
+func (r DetailsOfDeploymentByIdResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -552,13 +552,13 @@ func (c *ClientWithResponses) DeleteDeploymentWithResponse(ctx context.Context, 
 	return ParseDeleteDeploymentResponse(rsp)
 }
 
-// DetailsOfDeploymentByIDWithResponse request returning *DetailsOfDeploymentByIDResponse
-func (c *ClientWithResponses) DetailsOfDeploymentByIDWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DetailsOfDeploymentByIDResponse, error) {
-	rsp, err := c.DetailsOfDeploymentByID(ctx, id, reqEditors...)
+// DetailsOfDeploymentByIdWithResponse request returning *DetailsOfDeploymentByIdResponse
+func (c *ClientWithResponses) DetailsOfDeploymentByIdWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DetailsOfDeploymentByIdResponse, error) {
+	rsp, err := c.DetailsOfDeploymentById(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDetailsOfDeploymentByIDResponse(rsp)
+	return ParseDetailsOfDeploymentByIdResponse(rsp)
 }
 
 // ParseListDeploymentsResponse parses an HTTP response from a ListDeploymentsWithResponse call
@@ -702,15 +702,15 @@ func ParseDeleteDeploymentResponse(rsp *http.Response) (*DeleteDeploymentRespons
 	return response, nil
 }
 
-// ParseDetailsOfDeploymentByIDResponse parses an HTTP response from a DetailsOfDeploymentByIDWithResponse call
-func ParseDetailsOfDeploymentByIDResponse(rsp *http.Response) (*DetailsOfDeploymentByIDResponse, error) {
+// ParseDetailsOfDeploymentByIdResponse parses an HTTP response from a DetailsOfDeploymentByIdWithResponse call
+func ParseDetailsOfDeploymentByIdResponse(rsp *http.Response) (*DetailsOfDeploymentByIdResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DetailsOfDeploymentByIDResponse{
+	response := &DetailsOfDeploymentByIdResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

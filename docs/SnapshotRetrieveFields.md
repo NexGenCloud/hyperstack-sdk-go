@@ -4,12 +4,16 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+<<<<<<< HEAD
 **CreatedAt** | **time.Time** | Creation timestamp | 
 **CustomImage** | Pointer to **string** |  | [optional] 
+=======
+>>>>>>> main
 **Description** | **string** | Description of the snapshot | 
 **HasFloatingIp** | Pointer to **bool** | Indicates if the VM had a floating IP assigned | [optional] 
 **Id** | **int32** | Snapshot ID | 
 **IsImage** | **bool** | Indicates if the snapshot is an image | 
+<<<<<<< HEAD
 **Labels** | Pointer to **string** |  | [optional] 
 **Name** | **string** | Snapshot name | 
 **Region** | Pointer to **string** |  | [optional] 
@@ -26,12 +30,23 @@ Name | Type | Description | Notes
 **VmStatus** | Pointer to **string** |  | [optional] 
 **VolumeId** | Pointer to **string** |  | [optional] 
 **VolumeName** | Pointer to **string** |  | [optional] 
+=======
+**Name** | **string** | Snapshot name | 
+**RegionId** | **int32** | Region where the snapshot will be available | 
+**Size** | **int32** | Size in GB of the snapshot | 
+**Status** | **string** | Status of the snapshot | 
+**VmId** | **int32** | ID of the VM from which the snapshot is created | 
+>>>>>>> main
 
 ## Methods
 
 ### NewSnapshotRetrieveFields
 
+<<<<<<< HEAD
 `func NewSnapshotRetrieveFields(createdAt time.Time, description string, id int32, isImage bool, name string, regionId int32, size int32, status string, updatedAt time.Time, vmId int32, ) *SnapshotRetrieveFields`
+=======
+`func NewSnapshotRetrieveFields(description string, id int32, isImage bool, name string, regionId int32, size int32, status string, vmId int32, ) *SnapshotRetrieveFields`
+>>>>>>> main
 
 NewSnapshotRetrieveFields instantiates a new SnapshotRetrieveFields object
 This constructor will assign default values to properties that have it defined,
@@ -46,6 +61,7 @@ NewSnapshotRetrieveFieldsWithDefaults instantiates a new SnapshotRetrieveFields 
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
+<<<<<<< HEAD
 ### GetCreatedAt
 
 `func (o *SnapshotRetrieveFields) GetCreatedAt() time.Time`
@@ -91,6 +107,8 @@ SetCustomImage sets CustomImage field to given value.
 
 HasCustomImage returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetDescription
 
 `func (o *SnapshotRetrieveFields) GetDescription() string`
@@ -176,6 +194,7 @@ and a boolean to check if the value has been set.
 SetIsImage sets IsImage field to given value.
 
 
+<<<<<<< HEAD
 ### GetLabels
 
 `func (o *SnapshotRetrieveFields) GetLabels() string`
@@ -201,6 +220,8 @@ SetLabels sets Labels field to given value.
 
 HasLabels returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetName
 
 `func (o *SnapshotRetrieveFields) GetName() string`
@@ -221,6 +242,7 @@ and a boolean to check if the value has been set.
 SetName sets Name field to given value.
 
 
+<<<<<<< HEAD
 ### GetRegion
 
 `func (o *SnapshotRetrieveFields) GetRegion() string`
@@ -246,6 +268,8 @@ SetRegion sets Region field to given value.
 
 HasRegion returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetRegionId
 
 `func (o *SnapshotRetrieveFields) GetRegionId() int32`
@@ -306,6 +330,7 @@ and a boolean to check if the value has been set.
 SetStatus sets Status field to given value.
 
 
+<<<<<<< HEAD
 ### GetUpdatedAt
 
 `func (o *SnapshotRetrieveFields) GetUpdatedAt() time.Time`
@@ -376,6 +401,8 @@ SetVmFlavor sets VmFlavor field to given value.
 
 HasVmFlavor returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetVmId
 
 `func (o *SnapshotRetrieveFields) GetVmId() int32`
@@ -396,6 +423,7 @@ and a boolean to check if the value has been set.
 SetVmId sets VmId field to given value.
 
 
+<<<<<<< HEAD
 ### GetVmImage
 
 `func (o *SnapshotRetrieveFields) GetVmImage() string`
@@ -546,6 +574,8 @@ SetVolumeName sets VolumeName field to given value.
 
 HasVolumeName returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

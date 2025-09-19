@@ -23,6 +23,7 @@ func Test_hyperstack_InviteAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
+<<<<<<< HEAD
 	t.Run("Test InviteAPIService AcceptInvite", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -37,6 +38,8 @@ func Test_hyperstack_InviteAPIService(t *testing.T) {
 
 	})
 
+=======
+>>>>>>> main
 	t.Run("Test InviteAPIService DeleteInvite", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test

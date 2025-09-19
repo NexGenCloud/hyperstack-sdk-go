@@ -23,11 +23,19 @@ func Test_hyperstack_CreditAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
+<<<<<<< HEAD
 	t.Run("Test CreditAPIService GetCredit2", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.CreditAPI.GetCredit2(context.Background()).Execute()
+=======
+	t.Run("Test CreditAPIService GetViewCreditAndThreshold", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.CreditAPI.GetViewCreditAndThreshold(context.Background()).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

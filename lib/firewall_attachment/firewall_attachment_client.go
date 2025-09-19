@@ -34,8 +34,13 @@ type ResponseModel struct {
 	Status  *bool   `json:"status,omitempty"`
 }
 
+<<<<<<< HEAD
 // PostAttachSecurityGroupsJSONRequestBody defines body for PostAttachSecurityGroups for application/json ContentType.
 type PostAttachSecurityGroupsJSONRequestBody = AttachFirewallWithVM
+=======
+// AttachFirewallsToVmsJSONRequestBody defines body for AttachFirewallsToVms for application/json ContentType.
+type AttachFirewallsToVmsJSONRequestBody = AttachFirewallWithVM
+>>>>>>> main
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -110,6 +115,7 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
+<<<<<<< HEAD
 	// PostAttachSecurityGroupsWithBody request with any body
 	PostAttachSecurityGroupsWithBody(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -118,6 +124,16 @@ type ClientInterface interface {
 
 func (c *Client) PostAttachSecurityGroupsWithBody(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostAttachSecurityGroupsRequestWithBody(c.Server, firewallId, contentType, body)
+=======
+	// AttachFirewallsToVmsWithBody request with any body
+	AttachFirewallsToVmsWithBody(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AttachFirewallsToVms(ctx context.Context, firewallId int, body AttachFirewallsToVmsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+}
+
+func (c *Client) AttachFirewallsToVmsWithBody(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachFirewallsToVmsRequestWithBody(c.Server, firewallId, contentType, body)
+>>>>>>> main
 	if err != nil {
 		return nil, err
 	}
@@ -128,8 +144,13 @@ func (c *Client) PostAttachSecurityGroupsWithBody(ctx context.Context, firewallI
 	return c.Client.Do(req)
 }
 
+<<<<<<< HEAD
 func (c *Client) PostAttachSecurityGroups(ctx context.Context, firewallId int, body PostAttachSecurityGroupsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostAttachSecurityGroupsRequest(c.Server, firewallId, body)
+=======
+func (c *Client) AttachFirewallsToVms(ctx context.Context, firewallId int, body AttachFirewallsToVmsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachFirewallsToVmsRequest(c.Server, firewallId, body)
+>>>>>>> main
 	if err != nil {
 		return nil, err
 	}
@@ -140,19 +161,32 @@ func (c *Client) PostAttachSecurityGroups(ctx context.Context, firewallId int, b
 	return c.Client.Do(req)
 }
 
+<<<<<<< HEAD
 // NewPostAttachSecurityGroupsRequest calls the generic PostAttachSecurityGroups builder with application/json body
 func NewPostAttachSecurityGroupsRequest(server string, firewallId int, body PostAttachSecurityGroupsJSONRequestBody) (*http.Request, error) {
+=======
+// NewAttachFirewallsToVmsRequest calls the generic AttachFirewallsToVms builder with application/json body
+func NewAttachFirewallsToVmsRequest(server string, firewallId int, body AttachFirewallsToVmsJSONRequestBody) (*http.Request, error) {
+>>>>>>> main
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
+<<<<<<< HEAD
 	return NewPostAttachSecurityGroupsRequestWithBody(server, firewallId, "application/json", bodyReader)
 }
 
 // NewPostAttachSecurityGroupsRequestWithBody generates requests for PostAttachSecurityGroups with any type of body
 func NewPostAttachSecurityGroupsRequestWithBody(server string, firewallId int, contentType string, body io.Reader) (*http.Request, error) {
+=======
+	return NewAttachFirewallsToVmsRequestWithBody(server, firewallId, "application/json", bodyReader)
+}
+
+// NewAttachFirewallsToVmsRequestWithBody generates requests for AttachFirewallsToVms with any type of body
+func NewAttachFirewallsToVmsRequestWithBody(server string, firewallId int, contentType string, body io.Reader) (*http.Request, error) {
+>>>>>>> main
 	var err error
 
 	var pathParam0 string
@@ -230,6 +264,7 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
+<<<<<<< HEAD
 	// PostAttachSecurityGroupsWithBodyWithResponse request with any body
 	PostAttachSecurityGroupsWithBodyWithResponse(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostAttachSecurityGroupsResponse, error)
 
@@ -237,6 +272,15 @@ type ClientWithResponsesInterface interface {
 }
 
 type PostAttachSecurityGroupsResponse struct {
+=======
+	// AttachFirewallsToVmsWithBodyWithResponse request with any body
+	AttachFirewallsToVmsWithBodyWithResponse(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachFirewallsToVmsResponse, error)
+
+	AttachFirewallsToVmsWithResponse(ctx context.Context, firewallId int, body AttachFirewallsToVmsJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachFirewallsToVmsResponse, error)
+}
+
+type AttachFirewallsToVmsResponse struct {
+>>>>>>> main
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -248,7 +292,11 @@ type PostAttachSecurityGroupsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
+<<<<<<< HEAD
 func (r PostAttachSecurityGroupsResponse) Status() string {
+=======
+func (r AttachFirewallsToVmsResponse) Status() string {
+>>>>>>> main
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -256,13 +304,18 @@ func (r PostAttachSecurityGroupsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
+<<<<<<< HEAD
 func (r PostAttachSecurityGroupsResponse) StatusCode() int {
+=======
+func (r AttachFirewallsToVmsResponse) StatusCode() int {
+>>>>>>> main
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
+<<<<<<< HEAD
 // PostAttachSecurityGroupsWithBodyWithResponse request with arbitrary body returning *PostAttachSecurityGroupsResponse
 func (c *ClientWithResponses) PostAttachSecurityGroupsWithBodyWithResponse(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostAttachSecurityGroupsResponse, error) {
 	rsp, err := c.PostAttachSecurityGroupsWithBody(ctx, firewallId, contentType, body, reqEditors...)
@@ -282,13 +335,38 @@ func (c *ClientWithResponses) PostAttachSecurityGroupsWithResponse(ctx context.C
 
 // ParsePostAttachSecurityGroupsResponse parses an HTTP response from a PostAttachSecurityGroupsWithResponse call
 func ParsePostAttachSecurityGroupsResponse(rsp *http.Response) (*PostAttachSecurityGroupsResponse, error) {
+=======
+// AttachFirewallsToVmsWithBodyWithResponse request with arbitrary body returning *AttachFirewallsToVmsResponse
+func (c *ClientWithResponses) AttachFirewallsToVmsWithBodyWithResponse(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachFirewallsToVmsResponse, error) {
+	rsp, err := c.AttachFirewallsToVmsWithBody(ctx, firewallId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAttachFirewallsToVmsResponse(rsp)
+}
+
+func (c *ClientWithResponses) AttachFirewallsToVmsWithResponse(ctx context.Context, firewallId int, body AttachFirewallsToVmsJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachFirewallsToVmsResponse, error) {
+	rsp, err := c.AttachFirewallsToVms(ctx, firewallId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAttachFirewallsToVmsResponse(rsp)
+}
+
+// ParseAttachFirewallsToVmsResponse parses an HTTP response from a AttachFirewallsToVmsWithResponse call
+func ParseAttachFirewallsToVmsResponse(rsp *http.Response) (*AttachFirewallsToVmsResponse, error) {
+>>>>>>> main
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	response := &PostAttachSecurityGroupsResponse{
+=======
+	response := &AttachFirewallsToVmsResponse{
+>>>>>>> main
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

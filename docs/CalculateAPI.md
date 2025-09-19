@@ -4,6 +4,7 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+<<<<<<< HEAD
 [**GetCalculate2**](CalculateAPI.md#GetCalculate2) | **Get** /pricebook/calculate/resource/{resource_type}/{id} | Retrieve Billing Rate for Resource
 
 
@@ -11,6 +12,15 @@ Method | HTTP request | Description
 ## GetCalculate2
 
 > ResourceBillingResponseForCustomer GetCalculate2(ctx, resourceType, id).Execute()
+=======
+[**RetrieveBillingRateForResource**](CalculateAPI.md#RetrieveBillingRateForResource) | **Get** /pricebook/calculate/resource/{resource_type}/{id} | Retrieve Billing Rate for Resource
+
+
+
+## RetrieveBillingRateForResource
+
+> ResourceBillingResponseForCustomer RetrieveBillingRateForResource(ctx, resourceType, id).Execute()
+>>>>>>> main
 
 Retrieve Billing Rate for Resource
 
@@ -34,6 +44,7 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
+<<<<<<< HEAD
 	resp, r, err := apiClient.CalculateAPI.GetCalculate2(context.Background(), resourceType, id).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CalculateAPI.GetCalculate2``: %v\n", err)
@@ -41,6 +52,15 @@ func main() {
 	}
 	// response from `GetCalculate2`: ResourceBillingResponseForCustomer
 	fmt.Fprintf(os.Stdout, "Response from `CalculateAPI.GetCalculate2`: %v\n", resp)
+=======
+	resp, r, err := apiClient.CalculateAPI.RetrieveBillingRateForResource(context.Background(), resourceType, id).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `CalculateAPI.RetrieveBillingRateForResource``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `RetrieveBillingRateForResource`: ResourceBillingResponseForCustomer
+	fmt.Fprintf(os.Stdout, "Response from `CalculateAPI.RetrieveBillingRateForResource`: %v\n", resp)
+>>>>>>> main
 }
 ```
 
@@ -55,7 +75,11 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
+<<<<<<< HEAD
 Other parameters are passed through a pointer to a apiGetCalculate2Request struct via the builder pattern
+=======
+Other parameters are passed through a pointer to a apiRetrieveBillingRateForResourceRequest struct via the builder pattern
+>>>>>>> main
 
 
 Name | Type | Description  | Notes
@@ -69,7 +93,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 

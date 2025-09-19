@@ -27,9 +27,15 @@ func Test_hyperstack_VirtualMachineEventsAPIService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
+<<<<<<< HEAD
 		var vmId int32
 
 		resp, httpRes, err := apiClient.VirtualMachineEventsAPI.ListVirtualMachineEvents(context.Background(), vmId).Execute()
+=======
+		var virtualMachineId string
+
+		resp, httpRes, err := apiClient.VirtualMachineEventsAPI.ListVirtualMachineEvents(context.Background(), virtualMachineId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

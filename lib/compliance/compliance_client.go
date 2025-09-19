@@ -72,8 +72,8 @@ type ResponseModel struct {
 	Status  *bool   `json:"status,omitempty"`
 }
 
-// RetrieveComplianceParams defines parameters for RetrieveCompliance.
-type RetrieveComplianceParams struct {
+// RetrieveGpuComplianceParams defines parameters for RetrieveGpuCompliance.
+type RetrieveGpuComplianceParams struct {
 	Gpu *string `form:"gpu,omitempty" json:"gpu,omitempty"`
 }
 
@@ -156,8 +156,8 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// RetrieveCompliance request
-	RetrieveCompliance(ctx context.Context, params *RetrieveComplianceParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RetrieveGpuCompliance request
+	RetrieveGpuCompliance(ctx context.Context, params *RetrieveGpuComplianceParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateComplianceWithBody request with any body
 	CreateComplianceWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -173,8 +173,8 @@ type ClientInterface interface {
 	DeleteACompliance(ctx context.Context, gpuModel string, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) RetrieveCompliance(ctx context.Context, params *RetrieveComplianceParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveComplianceRequest(c.Server, params)
+func (c *Client) RetrieveGpuCompliance(ctx context.Context, params *RetrieveGpuComplianceParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveGpuComplianceRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -245,8 +245,8 @@ func (c *Client) DeleteACompliance(ctx context.Context, gpuModel string, reqEdit
 	return c.Client.Do(req)
 }
 
-// NewRetrieveComplianceRequest generates requests for RetrieveCompliance
-func NewRetrieveComplianceRequest(server string, params *RetrieveComplianceParams) (*http.Request, error) {
+// NewRetrieveGpuComplianceRequest generates requests for RetrieveGpuCompliance
+func NewRetrieveGpuComplianceRequest(server string, params *RetrieveGpuComplianceParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -451,8 +451,8 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// RetrieveComplianceWithResponse request
-	RetrieveComplianceWithResponse(ctx context.Context, params *RetrieveComplianceParams, reqEditors ...RequestEditorFn) (*RetrieveComplianceResponse, error)
+	// RetrieveGpuComplianceWithResponse request
+	RetrieveGpuComplianceWithResponse(ctx context.Context, params *RetrieveGpuComplianceParams, reqEditors ...RequestEditorFn) (*RetrieveGpuComplianceResponse, error)
 
 	// CreateComplianceWithBodyWithResponse request with any body
 	CreateComplianceWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateComplianceResponse, error)
@@ -468,7 +468,7 @@ type ClientWithResponsesInterface interface {
 	DeleteAComplianceWithResponse(ctx context.Context, gpuModel string, reqEditors ...RequestEditorFn) (*DeleteAComplianceResponse, error)
 }
 
-type RetrieveComplianceResponse struct {
+type RetrieveGpuComplianceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ComplianceResponse
@@ -479,7 +479,7 @@ type RetrieveComplianceResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrieveComplianceResponse) Status() string {
+func (r RetrieveGpuComplianceResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -487,7 +487,7 @@ func (r RetrieveComplianceResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrieveComplianceResponse) StatusCode() int {
+func (r RetrieveGpuComplianceResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -572,13 +572,13 @@ func (r DeleteAComplianceResponse) StatusCode() int {
 	return 0
 }
 
-// RetrieveComplianceWithResponse request returning *RetrieveComplianceResponse
-func (c *ClientWithResponses) RetrieveComplianceWithResponse(ctx context.Context, params *RetrieveComplianceParams, reqEditors ...RequestEditorFn) (*RetrieveComplianceResponse, error) {
-	rsp, err := c.RetrieveCompliance(ctx, params, reqEditors...)
+// RetrieveGpuComplianceWithResponse request returning *RetrieveGpuComplianceResponse
+func (c *ClientWithResponses) RetrieveGpuComplianceWithResponse(ctx context.Context, params *RetrieveGpuComplianceParams, reqEditors ...RequestEditorFn) (*RetrieveGpuComplianceResponse, error) {
+	rsp, err := c.RetrieveGpuCompliance(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveComplianceResponse(rsp)
+	return ParseRetrieveGpuComplianceResponse(rsp)
 }
 
 // CreateComplianceWithBodyWithResponse request with arbitrary body returning *CreateComplianceResponse
@@ -624,15 +624,15 @@ func (c *ClientWithResponses) DeleteAComplianceWithResponse(ctx context.Context,
 	return ParseDeleteAComplianceResponse(rsp)
 }
 
-// ParseRetrieveComplianceResponse parses an HTTP response from a RetrieveComplianceWithResponse call
-func ParseRetrieveComplianceResponse(rsp *http.Response) (*RetrieveComplianceResponse, error) {
+// ParseRetrieveGpuComplianceResponse parses an HTTP response from a RetrieveGpuComplianceWithResponse call
+func ParseRetrieveGpuComplianceResponse(rsp *http.Response) (*RetrieveGpuComplianceResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrieveComplianceResponse{
+	response := &RetrieveGpuComplianceResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

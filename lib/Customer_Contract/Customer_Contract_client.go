@@ -20,6 +20,7 @@ import (
 type AllocatedGPUCountGraph struct {
 	Datetime *string `json:"datetime,omitempty"`
 	Value    *int    `json:"value,omitempty"`
+<<<<<<< HEAD
 }
 
 // Contract defines model for Contract.
@@ -71,6 +72,58 @@ type CustomerContractFields struct {
 	OrgId            *int                          `json:"org_id,omitempty"`
 	StartDate        *time.CustomTime                    `json:"start_date,omitempty"`
 	Status           *string                       `json:"status,omitempty"`
+=======
+}
+
+// Contract defines model for Contract.
+type Contract struct {
+	AllocatedGpuCountGraph *[]AllocatedGPUCountGraph `json:"allocated_gpu_count_graph,omitempty"`
+	Granularity            *int                      `json:"granularity,omitempty"`
+	Id                     *string                   `json:"id,omitempty"`
+	OrgId                  *int                      `json:"org_id,omitempty"`
+	Status                 *string                   `json:"status,omitempty"`
+	TotalGpuAllocation     *int                      `json:"total_gpu_allocation,omitempty"`
+}
+
+// ContractDiscountPlanFields defines model for ContractDiscountPlanFields.
+type ContractDiscountPlanFields struct {
+	DiscountAmount  *float32 `json:"discount_amount,omitempty"`
+	DiscountCode    *string  `json:"discount_code,omitempty"`
+	DiscountPercent *float32 `json:"discount_percent,omitempty"`
+	DiscountStatus  *string  `json:"discount_status,omitempty"`
+	DiscountType    *string  `json:"discount_type,omitempty"`
+	Id              *int     `json:"id,omitempty"`
+	ResourceCount   *int     `json:"resource_count,omitempty"`
+	ResourceId      *int     `json:"resource_id,omitempty"`
+	ResourceName    *string  `json:"resource_name,omitempty"`
+>>>>>>> main
+}
+
+// ContractGPUAllocationGraphResponse defines model for ContractGPUAllocationGraphResponse.
+type ContractGPUAllocationGraphResponse struct {
+	Contract *Contract `json:"contract,omitempty"`
+	Message  *string   `json:"message,omitempty"`
+	Status   *bool     `json:"status,omitempty"`
+}
+
+// CustomerContractDetailResponseModel defines model for CustomerContractDetailResponseModel.
+type CustomerContractDetailResponseModel struct {
+	Contracts *CustomerContractFields `json:"contracts,omitempty"`
+	Message   *string                 `json:"message,omitempty"`
+	Status    *bool                   `json:"status,omitempty"`
+}
+
+// CustomerContractFields defines model for CustomerContractFields.
+type CustomerContractFields struct {
+	CreatedAt        *time.CustomTime                    `json:"created_at,omitempty"`
+	Description      *string                       `json:"description,omitempty"`
+	Discounts        *[]ContractDiscountPlanFields `json:"discounts,omitempty"`
+	EndDate          *time.CustomTime                    `json:"end_date,omitempty"`
+	ExpirationPolicy *int                          `json:"expiration_policy,omitempty"`
+	Id               *int                          `json:"id,omitempty"`
+	OrgId            *int                          `json:"org_id,omitempty"`
+	StartDate        *time.CustomTime                    `json:"start_date,omitempty"`
+	Status           *string                       `json:"status,omitempty"`
 }
 
 // ErrorResponseModel defines model for ErrorResponseModel.
@@ -88,14 +141,19 @@ type GetCustomerContractsListResponseModel struct {
 	Status    *bool                     `json:"status,omitempty"`
 }
 
-// GetCustomerContractParams defines parameters for GetCustomerContract.
-type GetCustomerContractParams struct {
+// ListContractsParams defines parameters for ListContracts.
+type ListContractsParams struct {
 	Page    *int `form:"page,omitempty" json:"page,omitempty"`
 	PerPage *int `form:"per_page,omitempty" json:"per_page,omitempty"`
 }
 
+<<<<<<< HEAD
 // GetCustomerContractGpuAllocationGraphParams defines parameters for GetCustomerContractGpuAllocationGraph.
 type GetCustomerContractGpuAllocationGraphParams struct {
+=======
+// RetrieveGpuAllocationGraphForContractParams defines parameters for RetrieveGpuAllocationGraphForContract.
+type RetrieveGpuAllocationGraphForContractParams struct {
+>>>>>>> main
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
@@ -173,18 +231,26 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// GetCustomerContract request
-	GetCustomerContract(ctx context.Context, params *GetCustomerContractParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListContracts request
+	ListContracts(ctx context.Context, params *ListContractsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+<<<<<<< HEAD
 	// GetCustomerContractDetails request
 	GetCustomerContractDetails(ctx context.Context, contractId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetCustomerContractGpuAllocationGraph request
 	GetCustomerContractGpuAllocationGraph(ctx context.Context, contractId int, params *GetCustomerContractGpuAllocationGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+=======
+	// RetrieveContractDetails request
+	RetrieveContractDetails(ctx context.Context, contractId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RetrieveGpuAllocationGraphForContract request
+	RetrieveGpuAllocationGraphForContract(ctx context.Context, contractId int, params *RetrieveGpuAllocationGraphForContractParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+>>>>>>> main
 }
 
-func (c *Client) GetCustomerContract(ctx context.Context, params *GetCustomerContractParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetCustomerContractRequest(c.Server, params)
+func (c *Client) ListContracts(ctx context.Context, params *ListContractsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListContractsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -195,6 +261,7 @@ func (c *Client) GetCustomerContract(ctx context.Context, params *GetCustomerCon
 	return c.Client.Do(req)
 }
 
+<<<<<<< HEAD
 func (c *Client) GetCustomerContractDetails(ctx context.Context, contractId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetCustomerContractDetailsRequest(c.Server, contractId)
 	if err != nil {
@@ -209,6 +276,10 @@ func (c *Client) GetCustomerContractDetails(ctx context.Context, contractId int,
 
 func (c *Client) GetCustomerContractGpuAllocationGraph(ctx context.Context, contractId int, params *GetCustomerContractGpuAllocationGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetCustomerContractGpuAllocationGraphRequest(c.Server, contractId, params)
+=======
+func (c *Client) RetrieveContractDetails(ctx context.Context, contractId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveContractDetailsRequest(c.Server, contractId)
+>>>>>>> main
 	if err != nil {
 		return nil, err
 	}
@@ -219,8 +290,20 @@ func (c *Client) GetCustomerContractGpuAllocationGraph(ctx context.Context, cont
 	return c.Client.Do(req)
 }
 
-// NewGetCustomerContractRequest generates requests for GetCustomerContract
-func NewGetCustomerContractRequest(server string, params *GetCustomerContractParams) (*http.Request, error) {
+func (c *Client) RetrieveGpuAllocationGraphForContract(ctx context.Context, contractId int, params *RetrieveGpuAllocationGraphForContractParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveGpuAllocationGraphForContractRequest(c.Server, contractId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// NewListContractsRequest generates requests for ListContracts
+func NewListContractsRequest(server string, params *ListContractsParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -284,8 +367,13 @@ func NewGetCustomerContractRequest(server string, params *GetCustomerContractPar
 	return req, nil
 }
 
+<<<<<<< HEAD
 // NewGetCustomerContractDetailsRequest generates requests for GetCustomerContractDetails
 func NewGetCustomerContractDetailsRequest(server string, contractId int) (*http.Request, error) {
+=======
+// NewRetrieveContractDetailsRequest generates requests for RetrieveContractDetails
+func NewRetrieveContractDetailsRequest(server string, contractId int) (*http.Request, error) {
+>>>>>>> main
 	var err error
 
 	var pathParam0 string
@@ -318,8 +406,13 @@ func NewGetCustomerContractDetailsRequest(server string, contractId int) (*http.
 	return req, nil
 }
 
+<<<<<<< HEAD
 // NewGetCustomerContractGpuAllocationGraphRequest generates requests for GetCustomerContractGpuAllocationGraph
 func NewGetCustomerContractGpuAllocationGraphRequest(server string, contractId int, params *GetCustomerContractGpuAllocationGraphParams) (*http.Request, error) {
+=======
+// NewRetrieveGpuAllocationGraphForContractRequest generates requests for RetrieveGpuAllocationGraphForContract
+func NewRetrieveGpuAllocationGraphForContractRequest(server string, contractId int, params *RetrieveGpuAllocationGraphForContractParams) (*http.Request, error) {
+>>>>>>> main
 	var err error
 
 	var pathParam0 string
@@ -433,17 +526,25 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// GetCustomerContractWithResponse request
-	GetCustomerContractWithResponse(ctx context.Context, params *GetCustomerContractParams, reqEditors ...RequestEditorFn) (*GetCustomerContractResponse, error)
+	// ListContractsWithResponse request
+	ListContractsWithResponse(ctx context.Context, params *ListContractsParams, reqEditors ...RequestEditorFn) (*ListContractsResponse, error)
 
+<<<<<<< HEAD
 	// GetCustomerContractDetailsWithResponse request
 	GetCustomerContractDetailsWithResponse(ctx context.Context, contractId int, reqEditors ...RequestEditorFn) (*GetCustomerContractDetailsResponse, error)
 
 	// GetCustomerContractGpuAllocationGraphWithResponse request
 	GetCustomerContractGpuAllocationGraphWithResponse(ctx context.Context, contractId int, params *GetCustomerContractGpuAllocationGraphParams, reqEditors ...RequestEditorFn) (*GetCustomerContractGpuAllocationGraphResponse, error)
+=======
+	// RetrieveContractDetailsWithResponse request
+	RetrieveContractDetailsWithResponse(ctx context.Context, contractId int, reqEditors ...RequestEditorFn) (*RetrieveContractDetailsResponse, error)
+
+	// RetrieveGpuAllocationGraphForContractWithResponse request
+	RetrieveGpuAllocationGraphForContractWithResponse(ctx context.Context, contractId int, params *RetrieveGpuAllocationGraphForContractParams, reqEditors ...RequestEditorFn) (*RetrieveGpuAllocationGraphForContractResponse, error)
+>>>>>>> main
 }
 
-type GetCustomerContractResponse struct {
+type ListContractsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *GetCustomerContractsListResponseModel
@@ -453,7 +554,7 @@ type GetCustomerContractResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetCustomerContractResponse) Status() string {
+func (r ListContractsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -461,14 +562,18 @@ func (r GetCustomerContractResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetCustomerContractResponse) StatusCode() int {
+func (r ListContractsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
+<<<<<<< HEAD
 type GetCustomerContractDetailsResponse struct {
+=======
+type RetrieveContractDetailsResponse struct {
+>>>>>>> main
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *CustomerContractDetailResponseModel
@@ -479,7 +584,11 @@ type GetCustomerContractDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
+<<<<<<< HEAD
 func (r GetCustomerContractDetailsResponse) Status() string {
+=======
+func (r RetrieveContractDetailsResponse) Status() string {
+>>>>>>> main
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -487,6 +596,7 @@ func (r GetCustomerContractDetailsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
+<<<<<<< HEAD
 func (r GetCustomerContractDetailsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
@@ -514,21 +624,51 @@ func (r GetCustomerContractGpuAllocationGraphResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetCustomerContractGpuAllocationGraphResponse) StatusCode() int {
+=======
+func (r RetrieveContractDetailsResponse) StatusCode() int {
+>>>>>>> main
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// GetCustomerContractWithResponse request returning *GetCustomerContractResponse
-func (c *ClientWithResponses) GetCustomerContractWithResponse(ctx context.Context, params *GetCustomerContractParams, reqEditors ...RequestEditorFn) (*GetCustomerContractResponse, error) {
-	rsp, err := c.GetCustomerContract(ctx, params, reqEditors...)
+type RetrieveGpuAllocationGraphForContractResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ContractGPUAllocationGraphResponse
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+	JSON405      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r RetrieveGpuAllocationGraphForContractResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetrieveGpuAllocationGraphForContractResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ListContractsWithResponse request returning *ListContractsResponse
+func (c *ClientWithResponses) ListContractsWithResponse(ctx context.Context, params *ListContractsParams, reqEditors ...RequestEditorFn) (*ListContractsResponse, error) {
+	rsp, err := c.ListContracts(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetCustomerContractResponse(rsp)
+	return ParseListContractsResponse(rsp)
 }
 
+<<<<<<< HEAD
 // GetCustomerContractDetailsWithResponse request returning *GetCustomerContractDetailsResponse
 func (c *ClientWithResponses) GetCustomerContractDetailsWithResponse(ctx context.Context, contractId int, reqEditors ...RequestEditorFn) (*GetCustomerContractDetailsResponse, error) {
 	rsp, err := c.GetCustomerContractDetails(ctx, contractId, reqEditors...)
@@ -545,17 +685,35 @@ func (c *ClientWithResponses) GetCustomerContractGpuAllocationGraphWithResponse(
 		return nil, err
 	}
 	return ParseGetCustomerContractGpuAllocationGraphResponse(rsp)
+=======
+// RetrieveContractDetailsWithResponse request returning *RetrieveContractDetailsResponse
+func (c *ClientWithResponses) RetrieveContractDetailsWithResponse(ctx context.Context, contractId int, reqEditors ...RequestEditorFn) (*RetrieveContractDetailsResponse, error) {
+	rsp, err := c.RetrieveContractDetails(ctx, contractId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetrieveContractDetailsResponse(rsp)
+>>>>>>> main
 }
 
-// ParseGetCustomerContractResponse parses an HTTP response from a GetCustomerContractWithResponse call
-func ParseGetCustomerContractResponse(rsp *http.Response) (*GetCustomerContractResponse, error) {
+// RetrieveGpuAllocationGraphForContractWithResponse request returning *RetrieveGpuAllocationGraphForContractResponse
+func (c *ClientWithResponses) RetrieveGpuAllocationGraphForContractWithResponse(ctx context.Context, contractId int, params *RetrieveGpuAllocationGraphForContractParams, reqEditors ...RequestEditorFn) (*RetrieveGpuAllocationGraphForContractResponse, error) {
+	rsp, err := c.RetrieveGpuAllocationGraphForContract(ctx, contractId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetrieveGpuAllocationGraphForContractResponse(rsp)
+}
+
+// ParseListContractsResponse parses an HTTP response from a ListContractsWithResponse call
+func ParseListContractsResponse(rsp *http.Response) (*ListContractsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetCustomerContractResponse{
+	response := &ListContractsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -594,15 +752,24 @@ func ParseGetCustomerContractResponse(rsp *http.Response) (*GetCustomerContractR
 	return response, nil
 }
 
+<<<<<<< HEAD
 // ParseGetCustomerContractDetailsResponse parses an HTTP response from a GetCustomerContractDetailsWithResponse call
 func ParseGetCustomerContractDetailsResponse(rsp *http.Response) (*GetCustomerContractDetailsResponse, error) {
+=======
+// ParseRetrieveContractDetailsResponse parses an HTTP response from a RetrieveContractDetailsWithResponse call
+func ParseRetrieveContractDetailsResponse(rsp *http.Response) (*RetrieveContractDetailsResponse, error) {
+>>>>>>> main
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	response := &GetCustomerContractDetailsResponse{
+=======
+	response := &RetrieveContractDetailsResponse{
+>>>>>>> main
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -648,15 +815,24 @@ func ParseGetCustomerContractDetailsResponse(rsp *http.Response) (*GetCustomerCo
 	return response, nil
 }
 
+<<<<<<< HEAD
 // ParseGetCustomerContractGpuAllocationGraphResponse parses an HTTP response from a GetCustomerContractGpuAllocationGraphWithResponse call
 func ParseGetCustomerContractGpuAllocationGraphResponse(rsp *http.Response) (*GetCustomerContractGpuAllocationGraphResponse, error) {
+=======
+// ParseRetrieveGpuAllocationGraphForContractResponse parses an HTTP response from a RetrieveGpuAllocationGraphForContractWithResponse call
+func ParseRetrieveGpuAllocationGraphForContractResponse(rsp *http.Response) (*RetrieveGpuAllocationGraphForContractResponse, error) {
+>>>>>>> main
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	response := &GetCustomerContractGpuAllocationGraphResponse{
+=======
+	response := &RetrieveGpuAllocationGraphForContractResponse{
+>>>>>>> main
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

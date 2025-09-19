@@ -6,7 +6,10 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateEnvironment**](EnvironmentAPI.md#CreateEnvironment) | **Post** /core/environments | Create environment
 [**DeleteEnvironment**](EnvironmentAPI.md#DeleteEnvironment) | **Delete** /core/environments/{id} | Delete environment
+<<<<<<< HEAD
 [**FetchEnvironmentNameAvailability**](EnvironmentAPI.md#FetchEnvironmentNameAvailability) | **Get** /core/environments/name-availability/{name} | Fetch environment name availability
+=======
+>>>>>>> main
 [**ListEnvironments**](EnvironmentAPI.md#ListEnvironments) | **Get** /core/environments | List environments
 [**RetrieveEnvironment**](EnvironmentAPI.md#RetrieveEnvironment) | **Get** /core/environments/{id} | Retrieve environment
 [**UpdateEnvironment**](EnvironmentAPI.md#UpdateEnvironment) | **Put** /core/environments/{id} | Update environment
@@ -67,7 +70,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -137,6 +144,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
 
 ### HTTP request headers
@@ -208,6 +216,9 @@ Name | Type | Description  | Notes
 ### Authorization
 
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -277,7 +288,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -347,7 +362,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -419,7 +438,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 

@@ -4,13 +4,18 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+<<<<<<< HEAD
 [**AcceptInvite**](InviteAPI.md#AcceptInvite) | **Get** /auth/invites/{id}/accept | Accept Invite
 [**DeleteInvite**](InviteAPI.md#DeleteInvite) | **Delete** /auth/invites/{id} | Accept Invite
+=======
+[**DeleteInvite**](InviteAPI.md#DeleteInvite) | **Delete** /auth/invites/{id} | Delete Invite
+>>>>>>> main
 [**InviteUserToOrganization**](InviteAPI.md#InviteUserToOrganization) | **Post** /auth/invites | Invite User to Organization
 [**ListInvites**](InviteAPI.md#ListInvites) | **Get** /auth/invites | List Invites
 
 
 
+<<<<<<< HEAD
 ## AcceptInvite
 
 > CommonResponseModel AcceptInvite(ctx, id).Execute()
@@ -81,11 +86,17 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+=======
+>>>>>>> main
 ## DeleteInvite
 
 > CommonResponseModel DeleteInvite(ctx, id).Execute()
 
+<<<<<<< HEAD
 Accept Invite
+=======
+Delete Invite
+>>>>>>> main
 
 
 
@@ -139,7 +150,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -205,7 +220,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -266,7 +285,11 @@ Other parameters are passed through a pointer to a apiListInvitesRequest struct 
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 

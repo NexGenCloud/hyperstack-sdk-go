@@ -4,14 +4,18 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+<<<<<<< HEAD
 [**ChangeOrganizationForToken**](AuthAPI.md#ChangeOrganizationForToken) | **Get** /auth/token/change-org/{org_id} | 
 [**DisableMFA**](AuthAPI.md#DisableMFA) | **Get** /auth/me/mfa/disable | 
 [**GetUserMFAStatus**](AuthAPI.md#GetUserMFAStatus) | **Get** /auth/me/mfa | Get MFA status for authenticated user
 [**GetUserOrganizations**](AuthAPI.md#GetUserOrganizations) | **Get** /auth/me/organizations | Get User Organizations
+=======
+>>>>>>> main
 [**RetrieveAuthenticatedUserDetails**](AuthAPI.md#RetrieveAuthenticatedUserDetails) | **Get** /auth/me | Retrieve Authenticated User Details
 
 
 
+<<<<<<< HEAD
 ## ChangeOrganizationForToken
 
 > AuthGetTokenResponseModel ChangeOrganizationForToken(ctx, orgId).Execute()
@@ -265,6 +269,8 @@ Other parameters are passed through a pointer to a apiGetUserOrganizationsReques
 [[Back to README]](../README.md)
 
 
+=======
+>>>>>>> main
 ## RetrieveAuthenticatedUserDetails
 
 > AuthUserInfoResponseModel RetrieveAuthenticatedUserDetails(ctx).Execute()
@@ -314,7 +320,11 @@ Other parameters are passed through a pointer to a apiRetrieveAuthenticatedUserD
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 

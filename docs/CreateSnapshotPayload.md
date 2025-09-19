@@ -5,6 +5,10 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Description** | **string** | description | 
+<<<<<<< HEAD
+=======
+**IsImage** | **bool** | Indicates if the snapshot is an image | 
+>>>>>>> main
 **Labels** | Pointer to **[]string** | Labels associated with snapshot | [optional] 
 **Name** | **string** | Snapshot name | 
 
@@ -12,7 +16,11 @@ Name | Type | Description | Notes
 
 ### NewCreateSnapshotPayload
 
+<<<<<<< HEAD
 `func NewCreateSnapshotPayload(description string, name string, ) *CreateSnapshotPayload`
+=======
+`func NewCreateSnapshotPayload(description string, isImage bool, name string, ) *CreateSnapshotPayload`
+>>>>>>> main
 
 NewCreateSnapshotPayload instantiates a new CreateSnapshotPayload object
 This constructor will assign default values to properties that have it defined,
@@ -47,6 +55,29 @@ and a boolean to check if the value has been set.
 SetDescription sets Description field to given value.
 
 
+<<<<<<< HEAD
+=======
+### GetIsImage
+
+`func (o *CreateSnapshotPayload) GetIsImage() bool`
+
+GetIsImage returns the IsImage field if non-nil, zero value otherwise.
+
+### GetIsImageOk
+
+`func (o *CreateSnapshotPayload) GetIsImageOk() (*bool, bool)`
+
+GetIsImageOk returns a tuple with the IsImage field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetIsImage
+
+`func (o *CreateSnapshotPayload) SetIsImage(v bool)`
+
+SetIsImage sets IsImage field to given value.
+
+
+>>>>>>> main
 ### GetLabels
 
 `func (o *CreateSnapshotPayload) GetLabels() []string`

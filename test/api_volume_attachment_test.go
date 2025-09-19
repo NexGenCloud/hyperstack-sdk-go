@@ -27,9 +27,15 @@ func Test_hyperstack_VolumeAttachmentAPIService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
+<<<<<<< HEAD
 		var vmId int32
 
 		resp, httpRes, err := apiClient.VolumeAttachmentAPI.AttachVolumesToVirtualMachine(context.Background(), vmId).Execute()
+=======
+		var virtualMachineId int32
+
+		resp, httpRes, err := apiClient.VolumeAttachmentAPI.AttachVolumesToVirtualMachine(context.Background(), virtualMachineId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -41,6 +47,7 @@ func Test_hyperstack_VolumeAttachmentAPIService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
+<<<<<<< HEAD
 		var vmId int32
 
 		resp, httpRes, err := apiClient.VolumeAttachmentAPI.DetachVolumesFromVirtualMachine(context.Background(), vmId).Execute()
@@ -58,6 +65,11 @@ func Test_hyperstack_VolumeAttachmentAPIService(t *testing.T) {
 		var volumeAttachmentId int32
 
 		resp, httpRes, err := apiClient.VolumeAttachmentAPI.UpdateAVolumeAttachment(context.Background(), volumeAttachmentId).Execute()
+=======
+		var virtualMachineId int32
+
+		resp, httpRes, err := apiClient.VolumeAttachmentAPI.DetachVolumesFromVirtualMachine(context.Background(), virtualMachineId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

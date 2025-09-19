@@ -34,6 +34,7 @@ func Test_hyperstack_AliveAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test AliveAPIService GetDoc", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -45,4 +46,6 @@ func Test_hyperstack_AliveAPIService(t *testing.T) {
 
 	})
 
+=======
+>>>>>>> main
 }

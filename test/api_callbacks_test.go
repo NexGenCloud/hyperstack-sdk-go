@@ -27,9 +27,15 @@ func Test_hyperstack_CallbacksAPIService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
+<<<<<<< HEAD
 		var vmId int32
 
 		resp, httpRes, err := apiClient.CallbacksAPI.AttachCallbackToVirtualMachine(context.Background(), vmId).Execute()
+=======
+		var id int32
+
+		resp, httpRes, err := apiClient.CallbacksAPI.AttachCallbackToVirtualMachine(context.Background(), id).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -41,9 +47,15 @@ func Test_hyperstack_CallbacksAPIService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
+<<<<<<< HEAD
 		var volumeId int32
 
 		resp, httpRes, err := apiClient.CallbacksAPI.AttachCallbackToVolume(context.Background(), volumeId).Execute()
+=======
+		var id int32
+
+		resp, httpRes, err := apiClient.CallbacksAPI.AttachCallbackToVolume(context.Background(), id).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -55,9 +67,15 @@ func Test_hyperstack_CallbacksAPIService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
+<<<<<<< HEAD
 		var vmId int32
 
 		resp, httpRes, err := apiClient.CallbacksAPI.DeleteVirtualMachineCallback(context.Background(), vmId).Execute()
+=======
+		var id int32
+
+		resp, httpRes, err := apiClient.CallbacksAPI.DeleteVirtualMachineCallback(context.Background(), id).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -69,9 +87,15 @@ func Test_hyperstack_CallbacksAPIService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
+<<<<<<< HEAD
 		var volumeId int32
 
 		resp, httpRes, err := apiClient.CallbacksAPI.DeleteVolumeCallback(context.Background(), volumeId).Execute()
+=======
+		var id int32
+
+		resp, httpRes, err := apiClient.CallbacksAPI.DeleteVolumeCallback(context.Background(), id).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -83,9 +107,15 @@ func Test_hyperstack_CallbacksAPIService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
+<<<<<<< HEAD
 		var vmId int32
 
 		resp, httpRes, err := apiClient.CallbacksAPI.UpdateVirtualMachineCallback(context.Background(), vmId).Execute()
+=======
+		var id int32
+
+		resp, httpRes, err := apiClient.CallbacksAPI.UpdateVirtualMachineCallback(context.Background(), id).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -97,9 +127,15 @@ func Test_hyperstack_CallbacksAPIService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
+<<<<<<< HEAD
 		var volumeId int32
 
 		resp, httpRes, err := apiClient.CallbacksAPI.UpdateVolumeCallback(context.Background(), volumeId).Execute()
+=======
+		var id int32
+
+		resp, httpRes, err := apiClient.CallbacksAPI.UpdateVolumeCallback(context.Background(), id).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

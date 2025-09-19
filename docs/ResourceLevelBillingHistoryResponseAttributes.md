@@ -4,7 +4,10 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+<<<<<<< HEAD
 **ContractId** | Pointer to **int32** |  | [optional] 
+=======
+>>>>>>> main
 **Id** | Pointer to **string** |  | [optional] 
 **InfrahubId** | Pointer to **int32** |  | [optional] 
 **ResourceName** | Pointer to **string** |  | [optional] 
@@ -29,6 +32,7 @@ NewResourceLevelBillingHistoryResponseAttributesWithDefaults instantiates a new 
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
+<<<<<<< HEAD
 ### GetContractId
 
 `func (o *ResourceLevelBillingHistoryResponseAttributes) GetContractId() int32`
@@ -54,6 +58,8 @@ SetContractId sets ContractId field to given value.
 
 HasContractId returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetId
 
 `func (o *ResourceLevelBillingHistoryResponseAttributes) GetId() string`

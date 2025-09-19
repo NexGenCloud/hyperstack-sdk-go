@@ -24,7 +24,11 @@ const (
 	PARTIALLYGREEN EnvironmentFeaturesGreenStatus = "PARTIALLY_GREEN"
 )
 
+<<<<<<< HEAD
 // CreateEnvironment defines model for Create_Environment.
+=======
+// CreateEnvironment defines model for CreateEnvironment.
+>>>>>>> main
 type CreateEnvironment struct {
 	// Name The name of the environment being created.
 	Name string `json:"name"`
@@ -40,7 +44,11 @@ type Environment struct {
 	Status      *bool              `json:"status,omitempty"`
 }
 
+<<<<<<< HEAD
 // EnvironmentFeatures defines model for Environment_Features.
+=======
+// EnvironmentFeatures defines model for EnvironmentFeatures.
+>>>>>>> main
 type EnvironmentFeatures struct {
 	GreenStatus      *EnvironmentFeaturesGreenStatus `json:"green_status,omitempty"`
 	NetworkOptimised *bool                           `json:"network_optimised,omitempty"`
@@ -49,7 +57,11 @@ type EnvironmentFeatures struct {
 // EnvironmentFeaturesGreenStatus defines model for EnvironmentFeatures.GreenStatus.
 type EnvironmentFeaturesGreenStatus string
 
+<<<<<<< HEAD
 // EnvironmentFields defines model for Environment_Fields.
+=======
+// EnvironmentFields defines model for EnvironmentFields.
+>>>>>>> main
 type EnvironmentFields struct {
 	CreatedAt *time.CustomTime           `json:"created_at,omitempty"`
 	Features  *EnvironmentFeatures `json:"features,omitempty"`
@@ -188,8 +200,13 @@ type ClientInterface interface {
 
 	CreateEnvironment(ctx context.Context, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+<<<<<<< HEAD
 	// FetchEnvironmentNameAvailability request
 	FetchEnvironmentNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
+=======
+	// FetchVolumeNameAvailability request
+	FetchVolumeNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
+>>>>>>> main
 
 	// DeleteEnvironment request
 	DeleteEnvironment(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -239,8 +256,13 @@ func (c *Client) CreateEnvironment(ctx context.Context, body CreateEnvironmentJS
 	return c.Client.Do(req)
 }
 
+<<<<<<< HEAD
 func (c *Client) FetchEnvironmentNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewFetchEnvironmentNameAvailabilityRequest(c.Server, name)
+=======
+func (c *Client) FetchVolumeNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFetchVolumeNameAvailabilityRequest(c.Server, name)
+>>>>>>> main
 	if err != nil {
 		return nil, err
 	}
@@ -420,8 +442,13 @@ func NewCreateEnvironmentRequestWithBody(server string, contentType string, body
 	return req, nil
 }
 
+<<<<<<< HEAD
 // NewFetchEnvironmentNameAvailabilityRequest generates requests for FetchEnvironmentNameAvailability
 func NewFetchEnvironmentNameAvailabilityRequest(server string, name string) (*http.Request, error) {
+=======
+// NewFetchVolumeNameAvailabilityRequest generates requests for FetchVolumeNameAvailability
+func NewFetchVolumeNameAvailabilityRequest(server string, name string) (*http.Request, error) {
+>>>>>>> main
 	var err error
 
 	var pathParam0 string
@@ -620,8 +647,13 @@ type ClientWithResponsesInterface interface {
 
 	CreateEnvironmentWithResponse(ctx context.Context, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateEnvironmentResponse, error)
 
+<<<<<<< HEAD
 	// FetchEnvironmentNameAvailabilityWithResponse request
 	FetchEnvironmentNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*FetchEnvironmentNameAvailabilityResponse, error)
+=======
+	// FetchVolumeNameAvailabilityWithResponse request
+	FetchVolumeNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*FetchVolumeNameAvailabilityResponse, error)
+>>>>>>> main
 
 	// DeleteEnvironmentWithResponse request
 	DeleteEnvironmentWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteEnvironmentResponse, error)
@@ -685,7 +717,11 @@ func (r CreateEnvironmentResponse) StatusCode() int {
 	return 0
 }
 
+<<<<<<< HEAD
 type FetchEnvironmentNameAvailabilityResponse struct {
+=======
+type FetchVolumeNameAvailabilityResponse struct {
+>>>>>>> main
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *NameAvailableModel
@@ -695,7 +731,11 @@ type FetchEnvironmentNameAvailabilityResponse struct {
 }
 
 // Status returns HTTPResponse.Status
+<<<<<<< HEAD
 func (r FetchEnvironmentNameAvailabilityResponse) Status() string {
+=======
+func (r FetchVolumeNameAvailabilityResponse) Status() string {
+>>>>>>> main
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -703,7 +743,11 @@ func (r FetchEnvironmentNameAvailabilityResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
+<<<<<<< HEAD
 func (r FetchEnvironmentNameAvailabilityResponse) StatusCode() int {
+=======
+func (r FetchVolumeNameAvailabilityResponse) StatusCode() int {
+>>>>>>> main
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -811,6 +855,7 @@ func (c *ClientWithResponses) CreateEnvironmentWithResponse(ctx context.Context,
 	return ParseCreateEnvironmentResponse(rsp)
 }
 
+<<<<<<< HEAD
 // FetchEnvironmentNameAvailabilityWithResponse request returning *FetchEnvironmentNameAvailabilityResponse
 func (c *ClientWithResponses) FetchEnvironmentNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*FetchEnvironmentNameAvailabilityResponse, error) {
 	rsp, err := c.FetchEnvironmentNameAvailability(ctx, name, reqEditors...)
@@ -818,6 +863,15 @@ func (c *ClientWithResponses) FetchEnvironmentNameAvailabilityWithResponse(ctx c
 		return nil, err
 	}
 	return ParseFetchEnvironmentNameAvailabilityResponse(rsp)
+=======
+// FetchVolumeNameAvailabilityWithResponse request returning *FetchVolumeNameAvailabilityResponse
+func (c *ClientWithResponses) FetchVolumeNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*FetchVolumeNameAvailabilityResponse, error) {
+	rsp, err := c.FetchVolumeNameAvailability(ctx, name, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFetchVolumeNameAvailabilityResponse(rsp)
+>>>>>>> main
 }
 
 // DeleteEnvironmentWithResponse request returning *DeleteEnvironmentResponse
@@ -949,15 +1003,24 @@ func ParseCreateEnvironmentResponse(rsp *http.Response) (*CreateEnvironmentRespo
 	return response, nil
 }
 
+<<<<<<< HEAD
 // ParseFetchEnvironmentNameAvailabilityResponse parses an HTTP response from a FetchEnvironmentNameAvailabilityWithResponse call
 func ParseFetchEnvironmentNameAvailabilityResponse(rsp *http.Response) (*FetchEnvironmentNameAvailabilityResponse, error) {
+=======
+// ParseFetchVolumeNameAvailabilityResponse parses an HTTP response from a FetchVolumeNameAvailabilityWithResponse call
+func ParseFetchVolumeNameAvailabilityResponse(rsp *http.Response) (*FetchVolumeNameAvailabilityResponse, error) {
+>>>>>>> main
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	response := &FetchEnvironmentNameAvailabilityResponse{
+=======
+	response := &FetchVolumeNameAvailabilityResponse{
+>>>>>>> main
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

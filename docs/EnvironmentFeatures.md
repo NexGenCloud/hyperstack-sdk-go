@@ -4,7 +4,10 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+<<<<<<< HEAD
 **GreenStatus** | Pointer to **string** |  | [optional] 
+=======
+>>>>>>> main
 **NetworkOptimised** | Pointer to **bool** |  | [optional] 
 
 ## Methods
@@ -26,6 +29,7 @@ NewEnvironmentFeaturesWithDefaults instantiates a new EnvironmentFeatures object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
+<<<<<<< HEAD
 ### GetGreenStatus
 
 `func (o *EnvironmentFeatures) GetGreenStatus() string`
@@ -51,6 +55,8 @@ SetGreenStatus sets GreenStatus field to given value.
 
 HasGreenStatus returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetNetworkOptimised
 
 `func (o *EnvironmentFeatures) GetNetworkOptimised() bool`

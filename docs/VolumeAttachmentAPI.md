@@ -4,15 +4,24 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+<<<<<<< HEAD
 [**AttachVolumesToVirtualMachine**](VolumeAttachmentAPI.md#AttachVolumesToVirtualMachine) | **Post** /core/virtual-machines/{vm_id}/attach-volumes | Attach volumes to virtual machine
 [**DetachVolumesFromVirtualMachine**](VolumeAttachmentAPI.md#DetachVolumesFromVirtualMachine) | **Post** /core/virtual-machines/{vm_id}/detach-volumes | Detach volumes from virtual machine
 [**UpdateAVolumeAttachment**](VolumeAttachmentAPI.md#UpdateAVolumeAttachment) | **Patch** /core/volume-attachments/{volume_attachment_id} | Update a volume attachment
+=======
+[**AttachVolumesToVirtualMachine**](VolumeAttachmentAPI.md#AttachVolumesToVirtualMachine) | **Post** /core/virtual-machines/{virtual_machine_id}/attach-volumes | Attach volumes to virtual machine
+[**DetachVolumesFromVirtualMachine**](VolumeAttachmentAPI.md#DetachVolumesFromVirtualMachine) | **Post** /core/virtual-machines/{virtual_machine_id}/detach-volumes | Detach volumes from virtual machine
+>>>>>>> main
 
 
 
 ## AttachVolumesToVirtualMachine
 
+<<<<<<< HEAD
 > AttachVolumes AttachVolumesToVirtualMachine(ctx, vmId).Payload(payload).Execute()
+=======
+> AttachVolumes AttachVolumesToVirtualMachine(ctx, virtualMachineId).Payload(payload).Execute()
+>>>>>>> main
 
 Attach volumes to virtual machine
 
@@ -31,12 +40,20 @@ import (
 )
 
 func main() {
+<<<<<<< HEAD
 	vmId := int32(56) // int32 | 
+=======
+	virtualMachineId := int32(56) // int32 | 
+>>>>>>> main
 	payload := *openapiclient.NewAttachVolumesPayload() // AttachVolumesPayload | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
+<<<<<<< HEAD
 	resp, r, err := apiClient.VolumeAttachmentAPI.AttachVolumesToVirtualMachine(context.Background(), vmId).Payload(payload).Execute()
+=======
+	resp, r, err := apiClient.VolumeAttachmentAPI.AttachVolumesToVirtualMachine(context.Background(), virtualMachineId).Payload(payload).Execute()
+>>>>>>> main
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `VolumeAttachmentAPI.AttachVolumesToVirtualMachine``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -52,7 +69,11 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+<<<<<<< HEAD
 **vmId** | **int32** |  | 
+=======
+**virtualMachineId** | **int32** |  | 
+>>>>>>> main
 
 ### Other Parameters
 
@@ -70,7 +91,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 
@@ -84,7 +109,11 @@ Name | Type | Description  | Notes
 
 ## DetachVolumesFromVirtualMachine
 
+<<<<<<< HEAD
 > DetachVolumes DetachVolumesFromVirtualMachine(ctx, vmId).Payload(payload).Execute()
+=======
+> DetachVolumes DetachVolumesFromVirtualMachine(ctx, virtualMachineId).Payload(payload).Execute()
+>>>>>>> main
 
 Detach volumes from virtual machine
 
@@ -103,12 +132,20 @@ import (
 )
 
 func main() {
+<<<<<<< HEAD
 	vmId := int32(56) // int32 | 
+=======
+	virtualMachineId := int32(56) // int32 | 
+>>>>>>> main
 	payload := *openapiclient.NewDetachVolumesPayload() // DetachVolumesPayload | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
+<<<<<<< HEAD
 	resp, r, err := apiClient.VolumeAttachmentAPI.DetachVolumesFromVirtualMachine(context.Background(), vmId).Payload(payload).Execute()
+=======
+	resp, r, err := apiClient.VolumeAttachmentAPI.DetachVolumesFromVirtualMachine(context.Background(), virtualMachineId).Payload(payload).Execute()
+>>>>>>> main
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `VolumeAttachmentAPI.DetachVolumesFromVirtualMachine``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -124,7 +161,11 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+<<<<<<< HEAD
 **vmId** | **int32** |  | 
+=======
+**virtualMachineId** | **int32** |  | 
+>>>>>>> main
 
 ### Other Parameters
 
@@ -142,6 +183,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
 
 ### HTTP request headers
@@ -213,6 +255,9 @@ Name | Type | Description  | Notes
 ### Authorization
 
 [apiKey](../README.md#apiKey)
+=======
+[apiKey](../README.md#apiKey), [accessToken](../README.md#accessToken)
+>>>>>>> main
 
 ### HTTP request headers
 

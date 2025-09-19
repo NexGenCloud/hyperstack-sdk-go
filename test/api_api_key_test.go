@@ -23,13 +23,21 @@ func Test_hyperstack_ApiKeyAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
+<<<<<<< HEAD
 	t.Run("Test ApiKeyAPIService DeleteAPIKey", func(t *testing.T) {
+=======
+	t.Run("Test ApiKeyAPIService DeleteApiKey", func(t *testing.T) {
+>>>>>>> main
 
 		t.Skip("skip test") // remove to run test
 
 		var apiKeyId int32
 
+<<<<<<< HEAD
 		resp, httpRes, err := apiClient.ApiKeyAPI.DeleteAPIKey(context.Background(), apiKeyId).Execute()
+=======
+		resp, httpRes, err := apiClient.ApiKeyAPI.DeleteApiKey(context.Background(), apiKeyId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -37,11 +45,19 @@ func Test_hyperstack_ApiKeyAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test ApiKeyAPIService GenerateAPIKey", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.ApiKeyAPI.GenerateAPIKey(context.Background()).Execute()
+=======
+	t.Run("Test ApiKeyAPIService GenerateApiKey", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.ApiKeyAPI.GenerateApiKey(context.Background()).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -49,11 +65,19 @@ func Test_hyperstack_ApiKeyAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test ApiKeyAPIService RetrieveAPIKey", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.ApiKeyAPI.RetrieveAPIKey(context.Background()).Execute()
+=======
+	t.Run("Test ApiKeyAPIService RetrieveApiKeys", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.ApiKeyAPI.RetrieveApiKeys(context.Background()).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -61,13 +85,21 @@ func Test_hyperstack_ApiKeyAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test ApiKeyAPIService UpdateAPIKey", func(t *testing.T) {
+=======
+	t.Run("Test ApiKeyAPIService UpdateApiKey", func(t *testing.T) {
+>>>>>>> main
 
 		t.Skip("skip test") // remove to run test
 
 		var apiKeyId int32
 
+<<<<<<< HEAD
 		resp, httpRes, err := apiClient.ApiKeyAPI.UpdateAPIKey(context.Background(), apiKeyId).Execute()
+=======
+		resp, httpRes, err := apiClient.ApiKeyAPI.UpdateApiKey(context.Background(), apiKeyId).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

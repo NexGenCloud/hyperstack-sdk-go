@@ -156,11 +156,14 @@ type ClientInterface interface {
 	DetachVolumesFromVirtualMachineWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	DetachVolumesFromVirtualMachine(ctx context.Context, vmId int, body DetachVolumesFromVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+<<<<<<< HEAD
 
 	// UpdateAVolumeAttachmentWithBody request with any body
 	UpdateAVolumeAttachmentWithBody(ctx context.Context, volumeAttachmentId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateAVolumeAttachment(ctx context.Context, volumeAttachmentId int, body UpdateAVolumeAttachmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+=======
+>>>>>>> main
 }
 
 func (c *Client) AttachVolumesToVirtualMachineWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -201,6 +204,7 @@ func (c *Client) DetachVolumesFromVirtualMachineWithBody(ctx context.Context, vm
 
 func (c *Client) DetachVolumesFromVirtualMachine(ctx context.Context, vmId int, body DetachVolumesFromVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDetachVolumesFromVirtualMachineRequest(c.Server, vmId, body)
+<<<<<<< HEAD
 	if err != nil {
 		return nil, err
 	}
@@ -225,6 +229,8 @@ func (c *Client) UpdateAVolumeAttachmentWithBody(ctx context.Context, volumeAtta
 
 func (c *Client) UpdateAVolumeAttachment(ctx context.Context, volumeAttachmentId int, body UpdateAVolumeAttachmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateAVolumeAttachmentRequest(c.Server, volumeAttachmentId, body)
+=======
+>>>>>>> main
 	if err != nil {
 		return nil, err
 	}
@@ -428,11 +434,14 @@ type ClientWithResponsesInterface interface {
 	DetachVolumesFromVirtualMachineWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DetachVolumesFromVirtualMachineResponse, error)
 
 	DetachVolumesFromVirtualMachineWithResponse(ctx context.Context, vmId int, body DetachVolumesFromVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*DetachVolumesFromVirtualMachineResponse, error)
+<<<<<<< HEAD
 
 	// UpdateAVolumeAttachmentWithBodyWithResponse request with any body
 	UpdateAVolumeAttachmentWithBodyWithResponse(ctx context.Context, volumeAttachmentId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAVolumeAttachmentResponse, error)
 
 	UpdateAVolumeAttachmentWithResponse(ctx context.Context, volumeAttachmentId int, body UpdateAVolumeAttachmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAVolumeAttachmentResponse, error)
+=======
+>>>>>>> main
 }
 
 type AttachVolumesToVirtualMachineResponse struct {

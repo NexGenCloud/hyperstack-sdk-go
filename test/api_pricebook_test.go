@@ -23,11 +23,19 @@ func Test_hyperstack_PricebookAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
+<<<<<<< HEAD
 	t.Run("Test PricebookAPIService GetPricebook", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.PricebookAPI.GetPricebook(context.Background()).Execute()
+=======
+	t.Run("Test PricebookAPIService RetrivePricebook", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.PricebookAPI.RetrivePricebook(context.Background()).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

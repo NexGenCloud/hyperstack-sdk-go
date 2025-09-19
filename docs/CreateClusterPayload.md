@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+<<<<<<< HEAD
 **DeploymentMode** | Pointer to **string** |  | [optional] [default to "full"]
 **EnvironmentName** | **string** |  | 
 **KeypairName** | **string** |  | 
@@ -14,12 +15,26 @@ Name | Type | Description | Notes
 **NodeCount** | Pointer to **int32** |  | [optional] 
 **NodeFlavorName** | Pointer to **string** |  | [optional] 
 **NodeGroups** | Pointer to [**[]CreateClusterNodeGroupPayload**](CreateClusterNodeGroupPayload.md) |  | [optional] 
+=======
+**EnvironmentName** | **string** |  | 
+**ImageName** | **string** |  | 
+**KeypairName** | **string** |  | 
+**KubernetesVersion** | **string** |  | 
+**MasterFlavorName** | **string** |  | 
+**Name** | **string** |  | 
+**NodeCount** | **int32** |  | 
+**NodeFlavorName** | **string** |  | 
+>>>>>>> main
 
 ## Methods
 
 ### NewCreateClusterPayload
 
+<<<<<<< HEAD
 `func NewCreateClusterPayload(environmentName string, keypairName string, kubernetesVersion string, masterFlavorName string, name string, ) *CreateClusterPayload`
+=======
+`func NewCreateClusterPayload(environmentName string, imageName string, keypairName string, kubernetesVersion string, masterFlavorName string, name string, nodeCount int32, nodeFlavorName string, ) *CreateClusterPayload`
+>>>>>>> main
 
 NewCreateClusterPayload instantiates a new CreateClusterPayload object
 This constructor will assign default values to properties that have it defined,
@@ -34,6 +49,7 @@ NewCreateClusterPayloadWithDefaults instantiates a new CreateClusterPayload obje
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
+<<<<<<< HEAD
 ### GetDeploymentMode
 
 `func (o *CreateClusterPayload) GetDeploymentMode() string`
@@ -59,6 +75,8 @@ SetDeploymentMode sets DeploymentMode field to given value.
 
 HasDeploymentMode returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetEnvironmentName
 
 `func (o *CreateClusterPayload) GetEnvironmentName() string`
@@ -79,6 +97,29 @@ and a boolean to check if the value has been set.
 SetEnvironmentName sets EnvironmentName field to given value.
 
 
+<<<<<<< HEAD
+=======
+### GetImageName
+
+`func (o *CreateClusterPayload) GetImageName() string`
+
+GetImageName returns the ImageName field if non-nil, zero value otherwise.
+
+### GetImageNameOk
+
+`func (o *CreateClusterPayload) GetImageNameOk() (*string, bool)`
+
+GetImageNameOk returns a tuple with the ImageName field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetImageName
+
+`func (o *CreateClusterPayload) SetImageName(v string)`
+
+SetImageName sets ImageName field to given value.
+
+
+>>>>>>> main
 ### GetKeypairName
 
 `func (o *CreateClusterPayload) GetKeypairName() string`
@@ -119,6 +160,7 @@ and a boolean to check if the value has been set.
 SetKubernetesVersion sets KubernetesVersion field to given value.
 
 
+<<<<<<< HEAD
 ### GetMasterCount
 
 `func (o *CreateClusterPayload) GetMasterCount() int32`
@@ -144,6 +186,8 @@ SetMasterCount sets MasterCount field to given value.
 
 HasMasterCount returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetMasterFlavorName
 
 `func (o *CreateClusterPayload) GetMasterFlavorName() string`
@@ -203,11 +247,14 @@ and a boolean to check if the value has been set.
 
 SetNodeCount sets NodeCount field to given value.
 
+<<<<<<< HEAD
 ### HasNodeCount
 
 `func (o *CreateClusterPayload) HasNodeCount() bool`
 
 HasNodeCount returns a boolean if a field has been set.
+=======
+>>>>>>> main
 
 ### GetNodeFlavorName
 
@@ -228,6 +275,7 @@ and a boolean to check if the value has been set.
 
 SetNodeFlavorName sets NodeFlavorName field to given value.
 
+<<<<<<< HEAD
 ### HasNodeFlavorName
 
 `func (o *CreateClusterPayload) HasNodeFlavorName() bool`
@@ -258,6 +306,8 @@ SetNodeGroups sets NodeGroups field to given value.
 `func (o *CreateClusterPayload) HasNodeGroups() bool`
 
 HasNodeGroups returns a boolean if a field has been set.
+=======
+>>>>>>> main
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

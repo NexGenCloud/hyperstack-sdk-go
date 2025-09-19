@@ -23,11 +23,19 @@ func Test_hyperstack_PaymentAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
+<<<<<<< HEAD
 	t.Run("Test PaymentAPIService GetDetails", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.PaymentAPI.GetDetails(context.Background()).Execute()
+=======
+	t.Run("Test PaymentAPIService GetViewPaymentDetails", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.PaymentAPI.GetViewPaymentDetails(context.Background()).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -35,6 +43,7 @@ func Test_hyperstack_PaymentAPIService(t *testing.T) {
 
 	})
 
+<<<<<<< HEAD
 	t.Run("Test PaymentAPIService GetPaymentReceipt2", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -53,6 +62,13 @@ func Test_hyperstack_PaymentAPIService(t *testing.T) {
 		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.PaymentAPI.PostPayment(context.Background()).Execute()
+=======
+	t.Run("Test PaymentAPIService PostInitiatePayment", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.PaymentAPI.PostInitiatePayment(context.Background()).Execute()
+>>>>>>> main
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

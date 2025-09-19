@@ -5,7 +5,10 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GetAlive**](AliveAPI.md#GetAlive) | **Get** /billing/alive | GET: Alive
+<<<<<<< HEAD
 [**GetDoc**](AliveAPI.md#GetDoc) | **Get** /billing/alive/doc | 
+=======
+>>>>>>> main
 
 
 
@@ -15,8 +18,11 @@ Method | HTTP request | Description
 
 GET: Alive
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> main
 ### Example
 
 ```go
@@ -56,6 +62,7 @@ Other parameters are passed through a pointer to a apiGetAliveRequest struct via
 
 ### Authorization
 
+<<<<<<< HEAD
 [apiKey](../README.md#apiKey)
 
 ### HTTP request headers
@@ -114,6 +121,9 @@ Other parameters are passed through a pointer to a apiGetDocRequest struct via t
 ### Authorization
 
 [apiKey](../README.md#apiKey)
+=======
+No authorization required
+>>>>>>> main
 
 ### HTTP request headers
 

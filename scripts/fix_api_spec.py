@@ -167,10 +167,20 @@ def attr_fix_components(data: AttrType) -> None:
 
   schemas["Flavor_Fields"]["properties"]["ram"]["type"] = "number"
 
+<<<<<<< HEAD
   schemas["Instance_Overview_Fields"]["properties"]["ram"]["type"] = "number"
   schemas["Container_Overview_Fields"]["properties"]["ram"]["type"] = "number"
   schemas["Instance_Flavor_Fields"]["properties"]["ram"]["type"] = "number"
   schemas["Cluster_Flavor_Fields"]["properties"]["ram"]["type"] = "number"
+=======
+  schemas["Volumes"]["properties"]["volumes"] = schemas["Volumes"]["properties"]["volume"]
+  del schemas["Volumes"]["properties"]["volume"]
+
+  schemas["InstanceOverviewFields"]["properties"]["ram"]["type"] = "number"
+  schemas["ContainerOverviewFields"]["properties"]["ram"]["type"] = "number"
+  schemas["InstanceFlavorFields"]["properties"]["ram"]["type"] = "number"
+  schemas["FlavorFields"]["properties"]["ram"]["type"] = "number"
+>>>>>>> main
 
   # TODO: UNSYNCED see tf provider
   #schemas["ImportKeypairPayload"]["properties"]["environment"] = schemas["ImportKeypairPayload"]["properties"]["environment_name"]
@@ -199,6 +209,7 @@ def attr_fix_components(data: AttrType) -> None:
   #  props["N%s" % p] = props.pop(p)
 
   # TODO: UNSYNCED see tf provider
+<<<<<<< HEAD
   # The API spec now uses {vm_id} instead of {id}
   # paths["/core/virtual-machines/{virtual_machine_id}/sg-rules"] = paths["/core/virtual-machines/{id}/sg-rules"]
   # del paths["/core/virtual-machines/{id}/sg-rules"]
@@ -213,6 +224,19 @@ def attr_fix_components(data: AttrType) -> None:
   # paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"]["delete"]["parameters"][0][
   #   "name"] = "virtual_machine_id"
   # paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"]["delete"]["parameters"][1]["name"] = "id"
+=======
+  paths["/core/virtual-machines/{virtual_machine_id}/sg-rules"] = paths["/core/virtual-machines/{vm_id}/sg-rules"]
+  del paths["/core/virtual-machines/{vm_id}/sg-rules"]
+  paths["/core/virtual-machines/{virtual_machine_id}/sg-rules"]["post"]["parameters"][0]["name"] = "virtual_machine_id"
+
+  # TODO: UNSYNCED see tf provider
+  paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"] = paths[
+    "/core/virtual-machines/{vm_id}/sg-rules/{sg_rule_id}"]
+  del paths["/core/virtual-machines/{vm_id}/sg-rules/{sg_rule_id}"]
+  paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"]["delete"]["parameters"][0][
+    "name"] = "virtual_machine_id"
+  paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"]["delete"]["parameters"][1]["name"] = "id"
+>>>>>>> main
 
 
 def fix_api_spec(spec_file: str) -> None:

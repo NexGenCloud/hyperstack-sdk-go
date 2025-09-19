@@ -9,11 +9,17 @@ Name | Type | Description | Notes
 **Currency** | Pointer to **string** |  | [optional] 
 **Description** | Pointer to **string** |  | [optional] 
 **GatewayResponse** | Pointer to **string** |  | [optional] 
+<<<<<<< HEAD
 **Invoice** | Pointer to **string** |  | [optional] 
 **PaidFrom** | Pointer to **string** |  | [optional] 
 **PaymentId** | Pointer to **string** |  | [optional] 
 **Status** | Pointer to **string** |  | [optional] 
 **TaxAmount** | Pointer to **float32** |  | [optional] 
+=======
+**PaidFrom** | Pointer to **string** |  | [optional] 
+**PaymentId** | Pointer to **string** |  | [optional] 
+**Status** | Pointer to **string** |  | [optional] 
+>>>>>>> main
 **TransactionId** | Pointer to **string** |  | [optional] 
 **UpdatedAt** | Pointer to **time.Time** |  | [optional] 
 
@@ -161,6 +167,7 @@ SetGatewayResponse sets GatewayResponse field to given value.
 
 HasGatewayResponse returns a boolean if a field has been set.
 
+<<<<<<< HEAD
 ### GetInvoice
 
 `func (o *PaymentDetailsFields) GetInvoice() string`
@@ -186,6 +193,8 @@ SetInvoice sets Invoice field to given value.
 
 HasInvoice returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetPaidFrom
 
 `func (o *PaymentDetailsFields) GetPaidFrom() string`
@@ -261,6 +270,7 @@ SetStatus sets Status field to given value.
 
 HasStatus returns a boolean if a field has been set.
 
+<<<<<<< HEAD
 ### GetTaxAmount
 
 `func (o *PaymentDetailsFields) GetTaxAmount() float32`
@@ -286,6 +296,8 @@ SetTaxAmount sets TaxAmount field to given value.
 
 HasTaxAmount returns a boolean if a field has been set.
 
+=======
+>>>>>>> main
 ### GetTransactionId
 
 `func (o *PaymentDetailsFields) GetTransactionId() string`
