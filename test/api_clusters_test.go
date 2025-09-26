@@ -23,6 +23,20 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
+	t.Run("Test ClustersAPIService AttemptToManuallyReconcileACluster", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var clusterId int32
+
+		resp, httpRes, err := apiClient.ClustersAPI.AttemptToManuallyReconcileACluster(context.Background(), clusterId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ClustersAPIService CreateCluster", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test

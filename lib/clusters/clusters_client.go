@@ -205,6 +205,13 @@ type LableResonse struct {
 	Label *string `json:"label,omitempty"`
 }
 
+// ManualReconciliationModel defines model for ManualReconciliationModel.
+type ManualReconciliationModel struct {
+	Cluster *ClusterFields `json:"cluster,omitempty"`
+	Message *string        `json:"message,omitempty"`
+	Status  *string        `json:"status,omitempty"`
+}
+
 // MasterFlavorsResponse defines model for MasterFlavorsResponse.
 type MasterFlavorsResponse struct {
 	Flavors *[]ClusterFlavorFields `json:"flavors,omitempty"`
@@ -367,6 +374,9 @@ type ClientInterface interface {
 
 	// DeleteClusterNode request
 	DeleteClusterNode(ctx context.Context, clusterId int, nodeId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AttemptToManuallyReconcileACluster request
+	AttemptToManuallyReconcileACluster(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteACluster request
 	DeleteACluster(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -545,6 +555,18 @@ func (c *Client) CreateNode(ctx context.Context, clusterId int, body CreateNodeJ
 
 func (c *Client) DeleteClusterNode(ctx context.Context, clusterId int, nodeId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteClusterNodeRequest(c.Server, clusterId, nodeId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AttemptToManuallyReconcileACluster(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttemptToManuallyReconcileAClusterRequest(c.Server, clusterId)
 	if err != nil {
 		return nil, err
 	}
@@ -1111,6 +1133,40 @@ func NewDeleteClusterNodeRequest(server string, clusterId int, nodeId int) (*htt
 	return req, nil
 }
 
+// NewAttemptToManuallyReconcileAClusterRequest generates requests for AttemptToManuallyReconcileACluster
+func NewAttemptToManuallyReconcileAClusterRequest(server string, clusterId int) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "cluster_id", runtime.ParamLocationPath, clusterId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/clusters/%s/reconcile", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewDeleteAClusterRequest generates requests for DeleteACluster
 func NewDeleteAClusterRequest(server string, id int) (*http.Request, error) {
 	var err error
@@ -1263,6 +1319,9 @@ type ClientWithResponsesInterface interface {
 
 	// DeleteClusterNodeWithResponse request
 	DeleteClusterNodeWithResponse(ctx context.Context, clusterId int, nodeId int, reqEditors ...RequestEditorFn) (*DeleteClusterNodeResponse, error)
+
+	// AttemptToManuallyReconcileAClusterWithResponse request
+	AttemptToManuallyReconcileAClusterWithResponse(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*AttemptToManuallyReconcileAClusterResponse, error)
 
 	// DeleteAClusterWithResponse request
 	DeleteAClusterWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteAClusterResponse, error)
@@ -1573,6 +1632,31 @@ func (r DeleteClusterNodeResponse) StatusCode() int {
 	return 0
 }
 
+type AttemptToManuallyReconcileAClusterResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ManualReconciliationModel
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r AttemptToManuallyReconcileAClusterResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AttemptToManuallyReconcileAClusterResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type DeleteAClusterResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -1753,6 +1837,15 @@ func (c *ClientWithResponses) DeleteClusterNodeWithResponse(ctx context.Context,
 		return nil, err
 	}
 	return ParseDeleteClusterNodeResponse(rsp)
+}
+
+// AttemptToManuallyReconcileAClusterWithResponse request returning *AttemptToManuallyReconcileAClusterResponse
+func (c *ClientWithResponses) AttemptToManuallyReconcileAClusterWithResponse(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*AttemptToManuallyReconcileAClusterResponse, error) {
+	rsp, err := c.AttemptToManuallyReconcileACluster(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAttemptToManuallyReconcileAClusterResponse(rsp)
 }
 
 // DeleteAClusterWithResponse request returning *DeleteAClusterResponse
@@ -2320,6 +2413,53 @@ func ParseDeleteClusterNodeResponse(rsp *http.Response) (*DeleteClusterNodeRespo
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest ResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAttemptToManuallyReconcileAClusterResponse parses an HTTP response from a AttemptToManuallyReconcileAClusterWithResponse call
+func ParseAttemptToManuallyReconcileAClusterResponse(rsp *http.Response) (*AttemptToManuallyReconcileAClusterResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AttemptToManuallyReconcileAClusterResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ManualReconciliationModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
