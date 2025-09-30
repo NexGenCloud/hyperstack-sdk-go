@@ -23,13 +23,13 @@ func Test_hyperstack_FirewallsAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test FirewallsAPIService DeleteSecurityGroupDetails", func(t *testing.T) {
+	t.Run("Test FirewallsAPIService AddFirewallRuleToAnExistingFirewall", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var id int32
+		var firewallId int32
 
-		resp, httpRes, err := apiClient.FirewallsAPI.DeleteSecurityGroupDetails(context.Background(), id).Execute()
+		resp, httpRes, err := apiClient.FirewallsAPI.AddFirewallRuleToAnExistingFirewall(context.Background(), firewallId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -37,14 +37,40 @@ func Test_hyperstack_FirewallsAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test FirewallsAPIService DeleteSecurityGroupRuleDelete", func(t *testing.T) {
+	t.Run("Test FirewallsAPIService CreateANewFirewall", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.FirewallsAPI.CreateANewFirewall(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test FirewallsAPIService DeleteExistingFirewall", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var id int32
+
+		resp, httpRes, err := apiClient.FirewallsAPI.DeleteExistingFirewall(context.Background(), id).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test FirewallsAPIService DeleteFirewallRulesFromFirewall", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var firewallId int32
 		var firewallRuleId int32
 
-		resp, httpRes, err := apiClient.FirewallsAPI.DeleteSecurityGroupRuleDelete(context.Background(), firewallId, firewallRuleId).Execute()
+		resp, httpRes, err := apiClient.FirewallsAPI.DeleteFirewallRulesFromFirewall(context.Background(), firewallId, firewallRuleId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -52,11 +78,11 @@ func Test_hyperstack_FirewallsAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test FirewallsAPIService GetSecurityGroup", func(t *testing.T) {
+	t.Run("Test FirewallsAPIService ListExistingFirewalls", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.FirewallsAPI.GetSecurityGroup(context.Background()).Execute()
+		resp, httpRes, err := apiClient.FirewallsAPI.ListExistingFirewalls(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -64,39 +90,13 @@ func Test_hyperstack_FirewallsAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test FirewallsAPIService GetSecurityGroupDetails", func(t *testing.T) {
+	t.Run("Test FirewallsAPIService RetrieveTheDetailsOfAnExistingFirewall", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var id int32
 
-		resp, httpRes, err := apiClient.FirewallsAPI.GetSecurityGroupDetails(context.Background(), id).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test FirewallsAPIService PostSecurityGroup", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		resp, httpRes, err := apiClient.FirewallsAPI.PostSecurityGroup(context.Background()).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test FirewallsAPIService PostSecurityGroupRules", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var firewallId int32
-
-		resp, httpRes, err := apiClient.FirewallsAPI.PostSecurityGroupRules(context.Background(), firewallId).Execute()
+		resp, httpRes, err := apiClient.FirewallsAPI.RetrieveTheDetailsOfAnExistingFirewall(context.Background(), id).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

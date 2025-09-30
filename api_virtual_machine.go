@@ -23,27 +23,33 @@ import (
 // VirtualMachineAPIService VirtualMachineAPI service
 type VirtualMachineAPIService service
 
-type ApiDeleteInstanceRequest struct {
+type ApiAttachFirewallsToAVirtualMachineRequest struct {
 	ctx        context.Context
 	ApiService *VirtualMachineAPIService
 	vmId       int32
+	payload    *AttachFirewallsToVMPayload
 }
 
-func (r ApiDeleteInstanceRequest) Execute() (*ResponseModel, *http.Response, error) {
-	return r.ApiService.DeleteInstanceExecute(r)
+func (r ApiAttachFirewallsToAVirtualMachineRequest) Payload(payload AttachFirewallsToVMPayload) ApiAttachFirewallsToAVirtualMachineRequest {
+	r.payload = &payload
+	return r
+}
+
+func (r ApiAttachFirewallsToAVirtualMachineRequest) Execute() (*ResponseModel, *http.Response, error) {
+	return r.ApiService.AttachFirewallsToAVirtualMachineExecute(r)
 }
 
 /*
-DeleteInstance Delete virtual machine
+AttachFirewallsToAVirtualMachine Attach firewalls to a virtual machine
 
-Permanently deletes a virtual machine. Provide the virtual machine ID in the path to delete the specified virtual machine.
+Attach firewalls to a virtual machine by providing the virtual machine ID in the path and the IDs of the firewalls in the request body; any firewalls not included will be detached.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param vmId
-	@return ApiDeleteInstanceRequest
+	@return ApiAttachFirewallsToAVirtualMachineRequest
 */
-func (a *VirtualMachineAPIService) DeleteInstance(ctx context.Context, vmId int32) ApiDeleteInstanceRequest {
-	return ApiDeleteInstanceRequest{
+func (a *VirtualMachineAPIService) AttachFirewallsToAVirtualMachine(ctx context.Context, vmId int32) ApiAttachFirewallsToAVirtualMachineRequest {
+	return ApiAttachFirewallsToAVirtualMachineRequest{
 		ApiService: a,
 		ctx:        ctx,
 		vmId:       vmId,
@@ -53,28 +59,31 @@ func (a *VirtualMachineAPIService) DeleteInstance(ctx context.Context, vmId int3
 // Execute executes the request
 //
 //	@return ResponseModel
-func (a *VirtualMachineAPIService) DeleteInstanceExecute(r ApiDeleteInstanceRequest) (*ResponseModel, *http.Response, error) {
+func (a *VirtualMachineAPIService) AttachFirewallsToAVirtualMachineExecute(r ApiAttachFirewallsToAVirtualMachineRequest) (*ResponseModel, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodDelete
+		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
 		localVarReturnValue *ResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.DeleteInstance")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.AttachFirewallsToAVirtualMachine")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/core/virtual-machines/{vm_id}"
+	localVarPath := localBasePath + "/core/virtual-machines/{vm_id}/attach-firewalls"
 	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.payload == nil {
+		return localVarReturnValue, nil, reportError("payload is required and must be specified")
+	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -90,6 +99,8 @@ func (a *VirtualMachineAPIService) DeleteInstanceExecute(r ApiDeleteInstanceRequ
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	// body params
+	localVarPostBody = r.payload
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -149,6 +160,175 @@ func (a *VirtualMachineAPIService) DeleteInstanceExecute(r ApiDeleteInstanceRequ
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiCreateOneOrMoreVirtualMachinesRequest struct {
+	ctx        context.Context
+	ApiService *VirtualMachineAPIService
+	payload    *CreateInstancesPayload
+}
+
+func (r ApiCreateOneOrMoreVirtualMachinesRequest) Payload(payload CreateInstancesPayload) ApiCreateOneOrMoreVirtualMachinesRequest {
+	r.payload = &payload
+	return r
+}
+
+func (r ApiCreateOneOrMoreVirtualMachinesRequest) Execute() (*CreateInstancesResponse, *http.Response, error) {
+	return r.ApiService.CreateOneOrMoreVirtualMachinesExecute(r)
+}
+
+/*
+CreateOneOrMoreVirtualMachines Create virtual machines
+
+Creates one or more virtual machines with the specified custom configuration and features provided in the request body. For more information about the virtual machine features offered by Infrahub, [**click here**](https://docs.hyperstack.cloud/docs/virtual-machines/virtual-machine-features#create-a-virtual-machine-with-custom-features).
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCreateOneOrMoreVirtualMachinesRequest
+*/
+func (a *VirtualMachineAPIService) CreateOneOrMoreVirtualMachines(ctx context.Context) ApiCreateOneOrMoreVirtualMachinesRequest {
+	return ApiCreateOneOrMoreVirtualMachinesRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return CreateInstancesResponse
+func (a *VirtualMachineAPIService) CreateOneOrMoreVirtualMachinesExecute(r ApiCreateOneOrMoreVirtualMachinesRequest) (*CreateInstancesResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CreateInstancesResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.CreateOneOrMoreVirtualMachines")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/core/virtual-machines"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.payload == nil {
+		return localVarReturnValue, nil, reportError("payload is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.payload
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 405 {
 			var v ErrorResponseModel
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -340,6 +520,168 @@ func (a *VirtualMachineAPIService) DeleteSecurityRuleExecute(r ApiDeleteSecurity
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiDeleteVirtualMachineRequest struct {
+	ctx        context.Context
+	ApiService *VirtualMachineAPIService
+	vmId       int32
+}
+
+func (r ApiDeleteVirtualMachineRequest) Execute() (*ResponseModel, *http.Response, error) {
+	return r.ApiService.DeleteVirtualMachineExecute(r)
+}
+
+/*
+DeleteVirtualMachine Delete virtual machine
+
+Permanently deletes a virtual machine. Provide the virtual machine ID in the path to delete the specified virtual machine.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param vmId
+	@return ApiDeleteVirtualMachineRequest
+*/
+func (a *VirtualMachineAPIService) DeleteVirtualMachine(ctx context.Context, vmId int32) ApiDeleteVirtualMachineRequest {
+	return ApiDeleteVirtualMachineRequest{
+		ApiService: a,
+		ctx:        ctx,
+		vmId:       vmId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ResponseModel
+func (a *VirtualMachineAPIService) DeleteVirtualMachineExecute(r ApiDeleteVirtualMachineRequest) (*ResponseModel, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodDelete
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResponseModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.DeleteVirtualMachine")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/core/virtual-machines/{vm_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 409 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiFetchVirtualMachineNameAvailabilityRequest struct {
 	ctx        context.Context
 	ApiService *VirtualMachineAPIService
@@ -491,538 +833,27 @@ func (a *VirtualMachineAPIService) FetchVirtualMachineNameAvailabilityExecute(r 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetContractInstancesRequest struct {
-	ctx        context.Context
-	ApiService *VirtualMachineAPIService
-	contractId int32
-	page       *string
-	pageSize   *string
-	search     *string
-}
-
-// Page Number
-func (r ApiGetContractInstancesRequest) Page(page string) ApiGetContractInstancesRequest {
-	r.page = &page
-	return r
-}
-
-// Data Per Page
-func (r ApiGetContractInstancesRequest) PageSize(pageSize string) ApiGetContractInstancesRequest {
-	r.pageSize = &pageSize
-	return r
-}
-
-// Search By Instance ID or Name
-func (r ApiGetContractInstancesRequest) Search(search string) ApiGetContractInstancesRequest {
-	r.search = &search
-	return r
-}
-
-func (r ApiGetContractInstancesRequest) Execute() (*ContractInstancesResponse, *http.Response, error) {
-	return r.ApiService.GetContractInstancesExecute(r)
-}
-
-/*
-GetContractInstances Retrieve virtual machines associated with a contract
-
-Retrieves a list of virtual machines associated with a contract, providing details such as virtual machine name, timestamp, flavor name, and other relevant information. Please provide the ID of the relevant contract in the path.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param contractId
-	@return ApiGetContractInstancesRequest
-*/
-func (a *VirtualMachineAPIService) GetContractInstances(ctx context.Context, contractId int32) ApiGetContractInstancesRequest {
-	return ApiGetContractInstancesRequest{
-		ApiService: a,
-		ctx:        ctx,
-		contractId: contractId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ContractInstancesResponse
-func (a *VirtualMachineAPIService) GetContractInstancesExecute(r ApiGetContractInstancesRequest) (*ContractInstancesResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ContractInstancesResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.GetContractInstances")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/core/virtual-machines/contract/{contract_id}/virtual-machines"
-	localVarPath = strings.Replace(localVarPath, "{"+"contract_id"+"}", url.PathEscape(parameterValueToString(r.contractId, "contractId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.page != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
-	}
-	if r.pageSize != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
-	}
-	if r.search != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetInstanceRequest struct {
-	ctx              context.Context
-	ApiService       *VirtualMachineAPIService
-	page             *int32
-	pageSize         *int32
-	search           *string
-	environment      *string
-	excludeFirewalls *[]int32
-}
-
-func (r ApiGetInstanceRequest) Page(page int32) ApiGetInstanceRequest {
-	r.page = &page
-	return r
-}
-
-func (r ApiGetInstanceRequest) PageSize(pageSize int32) ApiGetInstanceRequest {
-	r.pageSize = &pageSize
-	return r
-}
-
-func (r ApiGetInstanceRequest) Search(search string) ApiGetInstanceRequest {
-	r.search = &search
-	return r
-}
-
-func (r ApiGetInstanceRequest) Environment(environment string) ApiGetInstanceRequest {
-	r.environment = &environment
-	return r
-}
-
-// Comma-separated list of Security Group IDs to ignore instances attached
-func (r ApiGetInstanceRequest) ExcludeFirewalls(excludeFirewalls []int32) ApiGetInstanceRequest {
-	r.excludeFirewalls = &excludeFirewalls
-	return r
-}
-
-func (r ApiGetInstanceRequest) Execute() (*Instances, *http.Response, error) {
-	return r.ApiService.GetInstanceExecute(r)
-}
-
-/*
-GetInstance List virtual machines
-
-Returns a list of your existing virtual machines, providing configuration details for each. The list is sorted by creation date, with the oldest virtual machines displayed first.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetInstanceRequest
-*/
-func (a *VirtualMachineAPIService) GetInstance(ctx context.Context) ApiGetInstanceRequest {
-	return ApiGetInstanceRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return Instances
-func (a *VirtualMachineAPIService) GetInstanceExecute(r ApiGetInstanceRequest) (*Instances, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *Instances
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.GetInstance")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/core/virtual-machines"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.page != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
-	}
-	if r.pageSize != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
-	}
-	if r.search != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
-	}
-	if r.environment != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "environment", r.environment, "form", "")
-	}
-	if r.excludeFirewalls != nil {
-		t := *r.excludeFirewalls
-		if reflect.TypeOf(t).Kind() == reflect.Slice {
-			s := reflect.ValueOf(t)
-			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "exclude_firewalls", s.Index(i).Interface(), "form", "multi")
-			}
-		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "exclude_firewalls", t, "form", "multi")
-		}
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetInstance2Request struct {
+type ApiGetInstanceHardRebootRequest struct {
 	ctx        context.Context
 	ApiService *VirtualMachineAPIService
 	vmId       int32
 }
 
-func (r ApiGetInstance2Request) Execute() (*Instance, *http.Response, error) {
-	return r.ApiService.GetInstance2Execute(r)
+func (r ApiGetInstanceHardRebootRequest) Execute() (*ResponseModel, *http.Response, error) {
+	return r.ApiService.GetInstanceHardRebootExecute(r)
 }
 
 /*
-GetInstance2 Retrieve virtual machine details
-
-Retrieves the details of an existing virtual machine. Provide the virtual machine ID in the path, and Infrahub will return information about the corresponding VM.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param vmId
-	@return ApiGetInstance2Request
-*/
-func (a *VirtualMachineAPIService) GetInstance2(ctx context.Context, vmId int32) ApiGetInstance2Request {
-	return ApiGetInstance2Request{
-		ApiService: a,
-		ctx:        ctx,
-		vmId:       vmId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return Instance
-func (a *VirtualMachineAPIService) GetInstance2Execute(r ApiGetInstance2Request) (*Instance, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *Instance
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.GetInstance2")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/core/virtual-machines/{vm_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetInstance3Request struct {
-	ctx        context.Context
-	ApiService *VirtualMachineAPIService
-	vmId       int32
-}
-
-func (r ApiGetInstance3Request) Execute() (*ResponseModel, *http.Response, error) {
-	return r.ApiService.GetInstance3Execute(r)
-}
-
-/*
-GetInstance3 Hard reboot virtual machine
+GetInstanceHardReboot Hard reboot virtual machine
 
 Initiates a hard reboot for a virtual machine, simulating the process of unplugging and rebooting a physical machine. Provide the virtual machine ID in the path to execute a hard reboot for the specified virtual machine.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param vmId
-	@return ApiGetInstance3Request
+	@return ApiGetInstanceHardRebootRequest
 */
-func (a *VirtualMachineAPIService) GetInstance3(ctx context.Context, vmId int32) ApiGetInstance3Request {
-	return ApiGetInstance3Request{
+func (a *VirtualMachineAPIService) GetInstanceHardReboot(ctx context.Context, vmId int32) ApiGetInstanceHardRebootRequest {
+	return ApiGetInstanceHardRebootRequest{
 		ApiService: a,
 		ctx:        ctx,
 		vmId:       vmId,
@@ -1032,7 +863,7 @@ func (a *VirtualMachineAPIService) GetInstance3(ctx context.Context, vmId int32)
 // Execute executes the request
 //
 //	@return ResponseModel
-func (a *VirtualMachineAPIService) GetInstance3Execute(r ApiGetInstance3Request) (*ResponseModel, *http.Response, error) {
+func (a *VirtualMachineAPIService) GetInstanceHardRebootExecute(r ApiGetInstanceHardRebootRequest) (*ResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -1040,314 +871,12 @@ func (a *VirtualMachineAPIService) GetInstance3Execute(r ApiGetInstance3Request)
 		localVarReturnValue *ResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.GetInstance3")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.GetInstanceHardReboot")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/core/virtual-machines/{vm_id}/hard-reboot"
-	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetInstance4Request struct {
-	ctx        context.Context
-	ApiService *VirtualMachineAPIService
-	vmId       int32
-}
-
-func (r ApiGetInstance4Request) Execute() (*ResponseModel, *http.Response, error) {
-	return r.ApiService.GetInstance4Execute(r)
-}
-
-/*
-GetInstance4 Start virtual machine
-
-Initiates the startup of a virtual machine. Provide the virtual machine ID in the path to initiate the starting of the specified virtual machine.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param vmId
-	@return ApiGetInstance4Request
-*/
-func (a *VirtualMachineAPIService) GetInstance4(ctx context.Context, vmId int32) ApiGetInstance4Request {
-	return ApiGetInstance4Request{
-		ApiService: a,
-		ctx:        ctx,
-		vmId:       vmId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ResponseModel
-func (a *VirtualMachineAPIService) GetInstance4Execute(r ApiGetInstance4Request) (*ResponseModel, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ResponseModel
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.GetInstance4")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/core/virtual-machines/{vm_id}/start"
-	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetInstance5Request struct {
-	ctx        context.Context
-	ApiService *VirtualMachineAPIService
-	vmId       int32
-}
-
-func (r ApiGetInstance5Request) Execute() (*ResponseModel, *http.Response, error) {
-	return r.ApiService.GetInstance5Execute(r)
-}
-
-/*
-GetInstance5 Stop virtual machine
-
-Shuts down a virtual machine. Provide the virtual machine ID in the path to initiate the shutdown process for the specified virtual machine.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param vmId
-	@return ApiGetInstance5Request
-*/
-func (a *VirtualMachineAPIService) GetInstance5(ctx context.Context, vmId int32) ApiGetInstance5Request {
-	return ApiGetInstance5Request{
-		ApiService: a,
-		ctx:        ctx,
-		vmId:       vmId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ResponseModel
-func (a *VirtualMachineAPIService) GetInstance5Execute(r ApiGetInstance5Request) (*ResponseModel, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ResponseModel
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.GetInstance5")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/core/virtual-machines/{vm_id}/stop"
 	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -1619,7 +1148,7 @@ func (r ApiGetInstanceHibernateRestoreRequest) Execute() (*ResponseModel, *http.
 /*
 GetInstanceHibernateRestore Restore virtual machine from hibernation
 
-Resumes a virtual machine from hibernation, bringing it back to an active state. Provide the virtual machine ID in the path to specify the virtual machine to be restored from hibernation.
+Resumes a virtual machine from hibernation, bringing it back to an active state. Provide the virtual machine ID that you want to restore from hibernation.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param vmId
@@ -2100,63 +1629,58 @@ func (a *VirtualMachineAPIService) GetInstanceMetricsExecute(r ApiGetInstanceMet
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiPostInstanceRequest struct {
+type ApiGetInstanceStartRequest struct {
 	ctx        context.Context
 	ApiService *VirtualMachineAPIService
-	payload    *CreateInstancesPayload
+	vmId       int32
 }
 
-func (r ApiPostInstanceRequest) Payload(payload CreateInstancesPayload) ApiPostInstanceRequest {
-	r.payload = &payload
-	return r
-}
-
-func (r ApiPostInstanceRequest) Execute() (*CreateInstancesResponse, *http.Response, error) {
-	return r.ApiService.PostInstanceExecute(r)
+func (r ApiGetInstanceStartRequest) Execute() (*ResponseModel, *http.Response, error) {
+	return r.ApiService.GetInstanceStartExecute(r)
 }
 
 /*
-PostInstance Create virtual machines
+GetInstanceStart Start virtual machine
 
-Creates one or more virtual machines with the specified custom configuration and features provided in the request body. For more information about the virtual machine features offered by Infrahub, [**click here**](https://docs.hyperstack.cloud/docs/virtual-machines/virtual-machine-features#create-a-virtual-machine-with-custom-features).
+Initiates the startup of a virtual machine. Provide the virtual machine ID in the path to initiate the starting of the specified virtual machine.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiPostInstanceRequest
+	@param vmId
+	@return ApiGetInstanceStartRequest
 */
-func (a *VirtualMachineAPIService) PostInstance(ctx context.Context) ApiPostInstanceRequest {
-	return ApiPostInstanceRequest{
+func (a *VirtualMachineAPIService) GetInstanceStart(ctx context.Context, vmId int32) ApiGetInstanceStartRequest {
+	return ApiGetInstanceStartRequest{
 		ApiService: a,
 		ctx:        ctx,
+		vmId:       vmId,
 	}
 }
 
 // Execute executes the request
 //
-//	@return CreateInstancesResponse
-func (a *VirtualMachineAPIService) PostInstanceExecute(r ApiPostInstanceRequest) (*CreateInstancesResponse, *http.Response, error) {
+//	@return ResponseModel
+func (a *VirtualMachineAPIService) GetInstanceStartExecute(r ApiGetInstanceStartRequest) (*ResponseModel, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *CreateInstancesResponse
+		localVarReturnValue *ResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.PostInstance")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.GetInstanceStart")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/core/virtual-machines"
+	localVarPath := localBasePath + "/core/virtual-machines/{vm_id}/start"
+	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.payload == nil {
-		return localVarReturnValue, nil, reportError("payload is required and must be specified")
-	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
+	localVarHTTPContentTypes := []string{}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -2172,8 +1696,6 @@ func (a *VirtualMachineAPIService) PostInstanceExecute(r ApiPostInstanceRequest)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	// body params
-	localVarPostBody = r.payload
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -2233,28 +1755,6 @@ func (a *VirtualMachineAPIService) PostInstanceExecute(r ApiPostInstanceRequest)
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 405 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 409 {
 			var v ErrorResponseModel
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -2280,33 +1780,27 @@ func (a *VirtualMachineAPIService) PostInstanceExecute(r ApiPostInstanceRequest)
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiPostInstanceAttachFirewallsRequest struct {
+type ApiGetInstanceStopRequest struct {
 	ctx        context.Context
 	ApiService *VirtualMachineAPIService
 	vmId       int32
-	payload    *AttachFirewallsToVMPayload
 }
 
-func (r ApiPostInstanceAttachFirewallsRequest) Payload(payload AttachFirewallsToVMPayload) ApiPostInstanceAttachFirewallsRequest {
-	r.payload = &payload
-	return r
-}
-
-func (r ApiPostInstanceAttachFirewallsRequest) Execute() (*ResponseModel, *http.Response, error) {
-	return r.ApiService.PostInstanceAttachFirewallsExecute(r)
+func (r ApiGetInstanceStopRequest) Execute() (*ResponseModel, *http.Response, error) {
+	return r.ApiService.GetInstanceStopExecute(r)
 }
 
 /*
-PostInstanceAttachFirewalls Attach firewalls to a virtual machine
+GetInstanceStop Stop virtual machine
 
-Attach firewalls to a virtual machine by providing the virtual machine ID in the path and the IDs of the firewalls in the request body; any firewalls not included will be detached.
+Shuts down a virtual machine. Provide the virtual machine ID in the path to initiate the shutdown process for the specified virtual machine.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param vmId
-	@return ApiPostInstanceAttachFirewallsRequest
+	@return ApiGetInstanceStopRequest
 */
-func (a *VirtualMachineAPIService) PostInstanceAttachFirewalls(ctx context.Context, vmId int32) ApiPostInstanceAttachFirewallsRequest {
-	return ApiPostInstanceAttachFirewallsRequest{
+func (a *VirtualMachineAPIService) GetInstanceStop(ctx context.Context, vmId int32) ApiGetInstanceStopRequest {
+	return ApiGetInstanceStopRequest{
 		ApiService: a,
 		ctx:        ctx,
 		vmId:       vmId,
@@ -2316,31 +1810,28 @@ func (a *VirtualMachineAPIService) PostInstanceAttachFirewalls(ctx context.Conte
 // Execute executes the request
 //
 //	@return ResponseModel
-func (a *VirtualMachineAPIService) PostInstanceAttachFirewallsExecute(r ApiPostInstanceAttachFirewallsRequest) (*ResponseModel, *http.Response, error) {
+func (a *VirtualMachineAPIService) GetInstanceStopExecute(r ApiGetInstanceStopRequest) (*ResponseModel, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
 		localVarReturnValue *ResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.PostInstanceAttachFirewalls")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.GetInstanceStop")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/core/virtual-machines/{vm_id}/attach-firewalls"
+	localVarPath := localBasePath + "/core/virtual-machines/{vm_id}/stop"
 	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.payload == nil {
-		return localVarReturnValue, nil, reportError("payload is required and must be specified")
-	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
+	localVarHTTPContentTypes := []string{}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -2356,8 +1847,6 @@ func (a *VirtualMachineAPIService) PostInstanceAttachFirewallsExecute(r ApiPostI
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	// body params
-	localVarPostBody = r.payload
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -2417,6 +1906,196 @@ func (a *VirtualMachineAPIService) PostInstanceAttachFirewallsExecute(r ApiPostI
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiListVirtualMachinesRequest struct {
+	ctx              context.Context
+	ApiService       *VirtualMachineAPIService
+	page             *int32
+	pageSize         *int32
+	search           *string
+	environment      *string
+	excludeFirewalls *[]int32
+}
+
+func (r ApiListVirtualMachinesRequest) Page(page int32) ApiListVirtualMachinesRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiListVirtualMachinesRequest) PageSize(pageSize int32) ApiListVirtualMachinesRequest {
+	r.pageSize = &pageSize
+	return r
+}
+
+func (r ApiListVirtualMachinesRequest) Search(search string) ApiListVirtualMachinesRequest {
+	r.search = &search
+	return r
+}
+
+func (r ApiListVirtualMachinesRequest) Environment(environment string) ApiListVirtualMachinesRequest {
+	r.environment = &environment
+	return r
+}
+
+// Comma-separated list of Security Group IDs to ignore instances attached
+func (r ApiListVirtualMachinesRequest) ExcludeFirewalls(excludeFirewalls []int32) ApiListVirtualMachinesRequest {
+	r.excludeFirewalls = &excludeFirewalls
+	return r
+}
+
+func (r ApiListVirtualMachinesRequest) Execute() (*Instances, *http.Response, error) {
+	return r.ApiService.ListVirtualMachinesExecute(r)
+}
+
+/*
+ListVirtualMachines List virtual machines
+
+Returns a list of your existing virtual machines, providing configuration details for each. The list is sorted by creation date, with the oldest virtual machines displayed first.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiListVirtualMachinesRequest
+*/
+func (a *VirtualMachineAPIService) ListVirtualMachines(ctx context.Context) ApiListVirtualMachinesRequest {
+	return ApiListVirtualMachinesRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return Instances
+func (a *VirtualMachineAPIService) ListVirtualMachinesExecute(r ApiListVirtualMachinesRequest) (*Instances, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Instances
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.ListVirtualMachines")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/core/virtual-machines"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	}
+	if r.pageSize != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
+	}
+	if r.search != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
+	}
+	if r.environment != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "environment", r.environment, "form", "")
+	}
+	if r.excludeFirewalls != nil {
+		t := *r.excludeFirewalls
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "exclude_firewalls", s.Index(i).Interface(), "form", "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "exclude_firewalls", t, "form", "multi")
+		}
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
 			var v ErrorResponseModel
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -3271,6 +2950,327 @@ func (a *VirtualMachineAPIService) PutLabelsExecute(r ApiPutLabelsRequest) (*Res
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiRetrieveVirtualMachineDetailsRequest struct {
+	ctx        context.Context
+	ApiService *VirtualMachineAPIService
+	vmId       int32
+}
+
+func (r ApiRetrieveVirtualMachineDetailsRequest) Execute() (*Instance, *http.Response, error) {
+	return r.ApiService.RetrieveVirtualMachineDetailsExecute(r)
+}
+
+/*
+RetrieveVirtualMachineDetails Retrieve virtual machine details
+
+Retrieves the details of an existing virtual machine. Provide the virtual machine ID in the path, and Infrahub will return information about the corresponding VM.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param vmId
+	@return ApiRetrieveVirtualMachineDetailsRequest
+*/
+func (a *VirtualMachineAPIService) RetrieveVirtualMachineDetails(ctx context.Context, vmId int32) ApiRetrieveVirtualMachineDetailsRequest {
+	return ApiRetrieveVirtualMachineDetailsRequest{
+		ApiService: a,
+		ctx:        ctx,
+		vmId:       vmId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return Instance
+func (a *VirtualMachineAPIService) RetrieveVirtualMachineDetailsExecute(r ApiRetrieveVirtualMachineDetailsRequest) (*Instance, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Instance
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.RetrieveVirtualMachineDetails")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/core/virtual-machines/{vm_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiRetrieveVirtualMachinesAssociatedWithAContractRequest struct {
+	ctx        context.Context
+	ApiService *VirtualMachineAPIService
+	contractId int32
+	page       *string
+	pageSize   *string
+	search     *string
+}
+
+// Page Number
+func (r ApiRetrieveVirtualMachinesAssociatedWithAContractRequest) Page(page string) ApiRetrieveVirtualMachinesAssociatedWithAContractRequest {
+	r.page = &page
+	return r
+}
+
+// Data Per Page
+func (r ApiRetrieveVirtualMachinesAssociatedWithAContractRequest) PageSize(pageSize string) ApiRetrieveVirtualMachinesAssociatedWithAContractRequest {
+	r.pageSize = &pageSize
+	return r
+}
+
+// Search By Instance ID or Name
+func (r ApiRetrieveVirtualMachinesAssociatedWithAContractRequest) Search(search string) ApiRetrieveVirtualMachinesAssociatedWithAContractRequest {
+	r.search = &search
+	return r
+}
+
+func (r ApiRetrieveVirtualMachinesAssociatedWithAContractRequest) Execute() (*ContractInstancesResponse, *http.Response, error) {
+	return r.ApiService.RetrieveVirtualMachinesAssociatedWithAContractExecute(r)
+}
+
+/*
+RetrieveVirtualMachinesAssociatedWithAContract Retrieve virtual machines associated with a contract
+
+Retrieves a list of virtual machines associated with a contract, providing details such as virtual machine name, timestamp, flavor name, and other relevant information. Please provide the ID of the relevant contract in the path.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param contractId
+	@return ApiRetrieveVirtualMachinesAssociatedWithAContractRequest
+*/
+func (a *VirtualMachineAPIService) RetrieveVirtualMachinesAssociatedWithAContract(ctx context.Context, contractId int32) ApiRetrieveVirtualMachinesAssociatedWithAContractRequest {
+	return ApiRetrieveVirtualMachinesAssociatedWithAContractRequest{
+		ApiService: a,
+		ctx:        ctx,
+		contractId: contractId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ContractInstancesResponse
+func (a *VirtualMachineAPIService) RetrieveVirtualMachinesAssociatedWithAContractExecute(r ApiRetrieveVirtualMachinesAssociatedWithAContractRequest) (*ContractInstancesResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ContractInstancesResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineAPIService.RetrieveVirtualMachinesAssociatedWithAContract")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/core/virtual-machines/contract/{contract_id}/virtual-machines"
+	localVarPath = strings.Replace(localVarPath, "{"+"contract_id"+"}", url.PathEscape(parameterValueToString(r.contractId, "contractId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	}
+	if r.pageSize != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
+	}
+	if r.search != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
 			var v ErrorResponseModel
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {

@@ -283,6 +283,53 @@ paths:
       tags:
       - api key
       x-codegen-request-body-name: payload
+  /auth/admin/password-change-mail:
+    post:
+      description: Send a password change notification email to a user
+      operationId: Send_Password_Change_Notification_Email
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponseModel'
+          description: Email Sent Successfully.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unable to send email
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: User Not Found
+        "405":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Method Not Allowed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      - apiKey: []
+      summary: Send Password Change Notification Email
+      tags:
+      - admin
   /auth/beta-access/requests:
     get:
       description: Check the status of all beta access requests.
@@ -5819,7 +5866,7 @@ paths:
         \ the security rules they contain and information about the virtual machines\
         \ to which they are attached. For more information about the firewalls features\
         \ offered by Infrahub, [**click here**](https://docs.hyperstack.cloud/docs/network-security/security-groups)."
-      operationId: get_security_group
+      operationId: List_existing_firewalls
       parameters:
       - explode: true
         in: query
@@ -5892,7 +5939,7 @@ paths:
         \ optional description. To obtain the ID of the environment, make a request\
         \ to the [**list environments**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/environments/list-environments)\
         \ endpoint."
-      operationId: post_security_group
+      operationId: Create_a_new_firewall
       requestBody:
         content:
           application/json:
@@ -5951,7 +5998,7 @@ paths:
       description: "Creates a [**firewall rule**](https://docs.hyperstack.cloud/docs/network-security/security-rules)\
         \ and adds it to an existing firewall. Include the firewall ID in the path,\
         \ and provide the firewall rule configuration in the request body."
-      operationId: post_security_group_rules
+      operationId: Add_firewall_rule_to_an_existing_firewall
       parameters:
       - explode: false
         in: path
@@ -6005,7 +6052,7 @@ paths:
     delete:
       description: "Removes a firewall rule from firewall by providing the firewall\
         \ ID and firewall rule ID in the path. For more information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/firewalls/remove-firewall-rule-from-firewall)."
-      operationId: delete_security_group_rule_delete
+      operationId: Delete_firewall_rules_from_firewall
       parameters:
       - explode: false
         in: path
@@ -6072,7 +6119,7 @@ paths:
       description: "Attach a firewall to one or more virtual machines by providing\
         \ the virtual machine IDs in the request body and the firewall ID in the path.\
         \ For more information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/firewalls/attach-firewall-to-vms)."
-      operationId: post_attach_security_groups
+      operationId: Attach_firewall_to_virtual_machines
       parameters:
       - explode: false
         in: path
@@ -6139,7 +6186,7 @@ paths:
       description: "Deletes a firewall by specifying the firewall ID in the path.\
         \ If the firewall is currently attached to a virtual machine, it must be detached\
         \ before deletion. For more information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/firewalls/delete-firewall)."
-      operationId: delete_security_group_details
+      operationId: Delete_existing_firewall
       parameters:
       - explode: false
         in: path
@@ -6198,7 +6245,7 @@ paths:
       description: "Retrieves the details of an existing firewall, including the security\
         \ rules it contains and information about the virtual machines to which it\
         \ is attached."
-      operationId: get_security_group_details
+      operationId: Retrieve_the_details_of_an_existing_firewall
       parameters:
       - explode: false
         in: path
@@ -7426,9 +7473,9 @@ paths:
       - security-rules
   /core/snapshots:
     get:
-      description: "Retrieves a list of snapshot, providing details such as snapshot\
+      description: "Retrieves a list of snapshots, providing details such as snapshot\
         \ name, timestamp, VM ID, and other relevant information."
-      operationId: get_snapshots
+      operationId: Retrieves_a_list_of_snapshots
       parameters:
       - description: Page Number
         explode: true
@@ -7534,7 +7581,7 @@ paths:
         \ the specified snapshot. If the snapshot is connected with an image, that\
         \ image will also bedeleted and the deleted image ID will be returned in the\
         \ success message response."
-      operationId: delete_snapshot
+      operationId: Delete_an_existing_snapshot
       parameters:
       - explode: false
         in: path
@@ -7585,7 +7632,7 @@ paths:
       - Snapshots
     get:
       description: Retrieve a snapshot.
-      operationId: get_snapshot
+      operationId: Retrieve_an_existing_snapshot
       parameters:
       - explode: false
         in: path
@@ -7625,7 +7672,7 @@ paths:
   /core/snapshots/{id}/restore:
     post:
       description: Restore a snapshot.
-      operationId: post_snapshot_restore
+      operationId: Restore_a_snapshot
       parameters:
       - explode: false
         in: path
@@ -7828,7 +7875,7 @@ paths:
       description: "Returns a list of your existing virtual machines, providing configuration\
         \ details for each. The list is sorted by creation date, with the oldest virtual\
         \ machines displayed first."
-      operationId: get_instance
+      operationId: List_virtual_machines
       parameters:
       - explode: true
         in: query
@@ -7901,7 +7948,7 @@ paths:
       description: "Creates one or more virtual machines with the specified custom\
         \ configuration and features provided in the request body. For more information\
         \ about the virtual machine features offered by Infrahub, [**click here**](https://docs.hyperstack.cloud/docs/virtual-machines/virtual-machine-features#create-a-virtual-machine-with-custom-features)."
-      operationId: post_instance
+      operationId: Create_one_or_more_virtual_machines
       requestBody:
         content:
           application/json:
@@ -7961,7 +8008,7 @@ paths:
         \ providing details such as virtual machine name, timestamp, flavor name,\
         \ and other relevant information. Please provide the ID of the relevant contract\
         \ in the path."
-      operationId: get_contract_instances
+      operationId: Retrieve_virtual_machines_associated_with_a_contract
       parameters:
       - explode: false
         in: path
@@ -8072,7 +8119,7 @@ paths:
     delete:
       description: Permanently deletes a virtual machine. Provide the virtual machine
         ID in the path to delete the specified virtual machine.
-      operationId: delete_instance
+      operationId: Delete_virtual_machine
       parameters:
       - explode: false
         in: path
@@ -8125,7 +8172,7 @@ paths:
       description: "Retrieves the details of an existing virtual machine. Provide\
         \ the virtual machine ID in the path, and Infrahub will return information\
         \ about the corresponding VM."
-      operationId: get_instance_2
+      operationId: Retrieve_virtual_machine_details
       parameters:
       - explode: false
         in: path
@@ -8232,7 +8279,7 @@ paths:
       description: Attach firewalls to a virtual machine by providing the virtual
         machine ID in the path and the IDs of the firewalls in the request body; any
         firewalls not included will be detached.
-      operationId: post_instance_attach_firewalls
+      operationId: Attach_firewalls_to_a_virtual_machine
       parameters:
       - explode: false
         in: path
@@ -8404,7 +8451,7 @@ paths:
       description: "Retrieves the URL to access the VNC console for a specified virtual\
         \ machine by providing the virtual machine ID and the job ID in the path.\
         \ For more information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/vnc-console/retrieve-vnc-url)."
-      operationId: get_vnc_url
+      operationId: Get_VNC_URL
       parameters:
       - explode: false
         in: path
@@ -8667,7 +8714,7 @@ paths:
         \ process of unplugging and rebooting a physical machine. Provide the virtual\
         \ machine ID in the path to execute a hard reboot for the specified virtual\
         \ machine."
-      operationId: get_instance_3
+      operationId: get_instance_hard_reboot
       parameters:
       - explode: false
         in: path
@@ -8761,8 +8808,8 @@ paths:
   /core/virtual-machines/{vm_id}/hibernate-restore:
     get:
       description: "Resumes a virtual machine from hibernation, bringing it back to\
-        \ an active state. Provide the virtual machine ID in the path to specify the\
-        \ virtual machine to be restored from hibernation."
+        \ an active state. Provide the virtual machine ID that you want to restore\
+        \ from hibernation."
       operationId: get_instance_hibernate_restore
       parameters:
       - explode: false
@@ -9067,7 +9114,7 @@ paths:
       description: "Retrieves the path of the VNC console for the given virtual machine\
         \ ID by providing the virtual machine ID in the path. For more information,\
         \ [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/vnc-console/retrieve-console-path)."
-      operationId: get_vnc_url_2
+      operationId: get_vnc_url
       parameters:
       - explode: false
         in: path
@@ -9350,7 +9397,7 @@ paths:
     get:
       description: Initiates the startup of a virtual machine. Provide the virtual
         machine ID in the path to initiate the starting of the specified virtual machine.
-      operationId: get_instance_4
+      operationId: get_instance_start
       parameters:
       - explode: false
         in: path
@@ -9397,7 +9444,7 @@ paths:
     get:
       description: Shuts down a virtual machine. Provide the virtual machine ID in
         the path to initiate the shutdown process for the specified virtual machine.
-      operationId: get_instance_5
+      operationId: get_instance_stop
       parameters:
       - explode: false
         in: path

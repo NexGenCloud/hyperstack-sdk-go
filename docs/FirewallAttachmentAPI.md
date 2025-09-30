@@ -4,13 +4,13 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**PostAttachSecurityGroups**](FirewallAttachmentAPI.md#PostAttachSecurityGroups) | **Post** /core/firewalls/{firewall_id}/update-attachments | Attach Firewalls to VMs
+[**AttachFirewallToVirtualMachines**](FirewallAttachmentAPI.md#AttachFirewallToVirtualMachines) | **Post** /core/firewalls/{firewall_id}/update-attachments | Attach Firewalls to VMs
 
 
 
-## PostAttachSecurityGroups
+## AttachFirewallToVirtualMachines
 
-> ResponseModel PostAttachSecurityGroups(ctx, firewallId).Payload(payload).Execute()
+> ResponseModel AttachFirewallToVirtualMachines(ctx, firewallId).Payload(payload).Execute()
 
 Attach Firewalls to VMs
 
@@ -34,13 +34,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.FirewallAttachmentAPI.PostAttachSecurityGroups(context.Background(), firewallId).Payload(payload).Execute()
+	resp, r, err := apiClient.FirewallAttachmentAPI.AttachFirewallToVirtualMachines(context.Background(), firewallId).Payload(payload).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `FirewallAttachmentAPI.PostAttachSecurityGroups``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `FirewallAttachmentAPI.AttachFirewallToVirtualMachines``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `PostAttachSecurityGroups`: ResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `FirewallAttachmentAPI.PostAttachSecurityGroups`: %v\n", resp)
+	// response from `AttachFirewallToVirtualMachines`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `FirewallAttachmentAPI.AttachFirewallToVirtualMachines`: %v\n", resp)
 }
 ```
 
@@ -54,7 +54,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiPostAttachSecurityGroupsRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiAttachFirewallToVirtualMachinesRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes

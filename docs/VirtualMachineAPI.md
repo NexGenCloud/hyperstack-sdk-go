@@ -4,34 +4,34 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteInstance**](VirtualMachineAPI.md#DeleteInstance) | **Delete** /core/virtual-machines/{vm_id} | Delete virtual machine
+[**AttachFirewallsToAVirtualMachine**](VirtualMachineAPI.md#AttachFirewallsToAVirtualMachine) | **Post** /core/virtual-machines/{vm_id}/attach-firewalls | Attach firewalls to a virtual machine
+[**CreateOneOrMoreVirtualMachines**](VirtualMachineAPI.md#CreateOneOrMoreVirtualMachines) | **Post** /core/virtual-machines | Create virtual machines
 [**DeleteSecurityRule**](VirtualMachineAPI.md#DeleteSecurityRule) | **Delete** /core/virtual-machines/{vm_id}/sg-rules/{sg_rule_id} | Delete firewall rule from virtual machine
+[**DeleteVirtualMachine**](VirtualMachineAPI.md#DeleteVirtualMachine) | **Delete** /core/virtual-machines/{vm_id} | Delete virtual machine
 [**FetchVirtualMachineNameAvailability**](VirtualMachineAPI.md#FetchVirtualMachineNameAvailability) | **Get** /core/virtual-machines/name-availability/{name} | Fetch virtual machine name availability
-[**GetContractInstances**](VirtualMachineAPI.md#GetContractInstances) | **Get** /core/virtual-machines/contract/{contract_id}/virtual-machines | Retrieve virtual machines associated with a contract
-[**GetInstance**](VirtualMachineAPI.md#GetInstance) | **Get** /core/virtual-machines | List virtual machines
-[**GetInstance2**](VirtualMachineAPI.md#GetInstance2) | **Get** /core/virtual-machines/{vm_id} | Retrieve virtual machine details
-[**GetInstance3**](VirtualMachineAPI.md#GetInstance3) | **Get** /core/virtual-machines/{vm_id}/hard-reboot | Hard reboot virtual machine
-[**GetInstance4**](VirtualMachineAPI.md#GetInstance4) | **Get** /core/virtual-machines/{vm_id}/start | Start virtual machine
-[**GetInstance5**](VirtualMachineAPI.md#GetInstance5) | **Get** /core/virtual-machines/{vm_id}/stop | Stop virtual machine
+[**GetInstanceHardReboot**](VirtualMachineAPI.md#GetInstanceHardReboot) | **Get** /core/virtual-machines/{vm_id}/hard-reboot | Hard reboot virtual machine
 [**GetInstanceHibernate**](VirtualMachineAPI.md#GetInstanceHibernate) | **Get** /core/virtual-machines/{vm_id}/hibernate | Hibernate virtual machine
 [**GetInstanceHibernateRestore**](VirtualMachineAPI.md#GetInstanceHibernateRestore) | **Get** /core/virtual-machines/{vm_id}/hibernate-restore | Restore virtual machine from hibernation
 [**GetInstanceLogs**](VirtualMachineAPI.md#GetInstanceLogs) | **Get** /core/virtual-machines/{vm_id}/logs | Get virtual machine logs
 [**GetInstanceMetrics**](VirtualMachineAPI.md#GetInstanceMetrics) | **Get** /core/virtual-machines/{vm_id}/metrics | Retrieve virtual machine performance metrics
-[**PostInstance**](VirtualMachineAPI.md#PostInstance) | **Post** /core/virtual-machines | Create virtual machines
-[**PostInstanceAttachFirewalls**](VirtualMachineAPI.md#PostInstanceAttachFirewalls) | **Post** /core/virtual-machines/{vm_id}/attach-firewalls | Attach firewalls to a virtual machine
+[**GetInstanceStart**](VirtualMachineAPI.md#GetInstanceStart) | **Get** /core/virtual-machines/{vm_id}/start | Start virtual machine
+[**GetInstanceStop**](VirtualMachineAPI.md#GetInstanceStop) | **Get** /core/virtual-machines/{vm_id}/stop | Stop virtual machine
+[**ListVirtualMachines**](VirtualMachineAPI.md#ListVirtualMachines) | **Get** /core/virtual-machines | List virtual machines
 [**PostInstanceLogs**](VirtualMachineAPI.md#PostInstanceLogs) | **Post** /core/virtual-machines/{vm_id}/logs | Request virtual machine logs
 [**PostInstanceResize**](VirtualMachineAPI.md#PostInstanceResize) | **Post** /core/virtual-machines/{vm_id}/resize | Resize virtual machine
 [**PostSecurityRule**](VirtualMachineAPI.md#PostSecurityRule) | **Post** /core/virtual-machines/{vm_id}/sg-rules | Add firewall rule to virtual machine
 [**PostSnapshots**](VirtualMachineAPI.md#PostSnapshots) | **Post** /core/virtual-machines/{vm_id}/snapshots | Create snapshot from a virtual machine
 [**PutLabels**](VirtualMachineAPI.md#PutLabels) | **Put** /core/virtual-machines/{vm_id}/label | Edit virtual machine labels
+[**RetrieveVirtualMachineDetails**](VirtualMachineAPI.md#RetrieveVirtualMachineDetails) | **Get** /core/virtual-machines/{vm_id} | Retrieve virtual machine details
+[**RetrieveVirtualMachinesAssociatedWithAContract**](VirtualMachineAPI.md#RetrieveVirtualMachinesAssociatedWithAContract) | **Get** /core/virtual-machines/contract/{contract_id}/virtual-machines | Retrieve virtual machines associated with a contract
 
 
 
-## DeleteInstance
+## AttachFirewallsToAVirtualMachine
 
-> ResponseModel DeleteInstance(ctx, vmId).Execute()
+> ResponseModel AttachFirewallsToAVirtualMachine(ctx, vmId).Payload(payload).Execute()
 
-Delete virtual machine
+Attach firewalls to a virtual machine
 
 
 
@@ -49,16 +49,17 @@ import (
 
 func main() {
 	vmId := int32(56) // int32 | 
+	payload := *openapiclient.NewAttachFirewallsToVMPayload([]int32{int32(123)}) // AttachFirewallsToVMPayload | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VirtualMachineAPI.DeleteInstance(context.Background(), vmId).Execute()
+	resp, r, err := apiClient.VirtualMachineAPI.AttachFirewallsToAVirtualMachine(context.Background(), vmId).Payload(payload).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.DeleteInstance``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.AttachFirewallsToAVirtualMachine``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `DeleteInstance`: ResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.DeleteInstance`: %v\n", resp)
+	// response from `AttachFirewallsToAVirtualMachine`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.AttachFirewallsToAVirtualMachine`: %v\n", resp)
 }
 ```
 
@@ -72,12 +73,13 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiDeleteInstanceRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiAttachFirewallsToAVirtualMachineRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
+ **payload** | [**AttachFirewallsToVMPayload**](AttachFirewallsToVMPayload.md) |  | 
 
 ### Return type
 
@@ -89,7 +91,73 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## CreateOneOrMoreVirtualMachines
+
+> CreateInstancesResponse CreateOneOrMoreVirtualMachines(ctx).Payload(payload).Execute()
+
+Create virtual machines
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	payload := *openapiclient.NewCreateInstancesPayload(int32(123), "EnvironmentName_example", "FlavorName_example", "KeyName_example", "Name_example") // CreateInstancesPayload | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.VirtualMachineAPI.CreateOneOrMoreVirtualMachines(context.Background()).Payload(payload).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.CreateOneOrMoreVirtualMachines``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CreateOneOrMoreVirtualMachines`: CreateInstancesResponse
+	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.CreateOneOrMoreVirtualMachines`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateOneOrMoreVirtualMachinesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **payload** | [**CreateInstancesPayload**](CreateInstancesPayload.md) |  | 
+
+### Return type
+
+[**CreateInstancesResponse**](CreateInstancesResponse.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -150,6 +218,76 @@ Other parameters are passed through a pointer to a apiDeleteSecurityRuleRequest 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
+
+
+### Return type
+
+[**ResponseModel**](ResponseModel.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## DeleteVirtualMachine
+
+> ResponseModel DeleteVirtualMachine(ctx, vmId).Execute()
+
+Delete virtual machine
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	vmId := int32(56) // int32 | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.VirtualMachineAPI.DeleteVirtualMachine(context.Background(), vmId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.DeleteVirtualMachine``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `DeleteVirtualMachine`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.DeleteVirtualMachine`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**vmId** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteVirtualMachineRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
 
 
 ### Return type
@@ -240,229 +378,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetContractInstances
+## GetInstanceHardReboot
 
-> ContractInstancesResponse GetContractInstances(ctx, contractId).Page(page).PageSize(pageSize).Search(search).Execute()
-
-Retrieve virtual machines associated with a contract
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-	contractId := int32(56) // int32 | 
-	page := "page_example" // string | Page Number (optional)
-	pageSize := "pageSize_example" // string | Data Per Page (optional)
-	search := "search_example" // string | Search By Instance ID or Name (optional)
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VirtualMachineAPI.GetContractInstances(context.Background(), contractId).Page(page).PageSize(pageSize).Search(search).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.GetContractInstances``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `GetContractInstances`: ContractInstancesResponse
-	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.GetContractInstances`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**contractId** | **int32** |  | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetContractInstancesRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **page** | **string** | Page Number | 
- **pageSize** | **string** | Data Per Page | 
- **search** | **string** | Search By Instance ID or Name | 
-
-### Return type
-
-[**ContractInstancesResponse**](ContractInstancesResponse.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## GetInstance
-
-> Instances GetInstance(ctx).Page(page).PageSize(pageSize).Search(search).Environment(environment).ExcludeFirewalls(excludeFirewalls).Execute()
-
-List virtual machines
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-	page := int32(56) // int32 |  (optional)
-	pageSize := int32(56) // int32 |  (optional)
-	search := "search_example" // string |  (optional)
-	environment := "environment_example" // string |  (optional)
-	excludeFirewalls := []int32{int32(123)} // []int32 | Comma-separated list of Security Group IDs to ignore instances attached (optional)
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VirtualMachineAPI.GetInstance(context.Background()).Page(page).PageSize(pageSize).Search(search).Environment(environment).ExcludeFirewalls(excludeFirewalls).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.GetInstance``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `GetInstance`: Instances
-	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.GetInstance`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetInstanceRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **page** | **int32** |  | 
- **pageSize** | **int32** |  | 
- **search** | **string** |  | 
- **environment** | **string** |  | 
- **excludeFirewalls** | **[]int32** | Comma-separated list of Security Group IDs to ignore instances attached | 
-
-### Return type
-
-[**Instances**](Instances.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## GetInstance2
-
-> Instance GetInstance2(ctx, vmId).Execute()
-
-Retrieve virtual machine details
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-	vmId := int32(56) // int32 | 
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VirtualMachineAPI.GetInstance2(context.Background(), vmId).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.GetInstance2``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `GetInstance2`: Instance
-	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.GetInstance2`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**vmId** | **int32** |  | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetInstance2Request struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-### Return type
-
-[**Instance**](Instance.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## GetInstance3
-
-> ResponseModel GetInstance3(ctx, vmId).Execute()
+> ResponseModel GetInstanceHardReboot(ctx, vmId).Execute()
 
 Hard reboot virtual machine
 
@@ -485,13 +403,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VirtualMachineAPI.GetInstance3(context.Background(), vmId).Execute()
+	resp, r, err := apiClient.VirtualMachineAPI.GetInstanceHardReboot(context.Background(), vmId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.GetInstance3``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.GetInstanceHardReboot``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetInstance3`: ResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.GetInstance3`: %v\n", resp)
+	// response from `GetInstanceHardReboot`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.GetInstanceHardReboot`: %v\n", resp)
 }
 ```
 
@@ -505,147 +423,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetInstance3Request struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-### Return type
-
-[**ResponseModel**](ResponseModel.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## GetInstance4
-
-> ResponseModel GetInstance4(ctx, vmId).Execute()
-
-Start virtual machine
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-	vmId := int32(56) // int32 | 
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VirtualMachineAPI.GetInstance4(context.Background(), vmId).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.GetInstance4``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `GetInstance4`: ResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.GetInstance4`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**vmId** | **int32** |  | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetInstance4Request struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-### Return type
-
-[**ResponseModel**](ResponseModel.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## GetInstance5
-
-> ResponseModel GetInstance5(ctx, vmId).Execute()
-
-Stop virtual machine
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-	vmId := int32(56) // int32 | 
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VirtualMachineAPI.GetInstance5(context.Background(), vmId).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.GetInstance5``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `GetInstance5`: ResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.GetInstance5`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**vmId** | **int32** |  | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetInstance5Request struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetInstanceHardRebootRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -954,77 +732,11 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## PostInstance
+## GetInstanceStart
 
-> CreateInstancesResponse PostInstance(ctx).Payload(payload).Execute()
+> ResponseModel GetInstanceStart(ctx, vmId).Execute()
 
-Create virtual machines
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-	payload := *openapiclient.NewCreateInstancesPayload(int32(123), "EnvironmentName_example", "FlavorName_example", "KeyName_example", "Name_example") // CreateInstancesPayload | 
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VirtualMachineAPI.PostInstance(context.Background()).Payload(payload).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.PostInstance``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `PostInstance`: CreateInstancesResponse
-	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.PostInstance`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiPostInstanceRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **payload** | [**CreateInstancesPayload**](CreateInstancesPayload.md) |  | 
-
-### Return type
-
-[**CreateInstancesResponse**](CreateInstancesResponse.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## PostInstanceAttachFirewalls
-
-> ResponseModel PostInstanceAttachFirewalls(ctx, vmId).Payload(payload).Execute()
-
-Attach firewalls to a virtual machine
+Start virtual machine
 
 
 
@@ -1042,17 +754,16 @@ import (
 
 func main() {
 	vmId := int32(56) // int32 | 
-	payload := *openapiclient.NewAttachFirewallsToVMPayload([]int32{int32(123)}) // AttachFirewallsToVMPayload | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VirtualMachineAPI.PostInstanceAttachFirewalls(context.Background(), vmId).Payload(payload).Execute()
+	resp, r, err := apiClient.VirtualMachineAPI.GetInstanceStart(context.Background(), vmId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.PostInstanceAttachFirewalls``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.GetInstanceStart``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `PostInstanceAttachFirewalls`: ResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.PostInstanceAttachFirewalls`: %v\n", resp)
+	// response from `GetInstanceStart`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.GetInstanceStart`: %v\n", resp)
 }
 ```
 
@@ -1066,13 +777,12 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiPostInstanceAttachFirewallsRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetInstanceStartRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **payload** | [**AttachFirewallsToVMPayload**](AttachFirewallsToVMPayload.md) |  | 
 
 ### Return type
 
@@ -1084,7 +794,151 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetInstanceStop
+
+> ResponseModel GetInstanceStop(ctx, vmId).Execute()
+
+Stop virtual machine
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	vmId := int32(56) // int32 | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.VirtualMachineAPI.GetInstanceStop(context.Background(), vmId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.GetInstanceStop``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetInstanceStop`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.GetInstanceStop`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**vmId** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetInstanceStopRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**ResponseModel**](ResponseModel.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListVirtualMachines
+
+> Instances ListVirtualMachines(ctx).Page(page).PageSize(pageSize).Search(search).Environment(environment).ExcludeFirewalls(excludeFirewalls).Execute()
+
+List virtual machines
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	page := int32(56) // int32 |  (optional)
+	pageSize := int32(56) // int32 |  (optional)
+	search := "search_example" // string |  (optional)
+	environment := "environment_example" // string |  (optional)
+	excludeFirewalls := []int32{int32(123)} // []int32 | Comma-separated list of Security Group IDs to ignore instances attached (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.VirtualMachineAPI.ListVirtualMachines(context.Background()).Page(page).PageSize(pageSize).Search(search).Environment(environment).ExcludeFirewalls(excludeFirewalls).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.ListVirtualMachines``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListVirtualMachines`: Instances
+	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.ListVirtualMachines`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListVirtualMachinesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page** | **int32** |  | 
+ **pageSize** | **int32** |  | 
+ **search** | **string** |  | 
+ **environment** | **string** |  | 
+ **excludeFirewalls** | **[]int32** | Comma-separated list of Security Group IDs to ignore instances attached | 
+
+### Return type
+
+[**Instances**](Instances.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -1445,6 +1299,152 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## RetrieveVirtualMachineDetails
+
+> Instance RetrieveVirtualMachineDetails(ctx, vmId).Execute()
+
+Retrieve virtual machine details
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	vmId := int32(56) // int32 | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.VirtualMachineAPI.RetrieveVirtualMachineDetails(context.Background(), vmId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.RetrieveVirtualMachineDetails``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `RetrieveVirtualMachineDetails`: Instance
+	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.RetrieveVirtualMachineDetails`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**vmId** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRetrieveVirtualMachineDetailsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**Instance**](Instance.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## RetrieveVirtualMachinesAssociatedWithAContract
+
+> ContractInstancesResponse RetrieveVirtualMachinesAssociatedWithAContract(ctx, contractId).Page(page).PageSize(pageSize).Search(search).Execute()
+
+Retrieve virtual machines associated with a contract
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	contractId := int32(56) // int32 | 
+	page := "page_example" // string | Page Number (optional)
+	pageSize := "pageSize_example" // string | Data Per Page (optional)
+	search := "search_example" // string | Search By Instance ID or Name (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.VirtualMachineAPI.RetrieveVirtualMachinesAssociatedWithAContract(context.Background(), contractId).Page(page).PageSize(pageSize).Search(search).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.RetrieveVirtualMachinesAssociatedWithAContract``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `RetrieveVirtualMachinesAssociatedWithAContract`: ContractInstancesResponse
+	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.RetrieveVirtualMachinesAssociatedWithAContract`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**contractId** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRetrieveVirtualMachinesAssociatedWithAContractRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **page** | **string** | Page Number | 
+ **pageSize** | **string** | Data Per Page | 
+ **search** | **string** | Search By Instance ID or Name | 
+
+### Return type
+
+[**ContractInstancesResponse**](ContractInstancesResponse.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

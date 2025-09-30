@@ -115,15 +115,15 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
+	// GetVNCURL request
+	GetVNCURL(ctx context.Context, vmId int, jobId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetVncUrl request
-	GetVncUrl(ctx context.Context, vmId int, jobId int, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetVncUrl2 request
-	GetVncUrl2(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetVncUrl(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) GetVncUrl(ctx context.Context, vmId int, jobId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetVncUrlRequest(c.Server, vmId, jobId)
+func (c *Client) GetVNCURL(ctx context.Context, vmId int, jobId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVNCURLRequest(c.Server, vmId, jobId)
 	if err != nil {
 		return nil, err
 	}
@@ -134,8 +134,8 @@ func (c *Client) GetVncUrl(ctx context.Context, vmId int, jobId int, reqEditors 
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetVncUrl2(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetVncUrl2Request(c.Server, vmId)
+func (c *Client) GetVncUrl(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVncUrlRequest(c.Server, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -146,8 +146,8 @@ func (c *Client) GetVncUrl2(ctx context.Context, vmId int, reqEditors ...Request
 	return c.Client.Do(req)
 }
 
-// NewGetVncUrlRequest generates requests for GetVncUrl
-func NewGetVncUrlRequest(server string, vmId int, jobId int) (*http.Request, error) {
+// NewGetVNCURLRequest generates requests for GetVNCURL
+func NewGetVNCURLRequest(server string, vmId int, jobId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -187,8 +187,8 @@ func NewGetVncUrlRequest(server string, vmId int, jobId int) (*http.Request, err
 	return req, nil
 }
 
-// NewGetVncUrl2Request generates requests for GetVncUrl2
-func NewGetVncUrl2Request(server string, vmId int) (*http.Request, error) {
+// NewGetVncUrlRequest generates requests for GetVncUrl
+func NewGetVncUrlRequest(server string, vmId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -264,17 +264,42 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// GetVncUrlWithResponse request
-	GetVncUrlWithResponse(ctx context.Context, vmId int, jobId int, reqEditors ...RequestEditorFn) (*GetVncUrlResponse, error)
+	// GetVNCURLWithResponse request
+	GetVNCURLWithResponse(ctx context.Context, vmId int, jobId int, reqEditors ...RequestEditorFn) (*GetVNCURLResponse, error)
 
-	// GetVncUrl2WithResponse request
-	GetVncUrl2WithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetVncUrl2Response, error)
+	// GetVncUrlWithResponse request
+	GetVncUrlWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetVncUrlResponse, error)
+}
+
+type GetVNCURLResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *VNCURL
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r GetVNCURLResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetVNCURLResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
 }
 
 type GetVncUrlResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *VNCURL
+	JSON200      *RequestConsole
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 	JSON404      *ErrorResponseModel
@@ -296,58 +321,33 @@ func (r GetVncUrlResponse) StatusCode() int {
 	return 0
 }
 
-type GetVncUrl2Response struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *RequestConsole
-	JSON400      *ErrorResponseModel
-	JSON401      *ErrorResponseModel
-	JSON404      *ErrorResponseModel
-}
-
-// Status returns HTTPResponse.Status
-func (r GetVncUrl2Response) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
+// GetVNCURLWithResponse request returning *GetVNCURLResponse
+func (c *ClientWithResponses) GetVNCURLWithResponse(ctx context.Context, vmId int, jobId int, reqEditors ...RequestEditorFn) (*GetVNCURLResponse, error) {
+	rsp, err := c.GetVNCURL(ctx, vmId, jobId, reqEditors...)
+	if err != nil {
+		return nil, err
 	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetVncUrl2Response) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
+	return ParseGetVNCURLResponse(rsp)
 }
 
 // GetVncUrlWithResponse request returning *GetVncUrlResponse
-func (c *ClientWithResponses) GetVncUrlWithResponse(ctx context.Context, vmId int, jobId int, reqEditors ...RequestEditorFn) (*GetVncUrlResponse, error) {
-	rsp, err := c.GetVncUrl(ctx, vmId, jobId, reqEditors...)
+func (c *ClientWithResponses) GetVncUrlWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetVncUrlResponse, error) {
+	rsp, err := c.GetVncUrl(ctx, vmId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseGetVncUrlResponse(rsp)
 }
 
-// GetVncUrl2WithResponse request returning *GetVncUrl2Response
-func (c *ClientWithResponses) GetVncUrl2WithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetVncUrl2Response, error) {
-	rsp, err := c.GetVncUrl2(ctx, vmId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetVncUrl2Response(rsp)
-}
-
-// ParseGetVncUrlResponse parses an HTTP response from a GetVncUrlWithResponse call
-func ParseGetVncUrlResponse(rsp *http.Response) (*GetVncUrlResponse, error) {
+// ParseGetVNCURLResponse parses an HTTP response from a GetVNCURLWithResponse call
+func ParseGetVNCURLResponse(rsp *http.Response) (*GetVNCURLResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetVncUrlResponse{
+	response := &GetVNCURLResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -386,15 +386,15 @@ func ParseGetVncUrlResponse(rsp *http.Response) (*GetVncUrlResponse, error) {
 	return response, nil
 }
 
-// ParseGetVncUrl2Response parses an HTTP response from a GetVncUrl2WithResponse call
-func ParseGetVncUrl2Response(rsp *http.Response) (*GetVncUrl2Response, error) {
+// ParseGetVncUrlResponse parses an HTTP response from a GetVncUrlWithResponse call
+func ParseGetVncUrlResponse(rsp *http.Response) (*GetVncUrlResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetVncUrl2Response{
+	response := &GetVncUrlResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

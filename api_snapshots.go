@@ -195,27 +195,27 @@ func (a *SnapshotsAPIService) CreateANewCustomImageExecute(r ApiCreateANewCustom
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiDeleteSnapshotRequest struct {
+type ApiDeleteAnExistingSnapshotRequest struct {
 	ctx        context.Context
 	ApiService *SnapshotsAPIService
 	id         int32
 }
 
-func (r ApiDeleteSnapshotRequest) Execute() (*ResponseModel, *http.Response, error) {
-	return r.ApiService.DeleteSnapshotExecute(r)
+func (r ApiDeleteAnExistingSnapshotRequest) Execute() (*ResponseModel, *http.Response, error) {
+	return r.ApiService.DeleteAnExistingSnapshotExecute(r)
 }
 
 /*
-DeleteSnapshot Delete snapshot
+DeleteAnExistingSnapshot Delete snapshot
 
 Delete a snapshot. Provide the snapshot ID in the path to delete the specified snapshot. If the snapshot is connected with an image, that image will also bedeleted and the deleted image ID will be returned in the success message response.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param id
-	@return ApiDeleteSnapshotRequest
+	@return ApiDeleteAnExistingSnapshotRequest
 */
-func (a *SnapshotsAPIService) DeleteSnapshot(ctx context.Context, id int32) ApiDeleteSnapshotRequest {
-	return ApiDeleteSnapshotRequest{
+func (a *SnapshotsAPIService) DeleteAnExistingSnapshot(ctx context.Context, id int32) ApiDeleteAnExistingSnapshotRequest {
+	return ApiDeleteAnExistingSnapshotRequest{
 		ApiService: a,
 		ctx:        ctx,
 		id:         id,
@@ -225,7 +225,7 @@ func (a *SnapshotsAPIService) DeleteSnapshot(ctx context.Context, id int32) ApiD
 // Execute executes the request
 //
 //	@return ResponseModel
-func (a *SnapshotsAPIService) DeleteSnapshotExecute(r ApiDeleteSnapshotRequest) (*ResponseModel, *http.Response, error) {
+func (a *SnapshotsAPIService) DeleteAnExistingSnapshotExecute(r ApiDeleteAnExistingSnapshotRequest) (*ResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
@@ -233,7 +233,7 @@ func (a *SnapshotsAPIService) DeleteSnapshotExecute(r ApiDeleteSnapshotRequest) 
 		localVarReturnValue *ResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SnapshotsAPIService.DeleteSnapshot")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SnapshotsAPIService.DeleteAnExistingSnapshot")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -508,27 +508,178 @@ func (a *SnapshotsAPIService) FetchSnapshotNameAvailabilityExecute(r ApiFetchSna
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetSnapshotRequest struct {
+type ApiRestoreASnapshotRequest struct {
+	ctx        context.Context
+	ApiService *SnapshotsAPIService
+	id         int32
+	payload    *SnapshotRestoreRequest
+}
+
+func (r ApiRestoreASnapshotRequest) Payload(payload SnapshotRestoreRequest) ApiRestoreASnapshotRequest {
+	r.payload = &payload
+	return r
+}
+
+func (r ApiRestoreASnapshotRequest) Execute() (*Instance, *http.Response, error) {
+	return r.ApiService.RestoreASnapshotExecute(r)
+}
+
+/*
+RestoreASnapshot Restore a snapshot
+
+Restore a snapshot.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id
+	@return ApiRestoreASnapshotRequest
+*/
+func (a *SnapshotsAPIService) RestoreASnapshot(ctx context.Context, id int32) ApiRestoreASnapshotRequest {
+	return ApiRestoreASnapshotRequest{
+		ApiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+// Execute executes the request
+//
+//	@return Instance
+func (a *SnapshotsAPIService) RestoreASnapshotExecute(r ApiRestoreASnapshotRequest) (*Instance, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Instance
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SnapshotsAPIService.RestoreASnapshot")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/core/snapshots/{id}/restore"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.payload == nil {
+		return localVarReturnValue, nil, reportError("payload is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.payload
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiRetrieveAnExistingSnapshotRequest struct {
 	ctx        context.Context
 	ApiService *SnapshotsAPIService
 	id         int32
 }
 
-func (r ApiGetSnapshotRequest) Execute() (*SnapshotRetrieve, *http.Response, error) {
-	return r.ApiService.GetSnapshotExecute(r)
+func (r ApiRetrieveAnExistingSnapshotRequest) Execute() (*SnapshotRetrieve, *http.Response, error) {
+	return r.ApiService.RetrieveAnExistingSnapshotExecute(r)
 }
 
 /*
-GetSnapshot Retrieve a snapshot
+RetrieveAnExistingSnapshot Retrieve a snapshot
 
 Retrieve a snapshot.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param id
-	@return ApiGetSnapshotRequest
+	@return ApiRetrieveAnExistingSnapshotRequest
 */
-func (a *SnapshotsAPIService) GetSnapshot(ctx context.Context, id int32) ApiGetSnapshotRequest {
-	return ApiGetSnapshotRequest{
+func (a *SnapshotsAPIService) RetrieveAnExistingSnapshot(ctx context.Context, id int32) ApiRetrieveAnExistingSnapshotRequest {
+	return ApiRetrieveAnExistingSnapshotRequest{
 		ApiService: a,
 		ctx:        ctx,
 		id:         id,
@@ -538,7 +689,7 @@ func (a *SnapshotsAPIService) GetSnapshot(ctx context.Context, id int32) ApiGetS
 // Execute executes the request
 //
 //	@return SnapshotRetrieve
-func (a *SnapshotsAPIService) GetSnapshotExecute(r ApiGetSnapshotRequest) (*SnapshotRetrieve, *http.Response, error) {
+func (a *SnapshotsAPIService) RetrieveAnExistingSnapshotExecute(r ApiRetrieveAnExistingSnapshotRequest) (*SnapshotRetrieve, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -546,7 +697,7 @@ func (a *SnapshotsAPIService) GetSnapshotExecute(r ApiGetSnapshotRequest) (*Snap
 		localVarReturnValue *SnapshotRetrieve
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SnapshotsAPIService.GetSnapshot")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SnapshotsAPIService.RetrieveAnExistingSnapshot")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -648,7 +799,7 @@ func (a *SnapshotsAPIService) GetSnapshotExecute(r ApiGetSnapshotRequest) (*Snap
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetSnapshotsRequest struct {
+type ApiRetrievesAListOfSnapshotsRequest struct {
 	ctx        context.Context
 	ApiService *SnapshotsAPIService
 	page       *string
@@ -657,37 +808,37 @@ type ApiGetSnapshotsRequest struct {
 }
 
 // Page Number
-func (r ApiGetSnapshotsRequest) Page(page string) ApiGetSnapshotsRequest {
+func (r ApiRetrievesAListOfSnapshotsRequest) Page(page string) ApiRetrievesAListOfSnapshotsRequest {
 	r.page = &page
 	return r
 }
 
 // Data Per Page
-func (r ApiGetSnapshotsRequest) PageSize(pageSize string) ApiGetSnapshotsRequest {
+func (r ApiRetrievesAListOfSnapshotsRequest) PageSize(pageSize string) ApiRetrievesAListOfSnapshotsRequest {
 	r.pageSize = &pageSize
 	return r
 }
 
 // Search By Snapshot ID or Name
-func (r ApiGetSnapshotsRequest) Search(search string) ApiGetSnapshotsRequest {
+func (r ApiRetrievesAListOfSnapshotsRequest) Search(search string) ApiRetrievesAListOfSnapshotsRequest {
 	r.search = &search
 	return r
 }
 
-func (r ApiGetSnapshotsRequest) Execute() (*Snapshots, *http.Response, error) {
-	return r.ApiService.GetSnapshotsExecute(r)
+func (r ApiRetrievesAListOfSnapshotsRequest) Execute() (*Snapshots, *http.Response, error) {
+	return r.ApiService.RetrievesAListOfSnapshotsExecute(r)
 }
 
 /*
-GetSnapshots Retrieve list of snapshots with pagination
+RetrievesAListOfSnapshots Retrieve list of snapshots with pagination
 
-Retrieves a list of snapshot, providing details such as snapshot name, timestamp, VM ID, and other relevant information.
+Retrieves a list of snapshots, providing details such as snapshot name, timestamp, VM ID, and other relevant information.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetSnapshotsRequest
+	@return ApiRetrievesAListOfSnapshotsRequest
 */
-func (a *SnapshotsAPIService) GetSnapshots(ctx context.Context) ApiGetSnapshotsRequest {
-	return ApiGetSnapshotsRequest{
+func (a *SnapshotsAPIService) RetrievesAListOfSnapshots(ctx context.Context) ApiRetrievesAListOfSnapshotsRequest {
+	return ApiRetrievesAListOfSnapshotsRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -696,7 +847,7 @@ func (a *SnapshotsAPIService) GetSnapshots(ctx context.Context) ApiGetSnapshotsR
 // Execute executes the request
 //
 //	@return Snapshots
-func (a *SnapshotsAPIService) GetSnapshotsExecute(r ApiGetSnapshotsRequest) (*Snapshots, *http.Response, error) {
+func (a *SnapshotsAPIService) RetrievesAListOfSnapshotsExecute(r ApiRetrievesAListOfSnapshotsRequest) (*Snapshots, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -704,7 +855,7 @@ func (a *SnapshotsAPIService) GetSnapshotsExecute(r ApiGetSnapshotsRequest) (*Sn
 		localVarReturnValue *Snapshots
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SnapshotsAPIService.GetSnapshots")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SnapshotsAPIService.RetrievesAListOfSnapshots")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -741,157 +892,6 @@ func (a *SnapshotsAPIService) GetSnapshotsExecute(r ApiGetSnapshotsRequest) (*Sn
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiPostSnapshotRestoreRequest struct {
-	ctx        context.Context
-	ApiService *SnapshotsAPIService
-	id         int32
-	payload    *SnapshotRestoreRequest
-}
-
-func (r ApiPostSnapshotRestoreRequest) Payload(payload SnapshotRestoreRequest) ApiPostSnapshotRestoreRequest {
-	r.payload = &payload
-	return r
-}
-
-func (r ApiPostSnapshotRestoreRequest) Execute() (*Instance, *http.Response, error) {
-	return r.ApiService.PostSnapshotRestoreExecute(r)
-}
-
-/*
-PostSnapshotRestore Restore a snapshot
-
-Restore a snapshot.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param id
-	@return ApiPostSnapshotRestoreRequest
-*/
-func (a *SnapshotsAPIService) PostSnapshotRestore(ctx context.Context, id int32) ApiPostSnapshotRestoreRequest {
-	return ApiPostSnapshotRestoreRequest{
-		ApiService: a,
-		ctx:        ctx,
-		id:         id,
-	}
-}
-
-// Execute executes the request
-//
-//	@return Instance
-func (a *SnapshotsAPIService) PostSnapshotRestoreExecute(r ApiPostSnapshotRestoreRequest) (*Instance, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodPost
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *Instance
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SnapshotsAPIService.PostSnapshotRestore")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/core/snapshots/{id}/restore"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-	if r.payload == nil {
-		return localVarReturnValue, nil, reportError("payload is required and must be specified")
-	}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	// body params
-	localVarPostBody = r.payload
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {

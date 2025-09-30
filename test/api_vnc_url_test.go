@@ -23,14 +23,14 @@ func Test_hyperstack_VncUrlAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test VncUrlAPIService GetVncUrl", func(t *testing.T) {
+	t.Run("Test VncUrlAPIService GetVNCURL", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var vmId int32
 		var jobId int32
 
-		resp, httpRes, err := apiClient.VncUrlAPI.GetVncUrl(context.Background(), vmId, jobId).Execute()
+		resp, httpRes, err := apiClient.VncUrlAPI.GetVNCURL(context.Background(), vmId, jobId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -38,13 +38,13 @@ func Test_hyperstack_VncUrlAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test VncUrlAPIService GetVncUrl2", func(t *testing.T) {
+	t.Run("Test VncUrlAPIService GetVncUrl", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var vmId int32
 
-		resp, httpRes, err := apiClient.VncUrlAPI.GetVncUrl2(context.Background(), vmId).Execute()
+		resp, httpRes, err := apiClient.VncUrlAPI.GetVncUrl(context.Background(), vmId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

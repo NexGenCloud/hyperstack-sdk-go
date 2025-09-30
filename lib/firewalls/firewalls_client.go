@@ -187,19 +187,19 @@ type SecurityGroupRuleFields struct {
 	Status         *string    `json:"status,omitempty"`
 }
 
-// GetSecurityGroupParams defines parameters for GetSecurityGroup.
-type GetSecurityGroupParams struct {
+// ListExistingFirewallsParams defines parameters for ListExistingFirewalls.
+type ListExistingFirewallsParams struct {
 	Page        *int    `form:"page,omitempty" json:"page,omitempty"`
 	PageSize    *int    `form:"pageSize,omitempty" json:"pageSize,omitempty"`
 	Search      *string `form:"search,omitempty" json:"search,omitempty"`
 	Environment *string `form:"environment,omitempty" json:"environment,omitempty"`
 }
 
-// PostSecurityGroupJSONRequestBody defines body for PostSecurityGroup for application/json ContentType.
-type PostSecurityGroupJSONRequestBody = CreateFirewallPayload
+// CreateANewFirewallJSONRequestBody defines body for CreateANewFirewall for application/json ContentType.
+type CreateANewFirewallJSONRequestBody = CreateFirewallPayload
 
-// PostSecurityGroupRulesJSONRequestBody defines body for PostSecurityGroupRules for application/json ContentType.
-type PostSecurityGroupRulesJSONRequestBody = CreateFirewallRulePayload
+// AddFirewallRuleToAnExistingFirewallJSONRequestBody defines body for AddFirewallRuleToAnExistingFirewall for application/json ContentType.
+type AddFirewallRuleToAnExistingFirewallJSONRequestBody = CreateFirewallRulePayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -274,31 +274,31 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// GetSecurityGroup request
-	GetSecurityGroup(ctx context.Context, params *GetSecurityGroupParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListExistingFirewalls request
+	ListExistingFirewalls(ctx context.Context, params *ListExistingFirewallsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostSecurityGroupWithBody request with any body
-	PostSecurityGroupWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateANewFirewallWithBody request with any body
+	CreateANewFirewallWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PostSecurityGroup(ctx context.Context, body PostSecurityGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateANewFirewall(ctx context.Context, body CreateANewFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostSecurityGroupRulesWithBody request with any body
-	PostSecurityGroupRulesWithBody(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// AddFirewallRuleToAnExistingFirewallWithBody request with any body
+	AddFirewallRuleToAnExistingFirewallWithBody(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PostSecurityGroupRules(ctx context.Context, firewallId int, body PostSecurityGroupRulesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	AddFirewallRuleToAnExistingFirewall(ctx context.Context, firewallId int, body AddFirewallRuleToAnExistingFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteSecurityGroupRuleDelete request
-	DeleteSecurityGroupRuleDelete(ctx context.Context, firewallId int, firewallRuleId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteFirewallRulesFromFirewall request
+	DeleteFirewallRulesFromFirewall(ctx context.Context, firewallId int, firewallRuleId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteSecurityGroupDetails request
-	DeleteSecurityGroupDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteExistingFirewall request
+	DeleteExistingFirewall(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetSecurityGroupDetails request
-	GetSecurityGroupDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RetrieveTheDetailsOfAnExistingFirewall request
+	RetrieveTheDetailsOfAnExistingFirewall(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) GetSecurityGroup(ctx context.Context, params *GetSecurityGroupParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetSecurityGroupRequest(c.Server, params)
+func (c *Client) ListExistingFirewalls(ctx context.Context, params *ListExistingFirewallsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListExistingFirewallsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -309,8 +309,8 @@ func (c *Client) GetSecurityGroup(ctx context.Context, params *GetSecurityGroupP
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostSecurityGroupWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostSecurityGroupRequestWithBody(c.Server, contentType, body)
+func (c *Client) CreateANewFirewallWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateANewFirewallRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -321,8 +321,8 @@ func (c *Client) PostSecurityGroupWithBody(ctx context.Context, contentType stri
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostSecurityGroup(ctx context.Context, body PostSecurityGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostSecurityGroupRequest(c.Server, body)
+func (c *Client) CreateANewFirewall(ctx context.Context, body CreateANewFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateANewFirewallRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -333,8 +333,8 @@ func (c *Client) PostSecurityGroup(ctx context.Context, body PostSecurityGroupJS
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostSecurityGroupRulesWithBody(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostSecurityGroupRulesRequestWithBody(c.Server, firewallId, contentType, body)
+func (c *Client) AddFirewallRuleToAnExistingFirewallWithBody(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddFirewallRuleToAnExistingFirewallRequestWithBody(c.Server, firewallId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -345,8 +345,8 @@ func (c *Client) PostSecurityGroupRulesWithBody(ctx context.Context, firewallId 
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostSecurityGroupRules(ctx context.Context, firewallId int, body PostSecurityGroupRulesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostSecurityGroupRulesRequest(c.Server, firewallId, body)
+func (c *Client) AddFirewallRuleToAnExistingFirewall(ctx context.Context, firewallId int, body AddFirewallRuleToAnExistingFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddFirewallRuleToAnExistingFirewallRequest(c.Server, firewallId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -357,8 +357,8 @@ func (c *Client) PostSecurityGroupRules(ctx context.Context, firewallId int, bod
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteSecurityGroupRuleDelete(ctx context.Context, firewallId int, firewallRuleId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteSecurityGroupRuleDeleteRequest(c.Server, firewallId, firewallRuleId)
+func (c *Client) DeleteFirewallRulesFromFirewall(ctx context.Context, firewallId int, firewallRuleId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteFirewallRulesFromFirewallRequest(c.Server, firewallId, firewallRuleId)
 	if err != nil {
 		return nil, err
 	}
@@ -369,8 +369,8 @@ func (c *Client) DeleteSecurityGroupRuleDelete(ctx context.Context, firewallId i
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteSecurityGroupDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteSecurityGroupDetailsRequest(c.Server, id)
+func (c *Client) DeleteExistingFirewall(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteExistingFirewallRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -381,8 +381,8 @@ func (c *Client) DeleteSecurityGroupDetails(ctx context.Context, id int, reqEdit
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetSecurityGroupDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetSecurityGroupDetailsRequest(c.Server, id)
+func (c *Client) RetrieveTheDetailsOfAnExistingFirewall(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveTheDetailsOfAnExistingFirewallRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -393,8 +393,8 @@ func (c *Client) GetSecurityGroupDetails(ctx context.Context, id int, reqEditors
 	return c.Client.Do(req)
 }
 
-// NewGetSecurityGroupRequest generates requests for GetSecurityGroup
-func NewGetSecurityGroupRequest(server string, params *GetSecurityGroupParams) (*http.Request, error) {
+// NewListExistingFirewallsRequest generates requests for ListExistingFirewalls
+func NewListExistingFirewallsRequest(server string, params *ListExistingFirewallsParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -490,19 +490,19 @@ func NewGetSecurityGroupRequest(server string, params *GetSecurityGroupParams) (
 	return req, nil
 }
 
-// NewPostSecurityGroupRequest calls the generic PostSecurityGroup builder with application/json body
-func NewPostSecurityGroupRequest(server string, body PostSecurityGroupJSONRequestBody) (*http.Request, error) {
+// NewCreateANewFirewallRequest calls the generic CreateANewFirewall builder with application/json body
+func NewCreateANewFirewallRequest(server string, body CreateANewFirewallJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPostSecurityGroupRequestWithBody(server, "application/json", bodyReader)
+	return NewCreateANewFirewallRequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewPostSecurityGroupRequestWithBody generates requests for PostSecurityGroup with any type of body
-func NewPostSecurityGroupRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewCreateANewFirewallRequestWithBody generates requests for CreateANewFirewall with any type of body
+func NewCreateANewFirewallRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -530,19 +530,19 @@ func NewPostSecurityGroupRequestWithBody(server string, contentType string, body
 	return req, nil
 }
 
-// NewPostSecurityGroupRulesRequest calls the generic PostSecurityGroupRules builder with application/json body
-func NewPostSecurityGroupRulesRequest(server string, firewallId int, body PostSecurityGroupRulesJSONRequestBody) (*http.Request, error) {
+// NewAddFirewallRuleToAnExistingFirewallRequest calls the generic AddFirewallRuleToAnExistingFirewall builder with application/json body
+func NewAddFirewallRuleToAnExistingFirewallRequest(server string, firewallId int, body AddFirewallRuleToAnExistingFirewallJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPostSecurityGroupRulesRequestWithBody(server, firewallId, "application/json", bodyReader)
+	return NewAddFirewallRuleToAnExistingFirewallRequestWithBody(server, firewallId, "application/json", bodyReader)
 }
 
-// NewPostSecurityGroupRulesRequestWithBody generates requests for PostSecurityGroupRules with any type of body
-func NewPostSecurityGroupRulesRequestWithBody(server string, firewallId int, contentType string, body io.Reader) (*http.Request, error) {
+// NewAddFirewallRuleToAnExistingFirewallRequestWithBody generates requests for AddFirewallRuleToAnExistingFirewall with any type of body
+func NewAddFirewallRuleToAnExistingFirewallRequestWithBody(server string, firewallId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -577,8 +577,8 @@ func NewPostSecurityGroupRulesRequestWithBody(server string, firewallId int, con
 	return req, nil
 }
 
-// NewDeleteSecurityGroupRuleDeleteRequest generates requests for DeleteSecurityGroupRuleDelete
-func NewDeleteSecurityGroupRuleDeleteRequest(server string, firewallId int, firewallRuleId int) (*http.Request, error) {
+// NewDeleteFirewallRulesFromFirewallRequest generates requests for DeleteFirewallRulesFromFirewall
+func NewDeleteFirewallRulesFromFirewallRequest(server string, firewallId int, firewallRuleId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -618,8 +618,8 @@ func NewDeleteSecurityGroupRuleDeleteRequest(server string, firewallId int, fire
 	return req, nil
 }
 
-// NewDeleteSecurityGroupDetailsRequest generates requests for DeleteSecurityGroupDetails
-func NewDeleteSecurityGroupDetailsRequest(server string, id int) (*http.Request, error) {
+// NewDeleteExistingFirewallRequest generates requests for DeleteExistingFirewall
+func NewDeleteExistingFirewallRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -652,8 +652,8 @@ func NewDeleteSecurityGroupDetailsRequest(server string, id int) (*http.Request,
 	return req, nil
 }
 
-// NewGetSecurityGroupDetailsRequest generates requests for GetSecurityGroupDetails
-func NewGetSecurityGroupDetailsRequest(server string, id int) (*http.Request, error) {
+// NewRetrieveTheDetailsOfAnExistingFirewallRequest generates requests for RetrieveTheDetailsOfAnExistingFirewall
+func NewRetrieveTheDetailsOfAnExistingFirewallRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -729,30 +729,30 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// GetSecurityGroupWithResponse request
-	GetSecurityGroupWithResponse(ctx context.Context, params *GetSecurityGroupParams, reqEditors ...RequestEditorFn) (*GetSecurityGroupResponse, error)
+	// ListExistingFirewallsWithResponse request
+	ListExistingFirewallsWithResponse(ctx context.Context, params *ListExistingFirewallsParams, reqEditors ...RequestEditorFn) (*ListExistingFirewallsResponse, error)
 
-	// PostSecurityGroupWithBodyWithResponse request with any body
-	PostSecurityGroupWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostSecurityGroupResponse, error)
+	// CreateANewFirewallWithBodyWithResponse request with any body
+	CreateANewFirewallWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateANewFirewallResponse, error)
 
-	PostSecurityGroupWithResponse(ctx context.Context, body PostSecurityGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*PostSecurityGroupResponse, error)
+	CreateANewFirewallWithResponse(ctx context.Context, body CreateANewFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateANewFirewallResponse, error)
 
-	// PostSecurityGroupRulesWithBodyWithResponse request with any body
-	PostSecurityGroupRulesWithBodyWithResponse(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostSecurityGroupRulesResponse, error)
+	// AddFirewallRuleToAnExistingFirewallWithBodyWithResponse request with any body
+	AddFirewallRuleToAnExistingFirewallWithBodyWithResponse(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddFirewallRuleToAnExistingFirewallResponse, error)
 
-	PostSecurityGroupRulesWithResponse(ctx context.Context, firewallId int, body PostSecurityGroupRulesJSONRequestBody, reqEditors ...RequestEditorFn) (*PostSecurityGroupRulesResponse, error)
+	AddFirewallRuleToAnExistingFirewallWithResponse(ctx context.Context, firewallId int, body AddFirewallRuleToAnExistingFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*AddFirewallRuleToAnExistingFirewallResponse, error)
 
-	// DeleteSecurityGroupRuleDeleteWithResponse request
-	DeleteSecurityGroupRuleDeleteWithResponse(ctx context.Context, firewallId int, firewallRuleId int, reqEditors ...RequestEditorFn) (*DeleteSecurityGroupRuleDeleteResponse, error)
+	// DeleteFirewallRulesFromFirewallWithResponse request
+	DeleteFirewallRulesFromFirewallWithResponse(ctx context.Context, firewallId int, firewallRuleId int, reqEditors ...RequestEditorFn) (*DeleteFirewallRulesFromFirewallResponse, error)
 
-	// DeleteSecurityGroupDetailsWithResponse request
-	DeleteSecurityGroupDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteSecurityGroupDetailsResponse, error)
+	// DeleteExistingFirewallWithResponse request
+	DeleteExistingFirewallWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteExistingFirewallResponse, error)
 
-	// GetSecurityGroupDetailsWithResponse request
-	GetSecurityGroupDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*GetSecurityGroupDetailsResponse, error)
+	// RetrieveTheDetailsOfAnExistingFirewallWithResponse request
+	RetrieveTheDetailsOfAnExistingFirewallWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveTheDetailsOfAnExistingFirewallResponse, error)
 }
 
-type GetSecurityGroupResponse struct {
+type ListExistingFirewallsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *FirewallsListResponse
@@ -762,7 +762,7 @@ type GetSecurityGroupResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetSecurityGroupResponse) Status() string {
+func (r ListExistingFirewallsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -770,14 +770,14 @@ func (r GetSecurityGroupResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetSecurityGroupResponse) StatusCode() int {
+func (r ListExistingFirewallsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PostSecurityGroupResponse struct {
+type CreateANewFirewallResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *FirewallResponse
@@ -789,7 +789,7 @@ type PostSecurityGroupResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostSecurityGroupResponse) Status() string {
+func (r CreateANewFirewallResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -797,14 +797,14 @@ func (r PostSecurityGroupResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostSecurityGroupResponse) StatusCode() int {
+func (r CreateANewFirewallResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PostSecurityGroupRulesResponse struct {
+type AddFirewallRuleToAnExistingFirewallResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *FirewallRule
@@ -814,7 +814,7 @@ type PostSecurityGroupRulesResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostSecurityGroupRulesResponse) Status() string {
+func (r AddFirewallRuleToAnExistingFirewallResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -822,14 +822,14 @@ func (r PostSecurityGroupRulesResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostSecurityGroupRulesResponse) StatusCode() int {
+func (r AddFirewallRuleToAnExistingFirewallResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type DeleteSecurityGroupRuleDeleteResponse struct {
+type DeleteFirewallRulesFromFirewallResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -841,7 +841,7 @@ type DeleteSecurityGroupRuleDeleteResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteSecurityGroupRuleDeleteResponse) Status() string {
+func (r DeleteFirewallRulesFromFirewallResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -849,14 +849,14 @@ func (r DeleteSecurityGroupRuleDeleteResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteSecurityGroupRuleDeleteResponse) StatusCode() int {
+func (r DeleteFirewallRulesFromFirewallResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type DeleteSecurityGroupDetailsResponse struct {
+type DeleteExistingFirewallResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -868,7 +868,7 @@ type DeleteSecurityGroupDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteSecurityGroupDetailsResponse) Status() string {
+func (r DeleteExistingFirewallResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -876,14 +876,14 @@ func (r DeleteSecurityGroupDetailsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteSecurityGroupDetailsResponse) StatusCode() int {
+func (r DeleteExistingFirewallResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetSecurityGroupDetailsResponse struct {
+type RetrieveTheDetailsOfAnExistingFirewallResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *FirewallDetailResponse
@@ -894,7 +894,7 @@ type GetSecurityGroupDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetSecurityGroupDetailsResponse) Status() string {
+func (r RetrieveTheDetailsOfAnExistingFirewallResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -902,92 +902,92 @@ func (r GetSecurityGroupDetailsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetSecurityGroupDetailsResponse) StatusCode() int {
+func (r RetrieveTheDetailsOfAnExistingFirewallResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// GetSecurityGroupWithResponse request returning *GetSecurityGroupResponse
-func (c *ClientWithResponses) GetSecurityGroupWithResponse(ctx context.Context, params *GetSecurityGroupParams, reqEditors ...RequestEditorFn) (*GetSecurityGroupResponse, error) {
-	rsp, err := c.GetSecurityGroup(ctx, params, reqEditors...)
+// ListExistingFirewallsWithResponse request returning *ListExistingFirewallsResponse
+func (c *ClientWithResponses) ListExistingFirewallsWithResponse(ctx context.Context, params *ListExistingFirewallsParams, reqEditors ...RequestEditorFn) (*ListExistingFirewallsResponse, error) {
+	rsp, err := c.ListExistingFirewalls(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetSecurityGroupResponse(rsp)
+	return ParseListExistingFirewallsResponse(rsp)
 }
 
-// PostSecurityGroupWithBodyWithResponse request with arbitrary body returning *PostSecurityGroupResponse
-func (c *ClientWithResponses) PostSecurityGroupWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostSecurityGroupResponse, error) {
-	rsp, err := c.PostSecurityGroupWithBody(ctx, contentType, body, reqEditors...)
+// CreateANewFirewallWithBodyWithResponse request with arbitrary body returning *CreateANewFirewallResponse
+func (c *ClientWithResponses) CreateANewFirewallWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateANewFirewallResponse, error) {
+	rsp, err := c.CreateANewFirewallWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostSecurityGroupResponse(rsp)
+	return ParseCreateANewFirewallResponse(rsp)
 }
 
-func (c *ClientWithResponses) PostSecurityGroupWithResponse(ctx context.Context, body PostSecurityGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*PostSecurityGroupResponse, error) {
-	rsp, err := c.PostSecurityGroup(ctx, body, reqEditors...)
+func (c *ClientWithResponses) CreateANewFirewallWithResponse(ctx context.Context, body CreateANewFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateANewFirewallResponse, error) {
+	rsp, err := c.CreateANewFirewall(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostSecurityGroupResponse(rsp)
+	return ParseCreateANewFirewallResponse(rsp)
 }
 
-// PostSecurityGroupRulesWithBodyWithResponse request with arbitrary body returning *PostSecurityGroupRulesResponse
-func (c *ClientWithResponses) PostSecurityGroupRulesWithBodyWithResponse(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostSecurityGroupRulesResponse, error) {
-	rsp, err := c.PostSecurityGroupRulesWithBody(ctx, firewallId, contentType, body, reqEditors...)
+// AddFirewallRuleToAnExistingFirewallWithBodyWithResponse request with arbitrary body returning *AddFirewallRuleToAnExistingFirewallResponse
+func (c *ClientWithResponses) AddFirewallRuleToAnExistingFirewallWithBodyWithResponse(ctx context.Context, firewallId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddFirewallRuleToAnExistingFirewallResponse, error) {
+	rsp, err := c.AddFirewallRuleToAnExistingFirewallWithBody(ctx, firewallId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostSecurityGroupRulesResponse(rsp)
+	return ParseAddFirewallRuleToAnExistingFirewallResponse(rsp)
 }
 
-func (c *ClientWithResponses) PostSecurityGroupRulesWithResponse(ctx context.Context, firewallId int, body PostSecurityGroupRulesJSONRequestBody, reqEditors ...RequestEditorFn) (*PostSecurityGroupRulesResponse, error) {
-	rsp, err := c.PostSecurityGroupRules(ctx, firewallId, body, reqEditors...)
+func (c *ClientWithResponses) AddFirewallRuleToAnExistingFirewallWithResponse(ctx context.Context, firewallId int, body AddFirewallRuleToAnExistingFirewallJSONRequestBody, reqEditors ...RequestEditorFn) (*AddFirewallRuleToAnExistingFirewallResponse, error) {
+	rsp, err := c.AddFirewallRuleToAnExistingFirewall(ctx, firewallId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostSecurityGroupRulesResponse(rsp)
+	return ParseAddFirewallRuleToAnExistingFirewallResponse(rsp)
 }
 
-// DeleteSecurityGroupRuleDeleteWithResponse request returning *DeleteSecurityGroupRuleDeleteResponse
-func (c *ClientWithResponses) DeleteSecurityGroupRuleDeleteWithResponse(ctx context.Context, firewallId int, firewallRuleId int, reqEditors ...RequestEditorFn) (*DeleteSecurityGroupRuleDeleteResponse, error) {
-	rsp, err := c.DeleteSecurityGroupRuleDelete(ctx, firewallId, firewallRuleId, reqEditors...)
+// DeleteFirewallRulesFromFirewallWithResponse request returning *DeleteFirewallRulesFromFirewallResponse
+func (c *ClientWithResponses) DeleteFirewallRulesFromFirewallWithResponse(ctx context.Context, firewallId int, firewallRuleId int, reqEditors ...RequestEditorFn) (*DeleteFirewallRulesFromFirewallResponse, error) {
+	rsp, err := c.DeleteFirewallRulesFromFirewall(ctx, firewallId, firewallRuleId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteSecurityGroupRuleDeleteResponse(rsp)
+	return ParseDeleteFirewallRulesFromFirewallResponse(rsp)
 }
 
-// DeleteSecurityGroupDetailsWithResponse request returning *DeleteSecurityGroupDetailsResponse
-func (c *ClientWithResponses) DeleteSecurityGroupDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteSecurityGroupDetailsResponse, error) {
-	rsp, err := c.DeleteSecurityGroupDetails(ctx, id, reqEditors...)
+// DeleteExistingFirewallWithResponse request returning *DeleteExistingFirewallResponse
+func (c *ClientWithResponses) DeleteExistingFirewallWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteExistingFirewallResponse, error) {
+	rsp, err := c.DeleteExistingFirewall(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteSecurityGroupDetailsResponse(rsp)
+	return ParseDeleteExistingFirewallResponse(rsp)
 }
 
-// GetSecurityGroupDetailsWithResponse request returning *GetSecurityGroupDetailsResponse
-func (c *ClientWithResponses) GetSecurityGroupDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*GetSecurityGroupDetailsResponse, error) {
-	rsp, err := c.GetSecurityGroupDetails(ctx, id, reqEditors...)
+// RetrieveTheDetailsOfAnExistingFirewallWithResponse request returning *RetrieveTheDetailsOfAnExistingFirewallResponse
+func (c *ClientWithResponses) RetrieveTheDetailsOfAnExistingFirewallWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveTheDetailsOfAnExistingFirewallResponse, error) {
+	rsp, err := c.RetrieveTheDetailsOfAnExistingFirewall(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetSecurityGroupDetailsResponse(rsp)
+	return ParseRetrieveTheDetailsOfAnExistingFirewallResponse(rsp)
 }
 
-// ParseGetSecurityGroupResponse parses an HTTP response from a GetSecurityGroupWithResponse call
-func ParseGetSecurityGroupResponse(rsp *http.Response) (*GetSecurityGroupResponse, error) {
+// ParseListExistingFirewallsResponse parses an HTTP response from a ListExistingFirewallsWithResponse call
+func ParseListExistingFirewallsResponse(rsp *http.Response) (*ListExistingFirewallsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetSecurityGroupResponse{
+	response := &ListExistingFirewallsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1026,15 +1026,15 @@ func ParseGetSecurityGroupResponse(rsp *http.Response) (*GetSecurityGroupRespons
 	return response, nil
 }
 
-// ParsePostSecurityGroupResponse parses an HTTP response from a PostSecurityGroupWithResponse call
-func ParsePostSecurityGroupResponse(rsp *http.Response) (*PostSecurityGroupResponse, error) {
+// ParseCreateANewFirewallResponse parses an HTTP response from a CreateANewFirewallWithResponse call
+func ParseCreateANewFirewallResponse(rsp *http.Response) (*CreateANewFirewallResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostSecurityGroupResponse{
+	response := &CreateANewFirewallResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1087,15 +1087,15 @@ func ParsePostSecurityGroupResponse(rsp *http.Response) (*PostSecurityGroupRespo
 	return response, nil
 }
 
-// ParsePostSecurityGroupRulesResponse parses an HTTP response from a PostSecurityGroupRulesWithResponse call
-func ParsePostSecurityGroupRulesResponse(rsp *http.Response) (*PostSecurityGroupRulesResponse, error) {
+// ParseAddFirewallRuleToAnExistingFirewallResponse parses an HTTP response from a AddFirewallRuleToAnExistingFirewallWithResponse call
+func ParseAddFirewallRuleToAnExistingFirewallResponse(rsp *http.Response) (*AddFirewallRuleToAnExistingFirewallResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostSecurityGroupRulesResponse{
+	response := &AddFirewallRuleToAnExistingFirewallResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1134,15 +1134,15 @@ func ParsePostSecurityGroupRulesResponse(rsp *http.Response) (*PostSecurityGroup
 	return response, nil
 }
 
-// ParseDeleteSecurityGroupRuleDeleteResponse parses an HTTP response from a DeleteSecurityGroupRuleDeleteWithResponse call
-func ParseDeleteSecurityGroupRuleDeleteResponse(rsp *http.Response) (*DeleteSecurityGroupRuleDeleteResponse, error) {
+// ParseDeleteFirewallRulesFromFirewallResponse parses an HTTP response from a DeleteFirewallRulesFromFirewallWithResponse call
+func ParseDeleteFirewallRulesFromFirewallResponse(rsp *http.Response) (*DeleteFirewallRulesFromFirewallResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteSecurityGroupRuleDeleteResponse{
+	response := &DeleteFirewallRulesFromFirewallResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1195,15 +1195,15 @@ func ParseDeleteSecurityGroupRuleDeleteResponse(rsp *http.Response) (*DeleteSecu
 	return response, nil
 }
 
-// ParseDeleteSecurityGroupDetailsResponse parses an HTTP response from a DeleteSecurityGroupDetailsWithResponse call
-func ParseDeleteSecurityGroupDetailsResponse(rsp *http.Response) (*DeleteSecurityGroupDetailsResponse, error) {
+// ParseDeleteExistingFirewallResponse parses an HTTP response from a DeleteExistingFirewallWithResponse call
+func ParseDeleteExistingFirewallResponse(rsp *http.Response) (*DeleteExistingFirewallResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteSecurityGroupDetailsResponse{
+	response := &DeleteExistingFirewallResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1256,15 +1256,15 @@ func ParseDeleteSecurityGroupDetailsResponse(rsp *http.Response) (*DeleteSecurit
 	return response, nil
 }
 
-// ParseGetSecurityGroupDetailsResponse parses an HTTP response from a GetSecurityGroupDetailsWithResponse call
-func ParseGetSecurityGroupDetailsResponse(rsp *http.Response) (*GetSecurityGroupDetailsResponse, error) {
+// ParseRetrieveTheDetailsOfAnExistingFirewallResponse parses an HTTP response from a RetrieveTheDetailsOfAnExistingFirewallWithResponse call
+func ParseRetrieveTheDetailsOfAnExistingFirewallResponse(rsp *http.Response) (*RetrieveTheDetailsOfAnExistingFirewallResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetSecurityGroupDetailsResponse{
+	response := &RetrieveTheDetailsOfAnExistingFirewallResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

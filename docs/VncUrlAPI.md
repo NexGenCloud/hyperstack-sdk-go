@@ -4,14 +4,14 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetVncUrl**](VncUrlAPI.md#GetVncUrl) | **Get** /core/virtual-machines/{vm_id}/console/{job_id} | Get VNC Console Link
-[**GetVncUrl2**](VncUrlAPI.md#GetVncUrl2) | **Get** /core/virtual-machines/{vm_id}/request-console | Request Instance Console
+[**GetVNCURL**](VncUrlAPI.md#GetVNCURL) | **Get** /core/virtual-machines/{vm_id}/console/{job_id} | Get VNC Console Link
+[**GetVncUrl**](VncUrlAPI.md#GetVncUrl) | **Get** /core/virtual-machines/{vm_id}/request-console | Request Instance Console
 
 
 
-## GetVncUrl
+## GetVNCURL
 
-> VNCURL GetVncUrl(ctx, vmId, jobId).Execute()
+> VNCURL GetVNCURL(ctx, vmId, jobId).Execute()
 
 Get VNC Console Link
 
@@ -35,13 +35,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VncUrlAPI.GetVncUrl(context.Background(), vmId, jobId).Execute()
+	resp, r, err := apiClient.VncUrlAPI.GetVNCURL(context.Background(), vmId, jobId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VncUrlAPI.GetVncUrl``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `VncUrlAPI.GetVNCURL``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetVncUrl`: VNCURL
-	fmt.Fprintf(os.Stdout, "Response from `VncUrlAPI.GetVncUrl`: %v\n", resp)
+	// response from `GetVNCURL`: VNCURL
+	fmt.Fprintf(os.Stdout, "Response from `VncUrlAPI.GetVNCURL`: %v\n", resp)
 }
 ```
 
@@ -56,7 +56,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetVncUrlRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetVNCURLRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -82,9 +82,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetVncUrl2
+## GetVncUrl
 
-> RequestConsole GetVncUrl2(ctx, vmId).Execute()
+> RequestConsole GetVncUrl(ctx, vmId).Execute()
 
 Request Instance Console
 
@@ -107,13 +107,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VncUrlAPI.GetVncUrl2(context.Background(), vmId).Execute()
+	resp, r, err := apiClient.VncUrlAPI.GetVncUrl(context.Background(), vmId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VncUrlAPI.GetVncUrl2``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `VncUrlAPI.GetVncUrl``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetVncUrl2`: RequestConsole
-	fmt.Fprintf(os.Stdout, "Response from `VncUrlAPI.GetVncUrl2`: %v\n", resp)
+	// response from `GetVncUrl`: RequestConsole
+	fmt.Fprintf(os.Stdout, "Response from `VncUrlAPI.GetVncUrl`: %v\n", resp)
 }
 ```
 
@@ -127,7 +127,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetVncUrl2Request struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetVncUrlRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes

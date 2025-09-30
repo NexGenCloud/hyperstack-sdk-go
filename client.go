@@ -48,6 +48,8 @@ type APIClient struct {
 
 	// API Services
 
+	AdminAPI *AdminAPIService
+
 	AliveAPI *AliveAPIService
 
 	ApiKeyAPI *ApiKeyAPIService
@@ -157,6 +159,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
+	c.AdminAPI = (*AdminAPIService)(&c.common)
 	c.AliveAPI = (*AliveAPIService)(&c.common)
 	c.ApiKeyAPI = (*ApiKeyAPIService)(&c.common)
 	c.AssigningMemberRoleAPI = (*AssigningMemberRoleAPIService)(&c.common)

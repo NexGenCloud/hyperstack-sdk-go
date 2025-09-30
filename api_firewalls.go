@@ -22,27 +22,369 @@ import (
 // FirewallsAPIService FirewallsAPI service
 type FirewallsAPIService service
 
-type ApiDeleteSecurityGroupDetailsRequest struct {
+type ApiAddFirewallRuleToAnExistingFirewallRequest struct {
+	ctx        context.Context
+	ApiService *FirewallsAPIService
+	firewallId int32
+	payload    *CreateFirewallRulePayload
+}
+
+func (r ApiAddFirewallRuleToAnExistingFirewallRequest) Payload(payload CreateFirewallRulePayload) ApiAddFirewallRuleToAnExistingFirewallRequest {
+	r.payload = &payload
+	return r
+}
+
+func (r ApiAddFirewallRuleToAnExistingFirewallRequest) Execute() (*FirewallRule, *http.Response, error) {
+	return r.ApiService.AddFirewallRuleToAnExistingFirewallExecute(r)
+}
+
+/*
+AddFirewallRuleToAnExistingFirewall Add firewall rule to firewall
+
+Creates a [**firewall rule**](https://docs.hyperstack.cloud/docs/network-security/security-rules) and adds it to an existing firewall. Include the firewall ID in the path, and provide the firewall rule configuration in the request body.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param firewallId
+	@return ApiAddFirewallRuleToAnExistingFirewallRequest
+*/
+func (a *FirewallsAPIService) AddFirewallRuleToAnExistingFirewall(ctx context.Context, firewallId int32) ApiAddFirewallRuleToAnExistingFirewallRequest {
+	return ApiAddFirewallRuleToAnExistingFirewallRequest{
+		ApiService: a,
+		ctx:        ctx,
+		firewallId: firewallId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return FirewallRule
+func (a *FirewallsAPIService) AddFirewallRuleToAnExistingFirewallExecute(r ApiAddFirewallRuleToAnExistingFirewallRequest) (*FirewallRule, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *FirewallRule
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FirewallsAPIService.AddFirewallRuleToAnExistingFirewall")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/core/firewalls/{firewall_id}/firewall-rules"
+	localVarPath = strings.Replace(localVarPath, "{"+"firewall_id"+"}", url.PathEscape(parameterValueToString(r.firewallId, "firewallId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.payload == nil {
+		return localVarReturnValue, nil, reportError("payload is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.payload
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiCreateANewFirewallRequest struct {
+	ctx        context.Context
+	ApiService *FirewallsAPIService
+	payload    *CreateFirewallPayload
+}
+
+func (r ApiCreateANewFirewallRequest) Payload(payload CreateFirewallPayload) ApiCreateANewFirewallRequest {
+	r.payload = &payload
+	return r
+}
+
+func (r ApiCreateANewFirewallRequest) Execute() (*FirewallResponse, *http.Response, error) {
+	return r.ApiService.CreateANewFirewallExecute(r)
+}
+
+/*
+CreateANewFirewall Create firewall
+
+Creates a firewall to which firewall rules can be added. A firewall can be attached to one or more virtual machines to control inbound and outbound traffic. In the body of the request, include the name of the firewall, the ID of the environment within which the firewall will be created, and an optional description. To obtain the ID of the environment, make a request to the [**list environments**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/environments/list-environments) endpoint.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCreateANewFirewallRequest
+*/
+func (a *FirewallsAPIService) CreateANewFirewall(ctx context.Context) ApiCreateANewFirewallRequest {
+	return ApiCreateANewFirewallRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return FirewallResponse
+func (a *FirewallsAPIService) CreateANewFirewallExecute(r ApiCreateANewFirewallRequest) (*FirewallResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *FirewallResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FirewallsAPIService.CreateANewFirewall")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/core/firewalls"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.payload == nil {
+		return localVarReturnValue, nil, reportError("payload is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.payload
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 409 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiDeleteExistingFirewallRequest struct {
 	ctx        context.Context
 	ApiService *FirewallsAPIService
 	id         int32
 }
 
-func (r ApiDeleteSecurityGroupDetailsRequest) Execute() (*ResponseModel, *http.Response, error) {
-	return r.ApiService.DeleteSecurityGroupDetailsExecute(r)
+func (r ApiDeleteExistingFirewallRequest) Execute() (*ResponseModel, *http.Response, error) {
+	return r.ApiService.DeleteExistingFirewallExecute(r)
 }
 
 /*
-DeleteSecurityGroupDetails Delete firewall
+DeleteExistingFirewall Delete firewall
 
 Deletes a firewall by specifying the firewall ID in the path. If the firewall is currently attached to a virtual machine, it must be detached before deletion. For more information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/firewalls/delete-firewall).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param id
-	@return ApiDeleteSecurityGroupDetailsRequest
+	@return ApiDeleteExistingFirewallRequest
 */
-func (a *FirewallsAPIService) DeleteSecurityGroupDetails(ctx context.Context, id int32) ApiDeleteSecurityGroupDetailsRequest {
-	return ApiDeleteSecurityGroupDetailsRequest{
+func (a *FirewallsAPIService) DeleteExistingFirewall(ctx context.Context, id int32) ApiDeleteExistingFirewallRequest {
+	return ApiDeleteExistingFirewallRequest{
 		ApiService: a,
 		ctx:        ctx,
 		id:         id,
@@ -52,7 +394,7 @@ func (a *FirewallsAPIService) DeleteSecurityGroupDetails(ctx context.Context, id
 // Execute executes the request
 //
 //	@return ResponseModel
-func (a *FirewallsAPIService) DeleteSecurityGroupDetailsExecute(r ApiDeleteSecurityGroupDetailsRequest) (*ResponseModel, *http.Response, error) {
+func (a *FirewallsAPIService) DeleteExistingFirewallExecute(r ApiDeleteExistingFirewallRequest) (*ResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
@@ -60,7 +402,7 @@ func (a *FirewallsAPIService) DeleteSecurityGroupDetailsExecute(r ApiDeleteSecur
 		localVarReturnValue *ResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FirewallsAPIService.DeleteSecurityGroupDetails")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FirewallsAPIService.DeleteExistingFirewall")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -195,29 +537,29 @@ func (a *FirewallsAPIService) DeleteSecurityGroupDetailsExecute(r ApiDeleteSecur
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiDeleteSecurityGroupRuleDeleteRequest struct {
+type ApiDeleteFirewallRulesFromFirewallRequest struct {
 	ctx            context.Context
 	ApiService     *FirewallsAPIService
 	firewallId     int32
 	firewallRuleId int32
 }
 
-func (r ApiDeleteSecurityGroupRuleDeleteRequest) Execute() (*ResponseModel, *http.Response, error) {
-	return r.ApiService.DeleteSecurityGroupRuleDeleteExecute(r)
+func (r ApiDeleteFirewallRulesFromFirewallRequest) Execute() (*ResponseModel, *http.Response, error) {
+	return r.ApiService.DeleteFirewallRulesFromFirewallExecute(r)
 }
 
 /*
-DeleteSecurityGroupRuleDelete Delete firewall rules from firewall
+DeleteFirewallRulesFromFirewall Delete firewall rules from firewall
 
 Removes a firewall rule from firewall by providing the firewall ID and firewall rule ID in the path. For more information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/firewalls/remove-firewall-rule-from-firewall).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param firewallId
 	@param firewallRuleId
-	@return ApiDeleteSecurityGroupRuleDeleteRequest
+	@return ApiDeleteFirewallRulesFromFirewallRequest
 */
-func (a *FirewallsAPIService) DeleteSecurityGroupRuleDelete(ctx context.Context, firewallId int32, firewallRuleId int32) ApiDeleteSecurityGroupRuleDeleteRequest {
-	return ApiDeleteSecurityGroupRuleDeleteRequest{
+func (a *FirewallsAPIService) DeleteFirewallRulesFromFirewall(ctx context.Context, firewallId int32, firewallRuleId int32) ApiDeleteFirewallRulesFromFirewallRequest {
+	return ApiDeleteFirewallRulesFromFirewallRequest{
 		ApiService:     a,
 		ctx:            ctx,
 		firewallId:     firewallId,
@@ -228,7 +570,7 @@ func (a *FirewallsAPIService) DeleteSecurityGroupRuleDelete(ctx context.Context,
 // Execute executes the request
 //
 //	@return ResponseModel
-func (a *FirewallsAPIService) DeleteSecurityGroupRuleDeleteExecute(r ApiDeleteSecurityGroupRuleDeleteRequest) (*ResponseModel, *http.Response, error) {
+func (a *FirewallsAPIService) DeleteFirewallRulesFromFirewallExecute(r ApiDeleteFirewallRulesFromFirewallRequest) (*ResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
@@ -236,7 +578,7 @@ func (a *FirewallsAPIService) DeleteSecurityGroupRuleDeleteExecute(r ApiDeleteSe
 		localVarReturnValue *ResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FirewallsAPIService.DeleteSecurityGroupRuleDelete")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FirewallsAPIService.DeleteFirewallRulesFromFirewall")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -372,7 +714,7 @@ func (a *FirewallsAPIService) DeleteSecurityGroupRuleDeleteExecute(r ApiDeleteSe
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetSecurityGroupRequest struct {
+type ApiListExistingFirewallsRequest struct {
 	ctx         context.Context
 	ApiService  *FirewallsAPIService
 	page        *int32
@@ -381,41 +723,41 @@ type ApiGetSecurityGroupRequest struct {
 	environment *string
 }
 
-func (r ApiGetSecurityGroupRequest) Page(page int32) ApiGetSecurityGroupRequest {
+func (r ApiListExistingFirewallsRequest) Page(page int32) ApiListExistingFirewallsRequest {
 	r.page = &page
 	return r
 }
 
-func (r ApiGetSecurityGroupRequest) PageSize(pageSize int32) ApiGetSecurityGroupRequest {
+func (r ApiListExistingFirewallsRequest) PageSize(pageSize int32) ApiListExistingFirewallsRequest {
 	r.pageSize = &pageSize
 	return r
 }
 
-func (r ApiGetSecurityGroupRequest) Search(search string) ApiGetSecurityGroupRequest {
+func (r ApiListExistingFirewallsRequest) Search(search string) ApiListExistingFirewallsRequest {
 	r.search = &search
 	return r
 }
 
 // Filter Environment ID or Name
-func (r ApiGetSecurityGroupRequest) Environment(environment string) ApiGetSecurityGroupRequest {
+func (r ApiListExistingFirewallsRequest) Environment(environment string) ApiListExistingFirewallsRequest {
 	r.environment = &environment
 	return r
 }
 
-func (r ApiGetSecurityGroupRequest) Execute() (*FirewallsListResponse, *http.Response, error) {
-	return r.ApiService.GetSecurityGroupExecute(r)
+func (r ApiListExistingFirewallsRequest) Execute() (*FirewallsListResponse, *http.Response, error) {
+	return r.ApiService.ListExistingFirewallsExecute(r)
 }
 
 /*
-GetSecurityGroup List firewalls
+ListExistingFirewalls List firewalls
 
 Retrieves a list of existing firewalls and their details, including the security rules they contain and information about the virtual machines to which they are attached. For more information about the firewalls features offered by Infrahub, [**click here**](https://docs.hyperstack.cloud/docs/network-security/security-groups).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetSecurityGroupRequest
+	@return ApiListExistingFirewallsRequest
 */
-func (a *FirewallsAPIService) GetSecurityGroup(ctx context.Context) ApiGetSecurityGroupRequest {
-	return ApiGetSecurityGroupRequest{
+func (a *FirewallsAPIService) ListExistingFirewalls(ctx context.Context) ApiListExistingFirewallsRequest {
+	return ApiListExistingFirewallsRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -424,7 +766,7 @@ func (a *FirewallsAPIService) GetSecurityGroup(ctx context.Context) ApiGetSecuri
 // Execute executes the request
 //
 //	@return FirewallsListResponse
-func (a *FirewallsAPIService) GetSecurityGroupExecute(r ApiGetSecurityGroupRequest) (*FirewallsListResponse, *http.Response, error) {
+func (a *FirewallsAPIService) ListExistingFirewallsExecute(r ApiListExistingFirewallsRequest) (*FirewallsListResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -432,7 +774,7 @@ func (a *FirewallsAPIService) GetSecurityGroupExecute(r ApiGetSecurityGroupReque
 		localVarReturnValue *FirewallsListResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FirewallsAPIService.GetSecurityGroup")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FirewallsAPIService.ListExistingFirewalls")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -556,27 +898,27 @@ func (a *FirewallsAPIService) GetSecurityGroupExecute(r ApiGetSecurityGroupReque
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetSecurityGroupDetailsRequest struct {
+type ApiRetrieveTheDetailsOfAnExistingFirewallRequest struct {
 	ctx        context.Context
 	ApiService *FirewallsAPIService
 	id         int32
 }
 
-func (r ApiGetSecurityGroupDetailsRequest) Execute() (*FirewallDetailResponse, *http.Response, error) {
-	return r.ApiService.GetSecurityGroupDetailsExecute(r)
+func (r ApiRetrieveTheDetailsOfAnExistingFirewallRequest) Execute() (*FirewallDetailResponse, *http.Response, error) {
+	return r.ApiService.RetrieveTheDetailsOfAnExistingFirewallExecute(r)
 }
 
 /*
-GetSecurityGroupDetails Retrieve firewall details
+RetrieveTheDetailsOfAnExistingFirewall Retrieve firewall details
 
 Retrieves the details of an existing firewall, including the security rules it contains and information about the virtual machines to which it is attached.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param id
-	@return ApiGetSecurityGroupDetailsRequest
+	@return ApiRetrieveTheDetailsOfAnExistingFirewallRequest
 */
-func (a *FirewallsAPIService) GetSecurityGroupDetails(ctx context.Context, id int32) ApiGetSecurityGroupDetailsRequest {
-	return ApiGetSecurityGroupDetailsRequest{
+func (a *FirewallsAPIService) RetrieveTheDetailsOfAnExistingFirewall(ctx context.Context, id int32) ApiRetrieveTheDetailsOfAnExistingFirewallRequest {
+	return ApiRetrieveTheDetailsOfAnExistingFirewallRequest{
 		ApiService: a,
 		ctx:        ctx,
 		id:         id,
@@ -586,7 +928,7 @@ func (a *FirewallsAPIService) GetSecurityGroupDetails(ctx context.Context, id in
 // Execute executes the request
 //
 //	@return FirewallDetailResponse
-func (a *FirewallsAPIService) GetSecurityGroupDetailsExecute(r ApiGetSecurityGroupDetailsRequest) (*FirewallDetailResponse, *http.Response, error) {
+func (a *FirewallsAPIService) RetrieveTheDetailsOfAnExistingFirewallExecute(r ApiRetrieveTheDetailsOfAnExistingFirewallRequest) (*FirewallDetailResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -594,7 +936,7 @@ func (a *FirewallsAPIService) GetSecurityGroupDetailsExecute(r ApiGetSecurityGro
 		localVarReturnValue *FirewallDetailResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FirewallsAPIService.GetSecurityGroupDetails")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FirewallsAPIService.RetrieveTheDetailsOfAnExistingFirewall")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -693,348 +1035,6 @@ func (a *FirewallsAPIService) GetSecurityGroupDetailsExecute(r ApiGetSecurityGro
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiPostSecurityGroupRequest struct {
-	ctx        context.Context
-	ApiService *FirewallsAPIService
-	payload    *CreateFirewallPayload
-}
-
-func (r ApiPostSecurityGroupRequest) Payload(payload CreateFirewallPayload) ApiPostSecurityGroupRequest {
-	r.payload = &payload
-	return r
-}
-
-func (r ApiPostSecurityGroupRequest) Execute() (*FirewallResponse, *http.Response, error) {
-	return r.ApiService.PostSecurityGroupExecute(r)
-}
-
-/*
-PostSecurityGroup Create firewall
-
-Creates a firewall to which firewall rules can be added. A firewall can be attached to one or more virtual machines to control inbound and outbound traffic. In the body of the request, include the name of the firewall, the ID of the environment within which the firewall will be created, and an optional description. To obtain the ID of the environment, make a request to the [**list environments**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/environments/list-environments) endpoint.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiPostSecurityGroupRequest
-*/
-func (a *FirewallsAPIService) PostSecurityGroup(ctx context.Context) ApiPostSecurityGroupRequest {
-	return ApiPostSecurityGroupRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return FirewallResponse
-func (a *FirewallsAPIService) PostSecurityGroupExecute(r ApiPostSecurityGroupRequest) (*FirewallResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodPost
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *FirewallResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FirewallsAPIService.PostSecurityGroup")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/core/firewalls"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-	if r.payload == nil {
-		return localVarReturnValue, nil, reportError("payload is required and must be specified")
-	}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	// body params
-	localVarPostBody = r.payload
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 409 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiPostSecurityGroupRulesRequest struct {
-	ctx        context.Context
-	ApiService *FirewallsAPIService
-	firewallId int32
-	payload    *CreateFirewallRulePayload
-}
-
-func (r ApiPostSecurityGroupRulesRequest) Payload(payload CreateFirewallRulePayload) ApiPostSecurityGroupRulesRequest {
-	r.payload = &payload
-	return r
-}
-
-func (r ApiPostSecurityGroupRulesRequest) Execute() (*FirewallRule, *http.Response, error) {
-	return r.ApiService.PostSecurityGroupRulesExecute(r)
-}
-
-/*
-PostSecurityGroupRules Add firewall rule to firewall
-
-Creates a [**firewall rule**](https://docs.hyperstack.cloud/docs/network-security/security-rules) and adds it to an existing firewall. Include the firewall ID in the path, and provide the firewall rule configuration in the request body.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param firewallId
-	@return ApiPostSecurityGroupRulesRequest
-*/
-func (a *FirewallsAPIService) PostSecurityGroupRules(ctx context.Context, firewallId int32) ApiPostSecurityGroupRulesRequest {
-	return ApiPostSecurityGroupRulesRequest{
-		ApiService: a,
-		ctx:        ctx,
-		firewallId: firewallId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return FirewallRule
-func (a *FirewallsAPIService) PostSecurityGroupRulesExecute(r ApiPostSecurityGroupRulesRequest) (*FirewallRule, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodPost
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *FirewallRule
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FirewallsAPIService.PostSecurityGroupRules")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/core/firewalls/{firewall_id}/firewall-rules"
-	localVarPath = strings.Replace(localVarPath, "{"+"firewall_id"+"}", url.PathEscape(parameterValueToString(r.firewallId, "firewallId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-	if r.payload == nil {
-		return localVarReturnValue, nil, reportError("payload is required and must be specified")
-	}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	// body params
-	localVarPostBody = r.payload
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
 			var v ErrorResponseModel
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {

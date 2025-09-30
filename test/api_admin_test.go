@@ -1,7 +1,7 @@
 /*
 Infrahub-API
 
-Testing FirewallAttachmentAPIService
+Testing AdminAPIService
 
 */
 
@@ -18,18 +18,16 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test_hyperstack_FirewallAttachmentAPIService(t *testing.T) {
+func Test_hyperstack_AdminAPIService(t *testing.T) {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test FirewallAttachmentAPIService AttachFirewallToVirtualMachines", func(t *testing.T) {
+	t.Run("Test AdminAPIService SendPasswordChangeNotificationEmail", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var firewallId int32
-
-		resp, httpRes, err := apiClient.FirewallAttachmentAPI.AttachFirewallToVirtualMachines(context.Background(), firewallId).Execute()
+		resp, httpRes, err := apiClient.AdminAPI.SendPasswordChangeNotificationEmail(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

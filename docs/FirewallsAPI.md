@@ -4,18 +4,156 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteSecurityGroupDetails**](FirewallsAPI.md#DeleteSecurityGroupDetails) | **Delete** /core/firewalls/{id} | Delete firewall
-[**DeleteSecurityGroupRuleDelete**](FirewallsAPI.md#DeleteSecurityGroupRuleDelete) | **Delete** /core/firewalls/{firewall_id}/firewall-rules/{firewall_rule_id} | Delete firewall rules from firewall
-[**GetSecurityGroup**](FirewallsAPI.md#GetSecurityGroup) | **Get** /core/firewalls | List firewalls
-[**GetSecurityGroupDetails**](FirewallsAPI.md#GetSecurityGroupDetails) | **Get** /core/firewalls/{id} | Retrieve firewall details
-[**PostSecurityGroup**](FirewallsAPI.md#PostSecurityGroup) | **Post** /core/firewalls | Create firewall
-[**PostSecurityGroupRules**](FirewallsAPI.md#PostSecurityGroupRules) | **Post** /core/firewalls/{firewall_id}/firewall-rules | Add firewall rule to firewall
+[**AddFirewallRuleToAnExistingFirewall**](FirewallsAPI.md#AddFirewallRuleToAnExistingFirewall) | **Post** /core/firewalls/{firewall_id}/firewall-rules | Add firewall rule to firewall
+[**CreateANewFirewall**](FirewallsAPI.md#CreateANewFirewall) | **Post** /core/firewalls | Create firewall
+[**DeleteExistingFirewall**](FirewallsAPI.md#DeleteExistingFirewall) | **Delete** /core/firewalls/{id} | Delete firewall
+[**DeleteFirewallRulesFromFirewall**](FirewallsAPI.md#DeleteFirewallRulesFromFirewall) | **Delete** /core/firewalls/{firewall_id}/firewall-rules/{firewall_rule_id} | Delete firewall rules from firewall
+[**ListExistingFirewalls**](FirewallsAPI.md#ListExistingFirewalls) | **Get** /core/firewalls | List firewalls
+[**RetrieveTheDetailsOfAnExistingFirewall**](FirewallsAPI.md#RetrieveTheDetailsOfAnExistingFirewall) | **Get** /core/firewalls/{id} | Retrieve firewall details
 
 
 
-## DeleteSecurityGroupDetails
+## AddFirewallRuleToAnExistingFirewall
 
-> ResponseModel DeleteSecurityGroupDetails(ctx, id).Execute()
+> FirewallRule AddFirewallRuleToAnExistingFirewall(ctx, firewallId).Payload(payload).Execute()
+
+Add firewall rule to firewall
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	firewallId := int32(56) // int32 | 
+	payload := *openapiclient.NewCreateFirewallRulePayload("Direction_example", "Ethertype_example", "any", "RemoteIpPrefix_example") // CreateFirewallRulePayload | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FirewallsAPI.AddFirewallRuleToAnExistingFirewall(context.Background(), firewallId).Payload(payload).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FirewallsAPI.AddFirewallRuleToAnExistingFirewall``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `AddFirewallRuleToAnExistingFirewall`: FirewallRule
+	fmt.Fprintf(os.Stdout, "Response from `FirewallsAPI.AddFirewallRuleToAnExistingFirewall`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**firewallId** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiAddFirewallRuleToAnExistingFirewallRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **payload** | [**CreateFirewallRulePayload**](CreateFirewallRulePayload.md) |  | 
+
+### Return type
+
+[**FirewallRule**](FirewallRule.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## CreateANewFirewall
+
+> FirewallResponse CreateANewFirewall(ctx).Payload(payload).Execute()
+
+Create firewall
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	payload := *openapiclient.NewCreateFirewallPayload(int32(123), "Name_example") // CreateFirewallPayload | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FirewallsAPI.CreateANewFirewall(context.Background()).Payload(payload).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FirewallsAPI.CreateANewFirewall``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CreateANewFirewall`: FirewallResponse
+	fmt.Fprintf(os.Stdout, "Response from `FirewallsAPI.CreateANewFirewall`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateANewFirewallRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **payload** | [**CreateFirewallPayload**](CreateFirewallPayload.md) |  | 
+
+### Return type
+
+[**FirewallResponse**](FirewallResponse.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## DeleteExistingFirewall
+
+> ResponseModel DeleteExistingFirewall(ctx, id).Execute()
 
 Delete firewall
 
@@ -38,13 +176,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.FirewallsAPI.DeleteSecurityGroupDetails(context.Background(), id).Execute()
+	resp, r, err := apiClient.FirewallsAPI.DeleteExistingFirewall(context.Background(), id).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `FirewallsAPI.DeleteSecurityGroupDetails``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `FirewallsAPI.DeleteExistingFirewall``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `DeleteSecurityGroupDetails`: ResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `FirewallsAPI.DeleteSecurityGroupDetails`: %v\n", resp)
+	// response from `DeleteExistingFirewall`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `FirewallsAPI.DeleteExistingFirewall`: %v\n", resp)
 }
 ```
 
@@ -58,7 +196,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiDeleteSecurityGroupDetailsRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiDeleteExistingFirewallRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -83,9 +221,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## DeleteSecurityGroupRuleDelete
+## DeleteFirewallRulesFromFirewall
 
-> ResponseModel DeleteSecurityGroupRuleDelete(ctx, firewallId, firewallRuleId).Execute()
+> ResponseModel DeleteFirewallRulesFromFirewall(ctx, firewallId, firewallRuleId).Execute()
 
 Delete firewall rules from firewall
 
@@ -109,13 +247,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.FirewallsAPI.DeleteSecurityGroupRuleDelete(context.Background(), firewallId, firewallRuleId).Execute()
+	resp, r, err := apiClient.FirewallsAPI.DeleteFirewallRulesFromFirewall(context.Background(), firewallId, firewallRuleId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `FirewallsAPI.DeleteSecurityGroupRuleDelete``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `FirewallsAPI.DeleteFirewallRulesFromFirewall``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `DeleteSecurityGroupRuleDelete`: ResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `FirewallsAPI.DeleteSecurityGroupRuleDelete`: %v\n", resp)
+	// response from `DeleteFirewallRulesFromFirewall`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `FirewallsAPI.DeleteFirewallRulesFromFirewall`: %v\n", resp)
 }
 ```
 
@@ -130,7 +268,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiDeleteSecurityGroupRuleDeleteRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiDeleteFirewallRulesFromFirewallRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -156,9 +294,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetSecurityGroup
+## ListExistingFirewalls
 
-> FirewallsListResponse GetSecurityGroup(ctx).Page(page).PageSize(pageSize).Search(search).Environment(environment).Execute()
+> FirewallsListResponse ListExistingFirewalls(ctx).Page(page).PageSize(pageSize).Search(search).Environment(environment).Execute()
 
 List firewalls
 
@@ -184,13 +322,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.FirewallsAPI.GetSecurityGroup(context.Background()).Page(page).PageSize(pageSize).Search(search).Environment(environment).Execute()
+	resp, r, err := apiClient.FirewallsAPI.ListExistingFirewalls(context.Background()).Page(page).PageSize(pageSize).Search(search).Environment(environment).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `FirewallsAPI.GetSecurityGroup``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `FirewallsAPI.ListExistingFirewalls``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetSecurityGroup`: FirewallsListResponse
-	fmt.Fprintf(os.Stdout, "Response from `FirewallsAPI.GetSecurityGroup`: %v\n", resp)
+	// response from `ListExistingFirewalls`: FirewallsListResponse
+	fmt.Fprintf(os.Stdout, "Response from `FirewallsAPI.ListExistingFirewalls`: %v\n", resp)
 }
 ```
 
@@ -200,7 +338,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetSecurityGroupRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiListExistingFirewallsRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -228,9 +366,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetSecurityGroupDetails
+## RetrieveTheDetailsOfAnExistingFirewall
 
-> FirewallDetailResponse GetSecurityGroupDetails(ctx, id).Execute()
+> FirewallDetailResponse RetrieveTheDetailsOfAnExistingFirewall(ctx, id).Execute()
 
 Retrieve firewall details
 
@@ -253,13 +391,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.FirewallsAPI.GetSecurityGroupDetails(context.Background(), id).Execute()
+	resp, r, err := apiClient.FirewallsAPI.RetrieveTheDetailsOfAnExistingFirewall(context.Background(), id).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `FirewallsAPI.GetSecurityGroupDetails``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `FirewallsAPI.RetrieveTheDetailsOfAnExistingFirewall``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetSecurityGroupDetails`: FirewallDetailResponse
-	fmt.Fprintf(os.Stdout, "Response from `FirewallsAPI.GetSecurityGroupDetails`: %v\n", resp)
+	// response from `RetrieveTheDetailsOfAnExistingFirewall`: FirewallDetailResponse
+	fmt.Fprintf(os.Stdout, "Response from `FirewallsAPI.RetrieveTheDetailsOfAnExistingFirewall`: %v\n", resp)
 }
 ```
 
@@ -273,7 +411,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetSecurityGroupDetailsRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiRetrieveTheDetailsOfAnExistingFirewallRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -291,144 +429,6 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## PostSecurityGroup
-
-> FirewallResponse PostSecurityGroup(ctx).Payload(payload).Execute()
-
-Create firewall
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-	payload := *openapiclient.NewCreateFirewallPayload(int32(123), "Name_example") // CreateFirewallPayload | 
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.FirewallsAPI.PostSecurityGroup(context.Background()).Payload(payload).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `FirewallsAPI.PostSecurityGroup``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `PostSecurityGroup`: FirewallResponse
-	fmt.Fprintf(os.Stdout, "Response from `FirewallsAPI.PostSecurityGroup`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiPostSecurityGroupRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **payload** | [**CreateFirewallPayload**](CreateFirewallPayload.md) |  | 
-
-### Return type
-
-[**FirewallResponse**](FirewallResponse.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## PostSecurityGroupRules
-
-> FirewallRule PostSecurityGroupRules(ctx, firewallId).Payload(payload).Execute()
-
-Add firewall rule to firewall
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-	firewallId := int32(56) // int32 | 
-	payload := *openapiclient.NewCreateFirewallRulePayload("Direction_example", "Ethertype_example", "any", "RemoteIpPrefix_example") // CreateFirewallRulePayload | 
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.FirewallsAPI.PostSecurityGroupRules(context.Background(), firewallId).Payload(payload).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `FirewallsAPI.PostSecurityGroupRules``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `PostSecurityGroupRules`: FirewallRule
-	fmt.Fprintf(os.Stdout, "Response from `FirewallsAPI.PostSecurityGroupRules`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**firewallId** | **int32** |  | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiPostSecurityGroupRulesRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **payload** | [**CreateFirewallRulePayload**](CreateFirewallRulePayload.md) |  | 
-
-### Return type
-
-[**FirewallRule**](FirewallRule.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

@@ -16,73 +16,59 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"strings"
 )
 
-// FirewallAttachmentAPIService FirewallAttachmentAPI service
-type FirewallAttachmentAPIService service
+// AdminAPIService AdminAPI service
+type AdminAPIService service
 
-type ApiAttachFirewallToVirtualMachinesRequest struct {
+type ApiSendPasswordChangeNotificationEmailRequest struct {
 	ctx        context.Context
-	ApiService *FirewallAttachmentAPIService
-	firewallId int32
-	payload    *AttachFirewallWithVM
+	ApiService *AdminAPIService
 }
 
-func (r ApiAttachFirewallToVirtualMachinesRequest) Payload(payload AttachFirewallWithVM) ApiAttachFirewallToVirtualMachinesRequest {
-	r.payload = &payload
-	return r
-}
-
-func (r ApiAttachFirewallToVirtualMachinesRequest) Execute() (*ResponseModel, *http.Response, error) {
-	return r.ApiService.AttachFirewallToVirtualMachinesExecute(r)
+func (r ApiSendPasswordChangeNotificationEmailRequest) Execute() (*CommonResponseModel, *http.Response, error) {
+	return r.ApiService.SendPasswordChangeNotificationEmailExecute(r)
 }
 
 /*
-AttachFirewallToVirtualMachines Attach Firewalls to VMs
+SendPasswordChangeNotificationEmail Send Password Change Notification Email
 
-Attach a firewall to one or more virtual machines by providing the virtual machine IDs in the request body and the firewall ID in the path. For more information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/firewalls/attach-firewall-to-vms).
+Send a password change notification email to a user
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param firewallId
-	@return ApiAttachFirewallToVirtualMachinesRequest
+	@return ApiSendPasswordChangeNotificationEmailRequest
 */
-func (a *FirewallAttachmentAPIService) AttachFirewallToVirtualMachines(ctx context.Context, firewallId int32) ApiAttachFirewallToVirtualMachinesRequest {
-	return ApiAttachFirewallToVirtualMachinesRequest{
+func (a *AdminAPIService) SendPasswordChangeNotificationEmail(ctx context.Context) ApiSendPasswordChangeNotificationEmailRequest {
+	return ApiSendPasswordChangeNotificationEmailRequest{
 		ApiService: a,
 		ctx:        ctx,
-		firewallId: firewallId,
 	}
 }
 
 // Execute executes the request
 //
-//	@return ResponseModel
-func (a *FirewallAttachmentAPIService) AttachFirewallToVirtualMachinesExecute(r ApiAttachFirewallToVirtualMachinesRequest) (*ResponseModel, *http.Response, error) {
+//	@return CommonResponseModel
+func (a *AdminAPIService) SendPasswordChangeNotificationEmailExecute(r ApiSendPasswordChangeNotificationEmailRequest) (*CommonResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *ResponseModel
+		localVarReturnValue *CommonResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FirewallAttachmentAPIService.AttachFirewallToVirtualMachines")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AdminAPIService.SendPasswordChangeNotificationEmail")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/core/firewalls/{firewall_id}/update-attachments"
-	localVarPath = strings.Replace(localVarPath, "{"+"firewall_id"+"}", url.PathEscape(parameterValueToString(r.firewallId, "firewallId")), -1)
+	localVarPath := localBasePath + "/auth/admin/password-change-mail"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.payload == nil {
-		return localVarReturnValue, nil, reportError("payload is required and must be specified")
-	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
+	localVarHTTPContentTypes := []string{}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -98,8 +84,6 @@ func (a *FirewallAttachmentAPIService) AttachFirewallToVirtualMachinesExecute(r 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	// body params
-	localVarPostBody = r.payload
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -158,17 +142,6 @@ func (a *FirewallAttachmentAPIService) AttachFirewallToVirtualMachinesExecute(r 
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ErrorResponseModel
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
@@ -180,7 +153,7 @@ func (a *FirewallAttachmentAPIService) AttachFirewallToVirtualMachinesExecute(r 
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-		if localVarHTTPResponse.StatusCode == 409 {
+		if localVarHTTPResponse.StatusCode == 405 {
 			var v ErrorResponseModel
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -190,6 +163,16 @@ func (a *FirewallAttachmentAPIService) AttachFirewallToVirtualMachinesExecute(r 
 			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

@@ -22,29 +22,29 @@ import (
 // VncUrlAPIService VncUrlAPI service
 type VncUrlAPIService service
 
-type ApiGetVncUrlRequest struct {
+type ApiGetVNCURLRequest struct {
 	ctx        context.Context
 	ApiService *VncUrlAPIService
 	vmId       int32
 	jobId      int32
 }
 
-func (r ApiGetVncUrlRequest) Execute() (*VNCURL, *http.Response, error) {
-	return r.ApiService.GetVncUrlExecute(r)
+func (r ApiGetVNCURLRequest) Execute() (*VNCURL, *http.Response, error) {
+	return r.ApiService.GetVNCURLExecute(r)
 }
 
 /*
-GetVncUrl Get VNC Console Link
+GetVNCURL Get VNC Console Link
 
 Retrieves the URL to access the VNC console for a specified virtual machine by providing the virtual machine ID and the job ID in the path. For more information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/vnc-console/retrieve-vnc-url).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param vmId
 	@param jobId
-	@return ApiGetVncUrlRequest
+	@return ApiGetVNCURLRequest
 */
-func (a *VncUrlAPIService) GetVncUrl(ctx context.Context, vmId int32, jobId int32) ApiGetVncUrlRequest {
-	return ApiGetVncUrlRequest{
+func (a *VncUrlAPIService) GetVNCURL(ctx context.Context, vmId int32, jobId int32) ApiGetVNCURLRequest {
+	return ApiGetVNCURLRequest{
 		ApiService: a,
 		ctx:        ctx,
 		vmId:       vmId,
@@ -55,7 +55,7 @@ func (a *VncUrlAPIService) GetVncUrl(ctx context.Context, vmId int32, jobId int3
 // Execute executes the request
 //
 //	@return VNCURL
-func (a *VncUrlAPIService) GetVncUrlExecute(r ApiGetVncUrlRequest) (*VNCURL, *http.Response, error) {
+func (a *VncUrlAPIService) GetVNCURLExecute(r ApiGetVNCURLRequest) (*VNCURL, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -63,7 +63,7 @@ func (a *VncUrlAPIService) GetVncUrlExecute(r ApiGetVncUrlRequest) (*VNCURL, *ht
 		localVarReturnValue *VNCURL
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VncUrlAPIService.GetVncUrl")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VncUrlAPIService.GetVNCURL")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -177,27 +177,27 @@ func (a *VncUrlAPIService) GetVncUrlExecute(r ApiGetVncUrlRequest) (*VNCURL, *ht
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetVncUrl2Request struct {
+type ApiGetVncUrlRequest struct {
 	ctx        context.Context
 	ApiService *VncUrlAPIService
 	vmId       int32
 }
 
-func (r ApiGetVncUrl2Request) Execute() (*RequestConsole, *http.Response, error) {
-	return r.ApiService.GetVncUrl2Execute(r)
+func (r ApiGetVncUrlRequest) Execute() (*RequestConsole, *http.Response, error) {
+	return r.ApiService.GetVncUrlExecute(r)
 }
 
 /*
-GetVncUrl2 Request Instance Console
+GetVncUrl Request Instance Console
 
 Retrieves the path of the VNC console for the given virtual machine ID by providing the virtual machine ID in the path. For more information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/vnc-console/retrieve-console-path).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param vmId
-	@return ApiGetVncUrl2Request
+	@return ApiGetVncUrlRequest
 */
-func (a *VncUrlAPIService) GetVncUrl2(ctx context.Context, vmId int32) ApiGetVncUrl2Request {
-	return ApiGetVncUrl2Request{
+func (a *VncUrlAPIService) GetVncUrl(ctx context.Context, vmId int32) ApiGetVncUrlRequest {
+	return ApiGetVncUrlRequest{
 		ApiService: a,
 		ctx:        ctx,
 		vmId:       vmId,
@@ -207,7 +207,7 @@ func (a *VncUrlAPIService) GetVncUrl2(ctx context.Context, vmId int32) ApiGetVnc
 // Execute executes the request
 //
 //	@return RequestConsole
-func (a *VncUrlAPIService) GetVncUrl2Execute(r ApiGetVncUrl2Request) (*RequestConsole, *http.Response, error) {
+func (a *VncUrlAPIService) GetVncUrlExecute(r ApiGetVncUrlRequest) (*RequestConsole, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -215,7 +215,7 @@ func (a *VncUrlAPIService) GetVncUrl2Execute(r ApiGetVncUrl2Request) (*RequestCo
 		localVarReturnValue *RequestConsole
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VncUrlAPIService.GetVncUrl2")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VncUrlAPIService.GetVncUrl")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
