@@ -1,7 +1,7 @@
 /*
 Infrahub-API
 
-Testing GpuAPIService
+Testing VouchersAPIService
 
 */
 
@@ -18,28 +18,16 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test_hyperstack_GpuAPIService(t *testing.T) {
+func Test_hyperstack_VouchersAPIService(t *testing.T) {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test GpuAPIService GPUClusterRequest", func(t *testing.T) {
+	t.Run("Test VouchersAPIService RedeemAVoucher", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.GpuAPI.GPUClusterRequest(context.Background()).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test GpuAPIService ListGPUs", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		resp, httpRes, err := apiClient.GpuAPI.ListGPUs(context.Background()).Execute()
+		resp, httpRes, err := apiClient.VouchersAPI.RedeemAVoucher(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

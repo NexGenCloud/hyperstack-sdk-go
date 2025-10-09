@@ -141,6 +141,8 @@ type APIClient struct {
 	VolumeAPI *VolumeAPIService
 
 	VolumeAttachmentAPI *VolumeAttachmentAPIService
+
+	VouchersAPI *VouchersAPIService
 }
 
 type service struct {
@@ -206,6 +208,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.VncUrlAPI = (*VncUrlAPIService)(&c.common)
 	c.VolumeAPI = (*VolumeAPIService)(&c.common)
 	c.VolumeAttachmentAPI = (*VolumeAttachmentAPIService)(&c.common)
+	c.VouchersAPI = (*VouchersAPIService)(&c.common)
 
 	return c
 }

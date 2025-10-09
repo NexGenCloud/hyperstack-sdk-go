@@ -34,7 +34,7 @@ func (r ApiGetLastDayCostRequest) Execute() (*LastDayCostResponse, *http.Respons
 /*
 GetLastDayCost GET: Last Day Cost
 
-Retrieve the previous day's costs for instances, volumes, and clusters. Returns a breakdown of  the costs and the total cost for the last day. For additional information on Retrieve Previous Day Usage Costs, [**click here**](None/docs/api-reference/billing-resources/last-day-usage/)
+Retrieve the previous day's costs for instances, volumes, and clusters. Returns a breakdown of  the costs and the total cost for the last day. For additional information on Retrieve Previous Day Usage Costs, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/billing-resources/last-day-usage/)
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiGetLastDayCostRequest
@@ -364,7 +364,7 @@ func (r ApiGetUsage2Request) Execute() (*BillingMetricesResponse, *http.Response
 /*
 GetUsage2 GET: Billing usage
 
-Retrieve active billing metrics for the organization's resources, including pricing, uptime, and total cost. Returns usage details for each active resource by defualt(`deleted=false` will return active resources). Additionally, adding `deleted=true` in query parameter will return inactive resources. For additional information on view usage costs for all resources, [**click here**](None/docs/billing/pricebook/)
+Retrieve active billing metrics for the organization's resources, including pricing, uptime, and total cost. Returns usage details for each active resource by defualt(`deleted=false` will return active resources). Additionally, adding `deleted=true` in query parameter will return inactive resources. For additional information on view usage costs for all resources, [**click here**](https://docs.hyperstack.cloud/docs/billing/pricebook/)
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiGetUsage2Request

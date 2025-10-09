@@ -8,6 +8,8 @@ Name | Type | Description | Notes
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **Flavor** | Pointer to [**ClusterFlavorFields**](ClusterFlavorFields.md) |  | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
+**MaxCount** | Pointer to **int32** |  | [optional] 
+**MinCount** | Pointer to **int32** |  | [optional] 
 **Name** | Pointer to **string** |  | [optional] 
 **Role** | Pointer to **string** |  | [optional] 
 **UpdatedAt** | Pointer to **time.Time** |  | [optional] 
@@ -130,6 +132,56 @@ SetId sets Id field to given value.
 `func (o *ClusterNodeGroupFields) HasId() bool`
 
 HasId returns a boolean if a field has been set.
+
+### GetMaxCount
+
+`func (o *ClusterNodeGroupFields) GetMaxCount() int32`
+
+GetMaxCount returns the MaxCount field if non-nil, zero value otherwise.
+
+### GetMaxCountOk
+
+`func (o *ClusterNodeGroupFields) GetMaxCountOk() (*int32, bool)`
+
+GetMaxCountOk returns a tuple with the MaxCount field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMaxCount
+
+`func (o *ClusterNodeGroupFields) SetMaxCount(v int32)`
+
+SetMaxCount sets MaxCount field to given value.
+
+### HasMaxCount
+
+`func (o *ClusterNodeGroupFields) HasMaxCount() bool`
+
+HasMaxCount returns a boolean if a field has been set.
+
+### GetMinCount
+
+`func (o *ClusterNodeGroupFields) GetMinCount() int32`
+
+GetMinCount returns the MinCount field if non-nil, zero value otherwise.
+
+### GetMinCountOk
+
+`func (o *ClusterNodeGroupFields) GetMinCountOk() (*int32, bool)`
+
+GetMinCountOk returns a tuple with the MinCount field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMinCount
+
+`func (o *ClusterNodeGroupFields) SetMinCount(v int32)`
+
+SetMinCount sets MinCount field to given value.
+
+### HasMinCount
+
+`func (o *ClusterNodeGroupFields) HasMinCount() bool`
+
+HasMinCount returns a boolean if a field has been set.
 
 ### GetName
 

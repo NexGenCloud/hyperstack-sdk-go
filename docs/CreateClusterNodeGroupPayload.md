@@ -6,13 +6,16 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Count** | Pointer to **int32** |  | [optional] 
 **FlavorName** | **string** |  | 
+**MaxCount** | Pointer to **int32** |  | [optional] 
+**MinCount** | Pointer to **int32** |  | [optional] 
 **Name** | **string** |  | 
+**Role** | **string** |  | [default to "worker"]
 
 ## Methods
 
 ### NewCreateClusterNodeGroupPayload
 
-`func NewCreateClusterNodeGroupPayload(flavorName string, name string, ) *CreateClusterNodeGroupPayload`
+`func NewCreateClusterNodeGroupPayload(flavorName string, name string, role string, ) *CreateClusterNodeGroupPayload`
 
 NewCreateClusterNodeGroupPayload instantiates a new CreateClusterNodeGroupPayload object
 This constructor will assign default values to properties that have it defined,
@@ -72,6 +75,56 @@ and a boolean to check if the value has been set.
 SetFlavorName sets FlavorName field to given value.
 
 
+### GetMaxCount
+
+`func (o *CreateClusterNodeGroupPayload) GetMaxCount() int32`
+
+GetMaxCount returns the MaxCount field if non-nil, zero value otherwise.
+
+### GetMaxCountOk
+
+`func (o *CreateClusterNodeGroupPayload) GetMaxCountOk() (*int32, bool)`
+
+GetMaxCountOk returns a tuple with the MaxCount field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMaxCount
+
+`func (o *CreateClusterNodeGroupPayload) SetMaxCount(v int32)`
+
+SetMaxCount sets MaxCount field to given value.
+
+### HasMaxCount
+
+`func (o *CreateClusterNodeGroupPayload) HasMaxCount() bool`
+
+HasMaxCount returns a boolean if a field has been set.
+
+### GetMinCount
+
+`func (o *CreateClusterNodeGroupPayload) GetMinCount() int32`
+
+GetMinCount returns the MinCount field if non-nil, zero value otherwise.
+
+### GetMinCountOk
+
+`func (o *CreateClusterNodeGroupPayload) GetMinCountOk() (*int32, bool)`
+
+GetMinCountOk returns a tuple with the MinCount field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMinCount
+
+`func (o *CreateClusterNodeGroupPayload) SetMinCount(v int32)`
+
+SetMinCount sets MinCount field to given value.
+
+### HasMinCount
+
+`func (o *CreateClusterNodeGroupPayload) HasMinCount() bool`
+
+HasMinCount returns a boolean if a field has been set.
+
 ### GetName
 
 `func (o *CreateClusterNodeGroupPayload) GetName() string`
@@ -90,6 +143,26 @@ and a boolean to check if the value has been set.
 `func (o *CreateClusterNodeGroupPayload) SetName(v string)`
 
 SetName sets Name field to given value.
+
+
+### GetRole
+
+`func (o *CreateClusterNodeGroupPayload) GetRole() string`
+
+GetRole returns the Role field if non-nil, zero value otherwise.
+
+### GetRoleOk
+
+`func (o *CreateClusterNodeGroupPayload) GetRoleOk() (*string, bool)`
+
+GetRoleOk returns a tuple with the Role field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRole
+
+`func (o *CreateClusterNodeGroupPayload) SetRole(v string)`
+
+SetRole sets Role field to given value.
 
 
 

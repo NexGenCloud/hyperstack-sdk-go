@@ -46,7 +46,7 @@ func (r ApiGetCustomerContractRequest) Execute() (*GetCustomerContractsListRespo
 /*
 GetCustomerContract List Contracts
 
-Retrieves a list of contracts and their details, including the terms of each contract and the discounts applied to all resources under each contract. Pagination can be controlled using the `page` and `per_page` query parameters. For additional information about contracts, click [**here**](None/docs/billing-and-payment/contracts).
+Retrieves a list of contracts and their details, including the terms of each contract and the discounts applied to all resources under each contract. Pagination can be controlled using the `page` and `per_page` query parameters. For additional information about contracts, click [**here**](https://docs.hyperstack.cloud/docs/billing-and-payment/contracts).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiGetCustomerContractRequest
@@ -200,7 +200,7 @@ func (r ApiGetCustomerContractDetailsRequest) Execute() (*CustomerContractDetail
 /*
 GetCustomerContractDetails Retrieve Contract Details
 
-Retrieve details of a specific contract by providing the contract ID in the path. The endpoint returns the contract object along with its associated discount plans. For more information, [**click here**](None/docs/api-reference/pricebook-resources/retrieve-contract-details).
+Retrieve details of a specific contract by providing the contract ID in the path. The endpoint returns the contract object along with its associated discount plans. For more information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/pricebook-resources/retrieve-contract-details).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param contractId

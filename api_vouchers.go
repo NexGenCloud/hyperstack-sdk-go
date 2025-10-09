@@ -18,28 +18,34 @@ import (
 	"net/url"
 )
 
-// PricebookAPIService PricebookAPI service
-type PricebookAPIService service
+// VouchersAPIService VouchersAPI service
+type VouchersAPIService service
 
-type ApiGetPricebookRequest struct {
+type ApiRedeemAVoucherRequest struct {
 	ctx        context.Context
-	ApiService *PricebookAPIService
+	ApiService *VouchersAPIService
+	payload    *RedeemVoucherPayload
 }
 
-func (r ApiGetPricebookRequest) Execute() ([]PricebookModel, *http.Response, error) {
-	return r.ApiService.GetPricebookExecute(r)
+func (r ApiRedeemAVoucherRequest) Payload(payload RedeemVoucherPayload) ApiRedeemAVoucherRequest {
+	r.payload = &payload
+	return r
+}
+
+func (r ApiRedeemAVoucherRequest) Execute() (*VoucherRedeemResponseSchema, *http.Response, error) {
+	return r.ApiService.RedeemAVoucherExecute(r)
 }
 
 /*
-GetPricebook Method for GetPricebook
+RedeemAVoucher Redeem a voucher with a voucher_code
 
-Retrieves the Infrahub Pricebook, detailing hourly running costs for all resources offered by Infrahub. For more information on Pricebook [**click here**](https://docs.hyperstack.cloud/docs/api-reference/pricebook-resources/pricebook/).
+Request to redeem a voucher with a voucher code.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetPricebookRequest
+	@return ApiRedeemAVoucherRequest
 */
-func (a *PricebookAPIService) GetPricebook(ctx context.Context) ApiGetPricebookRequest {
-	return ApiGetPricebookRequest{
+func (a *VouchersAPIService) RedeemAVoucher(ctx context.Context) ApiRedeemAVoucherRequest {
+	return ApiRedeemAVoucherRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -47,28 +53,31 @@ func (a *PricebookAPIService) GetPricebook(ctx context.Context) ApiGetPricebookR
 
 // Execute executes the request
 //
-//	@return []PricebookModel
-func (a *PricebookAPIService) GetPricebookExecute(r ApiGetPricebookRequest) ([]PricebookModel, *http.Response, error) {
+//	@return VoucherRedeemResponseSchema
+func (a *VouchersAPIService) RedeemAVoucherExecute(r ApiRedeemAVoucherRequest) (*VoucherRedeemResponseSchema, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodGet
+		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue []PricebookModel
+		localVarReturnValue *VoucherRedeemResponseSchema
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PricebookAPIService.GetPricebook")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VouchersAPIService.RedeemAVoucher")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/pricebook"
+	localVarPath := localBasePath + "/billing/billing/vouchers/redeem"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.payload == nil {
+		return localVarReturnValue, nil, reportError("payload is required and must be specified")
+	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -84,6 +93,8 @@ func (a *PricebookAPIService) GetPricebookExecute(r ApiGetPricebookRequest) ([]P
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	// body params
+	localVarPostBody = r.payload
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -142,7 +153,18 @@ func (a *PricebookAPIService) GetPricebookExecute(r ApiGetPricebookRequest) ([]P
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-		if localVarHTTPResponse.StatusCode == 405 {
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
 			var v ErrorResponseModel
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
