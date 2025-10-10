@@ -15,7 +15,7 @@ env:
 
   HYPERSTACK_API_KEY: ~
   HYPERSTACK_API_ADDRESS: "{{.HYPERSTACK_API_ADDRESS}}"
-  HYPERSTACK_API_SPEC_ADDRESS: "https://infrahub-api-doc.nexgencloud.com/api.json"
+  HYPERSTACK_API_SPEC_ADDRESS: "https://staging-infrahub-api.internal.ngbackend.cloud/v1/docs/api.json"
 
 tasks:
   init:

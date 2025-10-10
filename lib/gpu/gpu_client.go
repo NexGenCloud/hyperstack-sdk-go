@@ -4,6 +4,7 @@
 package gpu
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -43,6 +44,27 @@ type GPURegionFields struct {
 	Id   *int    `json:"id,omitempty"`
 	Name *string `json:"name,omitempty"`
 }
+
+// GpuClusterRequestPayload defines model for GpuClusterRequestPayload.
+type GpuClusterRequestPayload struct {
+	// GpuCount Number of GPUs to allocate.
+	GpuCount int `json:"gpu_count"`
+
+	// Gpus List of GPU types to include in the cluster.
+	Gpus []string `json:"gpus"`
+
+	// Purpose Purpose of the GPU cluster.
+	Purpose string `json:"purpose"`
+}
+
+// ResponseModel defines model for ResponseModel.
+type ResponseModel struct {
+	Message *string `json:"message,omitempty"`
+	Status  *bool   `json:"status,omitempty"`
+}
+
+// GPUClusterRequestJSONRequestBody defines body for GPUClusterRequest for application/json ContentType.
+type GPUClusterRequestJSONRequestBody = GpuClusterRequestPayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -117,8 +139,37 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
+	// GPUClusterRequestWithBody request with any body
+	GPUClusterRequestWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	GPUClusterRequest(ctx context.Context, body GPUClusterRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListGPUs request
 	ListGPUs(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+}
+
+func (c *Client) GPUClusterRequestWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGPUClusterRequestRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GPUClusterRequest(ctx context.Context, body GPUClusterRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGPUClusterRequestRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
 }
 
 func (c *Client) ListGPUs(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -131,6 +182,46 @@ func (c *Client) ListGPUs(ctx context.Context, reqEditors ...RequestEditorFn) (*
 		return nil, err
 	}
 	return c.Client.Do(req)
+}
+
+// NewGPUClusterRequestRequest calls the generic GPUClusterRequest builder with application/json body
+func NewGPUClusterRequestRequest(server string, body GPUClusterRequestJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewGPUClusterRequestRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewGPUClusterRequestRequestWithBody generates requests for GPUClusterRequest with any type of body
+func NewGPUClusterRequestRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/gpu-clusters/request")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
 }
 
 // NewListGPUsRequest generates requests for ListGPUs
@@ -203,8 +294,39 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
+	// GPUClusterRequestWithBodyWithResponse request with any body
+	GPUClusterRequestWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*GPUClusterRequestResponse, error)
+
+	GPUClusterRequestWithResponse(ctx context.Context, body GPUClusterRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*GPUClusterRequestResponse, error)
+
 	// ListGPUsWithResponse request
 	ListGPUsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListGPUsResponse, error)
+}
+
+type GPUClusterRequestResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ResponseModel
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON405      *ErrorResponseModel
+	JSON409      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r GPUClusterRequestResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GPUClusterRequestResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
 }
 
 type ListGPUsResponse struct {
@@ -231,6 +353,23 @@ func (r ListGPUsResponse) StatusCode() int {
 	return 0
 }
 
+// GPUClusterRequestWithBodyWithResponse request with arbitrary body returning *GPUClusterRequestResponse
+func (c *ClientWithResponses) GPUClusterRequestWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*GPUClusterRequestResponse, error) {
+	rsp, err := c.GPUClusterRequestWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGPUClusterRequestResponse(rsp)
+}
+
+func (c *ClientWithResponses) GPUClusterRequestWithResponse(ctx context.Context, body GPUClusterRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*GPUClusterRequestResponse, error) {
+	rsp, err := c.GPUClusterRequest(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGPUClusterRequestResponse(rsp)
+}
+
 // ListGPUsWithResponse request returning *ListGPUsResponse
 func (c *ClientWithResponses) ListGPUsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListGPUsResponse, error) {
 	rsp, err := c.ListGPUs(ctx, reqEditors...)
@@ -238,6 +377,60 @@ func (c *ClientWithResponses) ListGPUsWithResponse(ctx context.Context, reqEdito
 		return nil, err
 	}
 	return ParseListGPUsResponse(rsp)
+}
+
+// ParseGPUClusterRequestResponse parses an HTTP response from a GPUClusterRequestWithResponse call
+func ParseGPUClusterRequestResponse(rsp *http.Response) (*GPUClusterRequestResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GPUClusterRequestResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 405:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON405 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
 }
 
 // ParseListGPUsResponse parses an HTTP response from a ListGPUsWithResponse call
