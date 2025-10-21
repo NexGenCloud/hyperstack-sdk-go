@@ -66,6 +66,7 @@ type ClusterFields struct {
 	CreatedAt         *time.CustomTime                `json:"created_at,omitempty"`
 	EnvironmentName   *string                   `json:"environment_name,omitempty"`
 	Id                *int                      `json:"id,omitempty"`
+	IsReconciling     *bool                     `json:"is_reconciling,omitempty"`
 	KeypairName       *string                   `json:"keypair_name,omitempty"`
 	KubeConfig        *string                   `json:"kube_config,omitempty"`
 	KubernetesVersion *string                   `json:"kubernetes_version,omitempty"`
@@ -98,6 +99,8 @@ type ClusterNodeGroupFields struct {
 	CreatedAt *time.CustomTime           `json:"created_at,omitempty"`
 	Flavor    *ClusterFlavorFields `json:"flavor,omitempty"`
 	Id        *int                 `json:"id,omitempty"`
+	MaxCount  *int                 `json:"max_count,omitempty"`
+	MinCount  *int                 `json:"min_count,omitempty"`
 	Name      *string              `json:"name,omitempty"`
 	Role      *string              `json:"role,omitempty"`
 	UpdatedAt *time.CustomTime           `json:"updated_at,omitempty"`

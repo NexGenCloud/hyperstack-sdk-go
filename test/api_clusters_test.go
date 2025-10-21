@@ -228,4 +228,19 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ClustersAPIService UpdateANodeGroup", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var clusterId int32
+		var nodeGroupId int32
+
+		resp, httpRes, err := apiClient.ClustersAPI.UpdateANodeGroup(context.Background(), clusterId, nodeGroupId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 }

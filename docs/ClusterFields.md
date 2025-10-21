@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **EnvironmentName** | Pointer to **string** |  | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
+**IsReconciling** | Pointer to **bool** |  | [optional] 
 **KeypairName** | Pointer to **string** |  | [optional] 
 **KubeConfig** | Pointer to **string** |  | [optional] 
 **KubernetesVersion** | Pointer to **string** |  | [optional] 
@@ -136,6 +137,31 @@ SetId sets Id field to given value.
 `func (o *ClusterFields) HasId() bool`
 
 HasId returns a boolean if a field has been set.
+
+### GetIsReconciling
+
+`func (o *ClusterFields) GetIsReconciling() bool`
+
+GetIsReconciling returns the IsReconciling field if non-nil, zero value otherwise.
+
+### GetIsReconcilingOk
+
+`func (o *ClusterFields) GetIsReconcilingOk() (*bool, bool)`
+
+GetIsReconcilingOk returns a tuple with the IsReconciling field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetIsReconciling
+
+`func (o *ClusterFields) SetIsReconciling(v bool)`
+
+SetIsReconciling sets IsReconciling field to given value.
+
+### HasIsReconciling
+
+`func (o *ClusterFields) HasIsReconciling() bool`
+
+HasIsReconciling returns a boolean if a field has been set.
 
 ### GetKeypairName
 

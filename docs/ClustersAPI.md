@@ -19,6 +19,7 @@ Method | HTTP request | Description
 [**ListClusters**](ClustersAPI.md#ListClusters) | **Get** /core/clusters | List Clusters
 [**ListNodeGroups**](ClustersAPI.md#ListNodeGroups) | **Get** /core/clusters/{cluster_id}/node-groups | List node groups for a cluster
 [**RetrieveANodeGroup**](ClustersAPI.md#RetrieveANodeGroup) | **Get** /core/clusters/{cluster_id}/node-groups/{node_group_id} | Retrieve a node group in a cluster
+[**UpdateANodeGroup**](ClustersAPI.md#UpdateANodeGroup) | **Patch** /core/clusters/{cluster_id}/node-groups/{node_group_id} | Update a node group in a cluster
 
 
 
@@ -244,7 +245,7 @@ import (
 
 func main() {
 	clusterId := int32(56) // int32 | 
-	payload := *openapiclient.NewCreateClusterNodeGroupPayload("FlavorName_example", "Name_example") // CreateClusterNodeGroupPayload | 
+	payload := *openapiclient.NewCreateClusterNodeGroupPayload("FlavorName_example", "Name_example", "worker") // CreateClusterNodeGroupPayload | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1037,6 +1038,79 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpdateANodeGroup
+
+> ClusterNodeGroupsCreateResponse UpdateANodeGroup(ctx, clusterId, nodeGroupId).Payload(payload).Execute()
+
+Update a node group in a cluster
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	clusterId := int32(56) // int32 | 
+	nodeGroupId := int32(56) // int32 | 
+	payload := *openapiclient.NewUpdateClusterNodeGroupPayload() // UpdateClusterNodeGroupPayload | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ClustersAPI.UpdateANodeGroup(context.Background(), clusterId, nodeGroupId).Payload(payload).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.UpdateANodeGroup``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UpdateANodeGroup`: ClusterNodeGroupsCreateResponse
+	fmt.Fprintf(os.Stdout, "Response from `ClustersAPI.UpdateANodeGroup`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**clusterId** | **int32** |  | 
+**nodeGroupId** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateANodeGroupRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **payload** | [**UpdateClusterNodeGroupPayload**](UpdateClusterNodeGroupPayload.md) |  | 
+
+### Return type
+
+[**ClusterNodeGroupsCreateResponse**](ClusterNodeGroupsCreateResponse.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

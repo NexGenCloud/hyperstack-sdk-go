@@ -5025,6 +5025,70 @@ paths:
       summary: Retrieve a node group in a cluster
       tags:
       - clusters
+    patch:
+      operationId: Update_a_Node_Group
+      parameters:
+      - explode: false
+        in: path
+        name: cluster_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - explode: false
+        in: path
+        name: node_group_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Update_ClusterNodeGroup_payload'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterNodeGroupsCreateResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Not Found
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Conflict
+        "500":
+          content: {}
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      - apiKey: []
+      summary: Update a node group in a cluster
+      tags:
+      - clusters
+      x-codegen-request-body-name: payload
   /core/clusters/{cluster_id}/nodes:
     get:
       operationId: Get_Cluster_Nodes
@@ -10936,12 +11000,14 @@ components:
             - id: 7
               label: label
             ram: 9.301444243932576
+          max_count: 4
           role: role
           updated_at: 2000-01-23T04:56:07.000+00:00
           count: 3
           name: name
           created_at: 2000-01-23T04:56:07.000+00:00
           id: 2
+          min_count: 7
         - flavor:
             features: "{}"
             disk: 1
@@ -10957,51 +11023,54 @@ components:
             - id: 7
               label: label
             ram: 9.301444243932576
+          max_count: 4
           role: role
           updated_at: 2000-01-23T04:56:07.000+00:00
           count: 3
           name: name
           created_at: 2000-01-23T04:56:07.000+00:00
           id: 2
+          min_count: 7
         nodes:
         - instance:
-            contract_id: 7
+            contract_id: 1
             floating_ip: floating_ip
             floating_ip_status: floating_ip_status
             name: name
             fixed_ip: fixed_ip
             id: 1
-            image_id: 1
+            image_id: 6
             status: status
           is_bastion: true
           role: role
           requires_public_ip: true
           updated_at: 2000-01-23T04:56:07.000+00:00
           created_at: 2000-01-23T04:56:07.000+00:00
-          id: 4
+          id: 1
           node_group_name: node_group_name
           status_reason: status_reason
-          node_group_id: 1
+          node_group_id: 7
           status: status
         - instance:
-            contract_id: 7
+            contract_id: 1
             floating_ip: floating_ip
             floating_ip_status: floating_ip_status
             name: name
             fixed_ip: fixed_ip
             id: 1
-            image_id: 1
+            image_id: 6
             status: status
           is_bastion: true
           role: role
           requires_public_ip: true
           updated_at: 2000-01-23T04:56:07.000+00:00
           created_at: 2000-01-23T04:56:07.000+00:00
-          id: 4
+          id: 1
           node_group_name: node_group_name
           status_reason: status_reason
-          node_group_id: 1
+          node_group_id: 7
           status: status
+        is_reconciling: true
         kube_config: kube_config
         kubernetes_version: kubernetes_version
         name: name
@@ -11034,6 +11103,8 @@ components:
           type: string
         id:
           type: integer
+        is_reconciling:
+          type: boolean
         keypair_name:
           type: string
         kube_config:
@@ -11080,12 +11151,14 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
+            max_count: 4
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
             id: 2
+            min_count: 7
           - flavor:
               features: "{}"
               disk: 1
@@ -11101,51 +11174,54 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
+            max_count: 4
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
             id: 2
+            min_count: 7
           nodes:
           - instance:
-              contract_id: 7
+              contract_id: 1
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
               id: 1
-              image_id: 1
+              image_id: 6
               status: status
             is_bastion: true
             role: role
             requires_public_ip: true
             updated_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 4
+            id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 1
+            node_group_id: 7
             status: status
           - instance:
-              contract_id: 7
+              contract_id: 1
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
               id: 1
-              image_id: 1
+              image_id: 6
               status: status
             is_bastion: true
             role: role
             requires_public_ip: true
             updated_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 4
+            id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 1
+            node_group_id: 7
             status: status
+          is_reconciling: true
           kube_config: kube_config
           kubernetes_version: kubernetes_version
           name: name
@@ -11187,12 +11263,14 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
+            max_count: 4
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
             id: 2
+            min_count: 7
           - flavor:
               features: "{}"
               disk: 1
@@ -11208,51 +11286,54 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
+            max_count: 4
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
             id: 2
+            min_count: 7
           nodes:
           - instance:
-              contract_id: 7
+              contract_id: 1
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
               id: 1
-              image_id: 1
+              image_id: 6
               status: status
             is_bastion: true
             role: role
             requires_public_ip: true
             updated_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 4
+            id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 1
+            node_group_id: 7
             status: status
           - instance:
-              contract_id: 7
+              contract_id: 1
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
               id: 1
-              image_id: 1
+              image_id: 6
               status: status
             is_bastion: true
             role: role
             requires_public_ip: true
             updated_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 4
+            id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 1
+            node_group_id: 7
             status: status
+          is_reconciling: true
           kube_config: kube_config
           kubernetes_version: kubernetes_version
           name: name
@@ -11289,23 +11370,23 @@ components:
     ClusterNodeFields:
       example:
         instance:
-          contract_id: 7
+          contract_id: 1
           floating_ip: floating_ip
           floating_ip_status: floating_ip_status
           name: name
           fixed_ip: fixed_ip
           id: 1
-          image_id: 1
+          image_id: 6
           status: status
         is_bastion: true
         role: role
         requires_public_ip: true
         updated_at: 2000-01-23T04:56:07.000+00:00
         created_at: 2000-01-23T04:56:07.000+00:00
-        id: 4
+        id: 1
         node_group_name: node_group_name
         status_reason: status_reason
-        node_group_id: 1
+        node_group_id: 7
         status: status
       properties:
         created_at:
@@ -11350,12 +11431,14 @@ components:
           - id: 7
             label: label
           ram: 9.301444243932576
+        max_count: 4
         role: role
         updated_at: 2000-01-23T04:56:07.000+00:00
         count: 3
         name: name
         created_at: 2000-01-23T04:56:07.000+00:00
         id: 2
+        min_count: 7
       properties:
         count:
           type: integer
@@ -11365,6 +11448,10 @@ components:
         flavor:
           $ref: '#/components/schemas/Cluster_Flavor_Fields'
         id:
+          type: integer
+        max_count:
+          type: integer
+        min_count:
           type: integer
         name:
           type: string
@@ -11392,50 +11479,52 @@ components:
             - id: 7
               label: label
             ram: 9.301444243932576
+          max_count: 4
           role: role
           updated_at: 2000-01-23T04:56:07.000+00:00
           count: 3
           name: name
           created_at: 2000-01-23T04:56:07.000+00:00
           id: 2
+          min_count: 7
         nodes:
         - instance:
-            contract_id: 7
+            contract_id: 1
             floating_ip: floating_ip
             floating_ip_status: floating_ip_status
             name: name
             fixed_ip: fixed_ip
             id: 1
-            image_id: 1
+            image_id: 6
             status: status
           is_bastion: true
           role: role
           requires_public_ip: true
           updated_at: 2000-01-23T04:56:07.000+00:00
           created_at: 2000-01-23T04:56:07.000+00:00
-          id: 4
+          id: 1
           node_group_name: node_group_name
           status_reason: status_reason
-          node_group_id: 1
+          node_group_id: 7
           status: status
         - instance:
-            contract_id: 7
+            contract_id: 1
             floating_ip: floating_ip
             floating_ip_status: floating_ip_status
             name: name
             fixed_ip: fixed_ip
             id: 1
-            image_id: 1
+            image_id: 6
             status: status
           is_bastion: true
           role: role
           requires_public_ip: true
           updated_at: 2000-01-23T04:56:07.000+00:00
           created_at: 2000-01-23T04:56:07.000+00:00
-          id: 4
+          id: 1
           node_group_name: node_group_name
           status_reason: status_reason
-          node_group_id: 1
+          node_group_id: 7
           status: status
         message: message
         status: true
@@ -11469,12 +11558,14 @@ components:
             - id: 7
               label: label
             ram: 9.301444243932576
+          max_count: 4
           role: role
           updated_at: 2000-01-23T04:56:07.000+00:00
           count: 3
           name: name
           created_at: 2000-01-23T04:56:07.000+00:00
           id: 2
+          min_count: 7
         message: message
         status: true
       properties:
@@ -11504,12 +11595,14 @@ components:
             - id: 7
               label: label
             ram: 9.301444243932576
+          max_count: 4
           role: role
           updated_at: 2000-01-23T04:56:07.000+00:00
           count: 3
           name: name
           created_at: 2000-01-23T04:56:07.000+00:00
           id: 2
+          min_count: 7
         - flavor:
             features: "{}"
             disk: 1
@@ -11525,12 +11618,14 @@ components:
             - id: 7
               label: label
             ram: 9.301444243932576
+          max_count: 4
           role: role
           updated_at: 2000-01-23T04:56:07.000+00:00
           count: 3
           name: name
           created_at: 2000-01-23T04:56:07.000+00:00
           id: 2
+          min_count: 7
         status: true
       properties:
         message:
@@ -11544,13 +11639,13 @@ components:
       type: object
     ClusterNodeInstanceFields:
       example:
-        contract_id: 7
+        contract_id: 1
         floating_ip: floating_ip
         floating_ip_status: floating_ip_status
         name: name
         fixed_ip: fixed_ip
         id: 1
-        image_id: 1
+        image_id: 6
         status: status
       properties:
         contract_id:
@@ -11574,42 +11669,42 @@ components:
       example:
         nodes:
         - instance:
-            contract_id: 7
+            contract_id: 1
             floating_ip: floating_ip
             floating_ip_status: floating_ip_status
             name: name
             fixed_ip: fixed_ip
             id: 1
-            image_id: 1
+            image_id: 6
             status: status
           is_bastion: true
           role: role
           requires_public_ip: true
           updated_at: 2000-01-23T04:56:07.000+00:00
           created_at: 2000-01-23T04:56:07.000+00:00
-          id: 4
+          id: 1
           node_group_name: node_group_name
           status_reason: status_reason
-          node_group_id: 1
+          node_group_id: 7
           status: status
         - instance:
-            contract_id: 7
+            contract_id: 1
             floating_ip: floating_ip
             floating_ip_status: floating_ip_status
             name: name
             fixed_ip: fixed_ip
             id: 1
-            image_id: 1
+            image_id: 6
             status: status
           is_bastion: true
           role: role
           requires_public_ip: true
           updated_at: 2000-01-23T04:56:07.000+00:00
           created_at: 2000-01-23T04:56:07.000+00:00
-          id: 4
+          id: 1
           node_group_name: node_group_name
           status_reason: status_reason
-          node_group_id: 1
+          node_group_id: 7
           status: status
         message: message
         status: true
@@ -11645,12 +11740,14 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
+            max_count: 4
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
             id: 2
+            min_count: 7
           - flavor:
               features: "{}"
               disk: 1
@@ -11666,51 +11763,54 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
+            max_count: 4
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
             id: 2
+            min_count: 7
           nodes:
           - instance:
-              contract_id: 7
+              contract_id: 1
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
               id: 1
-              image_id: 1
+              image_id: 6
               status: status
             is_bastion: true
             role: role
             requires_public_ip: true
             updated_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 4
+            id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 1
+            node_group_id: 7
             status: status
           - instance:
-              contract_id: 7
+              contract_id: 1
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
               id: 1
-              image_id: 1
+              image_id: 6
               status: status
             is_bastion: true
             role: role
             requires_public_ip: true
             updated_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 4
+            id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 1
+            node_group_id: 7
             status: status
+          is_reconciling: true
           kube_config: kube_config
           kubernetes_version: kubernetes_version
           name: name
@@ -12094,12 +12194,14 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
+            max_count: 4
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
             id: 2
+            min_count: 7
           - flavor:
               features: "{}"
               disk: 1
@@ -12115,51 +12217,54 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
+            max_count: 4
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
             id: 2
+            min_count: 7
           nodes:
           - instance:
-              contract_id: 7
+              contract_id: 1
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
               id: 1
-              image_id: 1
+              image_id: 6
               status: status
             is_bastion: true
             role: role
             requires_public_ip: true
             updated_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 4
+            id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 1
+            node_group_id: 7
             status: status
           - instance:
-              contract_id: 7
+              contract_id: 1
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
               id: 1
-              image_id: 1
+              image_id: 6
               status: status
             is_bastion: true
             role: role
             requires_public_ip: true
             updated_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 4
+            id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 1
+            node_group_id: 7
             status: status
+          is_reconciling: true
           kube_config: kube_config
           kubernetes_version: kubernetes_version
           name: name
@@ -12235,12 +12340,14 @@ components:
                 - id: 7
                   label: label
                 ram: 9.301444243932576
+              max_count: 4
               role: role
               updated_at: 2000-01-23T04:56:07.000+00:00
               count: 3
               name: name
               created_at: 2000-01-23T04:56:07.000+00:00
               id: 2
+              min_count: 7
             - flavor:
                 features: "{}"
                 disk: 1
@@ -12256,51 +12363,54 @@ components:
                 - id: 7
                   label: label
                 ram: 9.301444243932576
+              max_count: 4
               role: role
               updated_at: 2000-01-23T04:56:07.000+00:00
               count: 3
               name: name
               created_at: 2000-01-23T04:56:07.000+00:00
               id: 2
+              min_count: 7
             nodes:
             - instance:
-                contract_id: 7
+                contract_id: 1
                 floating_ip: floating_ip
                 floating_ip_status: floating_ip_status
                 name: name
                 fixed_ip: fixed_ip
                 id: 1
-                image_id: 1
+                image_id: 6
                 status: status
               is_bastion: true
               role: role
               requires_public_ip: true
               updated_at: 2000-01-23T04:56:07.000+00:00
               created_at: 2000-01-23T04:56:07.000+00:00
-              id: 4
+              id: 1
               node_group_name: node_group_name
               status_reason: status_reason
-              node_group_id: 1
+              node_group_id: 7
               status: status
             - instance:
-                contract_id: 7
+                contract_id: 1
                 floating_ip: floating_ip
                 floating_ip_status: floating_ip_status
                 name: name
                 fixed_ip: fixed_ip
                 id: 1
-                image_id: 1
+                image_id: 6
                 status: status
               is_bastion: true
               role: role
               requires_public_ip: true
               updated_at: 2000-01-23T04:56:07.000+00:00
               created_at: 2000-01-23T04:56:07.000+00:00
-              id: 4
+              id: 1
               node_group_name: node_group_name
               status_reason: status_reason
-              node_group_id: 1
+              node_group_id: 7
               status: status
+            is_reconciling: true
             kube_config: kube_config
             kubernetes_version: kubernetes_version
             name: name
@@ -12351,12 +12461,14 @@ components:
                 - id: 7
                   label: label
                 ram: 9.301444243932576
+              max_count: 4
               role: role
               updated_at: 2000-01-23T04:56:07.000+00:00
               count: 3
               name: name
               created_at: 2000-01-23T04:56:07.000+00:00
               id: 2
+              min_count: 7
             - flavor:
                 features: "{}"
                 disk: 1
@@ -12372,51 +12484,54 @@ components:
                 - id: 7
                   label: label
                 ram: 9.301444243932576
+              max_count: 4
               role: role
               updated_at: 2000-01-23T04:56:07.000+00:00
               count: 3
               name: name
               created_at: 2000-01-23T04:56:07.000+00:00
               id: 2
+              min_count: 7
             nodes:
             - instance:
-                contract_id: 7
+                contract_id: 1
                 floating_ip: floating_ip
                 floating_ip_status: floating_ip_status
                 name: name
                 fixed_ip: fixed_ip
                 id: 1
-                image_id: 1
+                image_id: 6
                 status: status
               is_bastion: true
               role: role
               requires_public_ip: true
               updated_at: 2000-01-23T04:56:07.000+00:00
               created_at: 2000-01-23T04:56:07.000+00:00
-              id: 4
+              id: 1
               node_group_name: node_group_name
               status_reason: status_reason
-              node_group_id: 1
+              node_group_id: 7
               status: status
             - instance:
-                contract_id: 7
+                contract_id: 1
                 floating_ip: floating_ip
                 floating_ip_status: floating_ip_status
                 name: name
                 fixed_ip: fixed_ip
                 id: 1
-                image_id: 1
+                image_id: 6
                 status: status
               is_bastion: true
               role: role
               requires_public_ip: true
               updated_at: 2000-01-23T04:56:07.000+00:00
               created_at: 2000-01-23T04:56:07.000+00:00
-              id: 4
+              id: 1
               node_group_name: node_group_name
               status_reason: status_reason
-              node_group_id: 1
+              node_group_id: 7
               status: status
+            is_reconciling: true
             kube_config: kube_config
             kubernetes_version: kubernetes_version
             name: name
@@ -12822,12 +12937,25 @@ components:
           type: integer
         flavor_name:
           type: string
+        max_count:
+          maximum: 20
+          type: integer
+        min_count:
+          minimum: 1
+          type: integer
         name:
           maxLength: 20
+          type: string
+        role:
+          default: worker
+          enum:
+          - worker
+          example: worker
           type: string
       required:
       - flavor_name
       - name
+      - role
       type: object
     Create_Cluster_Payload:
       properties:
@@ -15814,12 +15942,14 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
+            max_count: 4
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
             id: 2
+            min_count: 7
           - flavor:
               features: "{}"
               disk: 1
@@ -15835,51 +15965,54 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
+            max_count: 4
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
             id: 2
+            min_count: 7
           nodes:
           - instance:
-              contract_id: 7
+              contract_id: 1
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
               id: 1
-              image_id: 1
+              image_id: 6
               status: status
             is_bastion: true
             role: role
             requires_public_ip: true
             updated_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 4
+            id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 1
+            node_group_id: 7
             status: status
           - instance:
-              contract_id: 7
+              contract_id: 1
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
               id: 1
-              image_id: 1
+              image_id: 6
               status: status
             is_bastion: true
             role: role
             requires_public_ip: true
             updated_at: 2000-01-23T04:56:07.000+00:00
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 4
+            id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 1
+            node_group_id: 7
             status: status
+          is_reconciling: true
           kube_config: kube_config
           kubernetes_version: kubernetes_version
           name: name
@@ -19196,6 +19329,15 @@ components:
           type: string
         status:
           type: boolean
+      type: object
+    Update_ClusterNodeGroup_payload:
+      properties:
+        max_count:
+          maximum: 20
+          type: integer
+        min_count:
+          minimum: 1
+          type: integer
       type: object
     Update_Environment:
       properties:
