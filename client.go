@@ -48,8 +48,6 @@ type APIClient struct {
 
 	// API Services
 
-	AdminAPI *AdminAPIService
-
 	AliveAPI *AliveAPIService
 
 	ApiKeyAPI *ApiKeyAPIService
@@ -141,6 +139,8 @@ type APIClient struct {
 	VolumeAPI *VolumeAPIService
 
 	VolumeAttachmentAPI *VolumeAttachmentAPIService
+
+	VouchersAPI *VouchersAPIService
 }
 
 type service struct {
@@ -159,7 +159,6 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
-	c.AdminAPI = (*AdminAPIService)(&c.common)
 	c.AliveAPI = (*AliveAPIService)(&c.common)
 	c.ApiKeyAPI = (*ApiKeyAPIService)(&c.common)
 	c.AssigningMemberRoleAPI = (*AssigningMemberRoleAPIService)(&c.common)
@@ -206,6 +205,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.VncUrlAPI = (*VncUrlAPIService)(&c.common)
 	c.VolumeAPI = (*VolumeAPIService)(&c.common)
 	c.VolumeAttachmentAPI = (*VolumeAttachmentAPIService)(&c.common)
+	c.VouchersAPI = (*VouchersAPIService)(&c.common)
 
 	return c
 }

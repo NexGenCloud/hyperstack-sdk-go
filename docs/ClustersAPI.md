@@ -11,6 +11,7 @@ Method | HTTP request | Description
 [**DeleteACluster**](ClustersAPI.md#DeleteACluster) | **Delete** /core/clusters/{id} | Delete a cluster
 [**DeleteANodeGroup**](ClustersAPI.md#DeleteANodeGroup) | **Delete** /core/clusters/{cluster_id}/node-groups/{node_group_id} | Delete a node group
 [**DeleteClusterNode**](ClustersAPI.md#DeleteClusterNode) | **Delete** /core/clusters/{cluster_id}/nodes/{node_id} | Delete Cluster Node
+[**DeleteClusterNodes**](ClustersAPI.md#DeleteClusterNodes) | **Post** /core/clusters/{cluster_id}/nodes/delete | Delete Multiple Cluster Nodes
 [**FetchClusterNameAvailability**](ClustersAPI.md#FetchClusterNameAvailability) | **Get** /core/clusters/name-availability/{name} | Fetch cluster name availability
 [**GetClusterMasterFlavors**](ClustersAPI.md#GetClusterMasterFlavors) | **Get** /core/clusters/master-flavors | Get Cluster Master Flavors
 [**GetClusterNodes**](ClustersAPI.md#GetClusterNodes) | **Get** /core/clusters/{cluster_id}/nodes | Get Cluster Nodes
@@ -498,6 +499,76 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## DeleteClusterNodes
+
+> ResponseModel DeleteClusterNodes(ctx, clusterId).Payload(payload).Execute()
+
+Delete Multiple Cluster Nodes
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	clusterId := int32(56) // int32 | 
+	payload := *openapiclient.NewDeleteClusterNodesFields() // DeleteClusterNodesFields | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ClustersAPI.DeleteClusterNodes(context.Background(), clusterId).Payload(payload).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.DeleteClusterNodes``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `DeleteClusterNodes`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `ClustersAPI.DeleteClusterNodes`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**clusterId** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteClusterNodesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **payload** | [**DeleteClusterNodesFields**](DeleteClusterNodesFields.md) |  | 
+
+### Return type
+
+[**ResponseModel**](ResponseModel.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

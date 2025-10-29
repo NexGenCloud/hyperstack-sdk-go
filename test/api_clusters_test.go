@@ -121,6 +121,20 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ClustersAPIService DeleteClusterNodes", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var clusterId int32
+
+		resp, httpRes, err := apiClient.ClustersAPI.DeleteClusterNodes(context.Background(), clusterId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ClustersAPIService FetchClusterNameAvailability", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test

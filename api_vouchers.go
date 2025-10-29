@@ -18,28 +18,34 @@ import (
 	"net/url"
 )
 
-// AdminAPIService AdminAPI service
-type AdminAPIService service
+// VouchersAPIService VouchersAPI service
+type VouchersAPIService service
 
-type ApiSendPasswordChangeNotificationEmailRequest struct {
+type ApiRedeemAVoucherRequest struct {
 	ctx        context.Context
-	ApiService *AdminAPIService
+	ApiService *VouchersAPIService
+	payload    *RedeemVoucherPayload
 }
 
-func (r ApiSendPasswordChangeNotificationEmailRequest) Execute() (*CommonResponseModel, *http.Response, error) {
-	return r.ApiService.SendPasswordChangeNotificationEmailExecute(r)
+func (r ApiRedeemAVoucherRequest) Payload(payload RedeemVoucherPayload) ApiRedeemAVoucherRequest {
+	r.payload = &payload
+	return r
+}
+
+func (r ApiRedeemAVoucherRequest) Execute() (*VoucherRedeemResponseSchema, *http.Response, error) {
+	return r.ApiService.RedeemAVoucherExecute(r)
 }
 
 /*
-SendPasswordChangeNotificationEmail Send Password Change Notification Email
+RedeemAVoucher Redeem a voucher with a voucher_code
 
-Send a password change notification email to a user
+Request to redeem a voucher with a voucher code.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiSendPasswordChangeNotificationEmailRequest
+	@return ApiRedeemAVoucherRequest
 */
-func (a *AdminAPIService) SendPasswordChangeNotificationEmail(ctx context.Context) ApiSendPasswordChangeNotificationEmailRequest {
-	return ApiSendPasswordChangeNotificationEmailRequest{
+func (a *VouchersAPIService) RedeemAVoucher(ctx context.Context) ApiRedeemAVoucherRequest {
+	return ApiRedeemAVoucherRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -47,28 +53,31 @@ func (a *AdminAPIService) SendPasswordChangeNotificationEmail(ctx context.Contex
 
 // Execute executes the request
 //
-//	@return CommonResponseModel
-func (a *AdminAPIService) SendPasswordChangeNotificationEmailExecute(r ApiSendPasswordChangeNotificationEmailRequest) (*CommonResponseModel, *http.Response, error) {
+//	@return VoucherRedeemResponseSchema
+func (a *VouchersAPIService) RedeemAVoucherExecute(r ApiRedeemAVoucherRequest) (*VoucherRedeemResponseSchema, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *CommonResponseModel
+		localVarReturnValue *VoucherRedeemResponseSchema
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AdminAPIService.SendPasswordChangeNotificationEmail")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VouchersAPIService.RedeemAVoucher")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/auth/admin/password-change-mail"
+	localVarPath := localBasePath + "/billing/billing/vouchers/redeem"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.payload == nil {
+		return localVarReturnValue, nil, reportError("payload is required and must be specified")
+	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -84,6 +93,8 @@ func (a *AdminAPIService) SendPasswordChangeNotificationEmailExecute(r ApiSendPa
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	// body params
+	localVarPostBody = r.payload
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -142,6 +153,17 @@ func (a *AdminAPIService) SendPasswordChangeNotificationEmailExecute(r ApiSendPa
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ErrorResponseModel
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
@@ -152,27 +174,6 @@ func (a *AdminAPIService) SendPasswordChangeNotificationEmailExecute(r ApiSendPa
 			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 405 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 500 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

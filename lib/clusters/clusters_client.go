@@ -206,6 +206,11 @@ type CreateClusterPayload struct {
 // CreateClusterPayloadDeploymentMode defines model for CreateClusterPayload.DeploymentMode.
 type CreateClusterPayloadDeploymentMode string
 
+// DeleteClusterNodesFields defines model for DeleteClusterNodesFields.
+type DeleteClusterNodesFields struct {
+	Ids *[]int `json:"ids,omitempty"`
+}
+
 // ErrorResponseModel defines model for ErrorResponseModel.
 type ErrorResponseModel struct {
 	ErrorReason *string `json:"error_reason,omitempty"`
@@ -282,6 +287,9 @@ type UpdateANodeGroupJSONRequestBody = UpdateClusterNodeGroupPayload
 
 // CreateNodeJSONRequestBody defines body for CreateNode for application/json ContentType.
 type CreateNodeJSONRequestBody = CreateClusterNodeFields
+
+// DeleteClusterNodesJSONRequestBody defines body for DeleteClusterNodes for application/json ContentType.
+type DeleteClusterNodesJSONRequestBody = DeleteClusterNodesFields
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -399,6 +407,11 @@ type ClientInterface interface {
 	CreateNodeWithBody(ctx context.Context, clusterId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateNode(ctx context.Context, clusterId int, body CreateNodeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteClusterNodesWithBody request with any body
+	DeleteClusterNodesWithBody(ctx context.Context, clusterId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	DeleteClusterNodes(ctx context.Context, clusterId int, body DeleteClusterNodesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteClusterNode request
 	DeleteClusterNode(ctx context.Context, clusterId int, nodeId int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -595,6 +608,30 @@ func (c *Client) CreateNodeWithBody(ctx context.Context, clusterId int, contentT
 
 func (c *Client) CreateNode(ctx context.Context, clusterId int, body CreateNodeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateNodeRequest(c.Server, clusterId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteClusterNodesWithBody(ctx context.Context, clusterId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteClusterNodesRequestWithBody(c.Server, clusterId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteClusterNodes(ctx context.Context, clusterId int, body DeleteClusterNodesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteClusterNodesRequest(c.Server, clusterId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1198,6 +1235,53 @@ func NewCreateNodeRequestWithBody(server string, clusterId int, contentType stri
 	return req, nil
 }
 
+// NewDeleteClusterNodesRequest calls the generic DeleteClusterNodes builder with application/json body
+func NewDeleteClusterNodesRequest(server string, clusterId int, body DeleteClusterNodesJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewDeleteClusterNodesRequestWithBody(server, clusterId, "application/json", bodyReader)
+}
+
+// NewDeleteClusterNodesRequestWithBody generates requests for DeleteClusterNodes with any type of body
+func NewDeleteClusterNodesRequestWithBody(server string, clusterId int, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "cluster_id", runtime.ParamLocationPath, clusterId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/clusters/%s/nodes/delete", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewDeleteClusterNodeRequest generates requests for DeleteClusterNode
 func NewDeleteClusterNodeRequest(server string, clusterId int, nodeId int) (*http.Request, error) {
 	var err error
@@ -1427,6 +1511,11 @@ type ClientWithResponsesInterface interface {
 	CreateNodeWithBodyWithResponse(ctx context.Context, clusterId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateNodeResponse, error)
 
 	CreateNodeWithResponse(ctx context.Context, clusterId int, body CreateNodeJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateNodeResponse, error)
+
+	// DeleteClusterNodesWithBodyWithResponse request with any body
+	DeleteClusterNodesWithBodyWithResponse(ctx context.Context, clusterId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteClusterNodesResponse, error)
+
+	DeleteClusterNodesWithResponse(ctx context.Context, clusterId int, body DeleteClusterNodesJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteClusterNodesResponse, error)
 
 	// DeleteClusterNodeWithResponse request
 	DeleteClusterNodeWithResponse(ctx context.Context, clusterId int, nodeId int, reqEditors ...RequestEditorFn) (*DeleteClusterNodeResponse, error)
@@ -1744,6 +1833,31 @@ func (r CreateNodeResponse) StatusCode() int {
 	return 0
 }
 
+type DeleteClusterNodesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ResponseModel
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteClusterNodesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteClusterNodesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type DeleteClusterNodeResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -1982,6 +2096,23 @@ func (c *ClientWithResponses) CreateNodeWithResponse(ctx context.Context, cluste
 		return nil, err
 	}
 	return ParseCreateNodeResponse(rsp)
+}
+
+// DeleteClusterNodesWithBodyWithResponse request with arbitrary body returning *DeleteClusterNodesResponse
+func (c *ClientWithResponses) DeleteClusterNodesWithBodyWithResponse(ctx context.Context, clusterId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteClusterNodesResponse, error) {
+	rsp, err := c.DeleteClusterNodesWithBody(ctx, clusterId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteClusterNodesResponse(rsp)
+}
+
+func (c *ClientWithResponses) DeleteClusterNodesWithResponse(ctx context.Context, clusterId int, body DeleteClusterNodesJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteClusterNodesResponse, error) {
+	rsp, err := c.DeleteClusterNodes(ctx, clusterId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteClusterNodesResponse(rsp)
 }
 
 // DeleteClusterNodeWithResponse request returning *DeleteClusterNodeResponse
@@ -2599,6 +2730,53 @@ func ParseCreateNodeResponse(rsp *http.Response) (*CreateNodeResponse, error) {
 			return nil, err
 		}
 		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteClusterNodesResponse parses an HTTP response from a DeleteClusterNodesWithResponse call
+func ParseDeleteClusterNodesResponse(rsp *http.Response) (*DeleteClusterNodesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteClusterNodesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	}
 

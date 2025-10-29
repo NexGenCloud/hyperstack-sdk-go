@@ -1,7 +1,7 @@
 /*
 Infrahub-API
 
-Testing AdminAPIService
+Testing VouchersAPIService
 
 */
 
@@ -18,16 +18,16 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test_hyperstack_AdminAPIService(t *testing.T) {
+func Test_hyperstack_VouchersAPIService(t *testing.T) {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test AdminAPIService SendPasswordChangeNotificationEmail", func(t *testing.T) {
+	t.Run("Test VouchersAPIService RedeemAVoucher", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.AdminAPI.SendPasswordChangeNotificationEmail(context.Background()).Execute()
+		resp, httpRes, err := apiClient.VouchersAPI.RedeemAVoucher(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

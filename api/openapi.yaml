@@ -94,6 +94,7 @@ tags:
   name: Customer Contract
 - name: alive
 - name: billing
+- name: vouchers
 - name: credit
 - name: payment
 - name: user
@@ -283,53 +284,6 @@ paths:
       tags:
       - api key
       x-codegen-request-body-name: payload
-  /auth/admin/password-change-mail:
-    post:
-      description: Send a password change notification email to a user
-      operationId: Send_Password_Change_Notification_Email
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CommonResponseModel'
-          description: Email Sent Successfully.
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Unable to send email
-        "401":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: User Not Found
-        "405":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Method Not Allowed
-        "500":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Internal Server Error
-      security:
-      - accessToken: []
-      - apiKey: []
-      summary: Send Password Change Notification Email
-      tags:
-      - admin
   /auth/beta-access/requests:
     get:
       description: Check the status of all beta access requests.
@@ -4187,6 +4141,57 @@ paths:
       summary: Retrieve Volume billing events history
       tags:
       - billing
+  /billing/billing/vouchers/redeem:
+    post:
+      description: Request to redeem a voucher with a voucher code.
+      operationId: Redeem_a_voucher
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Redeem_voucher_payload'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoucherRedeemResponseSchema'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Not Found
+        "500":
+          content: {}
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      - apiKey: []
+      summary: Redeem a voucher with a voucher_code
+      tags:
+      - vouchers
+      x-codegen-request-body-name: payload
   /billing/payment/payment-details:
     get:
       description: "Retrieves a list of all payments made within your [**organization**](/docs/rbac/organization)\
@@ -5188,6 +5193,58 @@ paths:
       - accessToken: []
       - apiKey: []
       summary: Create Node
+      tags:
+      - clusters
+      x-codegen-request-body-name: payload
+  /core/clusters/{cluster_id}/nodes/delete:
+    post:
+      operationId: Delete_Cluster_Nodes
+      parameters:
+      - explode: false
+        in: path
+        name: cluster_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteClusterNodesFields'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Not Found
+        "500":
+          content: {}
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      - apiKey: []
+      summary: Delete Multiple Cluster Nodes
       tags:
       - clusters
       x-codegen-request-body-name: payload
@@ -13456,6 +13513,17 @@ components:
           description: ""
           type: boolean
       type: object
+    DeleteClusterNodesFields:
+      example:
+        ids:
+        - 0
+        - 0
+      properties:
+        ids:
+          items:
+            type: integer
+          type: array
+      type: object
     Deployment_Fields:
       example:
         template: template
@@ -17123,6 +17191,14 @@ components:
             $ref: '#/components/schemas/RolePolicyFields'
           type: array
       type: object
+    Redeem_voucher_payload:
+      properties:
+        voucher_code:
+          description: The code of the voucher you want to redeem.
+          type: string
+      required:
+      - voucher_code
+      type: object
     Region_Fields:
       example:
         country: country
@@ -20023,6 +20099,27 @@ components:
         volume_type:
           type: string
       type: object
+    VoucherRedeemResponseSchema:
+      example:
+        voucher: "{}"
+        message: message
+        status: true
+      properties:
+        message:
+          description: Response message
+          type: string
+        status:
+          description: Success status of the operation
+          type: boolean
+        voucher:
+          allOf:
+          - $ref: '#/components/schemas/voucher'
+          description: Redeemed voucher details
+          type: object
+      required:
+      - message
+      - status
+      type: object
     WorkloadBillingHistoryResponse:
       example:
         success: true
@@ -20326,6 +20423,22 @@ components:
           type: integer
       type: object
     region:
+      type: object
+    voucher:
+      properties:
+        code:
+          description: Voucher code
+          type: string
+        id:
+          description: Voucher ID
+          type: integer
+        status:
+          description: Voucher status
+          type: string
+      required:
+      - code
+      - id
+      - status
       type: object
     RbacRoleDetailResponseModelFixed:
       example:
