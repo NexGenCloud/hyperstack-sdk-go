@@ -49,20 +49,6 @@ func Test_hyperstack_VolumeAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test VolumeAPIService FetchVolumeDetails", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var volumeId int32
-
-		resp, httpRes, err := apiClient.VolumeAPI.FetchVolumeDetails(context.Background(), volumeId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
 	t.Run("Test VolumeAPIService FetchVolumeNameAvailability", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -70,6 +56,20 @@ func Test_hyperstack_VolumeAPIService(t *testing.T) {
 		var name string
 
 		resp, httpRes, err := apiClient.VolumeAPI.FetchVolumeNameAvailability(context.Background(), name).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test VolumeAPIService GetVolume", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var volumeId int32
+
+		resp, httpRes, err := apiClient.VolumeAPI.GetVolume(context.Background(), volumeId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

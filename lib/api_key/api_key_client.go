@@ -138,8 +138,8 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// RetrieveAPIKey request
-	RetrieveAPIKey(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetAPIKey request
+	GetAPIKey(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GenerateAPIKeyWithBody request with any body
 	GenerateAPIKeyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -155,8 +155,8 @@ type ClientInterface interface {
 	UpdateAPIKey(ctx context.Context, apiKeyId int, body UpdateAPIKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) RetrieveAPIKey(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveAPIKeyRequest(c.Server)
+func (c *Client) GetAPIKey(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAPIKeyRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -227,8 +227,8 @@ func (c *Client) UpdateAPIKey(ctx context.Context, apiKeyId int, body UpdateAPIK
 	return c.Client.Do(req)
 }
 
-// NewRetrieveAPIKeyRequest generates requests for RetrieveAPIKey
-func NewRetrieveAPIKeyRequest(server string) (*http.Request, error) {
+// NewGetAPIKeyRequest generates requests for GetAPIKey
+func NewGetAPIKeyRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -418,8 +418,8 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// RetrieveAPIKeyWithResponse request
-	RetrieveAPIKeyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveAPIKeyResponse, error)
+	// GetAPIKeyWithResponse request
+	GetAPIKeyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAPIKeyResponse, error)
 
 	// GenerateAPIKeyWithBodyWithResponse request with any body
 	GenerateAPIKeyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*GenerateAPIKeyResponse, error)
@@ -435,7 +435,7 @@ type ClientWithResponsesInterface interface {
 	UpdateAPIKeyWithResponse(ctx context.Context, apiKeyId int, body UpdateAPIKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAPIKeyResponse, error)
 }
 
-type RetrieveAPIKeyResponse struct {
+type GetAPIKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *GetApiKeysResponseModel
@@ -444,7 +444,7 @@ type RetrieveAPIKeyResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrieveAPIKeyResponse) Status() string {
+func (r GetAPIKeyResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -452,7 +452,7 @@ func (r RetrieveAPIKeyResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrieveAPIKeyResponse) StatusCode() int {
+func (r GetAPIKeyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -535,13 +535,13 @@ func (r UpdateAPIKeyResponse) StatusCode() int {
 	return 0
 }
 
-// RetrieveAPIKeyWithResponse request returning *RetrieveAPIKeyResponse
-func (c *ClientWithResponses) RetrieveAPIKeyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveAPIKeyResponse, error) {
-	rsp, err := c.RetrieveAPIKey(ctx, reqEditors...)
+// GetAPIKeyWithResponse request returning *GetAPIKeyResponse
+func (c *ClientWithResponses) GetAPIKeyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAPIKeyResponse, error) {
+	rsp, err := c.GetAPIKey(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveAPIKeyResponse(rsp)
+	return ParseGetAPIKeyResponse(rsp)
 }
 
 // GenerateAPIKeyWithBodyWithResponse request with arbitrary body returning *GenerateAPIKeyResponse
@@ -587,15 +587,15 @@ func (c *ClientWithResponses) UpdateAPIKeyWithResponse(ctx context.Context, apiK
 	return ParseUpdateAPIKeyResponse(rsp)
 }
 
-// ParseRetrieveAPIKeyResponse parses an HTTP response from a RetrieveAPIKeyWithResponse call
-func ParseRetrieveAPIKeyResponse(rsp *http.Response) (*RetrieveAPIKeyResponse, error) {
+// ParseGetAPIKeyResponse parses an HTTP response from a GetAPIKeyWithResponse call
+func ParseGetAPIKeyResponse(rsp *http.Response) (*GetAPIKeyResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrieveAPIKeyResponse{
+	response := &GetAPIKeyResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

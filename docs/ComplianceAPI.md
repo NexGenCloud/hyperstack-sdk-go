@@ -5,9 +5,9 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateCompliance**](ComplianceAPI.md#CreateCompliance) | **Post** /core/compliance | Create compliance
-[**DeleteACompliance**](ComplianceAPI.md#DeleteACompliance) | **Delete** /core/compliance/{gpu_model} | Delete a compliance
-[**RetrieveCompliance**](ComplianceAPI.md#RetrieveCompliance) | **Get** /core/compliance | Retrieve GPU compliance
-[**UpdateACompliance**](ComplianceAPI.md#UpdateACompliance) | **Put** /core/compliance | Update a compliance
+[**DeleteCompliance**](ComplianceAPI.md#DeleteCompliance) | **Delete** /core/compliance/{gpu_model} | Delete a compliance
+[**GetCompliance**](ComplianceAPI.md#GetCompliance) | **Get** /core/compliance | Retrieve GPU compliance
+[**UpdateCompliance**](ComplianceAPI.md#UpdateCompliance) | **Put** /core/compliance | Update a compliance
 
 
 
@@ -75,9 +75,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## DeleteACompliance
+## DeleteCompliance
 
-> ResponseModel DeleteACompliance(ctx, gpuModel).Execute()
+> ResponseModel DeleteCompliance(ctx, gpuModel).Execute()
 
 Delete a compliance
 
@@ -98,13 +98,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ComplianceAPI.DeleteACompliance(context.Background(), gpuModel).Execute()
+	resp, r, err := apiClient.ComplianceAPI.DeleteCompliance(context.Background(), gpuModel).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ComplianceAPI.DeleteACompliance``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ComplianceAPI.DeleteCompliance``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `DeleteACompliance`: ResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `ComplianceAPI.DeleteACompliance`: %v\n", resp)
+	// response from `DeleteCompliance`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `ComplianceAPI.DeleteCompliance`: %v\n", resp)
 }
 ```
 
@@ -118,7 +118,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiDeleteAComplianceRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiDeleteComplianceRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -143,9 +143,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## RetrieveCompliance
+## GetCompliance
 
-> ComplianceResponse RetrieveCompliance(ctx).Gpu(gpu).Execute()
+> ComplianceResponse GetCompliance(ctx).Gpu(gpu).Execute()
 
 Retrieve GPU compliance
 
@@ -168,13 +168,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ComplianceAPI.RetrieveCompliance(context.Background()).Gpu(gpu).Execute()
+	resp, r, err := apiClient.ComplianceAPI.GetCompliance(context.Background()).Gpu(gpu).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ComplianceAPI.RetrieveCompliance``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ComplianceAPI.GetCompliance``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `RetrieveCompliance`: ComplianceResponse
-	fmt.Fprintf(os.Stdout, "Response from `ComplianceAPI.RetrieveCompliance`: %v\n", resp)
+	// response from `GetCompliance`: ComplianceResponse
+	fmt.Fprintf(os.Stdout, "Response from `ComplianceAPI.GetCompliance`: %v\n", resp)
 }
 ```
 
@@ -184,7 +184,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiRetrieveComplianceRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetComplianceRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -209,9 +209,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UpdateACompliance
+## UpdateCompliance
 
-> CreateUpdateComplianceResponse UpdateACompliance(ctx).Payload(payload).Execute()
+> CreateUpdateComplianceResponse UpdateCompliance(ctx).Payload(payload).Execute()
 
 Update a compliance
 
@@ -232,13 +232,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ComplianceAPI.UpdateACompliance(context.Background()).Payload(payload).Execute()
+	resp, r, err := apiClient.ComplianceAPI.UpdateCompliance(context.Background()).Payload(payload).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ComplianceAPI.UpdateACompliance``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ComplianceAPI.UpdateCompliance``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `UpdateACompliance`: CreateUpdateComplianceResponse
-	fmt.Fprintf(os.Stdout, "Response from `ComplianceAPI.UpdateACompliance`: %v\n", resp)
+	// response from `UpdateCompliance`: CreateUpdateComplianceResponse
+	fmt.Fprintf(os.Stdout, "Response from `ComplianceAPI.UpdateCompliance`: %v\n", resp)
 }
 ```
 
@@ -248,7 +248,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiUpdateAComplianceRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiUpdateComplianceRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes

@@ -23,13 +23,13 @@ func Test_hyperstack_SnapshotsAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test SnapshotsAPIService CreateANewCustomImage", func(t *testing.T) {
+	t.Run("Test SnapshotsAPIService CreateCustomImage", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var snapshotId int32
 
-		resp, httpRes, err := apiClient.SnapshotsAPI.CreateANewCustomImage(context.Background(), snapshotId).Execute()
+		resp, httpRes, err := apiClient.SnapshotsAPI.CreateCustomImage(context.Background(), snapshotId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -37,13 +37,13 @@ func Test_hyperstack_SnapshotsAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test SnapshotsAPIService DeleteAnExistingSnapshot", func(t *testing.T) {
+	t.Run("Test SnapshotsAPIService DeleteSnapshot", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var id int32
 
-		resp, httpRes, err := apiClient.SnapshotsAPI.DeleteAnExistingSnapshot(context.Background(), id).Execute()
+		resp, httpRes, err := apiClient.SnapshotsAPI.DeleteSnapshot(context.Background(), id).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -65,13 +65,13 @@ func Test_hyperstack_SnapshotsAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test SnapshotsAPIService RestoreASnapshot", func(t *testing.T) {
+	t.Run("Test SnapshotsAPIService GetSnapshot", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var id int32
 
-		resp, httpRes, err := apiClient.SnapshotsAPI.RestoreASnapshot(context.Background(), id).Execute()
+		resp, httpRes, err := apiClient.SnapshotsAPI.GetSnapshot(context.Background(), id).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -79,13 +79,11 @@ func Test_hyperstack_SnapshotsAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test SnapshotsAPIService RetrieveAnExistingSnapshot", func(t *testing.T) {
+	t.Run("Test SnapshotsAPIService ListSnapshots", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var id int32
-
-		resp, httpRes, err := apiClient.SnapshotsAPI.RetrieveAnExistingSnapshot(context.Background(), id).Execute()
+		resp, httpRes, err := apiClient.SnapshotsAPI.ListSnapshots(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -93,11 +91,13 @@ func Test_hyperstack_SnapshotsAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test SnapshotsAPIService RetrievesAListOfSnapshots", func(t *testing.T) {
+	t.Run("Test SnapshotsAPIService RestoreSnapshot", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.SnapshotsAPI.RetrievesAListOfSnapshots(context.Background()).Execute()
+		var id int32
+
+		resp, httpRes, err := apiClient.SnapshotsAPI.RestoreSnapshot(context.Background(), id).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

@@ -6,8 +6,8 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateProfile**](ProfileAPI.md#CreateProfile) | **Post** /core/profiles | Create profile
 [**DeleteProfile**](ProfileAPI.md#DeleteProfile) | **Delete** /core/profiles/{id} | Delete profile
+[**GetProfile**](ProfileAPI.md#GetProfile) | **Get** /core/profiles/{id} | Retrieve profile details
 [**ListProfiles**](ProfileAPI.md#ListProfiles) | **Get** /core/profiles | List profiles
-[**RetrieveProfileDetails**](ProfileAPI.md#RetrieveProfileDetails) | **Get** /core/profiles/{id} | Retrieve profile details
 
 
 
@@ -147,6 +147,76 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetProfile
+
+> CreateProfileResponse GetProfile(ctx, id).Execute()
+
+Retrieve profile details
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	id := int32(56) // int32 | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ProfileAPI.GetProfile(context.Background(), id).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ProfileAPI.GetProfile``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetProfile`: CreateProfileResponse
+	fmt.Fprintf(os.Stdout, "Response from `ProfileAPI.GetProfile`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetProfileRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**CreateProfileResponse**](CreateProfileResponse.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## ListProfiles
 
 > ProfileListResponse ListProfiles(ctx).Execute()
@@ -193,76 +263,6 @@ Other parameters are passed through a pointer to a apiListProfilesRequest struct
 ### Return type
 
 [**ProfileListResponse**](ProfileListResponse.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## RetrieveProfileDetails
-
-> CreateProfileResponse RetrieveProfileDetails(ctx, id).Execute()
-
-Retrieve profile details
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-	id := int32(56) // int32 | 
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ProfileAPI.RetrieveProfileDetails(context.Background(), id).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ProfileAPI.RetrieveProfileDetails``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `RetrieveProfileDetails`: CreateProfileResponse
-	fmt.Fprintf(os.Stdout, "Response from `ProfileAPI.RetrieveProfileDetails`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **int32** |  | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiRetrieveProfileDetailsRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-### Return type
-
-[**CreateProfileResponse**](CreateProfileResponse.md)
 
 ### Authorization
 

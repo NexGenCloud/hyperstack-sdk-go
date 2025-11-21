@@ -21,25 +21,25 @@ import (
 // CreditAPIService CreditAPI service
 type CreditAPIService service
 
-type ApiGetCredit2Request struct {
+type ApiGetUserCreditRequest struct {
 	ctx        context.Context
 	ApiService *CreditAPIService
 }
 
-func (r ApiGetCredit2Request) Execute() (*GetCreditAndThresholdInfoInResponse, *http.Response, error) {
-	return r.ApiService.GetCredit2Execute(r)
+func (r ApiGetUserCreditRequest) Execute() (*GetCreditAndThresholdInfoInResponse, *http.Response, error) {
+	return r.ApiService.GetUserCreditExecute(r)
 }
 
 /*
-GetCredit2 GET: View credit and threshold
+GetUserCredit GET: View credit and threshold
 
 Retrieves the current credit balance for your [**organization**](/docs/rbac/organization). Ensuring a positive credit balance allows you to create resources. However, for prepaid accounts, if the credit balance falls below $0, all associated resources will be temporarily suspended until a [**payment**](/docs/api-reference/billing-resources/create-payment) is made. For additional information, [**click here**](None/docs/api-reference/billing-resources/retrieve-credit-balance/).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetCredit2Request
+	@return ApiGetUserCreditRequest
 */
-func (a *CreditAPIService) GetCredit2(ctx context.Context) ApiGetCredit2Request {
-	return ApiGetCredit2Request{
+func (a *CreditAPIService) GetUserCredit(ctx context.Context) ApiGetUserCreditRequest {
+	return ApiGetUserCreditRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -48,7 +48,7 @@ func (a *CreditAPIService) GetCredit2(ctx context.Context) ApiGetCredit2Request 
 // Execute executes the request
 //
 //	@return GetCreditAndThresholdInfoInResponse
-func (a *CreditAPIService) GetCredit2Execute(r ApiGetCredit2Request) (*GetCreditAndThresholdInfoInResponse, *http.Response, error) {
+func (a *CreditAPIService) GetUserCreditExecute(r ApiGetUserCreditRequest) (*GetCreditAndThresholdInfoInResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -56,7 +56,7 @@ func (a *CreditAPIService) GetCredit2Execute(r ApiGetCredit2Request) (*GetCredit
 		localVarReturnValue *GetCreditAndThresholdInfoInResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CreditAPIService.GetCredit2")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CreditAPIService.GetUserCredit")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

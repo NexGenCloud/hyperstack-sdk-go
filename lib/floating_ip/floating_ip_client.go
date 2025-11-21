@@ -101,15 +101,15 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// AttachPublicIPToVirtualMachine request
-	AttachPublicIPToVirtualMachine(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// AttachPublicIPToVM request
+	AttachPublicIPToVM(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DetachPublicIPFromVirtualMachine request
-	DetachPublicIPFromVirtualMachine(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DetachPublicIPFromVM request
+	DetachPublicIPFromVM(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) AttachPublicIPToVirtualMachine(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAttachPublicIPToVirtualMachineRequest(c.Server, vmId)
+func (c *Client) AttachPublicIPToVM(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachPublicIPToVMRequest(c.Server, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -120,8 +120,8 @@ func (c *Client) AttachPublicIPToVirtualMachine(ctx context.Context, vmId int, r
 	return c.Client.Do(req)
 }
 
-func (c *Client) DetachPublicIPFromVirtualMachine(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDetachPublicIPFromVirtualMachineRequest(c.Server, vmId)
+func (c *Client) DetachPublicIPFromVM(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDetachPublicIPFromVMRequest(c.Server, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -132,8 +132,8 @@ func (c *Client) DetachPublicIPFromVirtualMachine(ctx context.Context, vmId int,
 	return c.Client.Do(req)
 }
 
-// NewAttachPublicIPToVirtualMachineRequest generates requests for AttachPublicIPToVirtualMachine
-func NewAttachPublicIPToVirtualMachineRequest(server string, vmId int) (*http.Request, error) {
+// NewAttachPublicIPToVMRequest generates requests for AttachPublicIPToVM
+func NewAttachPublicIPToVMRequest(server string, vmId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -166,8 +166,8 @@ func NewAttachPublicIPToVirtualMachineRequest(server string, vmId int) (*http.Re
 	return req, nil
 }
 
-// NewDetachPublicIPFromVirtualMachineRequest generates requests for DetachPublicIPFromVirtualMachine
-func NewDetachPublicIPFromVirtualMachineRequest(server string, vmId int) (*http.Request, error) {
+// NewDetachPublicIPFromVMRequest generates requests for DetachPublicIPFromVM
+func NewDetachPublicIPFromVMRequest(server string, vmId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -243,14 +243,14 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// AttachPublicIPToVirtualMachineWithResponse request
-	AttachPublicIPToVirtualMachineWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*AttachPublicIPToVirtualMachineResponse, error)
+	// AttachPublicIPToVMWithResponse request
+	AttachPublicIPToVMWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*AttachPublicIPToVMResponse, error)
 
-	// DetachPublicIPFromVirtualMachineWithResponse request
-	DetachPublicIPFromVirtualMachineWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*DetachPublicIPFromVirtualMachineResponse, error)
+	// DetachPublicIPFromVMWithResponse request
+	DetachPublicIPFromVMWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*DetachPublicIPFromVMResponse, error)
 }
 
-type AttachPublicIPToVirtualMachineResponse struct {
+type AttachPublicIPToVMResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -261,7 +261,7 @@ type AttachPublicIPToVirtualMachineResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r AttachPublicIPToVirtualMachineResponse) Status() string {
+func (r AttachPublicIPToVMResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -269,14 +269,14 @@ func (r AttachPublicIPToVirtualMachineResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r AttachPublicIPToVirtualMachineResponse) StatusCode() int {
+func (r AttachPublicIPToVMResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type DetachPublicIPFromVirtualMachineResponse struct {
+type DetachPublicIPFromVMResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -286,7 +286,7 @@ type DetachPublicIPFromVirtualMachineResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DetachPublicIPFromVirtualMachineResponse) Status() string {
+func (r DetachPublicIPFromVMResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -294,40 +294,40 @@ func (r DetachPublicIPFromVirtualMachineResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DetachPublicIPFromVirtualMachineResponse) StatusCode() int {
+func (r DetachPublicIPFromVMResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// AttachPublicIPToVirtualMachineWithResponse request returning *AttachPublicIPToVirtualMachineResponse
-func (c *ClientWithResponses) AttachPublicIPToVirtualMachineWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*AttachPublicIPToVirtualMachineResponse, error) {
-	rsp, err := c.AttachPublicIPToVirtualMachine(ctx, vmId, reqEditors...)
+// AttachPublicIPToVMWithResponse request returning *AttachPublicIPToVMResponse
+func (c *ClientWithResponses) AttachPublicIPToVMWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*AttachPublicIPToVMResponse, error) {
+	rsp, err := c.AttachPublicIPToVM(ctx, vmId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseAttachPublicIPToVirtualMachineResponse(rsp)
+	return ParseAttachPublicIPToVMResponse(rsp)
 }
 
-// DetachPublicIPFromVirtualMachineWithResponse request returning *DetachPublicIPFromVirtualMachineResponse
-func (c *ClientWithResponses) DetachPublicIPFromVirtualMachineWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*DetachPublicIPFromVirtualMachineResponse, error) {
-	rsp, err := c.DetachPublicIPFromVirtualMachine(ctx, vmId, reqEditors...)
+// DetachPublicIPFromVMWithResponse request returning *DetachPublicIPFromVMResponse
+func (c *ClientWithResponses) DetachPublicIPFromVMWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*DetachPublicIPFromVMResponse, error) {
+	rsp, err := c.DetachPublicIPFromVM(ctx, vmId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDetachPublicIPFromVirtualMachineResponse(rsp)
+	return ParseDetachPublicIPFromVMResponse(rsp)
 }
 
-// ParseAttachPublicIPToVirtualMachineResponse parses an HTTP response from a AttachPublicIPToVirtualMachineWithResponse call
-func ParseAttachPublicIPToVirtualMachineResponse(rsp *http.Response) (*AttachPublicIPToVirtualMachineResponse, error) {
+// ParseAttachPublicIPToVMResponse parses an HTTP response from a AttachPublicIPToVMWithResponse call
+func ParseAttachPublicIPToVMResponse(rsp *http.Response) (*AttachPublicIPToVMResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &AttachPublicIPToVirtualMachineResponse{
+	response := &AttachPublicIPToVMResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -373,15 +373,15 @@ func ParseAttachPublicIPToVirtualMachineResponse(rsp *http.Response) (*AttachPub
 	return response, nil
 }
 
-// ParseDetachPublicIPFromVirtualMachineResponse parses an HTTP response from a DetachPublicIPFromVirtualMachineWithResponse call
-func ParseDetachPublicIPFromVirtualMachineResponse(rsp *http.Response) (*DetachPublicIPFromVirtualMachineResponse, error) {
+// ParseDetachPublicIPFromVMResponse parses an HTTP response from a DetachPublicIPFromVMWithResponse call
+func ParseDetachPublicIPFromVMResponse(rsp *http.Response) (*DetachPublicIPFromVMResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DetachPublicIPFromVirtualMachineResponse{
+	response := &DetachPublicIPFromVMResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

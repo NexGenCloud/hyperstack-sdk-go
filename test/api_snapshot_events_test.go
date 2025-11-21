@@ -23,13 +23,13 @@ func Test_hyperstack_SnapshotEventsAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test SnapshotEventsAPIService FetchAllEventsForASnapshot", func(t *testing.T) {
+	t.Run("Test SnapshotEventsAPIService ListSnapshotEvents", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var snapshotId int32
 
-		httpRes, err := apiClient.SnapshotEventsAPI.FetchAllEventsForASnapshot(context.Background(), snapshotId).Execute()
+		httpRes, err := apiClient.SnapshotEventsAPI.ListSnapshotEvents(context.Background(), snapshotId).Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)

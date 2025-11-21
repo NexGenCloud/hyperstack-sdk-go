@@ -34,11 +34,11 @@ func Test_hyperstack_AliveAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test AliveAPIService GetDoc", func(t *testing.T) {
+	t.Run("Test AliveAPIService GetAliveDoc", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		httpRes, err := apiClient.AliveAPI.GetDoc(context.Background()).Execute()
+		httpRes, err := apiClient.AliveAPI.GetAliveDoc(context.Background()).Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)

@@ -23,13 +23,13 @@ func Test_hyperstack_CallbacksAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test CallbacksAPIService AttachCallbackToVirtualMachine", func(t *testing.T) {
+	t.Run("Test CallbacksAPIService AttachCallbackToVM", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var vmId int32
 
-		resp, httpRes, err := apiClient.CallbacksAPI.AttachCallbackToVirtualMachine(context.Background(), vmId).Execute()
+		resp, httpRes, err := apiClient.CallbacksAPI.AttachCallbackToVM(context.Background(), vmId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -51,13 +51,13 @@ func Test_hyperstack_CallbacksAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test CallbacksAPIService DeleteVirtualMachineCallback", func(t *testing.T) {
+	t.Run("Test CallbacksAPIService DeleteVMCallback", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var vmId int32
 
-		resp, httpRes, err := apiClient.CallbacksAPI.DeleteVirtualMachineCallback(context.Background(), vmId).Execute()
+		resp, httpRes, err := apiClient.CallbacksAPI.DeleteVMCallback(context.Background(), vmId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -79,13 +79,13 @@ func Test_hyperstack_CallbacksAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test CallbacksAPIService UpdateVirtualMachineCallback", func(t *testing.T) {
+	t.Run("Test CallbacksAPIService UpdateVMCallback", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var vmId int32
 
-		resp, httpRes, err := apiClient.CallbacksAPI.UpdateVirtualMachineCallback(context.Background(), vmId).Execute()
+		resp, httpRes, err := apiClient.CallbacksAPI.UpdateVMCallback(context.Background(), vmId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

@@ -21,25 +21,25 @@ import (
 // UserDetailChoiceAPIService UserDetailChoiceAPI service
 type UserDetailChoiceAPIService service
 
-type ApiRetrieveDefaultFlavorsAndImagesRequest struct {
+type ApiListDefaultFlavorsAndImagesRequest struct {
 	ctx        context.Context
 	ApiService *UserDetailChoiceAPIService
 }
 
-func (r ApiRetrieveDefaultFlavorsAndImagesRequest) Execute() (*UserDefaultChoicesForUserResponse, *http.Response, error) {
-	return r.ApiService.RetrieveDefaultFlavorsAndImagesExecute(r)
+func (r ApiListDefaultFlavorsAndImagesRequest) Execute() (*UserDefaultChoicesForUserResponse, *http.Response, error) {
+	return r.ApiService.ListDefaultFlavorsAndImagesExecute(r)
 }
 
 /*
-RetrieveDefaultFlavorsAndImages Retrieve Default Flavors and Images
+ListDefaultFlavorsAndImages Retrieve Default Flavors and Images
 
-Retrieve the default choices for virtual machine deployment, including the default region, flavor, and image.
+Retrieves the default options for virtual machine deployment, including the default region, flavor, and image.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiRetrieveDefaultFlavorsAndImagesRequest
+	@return ApiListDefaultFlavorsAndImagesRequest
 */
-func (a *UserDetailChoiceAPIService) RetrieveDefaultFlavorsAndImages(ctx context.Context) ApiRetrieveDefaultFlavorsAndImagesRequest {
-	return ApiRetrieveDefaultFlavorsAndImagesRequest{
+func (a *UserDetailChoiceAPIService) ListDefaultFlavorsAndImages(ctx context.Context) ApiListDefaultFlavorsAndImagesRequest {
+	return ApiListDefaultFlavorsAndImagesRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -48,7 +48,7 @@ func (a *UserDetailChoiceAPIService) RetrieveDefaultFlavorsAndImages(ctx context
 // Execute executes the request
 //
 //	@return UserDefaultChoicesForUserResponse
-func (a *UserDetailChoiceAPIService) RetrieveDefaultFlavorsAndImagesExecute(r ApiRetrieveDefaultFlavorsAndImagesRequest) (*UserDefaultChoicesForUserResponse, *http.Response, error) {
+func (a *UserDetailChoiceAPIService) ListDefaultFlavorsAndImagesExecute(r ApiListDefaultFlavorsAndImagesRequest) (*UserDefaultChoicesForUserResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -56,7 +56,7 @@ func (a *UserDetailChoiceAPIService) RetrieveDefaultFlavorsAndImagesExecute(r Ap
 		localVarReturnValue *UserDefaultChoicesForUserResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserDetailChoiceAPIService.RetrieveDefaultFlavorsAndImages")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserDetailChoiceAPIService.ListDefaultFlavorsAndImages")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

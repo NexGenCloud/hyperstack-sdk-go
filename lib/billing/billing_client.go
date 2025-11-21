@@ -524,15 +524,15 @@ type Pagination struct {
 	PerPage *int `json:"per_page,omitempty"`
 }
 
-// GetUserBillingHistory2Params defines parameters for GetUserBillingHistory2.
-type GetUserBillingHistory2Params struct {
+// GetUserBillingHistoryParams defines parameters for GetUserBillingHistory.
+type GetUserBillingHistoryParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 	Graph     *string `form:"graph,omitempty" json:"graph,omitempty"`
 }
 
-// GetUserBillingHistoryBucket2Params defines parameters for GetUserBillingHistoryBucket2.
-type GetUserBillingHistoryBucket2Params struct {
+// ListBucketBillingHistoryParams defines parameters for ListBucketBillingHistory.
+type ListBucketBillingHistoryParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 	Search    *string `form:"search,omitempty" json:"search,omitempty"`
@@ -540,48 +540,20 @@ type GetUserBillingHistoryBucket2Params struct {
 	Page      *int    `form:"page,omitempty" json:"page,omitempty"`
 }
 
-// GetUserBillingHistoryBucketDetailsParams defines parameters for GetUserBillingHistoryBucketDetails.
-type GetUserBillingHistoryBucketDetailsParams struct {
+// GetBucketBillingHistoryParams defines parameters for GetBucketBillingHistory.
+type GetBucketBillingHistoryParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
-// GetUserBillingBucketDetailsGraphParams defines parameters for GetUserBillingBucketDetailsGraph.
-type GetUserBillingBucketDetailsGraphParams struct {
+// BucketsBillingHistoryHourlyChartParams defines parameters for BucketsBillingHistoryHourlyChart.
+type BucketsBillingHistoryHourlyChartParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
-// GetUserBillingHistoryClusterParams defines parameters for GetUserBillingHistoryCluster.
-type GetUserBillingHistoryClusterParams struct {
-	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
-	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
-	Search    *string `form:"search,omitempty" json:"search,omitempty"`
-	PerPage   *int    `form:"per_page,omitempty" json:"per_page,omitempty"`
-	Page      *int    `form:"page,omitempty" json:"page,omitempty"`
-}
-
-// GetUserBillingHistoryClusterDetailsParams defines parameters for GetUserBillingHistoryClusterDetails.
-type GetUserBillingHistoryClusterDetailsParams struct {
-	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
-	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
-}
-
-// GetUserBillingClusterDetailsGraphParams defines parameters for GetUserBillingClusterDetailsGraph.
-type GetUserBillingClusterDetailsGraphParams struct {
-	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
-	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
-}
-
-// GetUserBillingHistoryContractParams defines parameters for GetUserBillingHistoryContract.
-type GetUserBillingHistoryContractParams struct {
-	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
-	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
-	Search    *string `form:"search,omitempty" json:"search,omitempty"`
-}
-
-// GetUserBillingHistoryDataSynthesisParams defines parameters for GetUserBillingHistoryDataSynthesis.
-type GetUserBillingHistoryDataSynthesisParams struct {
+// ListClustersBillingHistoryParams defines parameters for ListClustersBillingHistory.
+type ListClustersBillingHistoryParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 	Search    *string `form:"search,omitempty" json:"search,omitempty"`
@@ -589,20 +561,27 @@ type GetUserBillingHistoryDataSynthesisParams struct {
 	Page      *int    `form:"page,omitempty" json:"page,omitempty"`
 }
 
-// GetUserBillingHistoryDataSynthesisDetailsParams defines parameters for GetUserBillingHistoryDataSynthesisDetails.
-type GetUserBillingHistoryDataSynthesisDetailsParams struct {
+// GetClusterBillingHistoryParams defines parameters for GetClusterBillingHistory.
+type GetClusterBillingHistoryParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
-// GetUserBillingDataSynthesisDetailsGraphParams defines parameters for GetUserBillingDataSynthesisDetailsGraph.
-type GetUserBillingDataSynthesisDetailsGraphParams struct {
+// GetClusterBillingHistoryGraphParams defines parameters for GetClusterBillingHistoryGraph.
+type GetClusterBillingHistoryGraphParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
-// GetUserBillingHistoryFineTuningParams defines parameters for GetUserBillingHistoryFineTuning.
-type GetUserBillingHistoryFineTuningParams struct {
+// ListBillingContractHistoryParams defines parameters for ListBillingContractHistory.
+type ListBillingContractHistoryParams struct {
+	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
+	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
+	Search    *string `form:"search,omitempty" json:"search,omitempty"`
+}
+
+// GetDataSynthesisBillingHistoryParams defines parameters for GetDataSynthesisBillingHistory.
+type GetDataSynthesisBillingHistoryParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 	Search    *string `form:"search,omitempty" json:"search,omitempty"`
@@ -610,41 +589,20 @@ type GetUserBillingHistoryFineTuningParams struct {
 	Page      *int    `form:"page,omitempty" json:"page,omitempty"`
 }
 
-// GetUserBillingHistoryFineTuningDetailsParams defines parameters for GetUserBillingHistoryFineTuningDetails.
-type GetUserBillingHistoryFineTuningDetailsParams struct {
+// GetDataSynthesisHistoryForResourceParams defines parameters for GetDataSynthesisHistoryForResource.
+type GetDataSynthesisHistoryForResourceParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
-// GetUserBillingFineTuningDetailsGraphParams defines parameters for GetUserBillingFineTuningDetailsGraph.
-type GetUserBillingFineTuningDetailsGraphParams struct {
+// GetDataSynthesisBillingHistoryGraphParams defines parameters for GetDataSynthesisBillingHistoryGraph.
+type GetDataSynthesisBillingHistoryGraphParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
-// GetUserBillingHistoryModelEvaluationParams defines parameters for GetUserBillingHistoryModelEvaluation.
-type GetUserBillingHistoryModelEvaluationParams struct {
-	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
-	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
-	Search    *string `form:"search,omitempty" json:"search,omitempty"`
-	PerPage   *int    `form:"per_page,omitempty" json:"per_page,omitempty"`
-	Page      *int    `form:"page,omitempty" json:"page,omitempty"`
-}
-
-// GetUserBillingHistoryModelEvaluationDetailsParams defines parameters for GetUserBillingHistoryModelEvaluationDetails.
-type GetUserBillingHistoryModelEvaluationDetailsParams struct {
-	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
-	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
-}
-
-// GetUserBillingModelEvaluationDetailsGraphParams defines parameters for GetUserBillingModelEvaluationDetailsGraph.
-type GetUserBillingModelEvaluationDetailsGraphParams struct {
-	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
-	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
-}
-
-// GetUserBillingHistoryServerlessInferenceParams defines parameters for GetUserBillingHistoryServerlessInference.
-type GetUserBillingHistoryServerlessInferenceParams struct {
+// GetFineTuningBillingHistoryParams defines parameters for GetFineTuningBillingHistory.
+type GetFineTuningBillingHistoryParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 	Search    *string `form:"search,omitempty" json:"search,omitempty"`
@@ -652,41 +610,20 @@ type GetUserBillingHistoryServerlessInferenceParams struct {
 	Page      *int    `form:"page,omitempty" json:"page,omitempty"`
 }
 
-// GetUserBillingHistoryServerlessInferenceDetailsParams defines parameters for GetUserBillingHistoryServerlessInferenceDetails.
-type GetUserBillingHistoryServerlessInferenceDetailsParams struct {
+// GetResourceFineTuningBillingHistoryParams defines parameters for GetResourceFineTuningBillingHistory.
+type GetResourceFineTuningBillingHistoryParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
-// GetUserBillingServerlessInferenceDetailsGraphParams defines parameters for GetUserBillingServerlessInferenceDetailsGraph.
-type GetUserBillingServerlessInferenceDetailsGraphParams struct {
+// GetFineTuningBillingHistoryGraphParams defines parameters for GetFineTuningBillingHistoryGraph.
+type GetFineTuningBillingHistoryGraphParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
-// GetUserBillingHistorySnapshotParams defines parameters for GetUserBillingHistorySnapshot.
-type GetUserBillingHistorySnapshotParams struct {
-	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
-	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
-	Search    *string `form:"search,omitempty" json:"search,omitempty"`
-	PerPage   *int    `form:"per_page,omitempty" json:"per_page,omitempty"`
-	Page      *int    `form:"page,omitempty" json:"page,omitempty"`
-}
-
-// GetUserBillingHistorySnapshotDetailsParams defines parameters for GetUserBillingHistorySnapshotDetails.
-type GetUserBillingHistorySnapshotDetailsParams struct {
-	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
-	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
-}
-
-// GetUserBillingSnapshotDetailsGraphParams defines parameters for GetUserBillingSnapshotDetailsGraph.
-type GetUserBillingSnapshotDetailsGraphParams struct {
-	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
-	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
-}
-
-// GetUserBillingHistoryVm2Params defines parameters for GetUserBillingHistoryVm2.
-type GetUserBillingHistoryVm2Params struct {
+// GetModelEvaluationBillingHistoryParams defines parameters for GetModelEvaluationBillingHistory.
+type GetModelEvaluationBillingHistoryParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 	Search    *string `form:"search,omitempty" json:"search,omitempty"`
@@ -694,20 +631,20 @@ type GetUserBillingHistoryVm2Params struct {
 	Page      *int    `form:"page,omitempty" json:"page,omitempty"`
 }
 
-// GetUserBillingHistoryVmDetails2Params defines parameters for GetUserBillingHistoryVmDetails2.
-type GetUserBillingHistoryVmDetails2Params struct {
+// GetResourceModelEvaluationBillingHistoryParams defines parameters for GetResourceModelEvaluationBillingHistory.
+type GetResourceModelEvaluationBillingHistoryParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
-// GetUserBillingVmDetailsGraph2Params defines parameters for GetUserBillingVmDetailsGraph2.
-type GetUserBillingVmDetailsGraph2Params struct {
+// GetModelEvaluationBillingHistoryGraphParams defines parameters for GetModelEvaluationBillingHistoryGraph.
+type GetModelEvaluationBillingHistoryGraphParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
-// GetUserBillingHistoryVolume2Params defines parameters for GetUserBillingHistoryVolume2.
-type GetUserBillingHistoryVolume2Params struct {
+// ListServerlessInferenceBillingHistoryParams defines parameters for ListServerlessInferenceBillingHistory.
+type ListServerlessInferenceBillingHistoryParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 	Search    *string `form:"search,omitempty" json:"search,omitempty"`
@@ -715,50 +652,113 @@ type GetUserBillingHistoryVolume2Params struct {
 	Page      *int    `form:"page,omitempty" json:"page,omitempty"`
 }
 
-// GetUserBillingHistoryVolumeDetails2Params defines parameters for GetUserBillingHistoryVolumeDetails2.
-type GetUserBillingHistoryVolumeDetails2Params struct {
+// GetServerlessInferencesBillingHistoryParams defines parameters for GetServerlessInferencesBillingHistory.
+type GetServerlessInferencesBillingHistoryParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
-// GetUserBillingVolumeDetailsGraphParams defines parameters for GetUserBillingVolumeDetailsGraph.
-type GetUserBillingVolumeDetailsGraphParams struct {
+// GetServerlessInferenceBillingHistoryGraphParams defines parameters for GetServerlessInferenceBillingHistoryGraph.
+type GetServerlessInferenceBillingHistoryGraphParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
-// GetUsage2Params defines parameters for GetUsage2.
-type GetUsage2Params struct {
+// ListSnapshotBillingHistoryParams defines parameters for ListSnapshotBillingHistory.
+type ListSnapshotBillingHistoryParams struct {
+	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
+	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
+	Search    *string `form:"search,omitempty" json:"search,omitempty"`
+	PerPage   *int    `form:"per_page,omitempty" json:"per_page,omitempty"`
+	Page      *int    `form:"page,omitempty" json:"page,omitempty"`
+}
+
+// GetSnapshotBillingHistoryParams defines parameters for GetSnapshotBillingHistory.
+type GetSnapshotBillingHistoryParams struct {
+	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
+	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
+}
+
+// GetSnapshotBillingHistoryGraphParams defines parameters for GetSnapshotBillingHistoryGraph.
+type GetSnapshotBillingHistoryGraphParams struct {
+	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
+	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
+}
+
+// GetVMBillingHistoryParams defines parameters for GetVMBillingHistory.
+type GetVMBillingHistoryParams struct {
+	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
+	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
+	Search    *string `form:"search,omitempty" json:"search,omitempty"`
+	PerPage   *int    `form:"per_page,omitempty" json:"per_page,omitempty"`
+	Page      *int    `form:"page,omitempty" json:"page,omitempty"`
+}
+
+// GetVMBillingDetailsParams defines parameters for GetVMBillingDetails.
+type GetVMBillingDetailsParams struct {
+	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
+	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
+}
+
+// GetVMBillingGraphParams defines parameters for GetVMBillingGraph.
+type GetVMBillingGraphParams struct {
+	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
+	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
+}
+
+// GetVolumeBillingHistoryParams defines parameters for GetVolumeBillingHistory.
+type GetVolumeBillingHistoryParams struct {
+	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
+	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
+	Search    *string `form:"search,omitempty" json:"search,omitempty"`
+	PerPage   *int    `form:"per_page,omitempty" json:"per_page,omitempty"`
+	Page      *int    `form:"page,omitempty" json:"page,omitempty"`
+}
+
+// GetVolumeBillingDetailsParams defines parameters for GetVolumeBillingDetails.
+type GetVolumeBillingDetailsParams struct {
+	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
+	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
+}
+
+// GetVolumeBillingHistoryGraphParams defines parameters for GetVolumeBillingHistoryGraph.
+type GetVolumeBillingHistoryGraphParams struct {
+	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
+	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
+}
+
+// GetUsageParams defines parameters for GetUsage.
+type GetUsageParams struct {
 	Deleted     *string `form:"deleted,omitempty" json:"deleted,omitempty"`
 	Environment *string `form:"environment,omitempty" json:"environment,omitempty"`
 }
 
-// GetUserVmBillingEventsParams defines parameters for GetUserVmBillingEvents.
-type GetUserVmBillingEventsParams struct {
+// GetVMBillingEventsParams defines parameters for GetVMBillingEvents.
+type GetVMBillingEventsParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
-// GetUserBillingHistoryVmTotalCostsParams defines parameters for GetUserBillingHistoryVmTotalCosts.
-type GetUserBillingHistoryVmTotalCostsParams struct {
+// GetVMSubResourceCostsParams defines parameters for GetVMSubResourceCosts.
+type GetVMSubResourceCostsParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
-// GetUserBillingHistoryVmSubResourceGraph2Params defines parameters for GetUserBillingHistoryVmSubResourceGraph2.
-type GetUserBillingHistoryVmSubResourceGraph2Params struct {
+// GetVMSubResourceGraphParams defines parameters for GetVMSubResourceGraph.
+type GetVMSubResourceGraphParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
-// GetUserVolumeBillingEventsParams defines parameters for GetUserVolumeBillingEvents.
-type GetUserVolumeBillingEventsParams struct {
+// GetVolumeBillingEventsParams defines parameters for GetVolumeBillingEvents.
+type GetVolumeBillingEventsParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
-// PutOrganizationThresholdJSONRequestBody defines body for PutOrganizationThreshold for application/json ContentType.
-type PutOrganizationThresholdJSONRequestBody = SubscribeOrUnsubscribeUpdatePayload
+// GetNotificationThresholdJSONRequestBody defines body for GetNotificationThreshold for application/json ContentType.
+type GetNotificationThresholdJSONRequestBody = SubscribeOrUnsubscribeUpdatePayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -833,122 +833,122 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// GetUserBillingHistory2 request
-	GetUserBillingHistory2(ctx context.Context, params *GetUserBillingHistory2Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetUserBillingHistory request
+	GetUserBillingHistory(ctx context.Context, params *GetUserBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryBucket2 request
-	GetUserBillingHistoryBucket2(ctx context.Context, params *GetUserBillingHistoryBucket2Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListBucketBillingHistory request
+	ListBucketBillingHistory(ctx context.Context, params *ListBucketBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryBucketDetails request
-	GetUserBillingHistoryBucketDetails(ctx context.Context, bucketId int, params *GetUserBillingHistoryBucketDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetBucketBillingHistory request
+	GetBucketBillingHistory(ctx context.Context, bucketId int, params *GetBucketBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingBucketDetailsGraph request
-	GetUserBillingBucketDetailsGraph(ctx context.Context, bucketId int, params *GetUserBillingBucketDetailsGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// BucketsBillingHistoryHourlyChart request
+	BucketsBillingHistoryHourlyChart(ctx context.Context, bucketId int, params *BucketsBillingHistoryHourlyChartParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryCluster request
-	GetUserBillingHistoryCluster(ctx context.Context, params *GetUserBillingHistoryClusterParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListClustersBillingHistory request
+	ListClustersBillingHistory(ctx context.Context, params *ListClustersBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryClusterDetails request
-	GetUserBillingHistoryClusterDetails(ctx context.Context, clusterId int, params *GetUserBillingHistoryClusterDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetClusterBillingHistory request
+	GetClusterBillingHistory(ctx context.Context, clusterId int, params *GetClusterBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingClusterDetailsGraph request
-	GetUserBillingClusterDetailsGraph(ctx context.Context, clusterId int, params *GetUserBillingClusterDetailsGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetClusterBillingHistoryGraph request
+	GetClusterBillingHistoryGraph(ctx context.Context, clusterId int, params *GetClusterBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryContract request
-	GetUserBillingHistoryContract(ctx context.Context, params *GetUserBillingHistoryContractParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListBillingContractHistory request
+	ListBillingContractHistory(ctx context.Context, params *ListBillingContractHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryDataSynthesis request
-	GetUserBillingHistoryDataSynthesis(ctx context.Context, params *GetUserBillingHistoryDataSynthesisParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetDataSynthesisBillingHistory request
+	GetDataSynthesisBillingHistory(ctx context.Context, params *GetDataSynthesisBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryDataSynthesisDetails request
-	GetUserBillingHistoryDataSynthesisDetails(ctx context.Context, resourceId int, params *GetUserBillingHistoryDataSynthesisDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetDataSynthesisHistoryForResource request
+	GetDataSynthesisHistoryForResource(ctx context.Context, resourceId int, params *GetDataSynthesisHistoryForResourceParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingDataSynthesisDetailsGraph request
-	GetUserBillingDataSynthesisDetailsGraph(ctx context.Context, resourceId int, params *GetUserBillingDataSynthesisDetailsGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetDataSynthesisBillingHistoryGraph request
+	GetDataSynthesisBillingHistoryGraph(ctx context.Context, resourceId int, params *GetDataSynthesisBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryFineTuning request
-	GetUserBillingHistoryFineTuning(ctx context.Context, params *GetUserBillingHistoryFineTuningParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetFineTuningBillingHistory request
+	GetFineTuningBillingHistory(ctx context.Context, params *GetFineTuningBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryFineTuningDetails request
-	GetUserBillingHistoryFineTuningDetails(ctx context.Context, resourceId int, params *GetUserBillingHistoryFineTuningDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetResourceFineTuningBillingHistory request
+	GetResourceFineTuningBillingHistory(ctx context.Context, resourceId int, params *GetResourceFineTuningBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingFineTuningDetailsGraph request
-	GetUserBillingFineTuningDetailsGraph(ctx context.Context, resourceId int, params *GetUserBillingFineTuningDetailsGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetFineTuningBillingHistoryGraph request
+	GetFineTuningBillingHistoryGraph(ctx context.Context, resourceId int, params *GetFineTuningBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryModelEvaluation request
-	GetUserBillingHistoryModelEvaluation(ctx context.Context, params *GetUserBillingHistoryModelEvaluationParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetModelEvaluationBillingHistory request
+	GetModelEvaluationBillingHistory(ctx context.Context, params *GetModelEvaluationBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryModelEvaluationDetails request
-	GetUserBillingHistoryModelEvaluationDetails(ctx context.Context, resourceId int, params *GetUserBillingHistoryModelEvaluationDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetResourceModelEvaluationBillingHistory request
+	GetResourceModelEvaluationBillingHistory(ctx context.Context, resourceId int, params *GetResourceModelEvaluationBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingModelEvaluationDetailsGraph request
-	GetUserBillingModelEvaluationDetailsGraph(ctx context.Context, resourceId int, params *GetUserBillingModelEvaluationDetailsGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetModelEvaluationBillingHistoryGraph request
+	GetModelEvaluationBillingHistoryGraph(ctx context.Context, resourceId int, params *GetModelEvaluationBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryServerlessInference request
-	GetUserBillingHistoryServerlessInference(ctx context.Context, params *GetUserBillingHistoryServerlessInferenceParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListServerlessInferenceBillingHistory request
+	ListServerlessInferenceBillingHistory(ctx context.Context, params *ListServerlessInferenceBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryServerlessInferenceDetails request
-	GetUserBillingHistoryServerlessInferenceDetails(ctx context.Context, resourceId int, params *GetUserBillingHistoryServerlessInferenceDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetServerlessInferencesBillingHistory request
+	GetServerlessInferencesBillingHistory(ctx context.Context, resourceId int, params *GetServerlessInferencesBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingServerlessInferenceDetailsGraph request
-	GetUserBillingServerlessInferenceDetailsGraph(ctx context.Context, resourceId int, params *GetUserBillingServerlessInferenceDetailsGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetServerlessInferenceBillingHistoryGraph request
+	GetServerlessInferenceBillingHistoryGraph(ctx context.Context, resourceId int, params *GetServerlessInferenceBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistorySnapshot request
-	GetUserBillingHistorySnapshot(ctx context.Context, params *GetUserBillingHistorySnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListSnapshotBillingHistory request
+	ListSnapshotBillingHistory(ctx context.Context, params *ListSnapshotBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistorySnapshotDetails request
-	GetUserBillingHistorySnapshotDetails(ctx context.Context, snapshotId int, params *GetUserBillingHistorySnapshotDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetSnapshotBillingHistory request
+	GetSnapshotBillingHistory(ctx context.Context, snapshotId int, params *GetSnapshotBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingSnapshotDetailsGraph request
-	GetUserBillingSnapshotDetailsGraph(ctx context.Context, snapshotId int, params *GetUserBillingSnapshotDetailsGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetSnapshotBillingHistoryGraph request
+	GetSnapshotBillingHistoryGraph(ctx context.Context, snapshotId int, params *GetSnapshotBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryVm2 request
-	GetUserBillingHistoryVm2(ctx context.Context, params *GetUserBillingHistoryVm2Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetVMBillingHistory request
+	GetVMBillingHistory(ctx context.Context, params *GetVMBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryVmDetails2 request
-	GetUserBillingHistoryVmDetails2(ctx context.Context, vmId int, params *GetUserBillingHistoryVmDetails2Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetVMBillingDetails request
+	GetVMBillingDetails(ctx context.Context, vmId int, params *GetVMBillingDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingVmDetailsGraph2 request
-	GetUserBillingVmDetailsGraph2(ctx context.Context, vmId int, params *GetUserBillingVmDetailsGraph2Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetVMBillingGraph request
+	GetVMBillingGraph(ctx context.Context, vmId int, params *GetVMBillingGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryVolume2 request
-	GetUserBillingHistoryVolume2(ctx context.Context, params *GetUserBillingHistoryVolume2Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetVolumeBillingHistory request
+	GetVolumeBillingHistory(ctx context.Context, params *GetVolumeBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryVolumeDetails2 request
-	GetUserBillingHistoryVolumeDetails2(ctx context.Context, volumeId int, params *GetUserBillingHistoryVolumeDetails2Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetVolumeBillingDetails request
+	GetVolumeBillingDetails(ctx context.Context, volumeId int, params *GetVolumeBillingDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingVolumeDetailsGraph request
-	GetUserBillingVolumeDetailsGraph(ctx context.Context, volumeId int, params *GetUserBillingVolumeDetailsGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetVolumeBillingHistoryGraph request
+	GetVolumeBillingHistoryGraph(ctx context.Context, volumeId int, params *GetVolumeBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetLastDayCost request
 	GetLastDayCost(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetOrganizationThreshold request
-	GetOrganizationThreshold(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListOrgNotificationThresholds request
+	ListOrgNotificationThresholds(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PutOrganizationThresholdWithBody request with any body
-	PutOrganizationThresholdWithBody(ctx context.Context, thresholdId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetNotificationThresholdWithBody request with any body
+	GetNotificationThresholdWithBody(ctx context.Context, thresholdId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PutOrganizationThreshold(ctx context.Context, thresholdId int, body PutOrganizationThresholdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetNotificationThreshold(ctx context.Context, thresholdId int, body GetNotificationThresholdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUsage2 request
-	GetUsage2(ctx context.Context, params *GetUsage2Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetUsage request
+	GetUsage(ctx context.Context, params *GetUsageParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserVmBillingEvents request
-	GetUserVmBillingEvents(ctx context.Context, vmId int, params *GetUserVmBillingEventsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetVMBillingEvents request
+	GetVMBillingEvents(ctx context.Context, vmId int, params *GetVMBillingEventsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryVmTotalCosts request
-	GetUserBillingHistoryVmTotalCosts(ctx context.Context, vmId int, params *GetUserBillingHistoryVmTotalCostsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetVMSubResourceCosts request
+	GetVMSubResourceCosts(ctx context.Context, vmId int, params *GetVMSubResourceCostsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserBillingHistoryVmSubResourceGraph2 request
-	GetUserBillingHistoryVmSubResourceGraph2(ctx context.Context, vmId int, params *GetUserBillingHistoryVmSubResourceGraph2Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetVMSubResourceGraph request
+	GetVMSubResourceGraph(ctx context.Context, vmId int, params *GetVMSubResourceGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserVolumeBillingEvents request
-	GetUserVolumeBillingEvents(ctx context.Context, volumeId int, params *GetUserVolumeBillingEventsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetVolumeBillingEvents request
+	GetVolumeBillingEvents(ctx context.Context, volumeId int, params *GetVolumeBillingEventsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) GetUserBillingHistory2(ctx context.Context, params *GetUserBillingHistory2Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistory2Request(c.Server, params)
+func (c *Client) GetUserBillingHistory(ctx context.Context, params *GetUserBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetUserBillingHistoryRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -959,8 +959,8 @@ func (c *Client) GetUserBillingHistory2(ctx context.Context, params *GetUserBill
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryBucket2(ctx context.Context, params *GetUserBillingHistoryBucket2Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryBucket2Request(c.Server, params)
+func (c *Client) ListBucketBillingHistory(ctx context.Context, params *ListBucketBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListBucketBillingHistoryRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -971,8 +971,8 @@ func (c *Client) GetUserBillingHistoryBucket2(ctx context.Context, params *GetUs
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryBucketDetails(ctx context.Context, bucketId int, params *GetUserBillingHistoryBucketDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryBucketDetailsRequest(c.Server, bucketId, params)
+func (c *Client) GetBucketBillingHistory(ctx context.Context, bucketId int, params *GetBucketBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetBucketBillingHistoryRequest(c.Server, bucketId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -983,8 +983,8 @@ func (c *Client) GetUserBillingHistoryBucketDetails(ctx context.Context, bucketI
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingBucketDetailsGraph(ctx context.Context, bucketId int, params *GetUserBillingBucketDetailsGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingBucketDetailsGraphRequest(c.Server, bucketId, params)
+func (c *Client) BucketsBillingHistoryHourlyChart(ctx context.Context, bucketId int, params *BucketsBillingHistoryHourlyChartParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBucketsBillingHistoryHourlyChartRequest(c.Server, bucketId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -995,8 +995,8 @@ func (c *Client) GetUserBillingBucketDetailsGraph(ctx context.Context, bucketId 
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryCluster(ctx context.Context, params *GetUserBillingHistoryClusterParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryClusterRequest(c.Server, params)
+func (c *Client) ListClustersBillingHistory(ctx context.Context, params *ListClustersBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListClustersBillingHistoryRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1007,8 +1007,8 @@ func (c *Client) GetUserBillingHistoryCluster(ctx context.Context, params *GetUs
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryClusterDetails(ctx context.Context, clusterId int, params *GetUserBillingHistoryClusterDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryClusterDetailsRequest(c.Server, clusterId, params)
+func (c *Client) GetClusterBillingHistory(ctx context.Context, clusterId int, params *GetClusterBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetClusterBillingHistoryRequest(c.Server, clusterId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1019,8 +1019,8 @@ func (c *Client) GetUserBillingHistoryClusterDetails(ctx context.Context, cluste
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingClusterDetailsGraph(ctx context.Context, clusterId int, params *GetUserBillingClusterDetailsGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingClusterDetailsGraphRequest(c.Server, clusterId, params)
+func (c *Client) GetClusterBillingHistoryGraph(ctx context.Context, clusterId int, params *GetClusterBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetClusterBillingHistoryGraphRequest(c.Server, clusterId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1031,8 +1031,8 @@ func (c *Client) GetUserBillingClusterDetailsGraph(ctx context.Context, clusterI
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryContract(ctx context.Context, params *GetUserBillingHistoryContractParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryContractRequest(c.Server, params)
+func (c *Client) ListBillingContractHistory(ctx context.Context, params *ListBillingContractHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListBillingContractHistoryRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1043,8 +1043,8 @@ func (c *Client) GetUserBillingHistoryContract(ctx context.Context, params *GetU
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryDataSynthesis(ctx context.Context, params *GetUserBillingHistoryDataSynthesisParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryDataSynthesisRequest(c.Server, params)
+func (c *Client) GetDataSynthesisBillingHistory(ctx context.Context, params *GetDataSynthesisBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetDataSynthesisBillingHistoryRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1055,8 +1055,8 @@ func (c *Client) GetUserBillingHistoryDataSynthesis(ctx context.Context, params 
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryDataSynthesisDetails(ctx context.Context, resourceId int, params *GetUserBillingHistoryDataSynthesisDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryDataSynthesisDetailsRequest(c.Server, resourceId, params)
+func (c *Client) GetDataSynthesisHistoryForResource(ctx context.Context, resourceId int, params *GetDataSynthesisHistoryForResourceParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetDataSynthesisHistoryForResourceRequest(c.Server, resourceId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1067,8 +1067,8 @@ func (c *Client) GetUserBillingHistoryDataSynthesisDetails(ctx context.Context, 
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingDataSynthesisDetailsGraph(ctx context.Context, resourceId int, params *GetUserBillingDataSynthesisDetailsGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingDataSynthesisDetailsGraphRequest(c.Server, resourceId, params)
+func (c *Client) GetDataSynthesisBillingHistoryGraph(ctx context.Context, resourceId int, params *GetDataSynthesisBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetDataSynthesisBillingHistoryGraphRequest(c.Server, resourceId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1079,8 +1079,8 @@ func (c *Client) GetUserBillingDataSynthesisDetailsGraph(ctx context.Context, re
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryFineTuning(ctx context.Context, params *GetUserBillingHistoryFineTuningParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryFineTuningRequest(c.Server, params)
+func (c *Client) GetFineTuningBillingHistory(ctx context.Context, params *GetFineTuningBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetFineTuningBillingHistoryRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1091,8 +1091,8 @@ func (c *Client) GetUserBillingHistoryFineTuning(ctx context.Context, params *Ge
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryFineTuningDetails(ctx context.Context, resourceId int, params *GetUserBillingHistoryFineTuningDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryFineTuningDetailsRequest(c.Server, resourceId, params)
+func (c *Client) GetResourceFineTuningBillingHistory(ctx context.Context, resourceId int, params *GetResourceFineTuningBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetResourceFineTuningBillingHistoryRequest(c.Server, resourceId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1103,8 +1103,8 @@ func (c *Client) GetUserBillingHistoryFineTuningDetails(ctx context.Context, res
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingFineTuningDetailsGraph(ctx context.Context, resourceId int, params *GetUserBillingFineTuningDetailsGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingFineTuningDetailsGraphRequest(c.Server, resourceId, params)
+func (c *Client) GetFineTuningBillingHistoryGraph(ctx context.Context, resourceId int, params *GetFineTuningBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetFineTuningBillingHistoryGraphRequest(c.Server, resourceId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1115,8 +1115,8 @@ func (c *Client) GetUserBillingFineTuningDetailsGraph(ctx context.Context, resou
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryModelEvaluation(ctx context.Context, params *GetUserBillingHistoryModelEvaluationParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryModelEvaluationRequest(c.Server, params)
+func (c *Client) GetModelEvaluationBillingHistory(ctx context.Context, params *GetModelEvaluationBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetModelEvaluationBillingHistoryRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1127,8 +1127,8 @@ func (c *Client) GetUserBillingHistoryModelEvaluation(ctx context.Context, param
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryModelEvaluationDetails(ctx context.Context, resourceId int, params *GetUserBillingHistoryModelEvaluationDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryModelEvaluationDetailsRequest(c.Server, resourceId, params)
+func (c *Client) GetResourceModelEvaluationBillingHistory(ctx context.Context, resourceId int, params *GetResourceModelEvaluationBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetResourceModelEvaluationBillingHistoryRequest(c.Server, resourceId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1139,8 +1139,8 @@ func (c *Client) GetUserBillingHistoryModelEvaluationDetails(ctx context.Context
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingModelEvaluationDetailsGraph(ctx context.Context, resourceId int, params *GetUserBillingModelEvaluationDetailsGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingModelEvaluationDetailsGraphRequest(c.Server, resourceId, params)
+func (c *Client) GetModelEvaluationBillingHistoryGraph(ctx context.Context, resourceId int, params *GetModelEvaluationBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetModelEvaluationBillingHistoryGraphRequest(c.Server, resourceId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1151,8 +1151,8 @@ func (c *Client) GetUserBillingModelEvaluationDetailsGraph(ctx context.Context, 
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryServerlessInference(ctx context.Context, params *GetUserBillingHistoryServerlessInferenceParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryServerlessInferenceRequest(c.Server, params)
+func (c *Client) ListServerlessInferenceBillingHistory(ctx context.Context, params *ListServerlessInferenceBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListServerlessInferenceBillingHistoryRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1163,8 +1163,8 @@ func (c *Client) GetUserBillingHistoryServerlessInference(ctx context.Context, p
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryServerlessInferenceDetails(ctx context.Context, resourceId int, params *GetUserBillingHistoryServerlessInferenceDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryServerlessInferenceDetailsRequest(c.Server, resourceId, params)
+func (c *Client) GetServerlessInferencesBillingHistory(ctx context.Context, resourceId int, params *GetServerlessInferencesBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetServerlessInferencesBillingHistoryRequest(c.Server, resourceId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1175,8 +1175,8 @@ func (c *Client) GetUserBillingHistoryServerlessInferenceDetails(ctx context.Con
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingServerlessInferenceDetailsGraph(ctx context.Context, resourceId int, params *GetUserBillingServerlessInferenceDetailsGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingServerlessInferenceDetailsGraphRequest(c.Server, resourceId, params)
+func (c *Client) GetServerlessInferenceBillingHistoryGraph(ctx context.Context, resourceId int, params *GetServerlessInferenceBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetServerlessInferenceBillingHistoryGraphRequest(c.Server, resourceId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1187,8 +1187,8 @@ func (c *Client) GetUserBillingServerlessInferenceDetailsGraph(ctx context.Conte
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistorySnapshot(ctx context.Context, params *GetUserBillingHistorySnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistorySnapshotRequest(c.Server, params)
+func (c *Client) ListSnapshotBillingHistory(ctx context.Context, params *ListSnapshotBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListSnapshotBillingHistoryRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1199,8 +1199,8 @@ func (c *Client) GetUserBillingHistorySnapshot(ctx context.Context, params *GetU
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistorySnapshotDetails(ctx context.Context, snapshotId int, params *GetUserBillingHistorySnapshotDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistorySnapshotDetailsRequest(c.Server, snapshotId, params)
+func (c *Client) GetSnapshotBillingHistory(ctx context.Context, snapshotId int, params *GetSnapshotBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSnapshotBillingHistoryRequest(c.Server, snapshotId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1211,8 +1211,8 @@ func (c *Client) GetUserBillingHistorySnapshotDetails(ctx context.Context, snaps
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingSnapshotDetailsGraph(ctx context.Context, snapshotId int, params *GetUserBillingSnapshotDetailsGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingSnapshotDetailsGraphRequest(c.Server, snapshotId, params)
+func (c *Client) GetSnapshotBillingHistoryGraph(ctx context.Context, snapshotId int, params *GetSnapshotBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSnapshotBillingHistoryGraphRequest(c.Server, snapshotId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1223,8 +1223,8 @@ func (c *Client) GetUserBillingSnapshotDetailsGraph(ctx context.Context, snapsho
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryVm2(ctx context.Context, params *GetUserBillingHistoryVm2Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryVm2Request(c.Server, params)
+func (c *Client) GetVMBillingHistory(ctx context.Context, params *GetVMBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVMBillingHistoryRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1235,8 +1235,8 @@ func (c *Client) GetUserBillingHistoryVm2(ctx context.Context, params *GetUserBi
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryVmDetails2(ctx context.Context, vmId int, params *GetUserBillingHistoryVmDetails2Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryVmDetails2Request(c.Server, vmId, params)
+func (c *Client) GetVMBillingDetails(ctx context.Context, vmId int, params *GetVMBillingDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVMBillingDetailsRequest(c.Server, vmId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1247,8 +1247,8 @@ func (c *Client) GetUserBillingHistoryVmDetails2(ctx context.Context, vmId int, 
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingVmDetailsGraph2(ctx context.Context, vmId int, params *GetUserBillingVmDetailsGraph2Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingVmDetailsGraph2Request(c.Server, vmId, params)
+func (c *Client) GetVMBillingGraph(ctx context.Context, vmId int, params *GetVMBillingGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVMBillingGraphRequest(c.Server, vmId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1259,8 +1259,8 @@ func (c *Client) GetUserBillingVmDetailsGraph2(ctx context.Context, vmId int, pa
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryVolume2(ctx context.Context, params *GetUserBillingHistoryVolume2Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryVolume2Request(c.Server, params)
+func (c *Client) GetVolumeBillingHistory(ctx context.Context, params *GetVolumeBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVolumeBillingHistoryRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1271,8 +1271,8 @@ func (c *Client) GetUserBillingHistoryVolume2(ctx context.Context, params *GetUs
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryVolumeDetails2(ctx context.Context, volumeId int, params *GetUserBillingHistoryVolumeDetails2Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryVolumeDetails2Request(c.Server, volumeId, params)
+func (c *Client) GetVolumeBillingDetails(ctx context.Context, volumeId int, params *GetVolumeBillingDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVolumeBillingDetailsRequest(c.Server, volumeId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1283,8 +1283,8 @@ func (c *Client) GetUserBillingHistoryVolumeDetails2(ctx context.Context, volume
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingVolumeDetailsGraph(ctx context.Context, volumeId int, params *GetUserBillingVolumeDetailsGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingVolumeDetailsGraphRequest(c.Server, volumeId, params)
+func (c *Client) GetVolumeBillingHistoryGraph(ctx context.Context, volumeId int, params *GetVolumeBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVolumeBillingHistoryGraphRequest(c.Server, volumeId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1307,8 +1307,8 @@ func (c *Client) GetLastDayCost(ctx context.Context, reqEditors ...RequestEditor
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetOrganizationThreshold(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetOrganizationThresholdRequest(c.Server)
+func (c *Client) ListOrgNotificationThresholds(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListOrgNotificationThresholdsRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -1319,8 +1319,8 @@ func (c *Client) GetOrganizationThreshold(ctx context.Context, reqEditors ...Req
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutOrganizationThresholdWithBody(ctx context.Context, thresholdId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutOrganizationThresholdRequestWithBody(c.Server, thresholdId, contentType, body)
+func (c *Client) GetNotificationThresholdWithBody(ctx context.Context, thresholdId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetNotificationThresholdRequestWithBody(c.Server, thresholdId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1331,8 +1331,8 @@ func (c *Client) PutOrganizationThresholdWithBody(ctx context.Context, threshold
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutOrganizationThreshold(ctx context.Context, thresholdId int, body PutOrganizationThresholdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutOrganizationThresholdRequest(c.Server, thresholdId, body)
+func (c *Client) GetNotificationThreshold(ctx context.Context, thresholdId int, body GetNotificationThresholdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetNotificationThresholdRequest(c.Server, thresholdId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1343,8 +1343,8 @@ func (c *Client) PutOrganizationThreshold(ctx context.Context, thresholdId int, 
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUsage2(ctx context.Context, params *GetUsage2Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUsage2Request(c.Server, params)
+func (c *Client) GetUsage(ctx context.Context, params *GetUsageParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetUsageRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1355,8 +1355,8 @@ func (c *Client) GetUsage2(ctx context.Context, params *GetUsage2Params, reqEdit
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserVmBillingEvents(ctx context.Context, vmId int, params *GetUserVmBillingEventsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserVmBillingEventsRequest(c.Server, vmId, params)
+func (c *Client) GetVMBillingEvents(ctx context.Context, vmId int, params *GetVMBillingEventsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVMBillingEventsRequest(c.Server, vmId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1367,8 +1367,8 @@ func (c *Client) GetUserVmBillingEvents(ctx context.Context, vmId int, params *G
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryVmTotalCosts(ctx context.Context, vmId int, params *GetUserBillingHistoryVmTotalCostsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryVmTotalCostsRequest(c.Server, vmId, params)
+func (c *Client) GetVMSubResourceCosts(ctx context.Context, vmId int, params *GetVMSubResourceCostsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVMSubResourceCostsRequest(c.Server, vmId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1379,8 +1379,8 @@ func (c *Client) GetUserBillingHistoryVmTotalCosts(ctx context.Context, vmId int
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserBillingHistoryVmSubResourceGraph2(ctx context.Context, vmId int, params *GetUserBillingHistoryVmSubResourceGraph2Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserBillingHistoryVmSubResourceGraph2Request(c.Server, vmId, params)
+func (c *Client) GetVMSubResourceGraph(ctx context.Context, vmId int, params *GetVMSubResourceGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVMSubResourceGraphRequest(c.Server, vmId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1391,8 +1391,8 @@ func (c *Client) GetUserBillingHistoryVmSubResourceGraph2(ctx context.Context, v
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserVolumeBillingEvents(ctx context.Context, volumeId int, params *GetUserVolumeBillingEventsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserVolumeBillingEventsRequest(c.Server, volumeId, params)
+func (c *Client) GetVolumeBillingEvents(ctx context.Context, volumeId int, params *GetVolumeBillingEventsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVolumeBillingEventsRequest(c.Server, volumeId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1403,8 +1403,8 @@ func (c *Client) GetUserVolumeBillingEvents(ctx context.Context, volumeId int, p
 	return c.Client.Do(req)
 }
 
-// NewGetUserBillingHistory2Request generates requests for GetUserBillingHistory2
-func NewGetUserBillingHistory2Request(server string, params *GetUserBillingHistory2Params) (*http.Request, error) {
+// NewGetUserBillingHistoryRequest generates requests for GetUserBillingHistory
+func NewGetUserBillingHistoryRequest(server string, params *GetUserBillingHistoryParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -1484,8 +1484,8 @@ func NewGetUserBillingHistory2Request(server string, params *GetUserBillingHisto
 	return req, nil
 }
 
-// NewGetUserBillingHistoryBucket2Request generates requests for GetUserBillingHistoryBucket2
-func NewGetUserBillingHistoryBucket2Request(server string, params *GetUserBillingHistoryBucket2Params) (*http.Request, error) {
+// NewListBucketBillingHistoryRequest generates requests for ListBucketBillingHistory
+func NewListBucketBillingHistoryRequest(server string, params *ListBucketBillingHistoryParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -1597,8 +1597,8 @@ func NewGetUserBillingHistoryBucket2Request(server string, params *GetUserBillin
 	return req, nil
 }
 
-// NewGetUserBillingHistoryBucketDetailsRequest generates requests for GetUserBillingHistoryBucketDetails
-func NewGetUserBillingHistoryBucketDetailsRequest(server string, bucketId int, params *GetUserBillingHistoryBucketDetailsParams) (*http.Request, error) {
+// NewGetBucketBillingHistoryRequest generates requests for GetBucketBillingHistory
+func NewGetBucketBillingHistoryRequest(server string, bucketId int, params *GetBucketBillingHistoryParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1669,8 +1669,8 @@ func NewGetUserBillingHistoryBucketDetailsRequest(server string, bucketId int, p
 	return req, nil
 }
 
-// NewGetUserBillingBucketDetailsGraphRequest generates requests for GetUserBillingBucketDetailsGraph
-func NewGetUserBillingBucketDetailsGraphRequest(server string, bucketId int, params *GetUserBillingBucketDetailsGraphParams) (*http.Request, error) {
+// NewBucketsBillingHistoryHourlyChartRequest generates requests for BucketsBillingHistoryHourlyChart
+func NewBucketsBillingHistoryHourlyChartRequest(server string, bucketId int, params *BucketsBillingHistoryHourlyChartParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1741,8 +1741,8 @@ func NewGetUserBillingBucketDetailsGraphRequest(server string, bucketId int, par
 	return req, nil
 }
 
-// NewGetUserBillingHistoryClusterRequest generates requests for GetUserBillingHistoryCluster
-func NewGetUserBillingHistoryClusterRequest(server string, params *GetUserBillingHistoryClusterParams) (*http.Request, error) {
+// NewListClustersBillingHistoryRequest generates requests for ListClustersBillingHistory
+func NewListClustersBillingHistoryRequest(server string, params *ListClustersBillingHistoryParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -1854,8 +1854,8 @@ func NewGetUserBillingHistoryClusterRequest(server string, params *GetUserBillin
 	return req, nil
 }
 
-// NewGetUserBillingHistoryClusterDetailsRequest generates requests for GetUserBillingHistoryClusterDetails
-func NewGetUserBillingHistoryClusterDetailsRequest(server string, clusterId int, params *GetUserBillingHistoryClusterDetailsParams) (*http.Request, error) {
+// NewGetClusterBillingHistoryRequest generates requests for GetClusterBillingHistory
+func NewGetClusterBillingHistoryRequest(server string, clusterId int, params *GetClusterBillingHistoryParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1926,8 +1926,8 @@ func NewGetUserBillingHistoryClusterDetailsRequest(server string, clusterId int,
 	return req, nil
 }
 
-// NewGetUserBillingClusterDetailsGraphRequest generates requests for GetUserBillingClusterDetailsGraph
-func NewGetUserBillingClusterDetailsGraphRequest(server string, clusterId int, params *GetUserBillingClusterDetailsGraphParams) (*http.Request, error) {
+// NewGetClusterBillingHistoryGraphRequest generates requests for GetClusterBillingHistoryGraph
+func NewGetClusterBillingHistoryGraphRequest(server string, clusterId int, params *GetClusterBillingHistoryGraphParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1998,8 +1998,8 @@ func NewGetUserBillingClusterDetailsGraphRequest(server string, clusterId int, p
 	return req, nil
 }
 
-// NewGetUserBillingHistoryContractRequest generates requests for GetUserBillingHistoryContract
-func NewGetUserBillingHistoryContractRequest(server string, params *GetUserBillingHistoryContractParams) (*http.Request, error) {
+// NewListBillingContractHistoryRequest generates requests for ListBillingContractHistory
+func NewListBillingContractHistoryRequest(server string, params *ListBillingContractHistoryParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -2079,8 +2079,8 @@ func NewGetUserBillingHistoryContractRequest(server string, params *GetUserBilli
 	return req, nil
 }
 
-// NewGetUserBillingHistoryDataSynthesisRequest generates requests for GetUserBillingHistoryDataSynthesis
-func NewGetUserBillingHistoryDataSynthesisRequest(server string, params *GetUserBillingHistoryDataSynthesisParams) (*http.Request, error) {
+// NewGetDataSynthesisBillingHistoryRequest generates requests for GetDataSynthesisBillingHistory
+func NewGetDataSynthesisBillingHistoryRequest(server string, params *GetDataSynthesisBillingHistoryParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -2192,8 +2192,8 @@ func NewGetUserBillingHistoryDataSynthesisRequest(server string, params *GetUser
 	return req, nil
 }
 
-// NewGetUserBillingHistoryDataSynthesisDetailsRequest generates requests for GetUserBillingHistoryDataSynthesisDetails
-func NewGetUserBillingHistoryDataSynthesisDetailsRequest(server string, resourceId int, params *GetUserBillingHistoryDataSynthesisDetailsParams) (*http.Request, error) {
+// NewGetDataSynthesisHistoryForResourceRequest generates requests for GetDataSynthesisHistoryForResource
+func NewGetDataSynthesisHistoryForResourceRequest(server string, resourceId int, params *GetDataSynthesisHistoryForResourceParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -2264,8 +2264,8 @@ func NewGetUserBillingHistoryDataSynthesisDetailsRequest(server string, resource
 	return req, nil
 }
 
-// NewGetUserBillingDataSynthesisDetailsGraphRequest generates requests for GetUserBillingDataSynthesisDetailsGraph
-func NewGetUserBillingDataSynthesisDetailsGraphRequest(server string, resourceId int, params *GetUserBillingDataSynthesisDetailsGraphParams) (*http.Request, error) {
+// NewGetDataSynthesisBillingHistoryGraphRequest generates requests for GetDataSynthesisBillingHistoryGraph
+func NewGetDataSynthesisBillingHistoryGraphRequest(server string, resourceId int, params *GetDataSynthesisBillingHistoryGraphParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -2336,8 +2336,8 @@ func NewGetUserBillingDataSynthesisDetailsGraphRequest(server string, resourceId
 	return req, nil
 }
 
-// NewGetUserBillingHistoryFineTuningRequest generates requests for GetUserBillingHistoryFineTuning
-func NewGetUserBillingHistoryFineTuningRequest(server string, params *GetUserBillingHistoryFineTuningParams) (*http.Request, error) {
+// NewGetFineTuningBillingHistoryRequest generates requests for GetFineTuningBillingHistory
+func NewGetFineTuningBillingHistoryRequest(server string, params *GetFineTuningBillingHistoryParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -2449,8 +2449,8 @@ func NewGetUserBillingHistoryFineTuningRequest(server string, params *GetUserBil
 	return req, nil
 }
 
-// NewGetUserBillingHistoryFineTuningDetailsRequest generates requests for GetUserBillingHistoryFineTuningDetails
-func NewGetUserBillingHistoryFineTuningDetailsRequest(server string, resourceId int, params *GetUserBillingHistoryFineTuningDetailsParams) (*http.Request, error) {
+// NewGetResourceFineTuningBillingHistoryRequest generates requests for GetResourceFineTuningBillingHistory
+func NewGetResourceFineTuningBillingHistoryRequest(server string, resourceId int, params *GetResourceFineTuningBillingHistoryParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -2521,8 +2521,8 @@ func NewGetUserBillingHistoryFineTuningDetailsRequest(server string, resourceId 
 	return req, nil
 }
 
-// NewGetUserBillingFineTuningDetailsGraphRequest generates requests for GetUserBillingFineTuningDetailsGraph
-func NewGetUserBillingFineTuningDetailsGraphRequest(server string, resourceId int, params *GetUserBillingFineTuningDetailsGraphParams) (*http.Request, error) {
+// NewGetFineTuningBillingHistoryGraphRequest generates requests for GetFineTuningBillingHistoryGraph
+func NewGetFineTuningBillingHistoryGraphRequest(server string, resourceId int, params *GetFineTuningBillingHistoryGraphParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -2593,8 +2593,8 @@ func NewGetUserBillingFineTuningDetailsGraphRequest(server string, resourceId in
 	return req, nil
 }
 
-// NewGetUserBillingHistoryModelEvaluationRequest generates requests for GetUserBillingHistoryModelEvaluation
-func NewGetUserBillingHistoryModelEvaluationRequest(server string, params *GetUserBillingHistoryModelEvaluationParams) (*http.Request, error) {
+// NewGetModelEvaluationBillingHistoryRequest generates requests for GetModelEvaluationBillingHistory
+func NewGetModelEvaluationBillingHistoryRequest(server string, params *GetModelEvaluationBillingHistoryParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -2706,8 +2706,8 @@ func NewGetUserBillingHistoryModelEvaluationRequest(server string, params *GetUs
 	return req, nil
 }
 
-// NewGetUserBillingHistoryModelEvaluationDetailsRequest generates requests for GetUserBillingHistoryModelEvaluationDetails
-func NewGetUserBillingHistoryModelEvaluationDetailsRequest(server string, resourceId int, params *GetUserBillingHistoryModelEvaluationDetailsParams) (*http.Request, error) {
+// NewGetResourceModelEvaluationBillingHistoryRequest generates requests for GetResourceModelEvaluationBillingHistory
+func NewGetResourceModelEvaluationBillingHistoryRequest(server string, resourceId int, params *GetResourceModelEvaluationBillingHistoryParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -2778,8 +2778,8 @@ func NewGetUserBillingHistoryModelEvaluationDetailsRequest(server string, resour
 	return req, nil
 }
 
-// NewGetUserBillingModelEvaluationDetailsGraphRequest generates requests for GetUserBillingModelEvaluationDetailsGraph
-func NewGetUserBillingModelEvaluationDetailsGraphRequest(server string, resourceId int, params *GetUserBillingModelEvaluationDetailsGraphParams) (*http.Request, error) {
+// NewGetModelEvaluationBillingHistoryGraphRequest generates requests for GetModelEvaluationBillingHistoryGraph
+func NewGetModelEvaluationBillingHistoryGraphRequest(server string, resourceId int, params *GetModelEvaluationBillingHistoryGraphParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -2850,8 +2850,8 @@ func NewGetUserBillingModelEvaluationDetailsGraphRequest(server string, resource
 	return req, nil
 }
 
-// NewGetUserBillingHistoryServerlessInferenceRequest generates requests for GetUserBillingHistoryServerlessInference
-func NewGetUserBillingHistoryServerlessInferenceRequest(server string, params *GetUserBillingHistoryServerlessInferenceParams) (*http.Request, error) {
+// NewListServerlessInferenceBillingHistoryRequest generates requests for ListServerlessInferenceBillingHistory
+func NewListServerlessInferenceBillingHistoryRequest(server string, params *ListServerlessInferenceBillingHistoryParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -2963,8 +2963,8 @@ func NewGetUserBillingHistoryServerlessInferenceRequest(server string, params *G
 	return req, nil
 }
 
-// NewGetUserBillingHistoryServerlessInferenceDetailsRequest generates requests for GetUserBillingHistoryServerlessInferenceDetails
-func NewGetUserBillingHistoryServerlessInferenceDetailsRequest(server string, resourceId int, params *GetUserBillingHistoryServerlessInferenceDetailsParams) (*http.Request, error) {
+// NewGetServerlessInferencesBillingHistoryRequest generates requests for GetServerlessInferencesBillingHistory
+func NewGetServerlessInferencesBillingHistoryRequest(server string, resourceId int, params *GetServerlessInferencesBillingHistoryParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -3035,8 +3035,8 @@ func NewGetUserBillingHistoryServerlessInferenceDetailsRequest(server string, re
 	return req, nil
 }
 
-// NewGetUserBillingServerlessInferenceDetailsGraphRequest generates requests for GetUserBillingServerlessInferenceDetailsGraph
-func NewGetUserBillingServerlessInferenceDetailsGraphRequest(server string, resourceId int, params *GetUserBillingServerlessInferenceDetailsGraphParams) (*http.Request, error) {
+// NewGetServerlessInferenceBillingHistoryGraphRequest generates requests for GetServerlessInferenceBillingHistoryGraph
+func NewGetServerlessInferenceBillingHistoryGraphRequest(server string, resourceId int, params *GetServerlessInferenceBillingHistoryGraphParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -3107,8 +3107,8 @@ func NewGetUserBillingServerlessInferenceDetailsGraphRequest(server string, reso
 	return req, nil
 }
 
-// NewGetUserBillingHistorySnapshotRequest generates requests for GetUserBillingHistorySnapshot
-func NewGetUserBillingHistorySnapshotRequest(server string, params *GetUserBillingHistorySnapshotParams) (*http.Request, error) {
+// NewListSnapshotBillingHistoryRequest generates requests for ListSnapshotBillingHistory
+func NewListSnapshotBillingHistoryRequest(server string, params *ListSnapshotBillingHistoryParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -3220,8 +3220,8 @@ func NewGetUserBillingHistorySnapshotRequest(server string, params *GetUserBilli
 	return req, nil
 }
 
-// NewGetUserBillingHistorySnapshotDetailsRequest generates requests for GetUserBillingHistorySnapshotDetails
-func NewGetUserBillingHistorySnapshotDetailsRequest(server string, snapshotId int, params *GetUserBillingHistorySnapshotDetailsParams) (*http.Request, error) {
+// NewGetSnapshotBillingHistoryRequest generates requests for GetSnapshotBillingHistory
+func NewGetSnapshotBillingHistoryRequest(server string, snapshotId int, params *GetSnapshotBillingHistoryParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -3292,8 +3292,8 @@ func NewGetUserBillingHistorySnapshotDetailsRequest(server string, snapshotId in
 	return req, nil
 }
 
-// NewGetUserBillingSnapshotDetailsGraphRequest generates requests for GetUserBillingSnapshotDetailsGraph
-func NewGetUserBillingSnapshotDetailsGraphRequest(server string, snapshotId int, params *GetUserBillingSnapshotDetailsGraphParams) (*http.Request, error) {
+// NewGetSnapshotBillingHistoryGraphRequest generates requests for GetSnapshotBillingHistoryGraph
+func NewGetSnapshotBillingHistoryGraphRequest(server string, snapshotId int, params *GetSnapshotBillingHistoryGraphParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -3364,8 +3364,8 @@ func NewGetUserBillingSnapshotDetailsGraphRequest(server string, snapshotId int,
 	return req, nil
 }
 
-// NewGetUserBillingHistoryVm2Request generates requests for GetUserBillingHistoryVm2
-func NewGetUserBillingHistoryVm2Request(server string, params *GetUserBillingHistoryVm2Params) (*http.Request, error) {
+// NewGetVMBillingHistoryRequest generates requests for GetVMBillingHistory
+func NewGetVMBillingHistoryRequest(server string, params *GetVMBillingHistoryParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -3477,8 +3477,8 @@ func NewGetUserBillingHistoryVm2Request(server string, params *GetUserBillingHis
 	return req, nil
 }
 
-// NewGetUserBillingHistoryVmDetails2Request generates requests for GetUserBillingHistoryVmDetails2
-func NewGetUserBillingHistoryVmDetails2Request(server string, vmId int, params *GetUserBillingHistoryVmDetails2Params) (*http.Request, error) {
+// NewGetVMBillingDetailsRequest generates requests for GetVMBillingDetails
+func NewGetVMBillingDetailsRequest(server string, vmId int, params *GetVMBillingDetailsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -3549,8 +3549,8 @@ func NewGetUserBillingHistoryVmDetails2Request(server string, vmId int, params *
 	return req, nil
 }
 
-// NewGetUserBillingVmDetailsGraph2Request generates requests for GetUserBillingVmDetailsGraph2
-func NewGetUserBillingVmDetailsGraph2Request(server string, vmId int, params *GetUserBillingVmDetailsGraph2Params) (*http.Request, error) {
+// NewGetVMBillingGraphRequest generates requests for GetVMBillingGraph
+func NewGetVMBillingGraphRequest(server string, vmId int, params *GetVMBillingGraphParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -3621,8 +3621,8 @@ func NewGetUserBillingVmDetailsGraph2Request(server string, vmId int, params *Ge
 	return req, nil
 }
 
-// NewGetUserBillingHistoryVolume2Request generates requests for GetUserBillingHistoryVolume2
-func NewGetUserBillingHistoryVolume2Request(server string, params *GetUserBillingHistoryVolume2Params) (*http.Request, error) {
+// NewGetVolumeBillingHistoryRequest generates requests for GetVolumeBillingHistory
+func NewGetVolumeBillingHistoryRequest(server string, params *GetVolumeBillingHistoryParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -3734,8 +3734,8 @@ func NewGetUserBillingHistoryVolume2Request(server string, params *GetUserBillin
 	return req, nil
 }
 
-// NewGetUserBillingHistoryVolumeDetails2Request generates requests for GetUserBillingHistoryVolumeDetails2
-func NewGetUserBillingHistoryVolumeDetails2Request(server string, volumeId int, params *GetUserBillingHistoryVolumeDetails2Params) (*http.Request, error) {
+// NewGetVolumeBillingDetailsRequest generates requests for GetVolumeBillingDetails
+func NewGetVolumeBillingDetailsRequest(server string, volumeId int, params *GetVolumeBillingDetailsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -3806,8 +3806,8 @@ func NewGetUserBillingHistoryVolumeDetails2Request(server string, volumeId int, 
 	return req, nil
 }
 
-// NewGetUserBillingVolumeDetailsGraphRequest generates requests for GetUserBillingVolumeDetailsGraph
-func NewGetUserBillingVolumeDetailsGraphRequest(server string, volumeId int, params *GetUserBillingVolumeDetailsGraphParams) (*http.Request, error) {
+// NewGetVolumeBillingHistoryGraphRequest generates requests for GetVolumeBillingHistoryGraph
+func NewGetVolumeBillingHistoryGraphRequest(server string, volumeId int, params *GetVolumeBillingHistoryGraphParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -3905,8 +3905,8 @@ func NewGetLastDayCostRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewGetOrganizationThresholdRequest generates requests for GetOrganizationThreshold
-func NewGetOrganizationThresholdRequest(server string) (*http.Request, error) {
+// NewListOrgNotificationThresholdsRequest generates requests for ListOrgNotificationThresholds
+func NewListOrgNotificationThresholdsRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -3932,19 +3932,19 @@ func NewGetOrganizationThresholdRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewPutOrganizationThresholdRequest calls the generic PutOrganizationThreshold builder with application/json body
-func NewPutOrganizationThresholdRequest(server string, thresholdId int, body PutOrganizationThresholdJSONRequestBody) (*http.Request, error) {
+// NewGetNotificationThresholdRequest calls the generic GetNotificationThreshold builder with application/json body
+func NewGetNotificationThresholdRequest(server string, thresholdId int, body GetNotificationThresholdJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPutOrganizationThresholdRequestWithBody(server, thresholdId, "application/json", bodyReader)
+	return NewGetNotificationThresholdRequestWithBody(server, thresholdId, "application/json", bodyReader)
 }
 
-// NewPutOrganizationThresholdRequestWithBody generates requests for PutOrganizationThreshold with any type of body
-func NewPutOrganizationThresholdRequestWithBody(server string, thresholdId int, contentType string, body io.Reader) (*http.Request, error) {
+// NewGetNotificationThresholdRequestWithBody generates requests for GetNotificationThreshold with any type of body
+func NewGetNotificationThresholdRequestWithBody(server string, thresholdId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -3979,8 +3979,8 @@ func NewPutOrganizationThresholdRequestWithBody(server string, thresholdId int, 
 	return req, nil
 }
 
-// NewGetUsage2Request generates requests for GetUsage2
-func NewGetUsage2Request(server string, params *GetUsage2Params) (*http.Request, error) {
+// NewGetUsageRequest generates requests for GetUsage
+func NewGetUsageRequest(server string, params *GetUsageParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -4044,8 +4044,8 @@ func NewGetUsage2Request(server string, params *GetUsage2Params) (*http.Request,
 	return req, nil
 }
 
-// NewGetUserVmBillingEventsRequest generates requests for GetUserVmBillingEvents
-func NewGetUserVmBillingEventsRequest(server string, vmId int, params *GetUserVmBillingEventsParams) (*http.Request, error) {
+// NewGetVMBillingEventsRequest generates requests for GetVMBillingEvents
+func NewGetVMBillingEventsRequest(server string, vmId int, params *GetVMBillingEventsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -4116,8 +4116,8 @@ func NewGetUserVmBillingEventsRequest(server string, vmId int, params *GetUserVm
 	return req, nil
 }
 
-// NewGetUserBillingHistoryVmTotalCostsRequest generates requests for GetUserBillingHistoryVmTotalCosts
-func NewGetUserBillingHistoryVmTotalCostsRequest(server string, vmId int, params *GetUserBillingHistoryVmTotalCostsParams) (*http.Request, error) {
+// NewGetVMSubResourceCostsRequest generates requests for GetVMSubResourceCosts
+func NewGetVMSubResourceCostsRequest(server string, vmId int, params *GetVMSubResourceCostsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -4188,8 +4188,8 @@ func NewGetUserBillingHistoryVmTotalCostsRequest(server string, vmId int, params
 	return req, nil
 }
 
-// NewGetUserBillingHistoryVmSubResourceGraph2Request generates requests for GetUserBillingHistoryVmSubResourceGraph2
-func NewGetUserBillingHistoryVmSubResourceGraph2Request(server string, vmId int, params *GetUserBillingHistoryVmSubResourceGraph2Params) (*http.Request, error) {
+// NewGetVMSubResourceGraphRequest generates requests for GetVMSubResourceGraph
+func NewGetVMSubResourceGraphRequest(server string, vmId int, params *GetVMSubResourceGraphParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -4260,8 +4260,8 @@ func NewGetUserBillingHistoryVmSubResourceGraph2Request(server string, vmId int,
 	return req, nil
 }
 
-// NewGetUserVolumeBillingEventsRequest generates requests for GetUserVolumeBillingEvents
-func NewGetUserVolumeBillingEventsRequest(server string, volumeId int, params *GetUserVolumeBillingEventsParams) (*http.Request, error) {
+// NewGetVolumeBillingEventsRequest generates requests for GetVolumeBillingEvents
+func NewGetVolumeBillingEventsRequest(server string, volumeId int, params *GetVolumeBillingEventsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -4375,121 +4375,121 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// GetUserBillingHistory2WithResponse request
-	GetUserBillingHistory2WithResponse(ctx context.Context, params *GetUserBillingHistory2Params, reqEditors ...RequestEditorFn) (*GetUserBillingHistory2Response, error)
+	// GetUserBillingHistoryWithResponse request
+	GetUserBillingHistoryWithResponse(ctx context.Context, params *GetUserBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryResponse, error)
 
-	// GetUserBillingHistoryBucket2WithResponse request
-	GetUserBillingHistoryBucket2WithResponse(ctx context.Context, params *GetUserBillingHistoryBucket2Params, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryBucket2Response, error)
+	// ListBucketBillingHistoryWithResponse request
+	ListBucketBillingHistoryWithResponse(ctx context.Context, params *ListBucketBillingHistoryParams, reqEditors ...RequestEditorFn) (*ListBucketBillingHistoryResponse, error)
 
-	// GetUserBillingHistoryBucketDetailsWithResponse request
-	GetUserBillingHistoryBucketDetailsWithResponse(ctx context.Context, bucketId int, params *GetUserBillingHistoryBucketDetailsParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryBucketDetailsResponse, error)
+	// GetBucketBillingHistoryWithResponse request
+	GetBucketBillingHistoryWithResponse(ctx context.Context, bucketId int, params *GetBucketBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetBucketBillingHistoryResponse, error)
 
-	// GetUserBillingBucketDetailsGraphWithResponse request
-	GetUserBillingBucketDetailsGraphWithResponse(ctx context.Context, bucketId int, params *GetUserBillingBucketDetailsGraphParams, reqEditors ...RequestEditorFn) (*GetUserBillingBucketDetailsGraphResponse, error)
+	// BucketsBillingHistoryHourlyChartWithResponse request
+	BucketsBillingHistoryHourlyChartWithResponse(ctx context.Context, bucketId int, params *BucketsBillingHistoryHourlyChartParams, reqEditors ...RequestEditorFn) (*BucketsBillingHistoryHourlyChartResponse, error)
 
-	// GetUserBillingHistoryClusterWithResponse request
-	GetUserBillingHistoryClusterWithResponse(ctx context.Context, params *GetUserBillingHistoryClusterParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryClusterResponse, error)
+	// ListClustersBillingHistoryWithResponse request
+	ListClustersBillingHistoryWithResponse(ctx context.Context, params *ListClustersBillingHistoryParams, reqEditors ...RequestEditorFn) (*ListClustersBillingHistoryResponse, error)
 
-	// GetUserBillingHistoryClusterDetailsWithResponse request
-	GetUserBillingHistoryClusterDetailsWithResponse(ctx context.Context, clusterId int, params *GetUserBillingHistoryClusterDetailsParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryClusterDetailsResponse, error)
+	// GetClusterBillingHistoryWithResponse request
+	GetClusterBillingHistoryWithResponse(ctx context.Context, clusterId int, params *GetClusterBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetClusterBillingHistoryResponse, error)
 
-	// GetUserBillingClusterDetailsGraphWithResponse request
-	GetUserBillingClusterDetailsGraphWithResponse(ctx context.Context, clusterId int, params *GetUserBillingClusterDetailsGraphParams, reqEditors ...RequestEditorFn) (*GetUserBillingClusterDetailsGraphResponse, error)
+	// GetClusterBillingHistoryGraphWithResponse request
+	GetClusterBillingHistoryGraphWithResponse(ctx context.Context, clusterId int, params *GetClusterBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*GetClusterBillingHistoryGraphResponse, error)
 
-	// GetUserBillingHistoryContractWithResponse request
-	GetUserBillingHistoryContractWithResponse(ctx context.Context, params *GetUserBillingHistoryContractParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryContractResponse, error)
+	// ListBillingContractHistoryWithResponse request
+	ListBillingContractHistoryWithResponse(ctx context.Context, params *ListBillingContractHistoryParams, reqEditors ...RequestEditorFn) (*ListBillingContractHistoryResponse, error)
 
-	// GetUserBillingHistoryDataSynthesisWithResponse request
-	GetUserBillingHistoryDataSynthesisWithResponse(ctx context.Context, params *GetUserBillingHistoryDataSynthesisParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryDataSynthesisResponse, error)
+	// GetDataSynthesisBillingHistoryWithResponse request
+	GetDataSynthesisBillingHistoryWithResponse(ctx context.Context, params *GetDataSynthesisBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetDataSynthesisBillingHistoryResponse, error)
 
-	// GetUserBillingHistoryDataSynthesisDetailsWithResponse request
-	GetUserBillingHistoryDataSynthesisDetailsWithResponse(ctx context.Context, resourceId int, params *GetUserBillingHistoryDataSynthesisDetailsParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryDataSynthesisDetailsResponse, error)
+	// GetDataSynthesisHistoryForResourceWithResponse request
+	GetDataSynthesisHistoryForResourceWithResponse(ctx context.Context, resourceId int, params *GetDataSynthesisHistoryForResourceParams, reqEditors ...RequestEditorFn) (*GetDataSynthesisHistoryForResourceResponse, error)
 
-	// GetUserBillingDataSynthesisDetailsGraphWithResponse request
-	GetUserBillingDataSynthesisDetailsGraphWithResponse(ctx context.Context, resourceId int, params *GetUserBillingDataSynthesisDetailsGraphParams, reqEditors ...RequestEditorFn) (*GetUserBillingDataSynthesisDetailsGraphResponse, error)
+	// GetDataSynthesisBillingHistoryGraphWithResponse request
+	GetDataSynthesisBillingHistoryGraphWithResponse(ctx context.Context, resourceId int, params *GetDataSynthesisBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*GetDataSynthesisBillingHistoryGraphResponse, error)
 
-	// GetUserBillingHistoryFineTuningWithResponse request
-	GetUserBillingHistoryFineTuningWithResponse(ctx context.Context, params *GetUserBillingHistoryFineTuningParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryFineTuningResponse, error)
+	// GetFineTuningBillingHistoryWithResponse request
+	GetFineTuningBillingHistoryWithResponse(ctx context.Context, params *GetFineTuningBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetFineTuningBillingHistoryResponse, error)
 
-	// GetUserBillingHistoryFineTuningDetailsWithResponse request
-	GetUserBillingHistoryFineTuningDetailsWithResponse(ctx context.Context, resourceId int, params *GetUserBillingHistoryFineTuningDetailsParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryFineTuningDetailsResponse, error)
+	// GetResourceFineTuningBillingHistoryWithResponse request
+	GetResourceFineTuningBillingHistoryWithResponse(ctx context.Context, resourceId int, params *GetResourceFineTuningBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetResourceFineTuningBillingHistoryResponse, error)
 
-	// GetUserBillingFineTuningDetailsGraphWithResponse request
-	GetUserBillingFineTuningDetailsGraphWithResponse(ctx context.Context, resourceId int, params *GetUserBillingFineTuningDetailsGraphParams, reqEditors ...RequestEditorFn) (*GetUserBillingFineTuningDetailsGraphResponse, error)
+	// GetFineTuningBillingHistoryGraphWithResponse request
+	GetFineTuningBillingHistoryGraphWithResponse(ctx context.Context, resourceId int, params *GetFineTuningBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*GetFineTuningBillingHistoryGraphResponse, error)
 
-	// GetUserBillingHistoryModelEvaluationWithResponse request
-	GetUserBillingHistoryModelEvaluationWithResponse(ctx context.Context, params *GetUserBillingHistoryModelEvaluationParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryModelEvaluationResponse, error)
+	// GetModelEvaluationBillingHistoryWithResponse request
+	GetModelEvaluationBillingHistoryWithResponse(ctx context.Context, params *GetModelEvaluationBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetModelEvaluationBillingHistoryResponse, error)
 
-	// GetUserBillingHistoryModelEvaluationDetailsWithResponse request
-	GetUserBillingHistoryModelEvaluationDetailsWithResponse(ctx context.Context, resourceId int, params *GetUserBillingHistoryModelEvaluationDetailsParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryModelEvaluationDetailsResponse, error)
+	// GetResourceModelEvaluationBillingHistoryWithResponse request
+	GetResourceModelEvaluationBillingHistoryWithResponse(ctx context.Context, resourceId int, params *GetResourceModelEvaluationBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetResourceModelEvaluationBillingHistoryResponse, error)
 
-	// GetUserBillingModelEvaluationDetailsGraphWithResponse request
-	GetUserBillingModelEvaluationDetailsGraphWithResponse(ctx context.Context, resourceId int, params *GetUserBillingModelEvaluationDetailsGraphParams, reqEditors ...RequestEditorFn) (*GetUserBillingModelEvaluationDetailsGraphResponse, error)
+	// GetModelEvaluationBillingHistoryGraphWithResponse request
+	GetModelEvaluationBillingHistoryGraphWithResponse(ctx context.Context, resourceId int, params *GetModelEvaluationBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*GetModelEvaluationBillingHistoryGraphResponse, error)
 
-	// GetUserBillingHistoryServerlessInferenceWithResponse request
-	GetUserBillingHistoryServerlessInferenceWithResponse(ctx context.Context, params *GetUserBillingHistoryServerlessInferenceParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryServerlessInferenceResponse, error)
+	// ListServerlessInferenceBillingHistoryWithResponse request
+	ListServerlessInferenceBillingHistoryWithResponse(ctx context.Context, params *ListServerlessInferenceBillingHistoryParams, reqEditors ...RequestEditorFn) (*ListServerlessInferenceBillingHistoryResponse, error)
 
-	// GetUserBillingHistoryServerlessInferenceDetailsWithResponse request
-	GetUserBillingHistoryServerlessInferenceDetailsWithResponse(ctx context.Context, resourceId int, params *GetUserBillingHistoryServerlessInferenceDetailsParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryServerlessInferenceDetailsResponse, error)
+	// GetServerlessInferencesBillingHistoryWithResponse request
+	GetServerlessInferencesBillingHistoryWithResponse(ctx context.Context, resourceId int, params *GetServerlessInferencesBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetServerlessInferencesBillingHistoryResponse, error)
 
-	// GetUserBillingServerlessInferenceDetailsGraphWithResponse request
-	GetUserBillingServerlessInferenceDetailsGraphWithResponse(ctx context.Context, resourceId int, params *GetUserBillingServerlessInferenceDetailsGraphParams, reqEditors ...RequestEditorFn) (*GetUserBillingServerlessInferenceDetailsGraphResponse, error)
+	// GetServerlessInferenceBillingHistoryGraphWithResponse request
+	GetServerlessInferenceBillingHistoryGraphWithResponse(ctx context.Context, resourceId int, params *GetServerlessInferenceBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*GetServerlessInferenceBillingHistoryGraphResponse, error)
 
-	// GetUserBillingHistorySnapshotWithResponse request
-	GetUserBillingHistorySnapshotWithResponse(ctx context.Context, params *GetUserBillingHistorySnapshotParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistorySnapshotResponse, error)
+	// ListSnapshotBillingHistoryWithResponse request
+	ListSnapshotBillingHistoryWithResponse(ctx context.Context, params *ListSnapshotBillingHistoryParams, reqEditors ...RequestEditorFn) (*ListSnapshotBillingHistoryResponse, error)
 
-	// GetUserBillingHistorySnapshotDetailsWithResponse request
-	GetUserBillingHistorySnapshotDetailsWithResponse(ctx context.Context, snapshotId int, params *GetUserBillingHistorySnapshotDetailsParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistorySnapshotDetailsResponse, error)
+	// GetSnapshotBillingHistoryWithResponse request
+	GetSnapshotBillingHistoryWithResponse(ctx context.Context, snapshotId int, params *GetSnapshotBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetSnapshotBillingHistoryResponse, error)
 
-	// GetUserBillingSnapshotDetailsGraphWithResponse request
-	GetUserBillingSnapshotDetailsGraphWithResponse(ctx context.Context, snapshotId int, params *GetUserBillingSnapshotDetailsGraphParams, reqEditors ...RequestEditorFn) (*GetUserBillingSnapshotDetailsGraphResponse, error)
+	// GetSnapshotBillingHistoryGraphWithResponse request
+	GetSnapshotBillingHistoryGraphWithResponse(ctx context.Context, snapshotId int, params *GetSnapshotBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*GetSnapshotBillingHistoryGraphResponse, error)
 
-	// GetUserBillingHistoryVm2WithResponse request
-	GetUserBillingHistoryVm2WithResponse(ctx context.Context, params *GetUserBillingHistoryVm2Params, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryVm2Response, error)
+	// GetVMBillingHistoryWithResponse request
+	GetVMBillingHistoryWithResponse(ctx context.Context, params *GetVMBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetVMBillingHistoryResponse, error)
 
-	// GetUserBillingHistoryVmDetails2WithResponse request
-	GetUserBillingHistoryVmDetails2WithResponse(ctx context.Context, vmId int, params *GetUserBillingHistoryVmDetails2Params, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryVmDetails2Response, error)
+	// GetVMBillingDetailsWithResponse request
+	GetVMBillingDetailsWithResponse(ctx context.Context, vmId int, params *GetVMBillingDetailsParams, reqEditors ...RequestEditorFn) (*GetVMBillingDetailsResponse, error)
 
-	// GetUserBillingVmDetailsGraph2WithResponse request
-	GetUserBillingVmDetailsGraph2WithResponse(ctx context.Context, vmId int, params *GetUserBillingVmDetailsGraph2Params, reqEditors ...RequestEditorFn) (*GetUserBillingVmDetailsGraph2Response, error)
+	// GetVMBillingGraphWithResponse request
+	GetVMBillingGraphWithResponse(ctx context.Context, vmId int, params *GetVMBillingGraphParams, reqEditors ...RequestEditorFn) (*GetVMBillingGraphResponse, error)
 
-	// GetUserBillingHistoryVolume2WithResponse request
-	GetUserBillingHistoryVolume2WithResponse(ctx context.Context, params *GetUserBillingHistoryVolume2Params, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryVolume2Response, error)
+	// GetVolumeBillingHistoryWithResponse request
+	GetVolumeBillingHistoryWithResponse(ctx context.Context, params *GetVolumeBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetVolumeBillingHistoryResponse, error)
 
-	// GetUserBillingHistoryVolumeDetails2WithResponse request
-	GetUserBillingHistoryVolumeDetails2WithResponse(ctx context.Context, volumeId int, params *GetUserBillingHistoryVolumeDetails2Params, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryVolumeDetails2Response, error)
+	// GetVolumeBillingDetailsWithResponse request
+	GetVolumeBillingDetailsWithResponse(ctx context.Context, volumeId int, params *GetVolumeBillingDetailsParams, reqEditors ...RequestEditorFn) (*GetVolumeBillingDetailsResponse, error)
 
-	// GetUserBillingVolumeDetailsGraphWithResponse request
-	GetUserBillingVolumeDetailsGraphWithResponse(ctx context.Context, volumeId int, params *GetUserBillingVolumeDetailsGraphParams, reqEditors ...RequestEditorFn) (*GetUserBillingVolumeDetailsGraphResponse, error)
+	// GetVolumeBillingHistoryGraphWithResponse request
+	GetVolumeBillingHistoryGraphWithResponse(ctx context.Context, volumeId int, params *GetVolumeBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*GetVolumeBillingHistoryGraphResponse, error)
 
 	// GetLastDayCostWithResponse request
 	GetLastDayCostWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLastDayCostResponse, error)
 
-	// GetOrganizationThresholdWithResponse request
-	GetOrganizationThresholdWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetOrganizationThresholdResponse, error)
+	// ListOrgNotificationThresholdsWithResponse request
+	ListOrgNotificationThresholdsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListOrgNotificationThresholdsResponse, error)
 
-	// PutOrganizationThresholdWithBodyWithResponse request with any body
-	PutOrganizationThresholdWithBodyWithResponse(ctx context.Context, thresholdId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutOrganizationThresholdResponse, error)
+	// GetNotificationThresholdWithBodyWithResponse request with any body
+	GetNotificationThresholdWithBodyWithResponse(ctx context.Context, thresholdId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*GetNotificationThresholdResponse, error)
 
-	PutOrganizationThresholdWithResponse(ctx context.Context, thresholdId int, body PutOrganizationThresholdJSONRequestBody, reqEditors ...RequestEditorFn) (*PutOrganizationThresholdResponse, error)
+	GetNotificationThresholdWithResponse(ctx context.Context, thresholdId int, body GetNotificationThresholdJSONRequestBody, reqEditors ...RequestEditorFn) (*GetNotificationThresholdResponse, error)
 
-	// GetUsage2WithResponse request
-	GetUsage2WithResponse(ctx context.Context, params *GetUsage2Params, reqEditors ...RequestEditorFn) (*GetUsage2Response, error)
+	// GetUsageWithResponse request
+	GetUsageWithResponse(ctx context.Context, params *GetUsageParams, reqEditors ...RequestEditorFn) (*GetUsageResponse, error)
 
-	// GetUserVmBillingEventsWithResponse request
-	GetUserVmBillingEventsWithResponse(ctx context.Context, vmId int, params *GetUserVmBillingEventsParams, reqEditors ...RequestEditorFn) (*GetUserVmBillingEventsResponse, error)
+	// GetVMBillingEventsWithResponse request
+	GetVMBillingEventsWithResponse(ctx context.Context, vmId int, params *GetVMBillingEventsParams, reqEditors ...RequestEditorFn) (*GetVMBillingEventsResponse, error)
 
-	// GetUserBillingHistoryVmTotalCostsWithResponse request
-	GetUserBillingHistoryVmTotalCostsWithResponse(ctx context.Context, vmId int, params *GetUserBillingHistoryVmTotalCostsParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryVmTotalCostsResponse, error)
+	// GetVMSubResourceCostsWithResponse request
+	GetVMSubResourceCostsWithResponse(ctx context.Context, vmId int, params *GetVMSubResourceCostsParams, reqEditors ...RequestEditorFn) (*GetVMSubResourceCostsResponse, error)
 
-	// GetUserBillingHistoryVmSubResourceGraph2WithResponse request
-	GetUserBillingHistoryVmSubResourceGraph2WithResponse(ctx context.Context, vmId int, params *GetUserBillingHistoryVmSubResourceGraph2Params, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryVmSubResourceGraph2Response, error)
+	// GetVMSubResourceGraphWithResponse request
+	GetVMSubResourceGraphWithResponse(ctx context.Context, vmId int, params *GetVMSubResourceGraphParams, reqEditors ...RequestEditorFn) (*GetVMSubResourceGraphResponse, error)
 
-	// GetUserVolumeBillingEventsWithResponse request
-	GetUserVolumeBillingEventsWithResponse(ctx context.Context, volumeId int, params *GetUserVolumeBillingEventsParams, reqEditors ...RequestEditorFn) (*GetUserVolumeBillingEventsResponse, error)
+	// GetVolumeBillingEventsWithResponse request
+	GetVolumeBillingEventsWithResponse(ctx context.Context, volumeId int, params *GetVolumeBillingEventsParams, reqEditors ...RequestEditorFn) (*GetVolumeBillingEventsResponse, error)
 }
 
-type GetUserBillingHistory2Response struct {
+type GetUserBillingHistoryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *OrganizationLevelBillingHistoryResponseModel
@@ -4500,7 +4500,7 @@ type GetUserBillingHistory2Response struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistory2Response) Status() string {
+func (r GetUserBillingHistoryResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4508,14 +4508,14 @@ func (r GetUserBillingHistory2Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistory2Response) StatusCode() int {
+func (r GetUserBillingHistoryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryBucket2Response struct {
+type ListBucketBillingHistoryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceLevelBucketBillingHistoryResponseModel
@@ -4526,7 +4526,7 @@ type GetUserBillingHistoryBucket2Response struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryBucket2Response) Status() string {
+func (r ListBucketBillingHistoryResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4534,14 +4534,14 @@ func (r GetUserBillingHistoryBucket2Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryBucket2Response) StatusCode() int {
+func (r ListBucketBillingHistoryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryBucketDetailsResponse struct {
+type GetBucketBillingHistoryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceLevelBucketBillingDetailsResponseModel
@@ -4552,7 +4552,7 @@ type GetUserBillingHistoryBucketDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryBucketDetailsResponse) Status() string {
+func (r GetBucketBillingHistoryResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4560,14 +4560,14 @@ func (r GetUserBillingHistoryBucketDetailsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryBucketDetailsResponse) StatusCode() int {
+func (r GetBucketBillingHistoryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingBucketDetailsGraphResponse struct {
+type BucketsBillingHistoryHourlyChartResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceLevelGraphBillingDetailsBucket
@@ -4578,7 +4578,7 @@ type GetUserBillingBucketDetailsGraphResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingBucketDetailsGraphResponse) Status() string {
+func (r BucketsBillingHistoryHourlyChartResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4586,14 +4586,14 @@ func (r GetUserBillingBucketDetailsGraphResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingBucketDetailsGraphResponse) StatusCode() int {
+func (r BucketsBillingHistoryHourlyChartResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryClusterResponse struct {
+type ListClustersBillingHistoryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceLevelClusterBillingHistoryResponseModel
@@ -4604,7 +4604,7 @@ type GetUserBillingHistoryClusterResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryClusterResponse) Status() string {
+func (r ListClustersBillingHistoryResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4612,14 +4612,14 @@ func (r GetUserBillingHistoryClusterResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryClusterResponse) StatusCode() int {
+func (r ListClustersBillingHistoryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryClusterDetailsResponse struct {
+type GetClusterBillingHistoryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceLevelClusterBillingDetailsResponseModel
@@ -4630,7 +4630,7 @@ type GetUserBillingHistoryClusterDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryClusterDetailsResponse) Status() string {
+func (r GetClusterBillingHistoryResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4638,14 +4638,14 @@ func (r GetUserBillingHistoryClusterDetailsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryClusterDetailsResponse) StatusCode() int {
+func (r GetClusterBillingHistoryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingClusterDetailsGraphResponse struct {
+type GetClusterBillingHistoryGraphResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceLevelClusterGraphBillingDetailsResponseModel
@@ -4656,7 +4656,7 @@ type GetUserBillingClusterDetailsGraphResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingClusterDetailsGraphResponse) Status() string {
+func (r GetClusterBillingHistoryGraphResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4664,14 +4664,14 @@ func (r GetUserBillingClusterDetailsGraphResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingClusterDetailsGraphResponse) StatusCode() int {
+func (r GetClusterBillingHistoryGraphResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryContractResponse struct {
+type ListBillingContractHistoryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON400      *ErrorResponseModel
@@ -4681,7 +4681,7 @@ type GetUserBillingHistoryContractResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryContractResponse) Status() string {
+func (r ListBillingContractHistoryResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4689,14 +4689,14 @@ func (r GetUserBillingHistoryContractResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryContractResponse) StatusCode() int {
+func (r ListBillingContractHistoryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryDataSynthesisResponse struct {
+type GetDataSynthesisBillingHistoryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *TokenBasedBillingHistoryResponse
@@ -4707,7 +4707,7 @@ type GetUserBillingHistoryDataSynthesisResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryDataSynthesisResponse) Status() string {
+func (r GetDataSynthesisBillingHistoryResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4715,14 +4715,14 @@ func (r GetUserBillingHistoryDataSynthesisResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryDataSynthesisResponse) StatusCode() int {
+func (r GetDataSynthesisBillingHistoryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryDataSynthesisDetailsResponse struct {
+type GetDataSynthesisHistoryForResourceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *DataSynthesisBillingHistoryDetailsResponseSchema
@@ -4733,7 +4733,7 @@ type GetUserBillingHistoryDataSynthesisDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryDataSynthesisDetailsResponse) Status() string {
+func (r GetDataSynthesisHistoryForResourceResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4741,14 +4741,14 @@ func (r GetUserBillingHistoryDataSynthesisDetailsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryDataSynthesisDetailsResponse) StatusCode() int {
+func (r GetDataSynthesisHistoryForResourceResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingDataSynthesisDetailsGraphResponse struct {
+type GetDataSynthesisBillingHistoryGraphResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *DataSynthesisBillingHistoryDetailsResponseSchema
@@ -4759,7 +4759,7 @@ type GetUserBillingDataSynthesisDetailsGraphResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingDataSynthesisDetailsGraphResponse) Status() string {
+func (r GetDataSynthesisBillingHistoryGraphResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4767,14 +4767,14 @@ func (r GetUserBillingDataSynthesisDetailsGraphResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingDataSynthesisDetailsGraphResponse) StatusCode() int {
+func (r GetDataSynthesisBillingHistoryGraphResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryFineTuningResponse struct {
+type GetFineTuningBillingHistoryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *WorkloadBillingHistoryResponse
@@ -4785,7 +4785,7 @@ type GetUserBillingHistoryFineTuningResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryFineTuningResponse) Status() string {
+func (r GetFineTuningBillingHistoryResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4793,14 +4793,14 @@ func (r GetUserBillingHistoryFineTuningResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryFineTuningResponse) StatusCode() int {
+func (r GetFineTuningBillingHistoryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryFineTuningDetailsResponse struct {
+type GetResourceFineTuningBillingHistoryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceLevelVolumeBillingDetailsResponseModel
@@ -4811,7 +4811,7 @@ type GetUserBillingHistoryFineTuningDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryFineTuningDetailsResponse) Status() string {
+func (r GetResourceFineTuningBillingHistoryResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4819,14 +4819,14 @@ func (r GetUserBillingHistoryFineTuningDetailsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryFineTuningDetailsResponse) StatusCode() int {
+func (r GetResourceFineTuningBillingHistoryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingFineTuningDetailsGraphResponse struct {
+type GetFineTuningBillingHistoryGraphResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceLevelVolumeGraphBillingDetailsResponseModel
@@ -4837,7 +4837,7 @@ type GetUserBillingFineTuningDetailsGraphResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingFineTuningDetailsGraphResponse) Status() string {
+func (r GetFineTuningBillingHistoryGraphResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4845,14 +4845,14 @@ func (r GetUserBillingFineTuningDetailsGraphResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingFineTuningDetailsGraphResponse) StatusCode() int {
+func (r GetFineTuningBillingHistoryGraphResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryModelEvaluationResponse struct {
+type GetModelEvaluationBillingHistoryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *TokenBasedBillingHistoryResponse
@@ -4863,7 +4863,7 @@ type GetUserBillingHistoryModelEvaluationResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryModelEvaluationResponse) Status() string {
+func (r GetModelEvaluationBillingHistoryResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4871,14 +4871,14 @@ func (r GetUserBillingHistoryModelEvaluationResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryModelEvaluationResponse) StatusCode() int {
+func (r GetModelEvaluationBillingHistoryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryModelEvaluationDetailsResponse struct {
+type GetResourceModelEvaluationBillingHistoryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ModelEvaluationBillingHistoryDetailsResponseSchema
@@ -4889,7 +4889,7 @@ type GetUserBillingHistoryModelEvaluationDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryModelEvaluationDetailsResponse) Status() string {
+func (r GetResourceModelEvaluationBillingHistoryResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4897,14 +4897,14 @@ func (r GetUserBillingHistoryModelEvaluationDetailsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryModelEvaluationDetailsResponse) StatusCode() int {
+func (r GetResourceModelEvaluationBillingHistoryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingModelEvaluationDetailsGraphResponse struct {
+type GetModelEvaluationBillingHistoryGraphResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ModelEvaluationBillingHistoryDetailsResponseSchema
@@ -4915,7 +4915,7 @@ type GetUserBillingModelEvaluationDetailsGraphResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingModelEvaluationDetailsGraphResponse) Status() string {
+func (r GetModelEvaluationBillingHistoryGraphResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4923,14 +4923,14 @@ func (r GetUserBillingModelEvaluationDetailsGraphResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingModelEvaluationDetailsGraphResponse) StatusCode() int {
+func (r GetModelEvaluationBillingHistoryGraphResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryServerlessInferenceResponse struct {
+type ListServerlessInferenceBillingHistoryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *TokenBasedBillingHistoryResponse
@@ -4941,7 +4941,7 @@ type GetUserBillingHistoryServerlessInferenceResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryServerlessInferenceResponse) Status() string {
+func (r ListServerlessInferenceBillingHistoryResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4949,14 +4949,14 @@ func (r GetUserBillingHistoryServerlessInferenceResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryServerlessInferenceResponse) StatusCode() int {
+func (r ListServerlessInferenceBillingHistoryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryServerlessInferenceDetailsResponse struct {
+type GetServerlessInferencesBillingHistoryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ServerlessInferencedBillingHistoryDetailsResponseSchema
@@ -4967,7 +4967,7 @@ type GetUserBillingHistoryServerlessInferenceDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryServerlessInferenceDetailsResponse) Status() string {
+func (r GetServerlessInferencesBillingHistoryResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -4975,14 +4975,14 @@ func (r GetUserBillingHistoryServerlessInferenceDetailsResponse) Status() string
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryServerlessInferenceDetailsResponse) StatusCode() int {
+func (r GetServerlessInferencesBillingHistoryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingServerlessInferenceDetailsGraphResponse struct {
+type GetServerlessInferenceBillingHistoryGraphResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ServerlessInferencedBillingHistoryDetailsResponseSchema
@@ -4993,7 +4993,7 @@ type GetUserBillingServerlessInferenceDetailsGraphResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingServerlessInferenceDetailsGraphResponse) Status() string {
+func (r GetServerlessInferenceBillingHistoryGraphResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -5001,14 +5001,14 @@ func (r GetUserBillingServerlessInferenceDetailsGraphResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingServerlessInferenceDetailsGraphResponse) StatusCode() int {
+func (r GetServerlessInferenceBillingHistoryGraphResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistorySnapshotResponse struct {
+type ListSnapshotBillingHistoryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceLevelVolumeBillingHistoryResponseModel
@@ -5019,7 +5019,7 @@ type GetUserBillingHistorySnapshotResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistorySnapshotResponse) Status() string {
+func (r ListSnapshotBillingHistoryResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -5027,14 +5027,14 @@ func (r GetUserBillingHistorySnapshotResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistorySnapshotResponse) StatusCode() int {
+func (r ListSnapshotBillingHistoryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistorySnapshotDetailsResponse struct {
+type GetSnapshotBillingHistoryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceLevelVolumeBillingDetailsResponseModel
@@ -5045,7 +5045,7 @@ type GetUserBillingHistorySnapshotDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistorySnapshotDetailsResponse) Status() string {
+func (r GetSnapshotBillingHistoryResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -5053,14 +5053,14 @@ func (r GetUserBillingHistorySnapshotDetailsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistorySnapshotDetailsResponse) StatusCode() int {
+func (r GetSnapshotBillingHistoryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingSnapshotDetailsGraphResponse struct {
+type GetSnapshotBillingHistoryGraphResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceLevelVolumeGraphBillingDetailsResponseModel
@@ -5071,7 +5071,7 @@ type GetUserBillingSnapshotDetailsGraphResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingSnapshotDetailsGraphResponse) Status() string {
+func (r GetSnapshotBillingHistoryGraphResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -5079,14 +5079,14 @@ func (r GetUserBillingSnapshotDetailsGraphResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingSnapshotDetailsGraphResponse) StatusCode() int {
+func (r GetSnapshotBillingHistoryGraphResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryVm2Response struct {
+type GetVMBillingHistoryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceLevelVmBillingHistoryResponseModel
@@ -5097,7 +5097,7 @@ type GetUserBillingHistoryVm2Response struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryVm2Response) Status() string {
+func (r GetVMBillingHistoryResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -5105,14 +5105,14 @@ func (r GetUserBillingHistoryVm2Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryVm2Response) StatusCode() int {
+func (r GetVMBillingHistoryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryVmDetails2Response struct {
+type GetVMBillingDetailsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceLevelVMBillingDetailsResponseModel
@@ -5123,7 +5123,7 @@ type GetUserBillingHistoryVmDetails2Response struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryVmDetails2Response) Status() string {
+func (r GetVMBillingDetailsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -5131,14 +5131,14 @@ func (r GetUserBillingHistoryVmDetails2Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryVmDetails2Response) StatusCode() int {
+func (r GetVMBillingDetailsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingVmDetailsGraph2Response struct {
+type GetVMBillingGraphResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceLevelVmGraphBillingDetailsResponseModel
@@ -5149,7 +5149,7 @@ type GetUserBillingVmDetailsGraph2Response struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingVmDetailsGraph2Response) Status() string {
+func (r GetVMBillingGraphResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -5157,14 +5157,14 @@ func (r GetUserBillingVmDetailsGraph2Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingVmDetailsGraph2Response) StatusCode() int {
+func (r GetVMBillingGraphResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryVolume2Response struct {
+type GetVolumeBillingHistoryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceLevelVolumeBillingHistoryResponseModel
@@ -5175,7 +5175,7 @@ type GetUserBillingHistoryVolume2Response struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryVolume2Response) Status() string {
+func (r GetVolumeBillingHistoryResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -5183,14 +5183,14 @@ func (r GetUserBillingHistoryVolume2Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryVolume2Response) StatusCode() int {
+func (r GetVolumeBillingHistoryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryVolumeDetails2Response struct {
+type GetVolumeBillingDetailsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceLevelVolumeBillingDetailsResponseModel
@@ -5201,7 +5201,7 @@ type GetUserBillingHistoryVolumeDetails2Response struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryVolumeDetails2Response) Status() string {
+func (r GetVolumeBillingDetailsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -5209,14 +5209,14 @@ func (r GetUserBillingHistoryVolumeDetails2Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryVolumeDetails2Response) StatusCode() int {
+func (r GetVolumeBillingDetailsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingVolumeDetailsGraphResponse struct {
+type GetVolumeBillingHistoryGraphResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceLevelVolumeGraphBillingDetailsResponseModel
@@ -5227,7 +5227,7 @@ type GetUserBillingVolumeDetailsGraphResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingVolumeDetailsGraphResponse) Status() string {
+func (r GetVolumeBillingHistoryGraphResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -5235,7 +5235,7 @@ func (r GetUserBillingVolumeDetailsGraphResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingVolumeDetailsGraphResponse) StatusCode() int {
+func (r GetVolumeBillingHistoryGraphResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -5268,7 +5268,7 @@ func (r GetLastDayCostResponse) StatusCode() int {
 	return 0
 }
 
-type GetOrganizationThresholdResponse struct {
+type ListOrgNotificationThresholdsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *OrganizationThresholdsResponse
@@ -5279,7 +5279,7 @@ type GetOrganizationThresholdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetOrganizationThresholdResponse) Status() string {
+func (r ListOrgNotificationThresholdsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -5287,14 +5287,14 @@ func (r GetOrganizationThresholdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetOrganizationThresholdResponse) StatusCode() int {
+func (r ListOrgNotificationThresholdsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PutOrganizationThresholdResponse struct {
+type GetNotificationThresholdResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *OrganizationThresholdUpdateResponse
@@ -5305,7 +5305,7 @@ type PutOrganizationThresholdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PutOrganizationThresholdResponse) Status() string {
+func (r GetNotificationThresholdResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -5313,14 +5313,14 @@ func (r PutOrganizationThresholdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PutOrganizationThresholdResponse) StatusCode() int {
+func (r GetNotificationThresholdResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUsage2Response struct {
+type GetUsageResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *BillingMetricesResponse
@@ -5331,7 +5331,7 @@ type GetUsage2Response struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUsage2Response) Status() string {
+func (r GetUsageResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -5339,14 +5339,14 @@ func (r GetUsage2Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUsage2Response) StatusCode() int {
+func (r GetUsageResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserVmBillingEventsResponse struct {
+type GetVMBillingEventsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceBillingEventsHistoryResponse
@@ -5356,7 +5356,7 @@ type GetUserVmBillingEventsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserVmBillingEventsResponse) Status() string {
+func (r GetVMBillingEventsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -5364,14 +5364,14 @@ func (r GetUserVmBillingEventsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserVmBillingEventsResponse) StatusCode() int {
+func (r GetVMBillingEventsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryVmTotalCostsResponse struct {
+type GetVMSubResourceCostsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SubResourcesCostsResponseModel
@@ -5382,7 +5382,7 @@ type GetUserBillingHistoryVmTotalCostsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryVmTotalCostsResponse) Status() string {
+func (r GetVMSubResourceCostsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -5390,14 +5390,14 @@ func (r GetUserBillingHistoryVmTotalCostsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryVmTotalCostsResponse) StatusCode() int {
+func (r GetVMSubResourceCostsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserBillingHistoryVmSubResourceGraph2Response struct {
+type GetVMSubResourceGraphResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SubResourcesGraphResponseModel
@@ -5408,7 +5408,7 @@ type GetUserBillingHistoryVmSubResourceGraph2Response struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserBillingHistoryVmSubResourceGraph2Response) Status() string {
+func (r GetVMSubResourceGraphResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -5416,14 +5416,14 @@ func (r GetUserBillingHistoryVmSubResourceGraph2Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserBillingHistoryVmSubResourceGraph2Response) StatusCode() int {
+func (r GetVMSubResourceGraphResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserVolumeBillingEventsResponse struct {
+type GetVolumeBillingEventsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceBillingEventsHistoryResponse
@@ -5433,7 +5433,7 @@ type GetUserVolumeBillingEventsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserVolumeBillingEventsResponse) Status() string {
+func (r GetVolumeBillingEventsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -5441,272 +5441,272 @@ func (r GetUserVolumeBillingEventsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserVolumeBillingEventsResponse) StatusCode() int {
+func (r GetVolumeBillingEventsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// GetUserBillingHistory2WithResponse request returning *GetUserBillingHistory2Response
-func (c *ClientWithResponses) GetUserBillingHistory2WithResponse(ctx context.Context, params *GetUserBillingHistory2Params, reqEditors ...RequestEditorFn) (*GetUserBillingHistory2Response, error) {
-	rsp, err := c.GetUserBillingHistory2(ctx, params, reqEditors...)
+// GetUserBillingHistoryWithResponse request returning *GetUserBillingHistoryResponse
+func (c *ClientWithResponses) GetUserBillingHistoryWithResponse(ctx context.Context, params *GetUserBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryResponse, error) {
+	rsp, err := c.GetUserBillingHistory(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistory2Response(rsp)
+	return ParseGetUserBillingHistoryResponse(rsp)
 }
 
-// GetUserBillingHistoryBucket2WithResponse request returning *GetUserBillingHistoryBucket2Response
-func (c *ClientWithResponses) GetUserBillingHistoryBucket2WithResponse(ctx context.Context, params *GetUserBillingHistoryBucket2Params, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryBucket2Response, error) {
-	rsp, err := c.GetUserBillingHistoryBucket2(ctx, params, reqEditors...)
+// ListBucketBillingHistoryWithResponse request returning *ListBucketBillingHistoryResponse
+func (c *ClientWithResponses) ListBucketBillingHistoryWithResponse(ctx context.Context, params *ListBucketBillingHistoryParams, reqEditors ...RequestEditorFn) (*ListBucketBillingHistoryResponse, error) {
+	rsp, err := c.ListBucketBillingHistory(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryBucket2Response(rsp)
+	return ParseListBucketBillingHistoryResponse(rsp)
 }
 
-// GetUserBillingHistoryBucketDetailsWithResponse request returning *GetUserBillingHistoryBucketDetailsResponse
-func (c *ClientWithResponses) GetUserBillingHistoryBucketDetailsWithResponse(ctx context.Context, bucketId int, params *GetUserBillingHistoryBucketDetailsParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryBucketDetailsResponse, error) {
-	rsp, err := c.GetUserBillingHistoryBucketDetails(ctx, bucketId, params, reqEditors...)
+// GetBucketBillingHistoryWithResponse request returning *GetBucketBillingHistoryResponse
+func (c *ClientWithResponses) GetBucketBillingHistoryWithResponse(ctx context.Context, bucketId int, params *GetBucketBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetBucketBillingHistoryResponse, error) {
+	rsp, err := c.GetBucketBillingHistory(ctx, bucketId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryBucketDetailsResponse(rsp)
+	return ParseGetBucketBillingHistoryResponse(rsp)
 }
 
-// GetUserBillingBucketDetailsGraphWithResponse request returning *GetUserBillingBucketDetailsGraphResponse
-func (c *ClientWithResponses) GetUserBillingBucketDetailsGraphWithResponse(ctx context.Context, bucketId int, params *GetUserBillingBucketDetailsGraphParams, reqEditors ...RequestEditorFn) (*GetUserBillingBucketDetailsGraphResponse, error) {
-	rsp, err := c.GetUserBillingBucketDetailsGraph(ctx, bucketId, params, reqEditors...)
+// BucketsBillingHistoryHourlyChartWithResponse request returning *BucketsBillingHistoryHourlyChartResponse
+func (c *ClientWithResponses) BucketsBillingHistoryHourlyChartWithResponse(ctx context.Context, bucketId int, params *BucketsBillingHistoryHourlyChartParams, reqEditors ...RequestEditorFn) (*BucketsBillingHistoryHourlyChartResponse, error) {
+	rsp, err := c.BucketsBillingHistoryHourlyChart(ctx, bucketId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingBucketDetailsGraphResponse(rsp)
+	return ParseBucketsBillingHistoryHourlyChartResponse(rsp)
 }
 
-// GetUserBillingHistoryClusterWithResponse request returning *GetUserBillingHistoryClusterResponse
-func (c *ClientWithResponses) GetUserBillingHistoryClusterWithResponse(ctx context.Context, params *GetUserBillingHistoryClusterParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryClusterResponse, error) {
-	rsp, err := c.GetUserBillingHistoryCluster(ctx, params, reqEditors...)
+// ListClustersBillingHistoryWithResponse request returning *ListClustersBillingHistoryResponse
+func (c *ClientWithResponses) ListClustersBillingHistoryWithResponse(ctx context.Context, params *ListClustersBillingHistoryParams, reqEditors ...RequestEditorFn) (*ListClustersBillingHistoryResponse, error) {
+	rsp, err := c.ListClustersBillingHistory(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryClusterResponse(rsp)
+	return ParseListClustersBillingHistoryResponse(rsp)
 }
 
-// GetUserBillingHistoryClusterDetailsWithResponse request returning *GetUserBillingHistoryClusterDetailsResponse
-func (c *ClientWithResponses) GetUserBillingHistoryClusterDetailsWithResponse(ctx context.Context, clusterId int, params *GetUserBillingHistoryClusterDetailsParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryClusterDetailsResponse, error) {
-	rsp, err := c.GetUserBillingHistoryClusterDetails(ctx, clusterId, params, reqEditors...)
+// GetClusterBillingHistoryWithResponse request returning *GetClusterBillingHistoryResponse
+func (c *ClientWithResponses) GetClusterBillingHistoryWithResponse(ctx context.Context, clusterId int, params *GetClusterBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetClusterBillingHistoryResponse, error) {
+	rsp, err := c.GetClusterBillingHistory(ctx, clusterId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryClusterDetailsResponse(rsp)
+	return ParseGetClusterBillingHistoryResponse(rsp)
 }
 
-// GetUserBillingClusterDetailsGraphWithResponse request returning *GetUserBillingClusterDetailsGraphResponse
-func (c *ClientWithResponses) GetUserBillingClusterDetailsGraphWithResponse(ctx context.Context, clusterId int, params *GetUserBillingClusterDetailsGraphParams, reqEditors ...RequestEditorFn) (*GetUserBillingClusterDetailsGraphResponse, error) {
-	rsp, err := c.GetUserBillingClusterDetailsGraph(ctx, clusterId, params, reqEditors...)
+// GetClusterBillingHistoryGraphWithResponse request returning *GetClusterBillingHistoryGraphResponse
+func (c *ClientWithResponses) GetClusterBillingHistoryGraphWithResponse(ctx context.Context, clusterId int, params *GetClusterBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*GetClusterBillingHistoryGraphResponse, error) {
+	rsp, err := c.GetClusterBillingHistoryGraph(ctx, clusterId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingClusterDetailsGraphResponse(rsp)
+	return ParseGetClusterBillingHistoryGraphResponse(rsp)
 }
 
-// GetUserBillingHistoryContractWithResponse request returning *GetUserBillingHistoryContractResponse
-func (c *ClientWithResponses) GetUserBillingHistoryContractWithResponse(ctx context.Context, params *GetUserBillingHistoryContractParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryContractResponse, error) {
-	rsp, err := c.GetUserBillingHistoryContract(ctx, params, reqEditors...)
+// ListBillingContractHistoryWithResponse request returning *ListBillingContractHistoryResponse
+func (c *ClientWithResponses) ListBillingContractHistoryWithResponse(ctx context.Context, params *ListBillingContractHistoryParams, reqEditors ...RequestEditorFn) (*ListBillingContractHistoryResponse, error) {
+	rsp, err := c.ListBillingContractHistory(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryContractResponse(rsp)
+	return ParseListBillingContractHistoryResponse(rsp)
 }
 
-// GetUserBillingHistoryDataSynthesisWithResponse request returning *GetUserBillingHistoryDataSynthesisResponse
-func (c *ClientWithResponses) GetUserBillingHistoryDataSynthesisWithResponse(ctx context.Context, params *GetUserBillingHistoryDataSynthesisParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryDataSynthesisResponse, error) {
-	rsp, err := c.GetUserBillingHistoryDataSynthesis(ctx, params, reqEditors...)
+// GetDataSynthesisBillingHistoryWithResponse request returning *GetDataSynthesisBillingHistoryResponse
+func (c *ClientWithResponses) GetDataSynthesisBillingHistoryWithResponse(ctx context.Context, params *GetDataSynthesisBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetDataSynthesisBillingHistoryResponse, error) {
+	rsp, err := c.GetDataSynthesisBillingHistory(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryDataSynthesisResponse(rsp)
+	return ParseGetDataSynthesisBillingHistoryResponse(rsp)
 }
 
-// GetUserBillingHistoryDataSynthesisDetailsWithResponse request returning *GetUserBillingHistoryDataSynthesisDetailsResponse
-func (c *ClientWithResponses) GetUserBillingHistoryDataSynthesisDetailsWithResponse(ctx context.Context, resourceId int, params *GetUserBillingHistoryDataSynthesisDetailsParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryDataSynthesisDetailsResponse, error) {
-	rsp, err := c.GetUserBillingHistoryDataSynthesisDetails(ctx, resourceId, params, reqEditors...)
+// GetDataSynthesisHistoryForResourceWithResponse request returning *GetDataSynthesisHistoryForResourceResponse
+func (c *ClientWithResponses) GetDataSynthesisHistoryForResourceWithResponse(ctx context.Context, resourceId int, params *GetDataSynthesisHistoryForResourceParams, reqEditors ...RequestEditorFn) (*GetDataSynthesisHistoryForResourceResponse, error) {
+	rsp, err := c.GetDataSynthesisHistoryForResource(ctx, resourceId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryDataSynthesisDetailsResponse(rsp)
+	return ParseGetDataSynthesisHistoryForResourceResponse(rsp)
 }
 
-// GetUserBillingDataSynthesisDetailsGraphWithResponse request returning *GetUserBillingDataSynthesisDetailsGraphResponse
-func (c *ClientWithResponses) GetUserBillingDataSynthesisDetailsGraphWithResponse(ctx context.Context, resourceId int, params *GetUserBillingDataSynthesisDetailsGraphParams, reqEditors ...RequestEditorFn) (*GetUserBillingDataSynthesisDetailsGraphResponse, error) {
-	rsp, err := c.GetUserBillingDataSynthesisDetailsGraph(ctx, resourceId, params, reqEditors...)
+// GetDataSynthesisBillingHistoryGraphWithResponse request returning *GetDataSynthesisBillingHistoryGraphResponse
+func (c *ClientWithResponses) GetDataSynthesisBillingHistoryGraphWithResponse(ctx context.Context, resourceId int, params *GetDataSynthesisBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*GetDataSynthesisBillingHistoryGraphResponse, error) {
+	rsp, err := c.GetDataSynthesisBillingHistoryGraph(ctx, resourceId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingDataSynthesisDetailsGraphResponse(rsp)
+	return ParseGetDataSynthesisBillingHistoryGraphResponse(rsp)
 }
 
-// GetUserBillingHistoryFineTuningWithResponse request returning *GetUserBillingHistoryFineTuningResponse
-func (c *ClientWithResponses) GetUserBillingHistoryFineTuningWithResponse(ctx context.Context, params *GetUserBillingHistoryFineTuningParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryFineTuningResponse, error) {
-	rsp, err := c.GetUserBillingHistoryFineTuning(ctx, params, reqEditors...)
+// GetFineTuningBillingHistoryWithResponse request returning *GetFineTuningBillingHistoryResponse
+func (c *ClientWithResponses) GetFineTuningBillingHistoryWithResponse(ctx context.Context, params *GetFineTuningBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetFineTuningBillingHistoryResponse, error) {
+	rsp, err := c.GetFineTuningBillingHistory(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryFineTuningResponse(rsp)
+	return ParseGetFineTuningBillingHistoryResponse(rsp)
 }
 
-// GetUserBillingHistoryFineTuningDetailsWithResponse request returning *GetUserBillingHistoryFineTuningDetailsResponse
-func (c *ClientWithResponses) GetUserBillingHistoryFineTuningDetailsWithResponse(ctx context.Context, resourceId int, params *GetUserBillingHistoryFineTuningDetailsParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryFineTuningDetailsResponse, error) {
-	rsp, err := c.GetUserBillingHistoryFineTuningDetails(ctx, resourceId, params, reqEditors...)
+// GetResourceFineTuningBillingHistoryWithResponse request returning *GetResourceFineTuningBillingHistoryResponse
+func (c *ClientWithResponses) GetResourceFineTuningBillingHistoryWithResponse(ctx context.Context, resourceId int, params *GetResourceFineTuningBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetResourceFineTuningBillingHistoryResponse, error) {
+	rsp, err := c.GetResourceFineTuningBillingHistory(ctx, resourceId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryFineTuningDetailsResponse(rsp)
+	return ParseGetResourceFineTuningBillingHistoryResponse(rsp)
 }
 
-// GetUserBillingFineTuningDetailsGraphWithResponse request returning *GetUserBillingFineTuningDetailsGraphResponse
-func (c *ClientWithResponses) GetUserBillingFineTuningDetailsGraphWithResponse(ctx context.Context, resourceId int, params *GetUserBillingFineTuningDetailsGraphParams, reqEditors ...RequestEditorFn) (*GetUserBillingFineTuningDetailsGraphResponse, error) {
-	rsp, err := c.GetUserBillingFineTuningDetailsGraph(ctx, resourceId, params, reqEditors...)
+// GetFineTuningBillingHistoryGraphWithResponse request returning *GetFineTuningBillingHistoryGraphResponse
+func (c *ClientWithResponses) GetFineTuningBillingHistoryGraphWithResponse(ctx context.Context, resourceId int, params *GetFineTuningBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*GetFineTuningBillingHistoryGraphResponse, error) {
+	rsp, err := c.GetFineTuningBillingHistoryGraph(ctx, resourceId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingFineTuningDetailsGraphResponse(rsp)
+	return ParseGetFineTuningBillingHistoryGraphResponse(rsp)
 }
 
-// GetUserBillingHistoryModelEvaluationWithResponse request returning *GetUserBillingHistoryModelEvaluationResponse
-func (c *ClientWithResponses) GetUserBillingHistoryModelEvaluationWithResponse(ctx context.Context, params *GetUserBillingHistoryModelEvaluationParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryModelEvaluationResponse, error) {
-	rsp, err := c.GetUserBillingHistoryModelEvaluation(ctx, params, reqEditors...)
+// GetModelEvaluationBillingHistoryWithResponse request returning *GetModelEvaluationBillingHistoryResponse
+func (c *ClientWithResponses) GetModelEvaluationBillingHistoryWithResponse(ctx context.Context, params *GetModelEvaluationBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetModelEvaluationBillingHistoryResponse, error) {
+	rsp, err := c.GetModelEvaluationBillingHistory(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryModelEvaluationResponse(rsp)
+	return ParseGetModelEvaluationBillingHistoryResponse(rsp)
 }
 
-// GetUserBillingHistoryModelEvaluationDetailsWithResponse request returning *GetUserBillingHistoryModelEvaluationDetailsResponse
-func (c *ClientWithResponses) GetUserBillingHistoryModelEvaluationDetailsWithResponse(ctx context.Context, resourceId int, params *GetUserBillingHistoryModelEvaluationDetailsParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryModelEvaluationDetailsResponse, error) {
-	rsp, err := c.GetUserBillingHistoryModelEvaluationDetails(ctx, resourceId, params, reqEditors...)
+// GetResourceModelEvaluationBillingHistoryWithResponse request returning *GetResourceModelEvaluationBillingHistoryResponse
+func (c *ClientWithResponses) GetResourceModelEvaluationBillingHistoryWithResponse(ctx context.Context, resourceId int, params *GetResourceModelEvaluationBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetResourceModelEvaluationBillingHistoryResponse, error) {
+	rsp, err := c.GetResourceModelEvaluationBillingHistory(ctx, resourceId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryModelEvaluationDetailsResponse(rsp)
+	return ParseGetResourceModelEvaluationBillingHistoryResponse(rsp)
 }
 
-// GetUserBillingModelEvaluationDetailsGraphWithResponse request returning *GetUserBillingModelEvaluationDetailsGraphResponse
-func (c *ClientWithResponses) GetUserBillingModelEvaluationDetailsGraphWithResponse(ctx context.Context, resourceId int, params *GetUserBillingModelEvaluationDetailsGraphParams, reqEditors ...RequestEditorFn) (*GetUserBillingModelEvaluationDetailsGraphResponse, error) {
-	rsp, err := c.GetUserBillingModelEvaluationDetailsGraph(ctx, resourceId, params, reqEditors...)
+// GetModelEvaluationBillingHistoryGraphWithResponse request returning *GetModelEvaluationBillingHistoryGraphResponse
+func (c *ClientWithResponses) GetModelEvaluationBillingHistoryGraphWithResponse(ctx context.Context, resourceId int, params *GetModelEvaluationBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*GetModelEvaluationBillingHistoryGraphResponse, error) {
+	rsp, err := c.GetModelEvaluationBillingHistoryGraph(ctx, resourceId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingModelEvaluationDetailsGraphResponse(rsp)
+	return ParseGetModelEvaluationBillingHistoryGraphResponse(rsp)
 }
 
-// GetUserBillingHistoryServerlessInferenceWithResponse request returning *GetUserBillingHistoryServerlessInferenceResponse
-func (c *ClientWithResponses) GetUserBillingHistoryServerlessInferenceWithResponse(ctx context.Context, params *GetUserBillingHistoryServerlessInferenceParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryServerlessInferenceResponse, error) {
-	rsp, err := c.GetUserBillingHistoryServerlessInference(ctx, params, reqEditors...)
+// ListServerlessInferenceBillingHistoryWithResponse request returning *ListServerlessInferenceBillingHistoryResponse
+func (c *ClientWithResponses) ListServerlessInferenceBillingHistoryWithResponse(ctx context.Context, params *ListServerlessInferenceBillingHistoryParams, reqEditors ...RequestEditorFn) (*ListServerlessInferenceBillingHistoryResponse, error) {
+	rsp, err := c.ListServerlessInferenceBillingHistory(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryServerlessInferenceResponse(rsp)
+	return ParseListServerlessInferenceBillingHistoryResponse(rsp)
 }
 
-// GetUserBillingHistoryServerlessInferenceDetailsWithResponse request returning *GetUserBillingHistoryServerlessInferenceDetailsResponse
-func (c *ClientWithResponses) GetUserBillingHistoryServerlessInferenceDetailsWithResponse(ctx context.Context, resourceId int, params *GetUserBillingHistoryServerlessInferenceDetailsParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryServerlessInferenceDetailsResponse, error) {
-	rsp, err := c.GetUserBillingHistoryServerlessInferenceDetails(ctx, resourceId, params, reqEditors...)
+// GetServerlessInferencesBillingHistoryWithResponse request returning *GetServerlessInferencesBillingHistoryResponse
+func (c *ClientWithResponses) GetServerlessInferencesBillingHistoryWithResponse(ctx context.Context, resourceId int, params *GetServerlessInferencesBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetServerlessInferencesBillingHistoryResponse, error) {
+	rsp, err := c.GetServerlessInferencesBillingHistory(ctx, resourceId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryServerlessInferenceDetailsResponse(rsp)
+	return ParseGetServerlessInferencesBillingHistoryResponse(rsp)
 }
 
-// GetUserBillingServerlessInferenceDetailsGraphWithResponse request returning *GetUserBillingServerlessInferenceDetailsGraphResponse
-func (c *ClientWithResponses) GetUserBillingServerlessInferenceDetailsGraphWithResponse(ctx context.Context, resourceId int, params *GetUserBillingServerlessInferenceDetailsGraphParams, reqEditors ...RequestEditorFn) (*GetUserBillingServerlessInferenceDetailsGraphResponse, error) {
-	rsp, err := c.GetUserBillingServerlessInferenceDetailsGraph(ctx, resourceId, params, reqEditors...)
+// GetServerlessInferenceBillingHistoryGraphWithResponse request returning *GetServerlessInferenceBillingHistoryGraphResponse
+func (c *ClientWithResponses) GetServerlessInferenceBillingHistoryGraphWithResponse(ctx context.Context, resourceId int, params *GetServerlessInferenceBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*GetServerlessInferenceBillingHistoryGraphResponse, error) {
+	rsp, err := c.GetServerlessInferenceBillingHistoryGraph(ctx, resourceId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingServerlessInferenceDetailsGraphResponse(rsp)
+	return ParseGetServerlessInferenceBillingHistoryGraphResponse(rsp)
 }
 
-// GetUserBillingHistorySnapshotWithResponse request returning *GetUserBillingHistorySnapshotResponse
-func (c *ClientWithResponses) GetUserBillingHistorySnapshotWithResponse(ctx context.Context, params *GetUserBillingHistorySnapshotParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistorySnapshotResponse, error) {
-	rsp, err := c.GetUserBillingHistorySnapshot(ctx, params, reqEditors...)
+// ListSnapshotBillingHistoryWithResponse request returning *ListSnapshotBillingHistoryResponse
+func (c *ClientWithResponses) ListSnapshotBillingHistoryWithResponse(ctx context.Context, params *ListSnapshotBillingHistoryParams, reqEditors ...RequestEditorFn) (*ListSnapshotBillingHistoryResponse, error) {
+	rsp, err := c.ListSnapshotBillingHistory(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistorySnapshotResponse(rsp)
+	return ParseListSnapshotBillingHistoryResponse(rsp)
 }
 
-// GetUserBillingHistorySnapshotDetailsWithResponse request returning *GetUserBillingHistorySnapshotDetailsResponse
-func (c *ClientWithResponses) GetUserBillingHistorySnapshotDetailsWithResponse(ctx context.Context, snapshotId int, params *GetUserBillingHistorySnapshotDetailsParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistorySnapshotDetailsResponse, error) {
-	rsp, err := c.GetUserBillingHistorySnapshotDetails(ctx, snapshotId, params, reqEditors...)
+// GetSnapshotBillingHistoryWithResponse request returning *GetSnapshotBillingHistoryResponse
+func (c *ClientWithResponses) GetSnapshotBillingHistoryWithResponse(ctx context.Context, snapshotId int, params *GetSnapshotBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetSnapshotBillingHistoryResponse, error) {
+	rsp, err := c.GetSnapshotBillingHistory(ctx, snapshotId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistorySnapshotDetailsResponse(rsp)
+	return ParseGetSnapshotBillingHistoryResponse(rsp)
 }
 
-// GetUserBillingSnapshotDetailsGraphWithResponse request returning *GetUserBillingSnapshotDetailsGraphResponse
-func (c *ClientWithResponses) GetUserBillingSnapshotDetailsGraphWithResponse(ctx context.Context, snapshotId int, params *GetUserBillingSnapshotDetailsGraphParams, reqEditors ...RequestEditorFn) (*GetUserBillingSnapshotDetailsGraphResponse, error) {
-	rsp, err := c.GetUserBillingSnapshotDetailsGraph(ctx, snapshotId, params, reqEditors...)
+// GetSnapshotBillingHistoryGraphWithResponse request returning *GetSnapshotBillingHistoryGraphResponse
+func (c *ClientWithResponses) GetSnapshotBillingHistoryGraphWithResponse(ctx context.Context, snapshotId int, params *GetSnapshotBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*GetSnapshotBillingHistoryGraphResponse, error) {
+	rsp, err := c.GetSnapshotBillingHistoryGraph(ctx, snapshotId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingSnapshotDetailsGraphResponse(rsp)
+	return ParseGetSnapshotBillingHistoryGraphResponse(rsp)
 }
 
-// GetUserBillingHistoryVm2WithResponse request returning *GetUserBillingHistoryVm2Response
-func (c *ClientWithResponses) GetUserBillingHistoryVm2WithResponse(ctx context.Context, params *GetUserBillingHistoryVm2Params, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryVm2Response, error) {
-	rsp, err := c.GetUserBillingHistoryVm2(ctx, params, reqEditors...)
+// GetVMBillingHistoryWithResponse request returning *GetVMBillingHistoryResponse
+func (c *ClientWithResponses) GetVMBillingHistoryWithResponse(ctx context.Context, params *GetVMBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetVMBillingHistoryResponse, error) {
+	rsp, err := c.GetVMBillingHistory(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryVm2Response(rsp)
+	return ParseGetVMBillingHistoryResponse(rsp)
 }
 
-// GetUserBillingHistoryVmDetails2WithResponse request returning *GetUserBillingHistoryVmDetails2Response
-func (c *ClientWithResponses) GetUserBillingHistoryVmDetails2WithResponse(ctx context.Context, vmId int, params *GetUserBillingHistoryVmDetails2Params, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryVmDetails2Response, error) {
-	rsp, err := c.GetUserBillingHistoryVmDetails2(ctx, vmId, params, reqEditors...)
+// GetVMBillingDetailsWithResponse request returning *GetVMBillingDetailsResponse
+func (c *ClientWithResponses) GetVMBillingDetailsWithResponse(ctx context.Context, vmId int, params *GetVMBillingDetailsParams, reqEditors ...RequestEditorFn) (*GetVMBillingDetailsResponse, error) {
+	rsp, err := c.GetVMBillingDetails(ctx, vmId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryVmDetails2Response(rsp)
+	return ParseGetVMBillingDetailsResponse(rsp)
 }
 
-// GetUserBillingVmDetailsGraph2WithResponse request returning *GetUserBillingVmDetailsGraph2Response
-func (c *ClientWithResponses) GetUserBillingVmDetailsGraph2WithResponse(ctx context.Context, vmId int, params *GetUserBillingVmDetailsGraph2Params, reqEditors ...RequestEditorFn) (*GetUserBillingVmDetailsGraph2Response, error) {
-	rsp, err := c.GetUserBillingVmDetailsGraph2(ctx, vmId, params, reqEditors...)
+// GetVMBillingGraphWithResponse request returning *GetVMBillingGraphResponse
+func (c *ClientWithResponses) GetVMBillingGraphWithResponse(ctx context.Context, vmId int, params *GetVMBillingGraphParams, reqEditors ...RequestEditorFn) (*GetVMBillingGraphResponse, error) {
+	rsp, err := c.GetVMBillingGraph(ctx, vmId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingVmDetailsGraph2Response(rsp)
+	return ParseGetVMBillingGraphResponse(rsp)
 }
 
-// GetUserBillingHistoryVolume2WithResponse request returning *GetUserBillingHistoryVolume2Response
-func (c *ClientWithResponses) GetUserBillingHistoryVolume2WithResponse(ctx context.Context, params *GetUserBillingHistoryVolume2Params, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryVolume2Response, error) {
-	rsp, err := c.GetUserBillingHistoryVolume2(ctx, params, reqEditors...)
+// GetVolumeBillingHistoryWithResponse request returning *GetVolumeBillingHistoryResponse
+func (c *ClientWithResponses) GetVolumeBillingHistoryWithResponse(ctx context.Context, params *GetVolumeBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetVolumeBillingHistoryResponse, error) {
+	rsp, err := c.GetVolumeBillingHistory(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryVolume2Response(rsp)
+	return ParseGetVolumeBillingHistoryResponse(rsp)
 }
 
-// GetUserBillingHistoryVolumeDetails2WithResponse request returning *GetUserBillingHistoryVolumeDetails2Response
-func (c *ClientWithResponses) GetUserBillingHistoryVolumeDetails2WithResponse(ctx context.Context, volumeId int, params *GetUserBillingHistoryVolumeDetails2Params, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryVolumeDetails2Response, error) {
-	rsp, err := c.GetUserBillingHistoryVolumeDetails2(ctx, volumeId, params, reqEditors...)
+// GetVolumeBillingDetailsWithResponse request returning *GetVolumeBillingDetailsResponse
+func (c *ClientWithResponses) GetVolumeBillingDetailsWithResponse(ctx context.Context, volumeId int, params *GetVolumeBillingDetailsParams, reqEditors ...RequestEditorFn) (*GetVolumeBillingDetailsResponse, error) {
+	rsp, err := c.GetVolumeBillingDetails(ctx, volumeId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryVolumeDetails2Response(rsp)
+	return ParseGetVolumeBillingDetailsResponse(rsp)
 }
 
-// GetUserBillingVolumeDetailsGraphWithResponse request returning *GetUserBillingVolumeDetailsGraphResponse
-func (c *ClientWithResponses) GetUserBillingVolumeDetailsGraphWithResponse(ctx context.Context, volumeId int, params *GetUserBillingVolumeDetailsGraphParams, reqEditors ...RequestEditorFn) (*GetUserBillingVolumeDetailsGraphResponse, error) {
-	rsp, err := c.GetUserBillingVolumeDetailsGraph(ctx, volumeId, params, reqEditors...)
+// GetVolumeBillingHistoryGraphWithResponse request returning *GetVolumeBillingHistoryGraphResponse
+func (c *ClientWithResponses) GetVolumeBillingHistoryGraphWithResponse(ctx context.Context, volumeId int, params *GetVolumeBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*GetVolumeBillingHistoryGraphResponse, error) {
+	rsp, err := c.GetVolumeBillingHistoryGraph(ctx, volumeId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingVolumeDetailsGraphResponse(rsp)
+	return ParseGetVolumeBillingHistoryGraphResponse(rsp)
 }
 
 // GetLastDayCostWithResponse request returning *GetLastDayCostResponse
@@ -5718,86 +5718,86 @@ func (c *ClientWithResponses) GetLastDayCostWithResponse(ctx context.Context, re
 	return ParseGetLastDayCostResponse(rsp)
 }
 
-// GetOrganizationThresholdWithResponse request returning *GetOrganizationThresholdResponse
-func (c *ClientWithResponses) GetOrganizationThresholdWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetOrganizationThresholdResponse, error) {
-	rsp, err := c.GetOrganizationThreshold(ctx, reqEditors...)
+// ListOrgNotificationThresholdsWithResponse request returning *ListOrgNotificationThresholdsResponse
+func (c *ClientWithResponses) ListOrgNotificationThresholdsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListOrgNotificationThresholdsResponse, error) {
+	rsp, err := c.ListOrgNotificationThresholds(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetOrganizationThresholdResponse(rsp)
+	return ParseListOrgNotificationThresholdsResponse(rsp)
 }
 
-// PutOrganizationThresholdWithBodyWithResponse request with arbitrary body returning *PutOrganizationThresholdResponse
-func (c *ClientWithResponses) PutOrganizationThresholdWithBodyWithResponse(ctx context.Context, thresholdId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutOrganizationThresholdResponse, error) {
-	rsp, err := c.PutOrganizationThresholdWithBody(ctx, thresholdId, contentType, body, reqEditors...)
+// GetNotificationThresholdWithBodyWithResponse request with arbitrary body returning *GetNotificationThresholdResponse
+func (c *ClientWithResponses) GetNotificationThresholdWithBodyWithResponse(ctx context.Context, thresholdId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*GetNotificationThresholdResponse, error) {
+	rsp, err := c.GetNotificationThresholdWithBody(ctx, thresholdId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutOrganizationThresholdResponse(rsp)
+	return ParseGetNotificationThresholdResponse(rsp)
 }
 
-func (c *ClientWithResponses) PutOrganizationThresholdWithResponse(ctx context.Context, thresholdId int, body PutOrganizationThresholdJSONRequestBody, reqEditors ...RequestEditorFn) (*PutOrganizationThresholdResponse, error) {
-	rsp, err := c.PutOrganizationThreshold(ctx, thresholdId, body, reqEditors...)
+func (c *ClientWithResponses) GetNotificationThresholdWithResponse(ctx context.Context, thresholdId int, body GetNotificationThresholdJSONRequestBody, reqEditors ...RequestEditorFn) (*GetNotificationThresholdResponse, error) {
+	rsp, err := c.GetNotificationThreshold(ctx, thresholdId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutOrganizationThresholdResponse(rsp)
+	return ParseGetNotificationThresholdResponse(rsp)
 }
 
-// GetUsage2WithResponse request returning *GetUsage2Response
-func (c *ClientWithResponses) GetUsage2WithResponse(ctx context.Context, params *GetUsage2Params, reqEditors ...RequestEditorFn) (*GetUsage2Response, error) {
-	rsp, err := c.GetUsage2(ctx, params, reqEditors...)
+// GetUsageWithResponse request returning *GetUsageResponse
+func (c *ClientWithResponses) GetUsageWithResponse(ctx context.Context, params *GetUsageParams, reqEditors ...RequestEditorFn) (*GetUsageResponse, error) {
+	rsp, err := c.GetUsage(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUsage2Response(rsp)
+	return ParseGetUsageResponse(rsp)
 }
 
-// GetUserVmBillingEventsWithResponse request returning *GetUserVmBillingEventsResponse
-func (c *ClientWithResponses) GetUserVmBillingEventsWithResponse(ctx context.Context, vmId int, params *GetUserVmBillingEventsParams, reqEditors ...RequestEditorFn) (*GetUserVmBillingEventsResponse, error) {
-	rsp, err := c.GetUserVmBillingEvents(ctx, vmId, params, reqEditors...)
+// GetVMBillingEventsWithResponse request returning *GetVMBillingEventsResponse
+func (c *ClientWithResponses) GetVMBillingEventsWithResponse(ctx context.Context, vmId int, params *GetVMBillingEventsParams, reqEditors ...RequestEditorFn) (*GetVMBillingEventsResponse, error) {
+	rsp, err := c.GetVMBillingEvents(ctx, vmId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserVmBillingEventsResponse(rsp)
+	return ParseGetVMBillingEventsResponse(rsp)
 }
 
-// GetUserBillingHistoryVmTotalCostsWithResponse request returning *GetUserBillingHistoryVmTotalCostsResponse
-func (c *ClientWithResponses) GetUserBillingHistoryVmTotalCostsWithResponse(ctx context.Context, vmId int, params *GetUserBillingHistoryVmTotalCostsParams, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryVmTotalCostsResponse, error) {
-	rsp, err := c.GetUserBillingHistoryVmTotalCosts(ctx, vmId, params, reqEditors...)
+// GetVMSubResourceCostsWithResponse request returning *GetVMSubResourceCostsResponse
+func (c *ClientWithResponses) GetVMSubResourceCostsWithResponse(ctx context.Context, vmId int, params *GetVMSubResourceCostsParams, reqEditors ...RequestEditorFn) (*GetVMSubResourceCostsResponse, error) {
+	rsp, err := c.GetVMSubResourceCosts(ctx, vmId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryVmTotalCostsResponse(rsp)
+	return ParseGetVMSubResourceCostsResponse(rsp)
 }
 
-// GetUserBillingHistoryVmSubResourceGraph2WithResponse request returning *GetUserBillingHistoryVmSubResourceGraph2Response
-func (c *ClientWithResponses) GetUserBillingHistoryVmSubResourceGraph2WithResponse(ctx context.Context, vmId int, params *GetUserBillingHistoryVmSubResourceGraph2Params, reqEditors ...RequestEditorFn) (*GetUserBillingHistoryVmSubResourceGraph2Response, error) {
-	rsp, err := c.GetUserBillingHistoryVmSubResourceGraph2(ctx, vmId, params, reqEditors...)
+// GetVMSubResourceGraphWithResponse request returning *GetVMSubResourceGraphResponse
+func (c *ClientWithResponses) GetVMSubResourceGraphWithResponse(ctx context.Context, vmId int, params *GetVMSubResourceGraphParams, reqEditors ...RequestEditorFn) (*GetVMSubResourceGraphResponse, error) {
+	rsp, err := c.GetVMSubResourceGraph(ctx, vmId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserBillingHistoryVmSubResourceGraph2Response(rsp)
+	return ParseGetVMSubResourceGraphResponse(rsp)
 }
 
-// GetUserVolumeBillingEventsWithResponse request returning *GetUserVolumeBillingEventsResponse
-func (c *ClientWithResponses) GetUserVolumeBillingEventsWithResponse(ctx context.Context, volumeId int, params *GetUserVolumeBillingEventsParams, reqEditors ...RequestEditorFn) (*GetUserVolumeBillingEventsResponse, error) {
-	rsp, err := c.GetUserVolumeBillingEvents(ctx, volumeId, params, reqEditors...)
+// GetVolumeBillingEventsWithResponse request returning *GetVolumeBillingEventsResponse
+func (c *ClientWithResponses) GetVolumeBillingEventsWithResponse(ctx context.Context, volumeId int, params *GetVolumeBillingEventsParams, reqEditors ...RequestEditorFn) (*GetVolumeBillingEventsResponse, error) {
+	rsp, err := c.GetVolumeBillingEvents(ctx, volumeId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserVolumeBillingEventsResponse(rsp)
+	return ParseGetVolumeBillingEventsResponse(rsp)
 }
 
-// ParseGetUserBillingHistory2Response parses an HTTP response from a GetUserBillingHistory2WithResponse call
-func ParseGetUserBillingHistory2Response(rsp *http.Response) (*GetUserBillingHistory2Response, error) {
+// ParseGetUserBillingHistoryResponse parses an HTTP response from a GetUserBillingHistoryWithResponse call
+func ParseGetUserBillingHistoryResponse(rsp *http.Response) (*GetUserBillingHistoryResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistory2Response{
+	response := &GetUserBillingHistoryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -5843,15 +5843,15 @@ func ParseGetUserBillingHistory2Response(rsp *http.Response) (*GetUserBillingHis
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryBucket2Response parses an HTTP response from a GetUserBillingHistoryBucket2WithResponse call
-func ParseGetUserBillingHistoryBucket2Response(rsp *http.Response) (*GetUserBillingHistoryBucket2Response, error) {
+// ParseListBucketBillingHistoryResponse parses an HTTP response from a ListBucketBillingHistoryWithResponse call
+func ParseListBucketBillingHistoryResponse(rsp *http.Response) (*ListBucketBillingHistoryResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryBucket2Response{
+	response := &ListBucketBillingHistoryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -5897,15 +5897,15 @@ func ParseGetUserBillingHistoryBucket2Response(rsp *http.Response) (*GetUserBill
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryBucketDetailsResponse parses an HTTP response from a GetUserBillingHistoryBucketDetailsWithResponse call
-func ParseGetUserBillingHistoryBucketDetailsResponse(rsp *http.Response) (*GetUserBillingHistoryBucketDetailsResponse, error) {
+// ParseGetBucketBillingHistoryResponse parses an HTTP response from a GetBucketBillingHistoryWithResponse call
+func ParseGetBucketBillingHistoryResponse(rsp *http.Response) (*GetBucketBillingHistoryResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryBucketDetailsResponse{
+	response := &GetBucketBillingHistoryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -5951,15 +5951,15 @@ func ParseGetUserBillingHistoryBucketDetailsResponse(rsp *http.Response) (*GetUs
 	return response, nil
 }
 
-// ParseGetUserBillingBucketDetailsGraphResponse parses an HTTP response from a GetUserBillingBucketDetailsGraphWithResponse call
-func ParseGetUserBillingBucketDetailsGraphResponse(rsp *http.Response) (*GetUserBillingBucketDetailsGraphResponse, error) {
+// ParseBucketsBillingHistoryHourlyChartResponse parses an HTTP response from a BucketsBillingHistoryHourlyChartWithResponse call
+func ParseBucketsBillingHistoryHourlyChartResponse(rsp *http.Response) (*BucketsBillingHistoryHourlyChartResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingBucketDetailsGraphResponse{
+	response := &BucketsBillingHistoryHourlyChartResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6005,15 +6005,15 @@ func ParseGetUserBillingBucketDetailsGraphResponse(rsp *http.Response) (*GetUser
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryClusterResponse parses an HTTP response from a GetUserBillingHistoryClusterWithResponse call
-func ParseGetUserBillingHistoryClusterResponse(rsp *http.Response) (*GetUserBillingHistoryClusterResponse, error) {
+// ParseListClustersBillingHistoryResponse parses an HTTP response from a ListClustersBillingHistoryWithResponse call
+func ParseListClustersBillingHistoryResponse(rsp *http.Response) (*ListClustersBillingHistoryResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryClusterResponse{
+	response := &ListClustersBillingHistoryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6059,15 +6059,15 @@ func ParseGetUserBillingHistoryClusterResponse(rsp *http.Response) (*GetUserBill
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryClusterDetailsResponse parses an HTTP response from a GetUserBillingHistoryClusterDetailsWithResponse call
-func ParseGetUserBillingHistoryClusterDetailsResponse(rsp *http.Response) (*GetUserBillingHistoryClusterDetailsResponse, error) {
+// ParseGetClusterBillingHistoryResponse parses an HTTP response from a GetClusterBillingHistoryWithResponse call
+func ParseGetClusterBillingHistoryResponse(rsp *http.Response) (*GetClusterBillingHistoryResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryClusterDetailsResponse{
+	response := &GetClusterBillingHistoryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6113,15 +6113,15 @@ func ParseGetUserBillingHistoryClusterDetailsResponse(rsp *http.Response) (*GetU
 	return response, nil
 }
 
-// ParseGetUserBillingClusterDetailsGraphResponse parses an HTTP response from a GetUserBillingClusterDetailsGraphWithResponse call
-func ParseGetUserBillingClusterDetailsGraphResponse(rsp *http.Response) (*GetUserBillingClusterDetailsGraphResponse, error) {
+// ParseGetClusterBillingHistoryGraphResponse parses an HTTP response from a GetClusterBillingHistoryGraphWithResponse call
+func ParseGetClusterBillingHistoryGraphResponse(rsp *http.Response) (*GetClusterBillingHistoryGraphResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingClusterDetailsGraphResponse{
+	response := &GetClusterBillingHistoryGraphResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6167,15 +6167,15 @@ func ParseGetUserBillingClusterDetailsGraphResponse(rsp *http.Response) (*GetUse
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryContractResponse parses an HTTP response from a GetUserBillingHistoryContractWithResponse call
-func ParseGetUserBillingHistoryContractResponse(rsp *http.Response) (*GetUserBillingHistoryContractResponse, error) {
+// ParseListBillingContractHistoryResponse parses an HTTP response from a ListBillingContractHistoryWithResponse call
+func ParseListBillingContractHistoryResponse(rsp *http.Response) (*ListBillingContractHistoryResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryContractResponse{
+	response := &ListBillingContractHistoryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6214,15 +6214,15 @@ func ParseGetUserBillingHistoryContractResponse(rsp *http.Response) (*GetUserBil
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryDataSynthesisResponse parses an HTTP response from a GetUserBillingHistoryDataSynthesisWithResponse call
-func ParseGetUserBillingHistoryDataSynthesisResponse(rsp *http.Response) (*GetUserBillingHistoryDataSynthesisResponse, error) {
+// ParseGetDataSynthesisBillingHistoryResponse parses an HTTP response from a GetDataSynthesisBillingHistoryWithResponse call
+func ParseGetDataSynthesisBillingHistoryResponse(rsp *http.Response) (*GetDataSynthesisBillingHistoryResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryDataSynthesisResponse{
+	response := &GetDataSynthesisBillingHistoryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6268,15 +6268,15 @@ func ParseGetUserBillingHistoryDataSynthesisResponse(rsp *http.Response) (*GetUs
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryDataSynthesisDetailsResponse parses an HTTP response from a GetUserBillingHistoryDataSynthesisDetailsWithResponse call
-func ParseGetUserBillingHistoryDataSynthesisDetailsResponse(rsp *http.Response) (*GetUserBillingHistoryDataSynthesisDetailsResponse, error) {
+// ParseGetDataSynthesisHistoryForResourceResponse parses an HTTP response from a GetDataSynthesisHistoryForResourceWithResponse call
+func ParseGetDataSynthesisHistoryForResourceResponse(rsp *http.Response) (*GetDataSynthesisHistoryForResourceResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryDataSynthesisDetailsResponse{
+	response := &GetDataSynthesisHistoryForResourceResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6322,15 +6322,15 @@ func ParseGetUserBillingHistoryDataSynthesisDetailsResponse(rsp *http.Response) 
 	return response, nil
 }
 
-// ParseGetUserBillingDataSynthesisDetailsGraphResponse parses an HTTP response from a GetUserBillingDataSynthesisDetailsGraphWithResponse call
-func ParseGetUserBillingDataSynthesisDetailsGraphResponse(rsp *http.Response) (*GetUserBillingDataSynthesisDetailsGraphResponse, error) {
+// ParseGetDataSynthesisBillingHistoryGraphResponse parses an HTTP response from a GetDataSynthesisBillingHistoryGraphWithResponse call
+func ParseGetDataSynthesisBillingHistoryGraphResponse(rsp *http.Response) (*GetDataSynthesisBillingHistoryGraphResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingDataSynthesisDetailsGraphResponse{
+	response := &GetDataSynthesisBillingHistoryGraphResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6376,15 +6376,15 @@ func ParseGetUserBillingDataSynthesisDetailsGraphResponse(rsp *http.Response) (*
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryFineTuningResponse parses an HTTP response from a GetUserBillingHistoryFineTuningWithResponse call
-func ParseGetUserBillingHistoryFineTuningResponse(rsp *http.Response) (*GetUserBillingHistoryFineTuningResponse, error) {
+// ParseGetFineTuningBillingHistoryResponse parses an HTTP response from a GetFineTuningBillingHistoryWithResponse call
+func ParseGetFineTuningBillingHistoryResponse(rsp *http.Response) (*GetFineTuningBillingHistoryResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryFineTuningResponse{
+	response := &GetFineTuningBillingHistoryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6430,15 +6430,15 @@ func ParseGetUserBillingHistoryFineTuningResponse(rsp *http.Response) (*GetUserB
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryFineTuningDetailsResponse parses an HTTP response from a GetUserBillingHistoryFineTuningDetailsWithResponse call
-func ParseGetUserBillingHistoryFineTuningDetailsResponse(rsp *http.Response) (*GetUserBillingHistoryFineTuningDetailsResponse, error) {
+// ParseGetResourceFineTuningBillingHistoryResponse parses an HTTP response from a GetResourceFineTuningBillingHistoryWithResponse call
+func ParseGetResourceFineTuningBillingHistoryResponse(rsp *http.Response) (*GetResourceFineTuningBillingHistoryResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryFineTuningDetailsResponse{
+	response := &GetResourceFineTuningBillingHistoryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6484,15 +6484,15 @@ func ParseGetUserBillingHistoryFineTuningDetailsResponse(rsp *http.Response) (*G
 	return response, nil
 }
 
-// ParseGetUserBillingFineTuningDetailsGraphResponse parses an HTTP response from a GetUserBillingFineTuningDetailsGraphWithResponse call
-func ParseGetUserBillingFineTuningDetailsGraphResponse(rsp *http.Response) (*GetUserBillingFineTuningDetailsGraphResponse, error) {
+// ParseGetFineTuningBillingHistoryGraphResponse parses an HTTP response from a GetFineTuningBillingHistoryGraphWithResponse call
+func ParseGetFineTuningBillingHistoryGraphResponse(rsp *http.Response) (*GetFineTuningBillingHistoryGraphResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingFineTuningDetailsGraphResponse{
+	response := &GetFineTuningBillingHistoryGraphResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6538,15 +6538,15 @@ func ParseGetUserBillingFineTuningDetailsGraphResponse(rsp *http.Response) (*Get
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryModelEvaluationResponse parses an HTTP response from a GetUserBillingHistoryModelEvaluationWithResponse call
-func ParseGetUserBillingHistoryModelEvaluationResponse(rsp *http.Response) (*GetUserBillingHistoryModelEvaluationResponse, error) {
+// ParseGetModelEvaluationBillingHistoryResponse parses an HTTP response from a GetModelEvaluationBillingHistoryWithResponse call
+func ParseGetModelEvaluationBillingHistoryResponse(rsp *http.Response) (*GetModelEvaluationBillingHistoryResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryModelEvaluationResponse{
+	response := &GetModelEvaluationBillingHistoryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6592,15 +6592,15 @@ func ParseGetUserBillingHistoryModelEvaluationResponse(rsp *http.Response) (*Get
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryModelEvaluationDetailsResponse parses an HTTP response from a GetUserBillingHistoryModelEvaluationDetailsWithResponse call
-func ParseGetUserBillingHistoryModelEvaluationDetailsResponse(rsp *http.Response) (*GetUserBillingHistoryModelEvaluationDetailsResponse, error) {
+// ParseGetResourceModelEvaluationBillingHistoryResponse parses an HTTP response from a GetResourceModelEvaluationBillingHistoryWithResponse call
+func ParseGetResourceModelEvaluationBillingHistoryResponse(rsp *http.Response) (*GetResourceModelEvaluationBillingHistoryResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryModelEvaluationDetailsResponse{
+	response := &GetResourceModelEvaluationBillingHistoryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6646,15 +6646,15 @@ func ParseGetUserBillingHistoryModelEvaluationDetailsResponse(rsp *http.Response
 	return response, nil
 }
 
-// ParseGetUserBillingModelEvaluationDetailsGraphResponse parses an HTTP response from a GetUserBillingModelEvaluationDetailsGraphWithResponse call
-func ParseGetUserBillingModelEvaluationDetailsGraphResponse(rsp *http.Response) (*GetUserBillingModelEvaluationDetailsGraphResponse, error) {
+// ParseGetModelEvaluationBillingHistoryGraphResponse parses an HTTP response from a GetModelEvaluationBillingHistoryGraphWithResponse call
+func ParseGetModelEvaluationBillingHistoryGraphResponse(rsp *http.Response) (*GetModelEvaluationBillingHistoryGraphResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingModelEvaluationDetailsGraphResponse{
+	response := &GetModelEvaluationBillingHistoryGraphResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6700,15 +6700,15 @@ func ParseGetUserBillingModelEvaluationDetailsGraphResponse(rsp *http.Response) 
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryServerlessInferenceResponse parses an HTTP response from a GetUserBillingHistoryServerlessInferenceWithResponse call
-func ParseGetUserBillingHistoryServerlessInferenceResponse(rsp *http.Response) (*GetUserBillingHistoryServerlessInferenceResponse, error) {
+// ParseListServerlessInferenceBillingHistoryResponse parses an HTTP response from a ListServerlessInferenceBillingHistoryWithResponse call
+func ParseListServerlessInferenceBillingHistoryResponse(rsp *http.Response) (*ListServerlessInferenceBillingHistoryResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryServerlessInferenceResponse{
+	response := &ListServerlessInferenceBillingHistoryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6754,15 +6754,15 @@ func ParseGetUserBillingHistoryServerlessInferenceResponse(rsp *http.Response) (
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryServerlessInferenceDetailsResponse parses an HTTP response from a GetUserBillingHistoryServerlessInferenceDetailsWithResponse call
-func ParseGetUserBillingHistoryServerlessInferenceDetailsResponse(rsp *http.Response) (*GetUserBillingHistoryServerlessInferenceDetailsResponse, error) {
+// ParseGetServerlessInferencesBillingHistoryResponse parses an HTTP response from a GetServerlessInferencesBillingHistoryWithResponse call
+func ParseGetServerlessInferencesBillingHistoryResponse(rsp *http.Response) (*GetServerlessInferencesBillingHistoryResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryServerlessInferenceDetailsResponse{
+	response := &GetServerlessInferencesBillingHistoryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6808,15 +6808,15 @@ func ParseGetUserBillingHistoryServerlessInferenceDetailsResponse(rsp *http.Resp
 	return response, nil
 }
 
-// ParseGetUserBillingServerlessInferenceDetailsGraphResponse parses an HTTP response from a GetUserBillingServerlessInferenceDetailsGraphWithResponse call
-func ParseGetUserBillingServerlessInferenceDetailsGraphResponse(rsp *http.Response) (*GetUserBillingServerlessInferenceDetailsGraphResponse, error) {
+// ParseGetServerlessInferenceBillingHistoryGraphResponse parses an HTTP response from a GetServerlessInferenceBillingHistoryGraphWithResponse call
+func ParseGetServerlessInferenceBillingHistoryGraphResponse(rsp *http.Response) (*GetServerlessInferenceBillingHistoryGraphResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingServerlessInferenceDetailsGraphResponse{
+	response := &GetServerlessInferenceBillingHistoryGraphResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6862,15 +6862,15 @@ func ParseGetUserBillingServerlessInferenceDetailsGraphResponse(rsp *http.Respon
 	return response, nil
 }
 
-// ParseGetUserBillingHistorySnapshotResponse parses an HTTP response from a GetUserBillingHistorySnapshotWithResponse call
-func ParseGetUserBillingHistorySnapshotResponse(rsp *http.Response) (*GetUserBillingHistorySnapshotResponse, error) {
+// ParseListSnapshotBillingHistoryResponse parses an HTTP response from a ListSnapshotBillingHistoryWithResponse call
+func ParseListSnapshotBillingHistoryResponse(rsp *http.Response) (*ListSnapshotBillingHistoryResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistorySnapshotResponse{
+	response := &ListSnapshotBillingHistoryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6916,15 +6916,15 @@ func ParseGetUserBillingHistorySnapshotResponse(rsp *http.Response) (*GetUserBil
 	return response, nil
 }
 
-// ParseGetUserBillingHistorySnapshotDetailsResponse parses an HTTP response from a GetUserBillingHistorySnapshotDetailsWithResponse call
-func ParseGetUserBillingHistorySnapshotDetailsResponse(rsp *http.Response) (*GetUserBillingHistorySnapshotDetailsResponse, error) {
+// ParseGetSnapshotBillingHistoryResponse parses an HTTP response from a GetSnapshotBillingHistoryWithResponse call
+func ParseGetSnapshotBillingHistoryResponse(rsp *http.Response) (*GetSnapshotBillingHistoryResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistorySnapshotDetailsResponse{
+	response := &GetSnapshotBillingHistoryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -6970,15 +6970,15 @@ func ParseGetUserBillingHistorySnapshotDetailsResponse(rsp *http.Response) (*Get
 	return response, nil
 }
 
-// ParseGetUserBillingSnapshotDetailsGraphResponse parses an HTTP response from a GetUserBillingSnapshotDetailsGraphWithResponse call
-func ParseGetUserBillingSnapshotDetailsGraphResponse(rsp *http.Response) (*GetUserBillingSnapshotDetailsGraphResponse, error) {
+// ParseGetSnapshotBillingHistoryGraphResponse parses an HTTP response from a GetSnapshotBillingHistoryGraphWithResponse call
+func ParseGetSnapshotBillingHistoryGraphResponse(rsp *http.Response) (*GetSnapshotBillingHistoryGraphResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingSnapshotDetailsGraphResponse{
+	response := &GetSnapshotBillingHistoryGraphResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -7024,15 +7024,15 @@ func ParseGetUserBillingSnapshotDetailsGraphResponse(rsp *http.Response) (*GetUs
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryVm2Response parses an HTTP response from a GetUserBillingHistoryVm2WithResponse call
-func ParseGetUserBillingHistoryVm2Response(rsp *http.Response) (*GetUserBillingHistoryVm2Response, error) {
+// ParseGetVMBillingHistoryResponse parses an HTTP response from a GetVMBillingHistoryWithResponse call
+func ParseGetVMBillingHistoryResponse(rsp *http.Response) (*GetVMBillingHistoryResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryVm2Response{
+	response := &GetVMBillingHistoryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -7078,15 +7078,15 @@ func ParseGetUserBillingHistoryVm2Response(rsp *http.Response) (*GetUserBillingH
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryVmDetails2Response parses an HTTP response from a GetUserBillingHistoryVmDetails2WithResponse call
-func ParseGetUserBillingHistoryVmDetails2Response(rsp *http.Response) (*GetUserBillingHistoryVmDetails2Response, error) {
+// ParseGetVMBillingDetailsResponse parses an HTTP response from a GetVMBillingDetailsWithResponse call
+func ParseGetVMBillingDetailsResponse(rsp *http.Response) (*GetVMBillingDetailsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryVmDetails2Response{
+	response := &GetVMBillingDetailsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -7132,15 +7132,15 @@ func ParseGetUserBillingHistoryVmDetails2Response(rsp *http.Response) (*GetUserB
 	return response, nil
 }
 
-// ParseGetUserBillingVmDetailsGraph2Response parses an HTTP response from a GetUserBillingVmDetailsGraph2WithResponse call
-func ParseGetUserBillingVmDetailsGraph2Response(rsp *http.Response) (*GetUserBillingVmDetailsGraph2Response, error) {
+// ParseGetVMBillingGraphResponse parses an HTTP response from a GetVMBillingGraphWithResponse call
+func ParseGetVMBillingGraphResponse(rsp *http.Response) (*GetVMBillingGraphResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingVmDetailsGraph2Response{
+	response := &GetVMBillingGraphResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -7186,15 +7186,15 @@ func ParseGetUserBillingVmDetailsGraph2Response(rsp *http.Response) (*GetUserBil
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryVolume2Response parses an HTTP response from a GetUserBillingHistoryVolume2WithResponse call
-func ParseGetUserBillingHistoryVolume2Response(rsp *http.Response) (*GetUserBillingHistoryVolume2Response, error) {
+// ParseGetVolumeBillingHistoryResponse parses an HTTP response from a GetVolumeBillingHistoryWithResponse call
+func ParseGetVolumeBillingHistoryResponse(rsp *http.Response) (*GetVolumeBillingHistoryResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryVolume2Response{
+	response := &GetVolumeBillingHistoryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -7240,15 +7240,15 @@ func ParseGetUserBillingHistoryVolume2Response(rsp *http.Response) (*GetUserBill
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryVolumeDetails2Response parses an HTTP response from a GetUserBillingHistoryVolumeDetails2WithResponse call
-func ParseGetUserBillingHistoryVolumeDetails2Response(rsp *http.Response) (*GetUserBillingHistoryVolumeDetails2Response, error) {
+// ParseGetVolumeBillingDetailsResponse parses an HTTP response from a GetVolumeBillingDetailsWithResponse call
+func ParseGetVolumeBillingDetailsResponse(rsp *http.Response) (*GetVolumeBillingDetailsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryVolumeDetails2Response{
+	response := &GetVolumeBillingDetailsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -7294,15 +7294,15 @@ func ParseGetUserBillingHistoryVolumeDetails2Response(rsp *http.Response) (*GetU
 	return response, nil
 }
 
-// ParseGetUserBillingVolumeDetailsGraphResponse parses an HTTP response from a GetUserBillingVolumeDetailsGraphWithResponse call
-func ParseGetUserBillingVolumeDetailsGraphResponse(rsp *http.Response) (*GetUserBillingVolumeDetailsGraphResponse, error) {
+// ParseGetVolumeBillingHistoryGraphResponse parses an HTTP response from a GetVolumeBillingHistoryGraphWithResponse call
+func ParseGetVolumeBillingHistoryGraphResponse(rsp *http.Response) (*GetVolumeBillingHistoryGraphResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingVolumeDetailsGraphResponse{
+	response := &GetVolumeBillingHistoryGraphResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -7402,15 +7402,15 @@ func ParseGetLastDayCostResponse(rsp *http.Response) (*GetLastDayCostResponse, e
 	return response, nil
 }
 
-// ParseGetOrganizationThresholdResponse parses an HTTP response from a GetOrganizationThresholdWithResponse call
-func ParseGetOrganizationThresholdResponse(rsp *http.Response) (*GetOrganizationThresholdResponse, error) {
+// ParseListOrgNotificationThresholdsResponse parses an HTTP response from a ListOrgNotificationThresholdsWithResponse call
+func ParseListOrgNotificationThresholdsResponse(rsp *http.Response) (*ListOrgNotificationThresholdsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetOrganizationThresholdResponse{
+	response := &ListOrgNotificationThresholdsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -7456,15 +7456,15 @@ func ParseGetOrganizationThresholdResponse(rsp *http.Response) (*GetOrganization
 	return response, nil
 }
 
-// ParsePutOrganizationThresholdResponse parses an HTTP response from a PutOrganizationThresholdWithResponse call
-func ParsePutOrganizationThresholdResponse(rsp *http.Response) (*PutOrganizationThresholdResponse, error) {
+// ParseGetNotificationThresholdResponse parses an HTTP response from a GetNotificationThresholdWithResponse call
+func ParseGetNotificationThresholdResponse(rsp *http.Response) (*GetNotificationThresholdResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PutOrganizationThresholdResponse{
+	response := &GetNotificationThresholdResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -7510,15 +7510,15 @@ func ParsePutOrganizationThresholdResponse(rsp *http.Response) (*PutOrganization
 	return response, nil
 }
 
-// ParseGetUsage2Response parses an HTTP response from a GetUsage2WithResponse call
-func ParseGetUsage2Response(rsp *http.Response) (*GetUsage2Response, error) {
+// ParseGetUsageResponse parses an HTTP response from a GetUsageWithResponse call
+func ParseGetUsageResponse(rsp *http.Response) (*GetUsageResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUsage2Response{
+	response := &GetUsageResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -7564,15 +7564,15 @@ func ParseGetUsage2Response(rsp *http.Response) (*GetUsage2Response, error) {
 	return response, nil
 }
 
-// ParseGetUserVmBillingEventsResponse parses an HTTP response from a GetUserVmBillingEventsWithResponse call
-func ParseGetUserVmBillingEventsResponse(rsp *http.Response) (*GetUserVmBillingEventsResponse, error) {
+// ParseGetVMBillingEventsResponse parses an HTTP response from a GetVMBillingEventsWithResponse call
+func ParseGetVMBillingEventsResponse(rsp *http.Response) (*GetVMBillingEventsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserVmBillingEventsResponse{
+	response := &GetVMBillingEventsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -7611,15 +7611,15 @@ func ParseGetUserVmBillingEventsResponse(rsp *http.Response) (*GetUserVmBillingE
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryVmTotalCostsResponse parses an HTTP response from a GetUserBillingHistoryVmTotalCostsWithResponse call
-func ParseGetUserBillingHistoryVmTotalCostsResponse(rsp *http.Response) (*GetUserBillingHistoryVmTotalCostsResponse, error) {
+// ParseGetVMSubResourceCostsResponse parses an HTTP response from a GetVMSubResourceCostsWithResponse call
+func ParseGetVMSubResourceCostsResponse(rsp *http.Response) (*GetVMSubResourceCostsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryVmTotalCostsResponse{
+	response := &GetVMSubResourceCostsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -7665,15 +7665,15 @@ func ParseGetUserBillingHistoryVmTotalCostsResponse(rsp *http.Response) (*GetUse
 	return response, nil
 }
 
-// ParseGetUserBillingHistoryVmSubResourceGraph2Response parses an HTTP response from a GetUserBillingHistoryVmSubResourceGraph2WithResponse call
-func ParseGetUserBillingHistoryVmSubResourceGraph2Response(rsp *http.Response) (*GetUserBillingHistoryVmSubResourceGraph2Response, error) {
+// ParseGetVMSubResourceGraphResponse parses an HTTP response from a GetVMSubResourceGraphWithResponse call
+func ParseGetVMSubResourceGraphResponse(rsp *http.Response) (*GetVMSubResourceGraphResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserBillingHistoryVmSubResourceGraph2Response{
+	response := &GetVMSubResourceGraphResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -7719,15 +7719,15 @@ func ParseGetUserBillingHistoryVmSubResourceGraph2Response(rsp *http.Response) (
 	return response, nil
 }
 
-// ParseGetUserVolumeBillingEventsResponse parses an HTTP response from a GetUserVolumeBillingEventsWithResponse call
-func ParseGetUserVolumeBillingEventsResponse(rsp *http.Response) (*GetUserVolumeBillingEventsResponse, error) {
+// ParseGetVolumeBillingEventsResponse parses an HTTP response from a GetVolumeBillingEventsWithResponse call
+func ParseGetVolumeBillingEventsResponse(rsp *http.Response) (*GetVolumeBillingEventsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserVolumeBillingEventsResponse{
+	response := &GetVolumeBillingEventsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

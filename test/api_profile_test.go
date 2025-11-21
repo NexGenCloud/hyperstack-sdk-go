@@ -49,11 +49,13 @@ func Test_hyperstack_ProfileAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test ProfileAPIService ListProfiles", func(t *testing.T) {
+	t.Run("Test ProfileAPIService GetProfile", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.ProfileAPI.ListProfiles(context.Background()).Execute()
+		var id int32
+
+		resp, httpRes, err := apiClient.ProfileAPI.GetProfile(context.Background(), id).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -61,13 +63,11 @@ func Test_hyperstack_ProfileAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test ProfileAPIService RetrieveProfileDetails", func(t *testing.T) {
+	t.Run("Test ProfileAPIService ListProfiles", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var id int32
-
-		resp, httpRes, err := apiClient.ProfileAPI.RetrieveProfileDetails(context.Background(), id).Execute()
+		resp, httpRes, err := apiClient.ProfileAPI.ListProfiles(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

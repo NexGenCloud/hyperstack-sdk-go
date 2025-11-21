@@ -22,29 +22,29 @@ import (
 // CalculateAPIService CalculateAPI service
 type CalculateAPIService service
 
-type ApiGetCalculate2Request struct {
+type ApiCalculateResourceBillingRateRequest struct {
 	ctx          context.Context
 	ApiService   *CalculateAPIService
 	resourceType string
 	id           int32
 }
 
-func (r ApiGetCalculate2Request) Execute() (*ResourceBillingResponseForCustomer, *http.Response, error) {
-	return r.ApiService.GetCalculate2Execute(r)
+func (r ApiCalculateResourceBillingRateRequest) Execute() (*ResourceBillingResponseForCustomer, *http.Response, error) {
+	return r.ApiService.CalculateResourceBillingRateExecute(r)
 }
 
 /*
-GetCalculate2 Retrieve Billing Rate for Resource
+CalculateResourceBillingRate Retrieve Billing Rate for Resource
 
 Calculate the hourly billing rate of a specified resource by including the resource ID in the path.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param resourceType
 	@param id
-	@return ApiGetCalculate2Request
+	@return ApiCalculateResourceBillingRateRequest
 */
-func (a *CalculateAPIService) GetCalculate2(ctx context.Context, resourceType string, id int32) ApiGetCalculate2Request {
-	return ApiGetCalculate2Request{
+func (a *CalculateAPIService) CalculateResourceBillingRate(ctx context.Context, resourceType string, id int32) ApiCalculateResourceBillingRateRequest {
+	return ApiCalculateResourceBillingRateRequest{
 		ApiService:   a,
 		ctx:          ctx,
 		resourceType: resourceType,
@@ -55,7 +55,7 @@ func (a *CalculateAPIService) GetCalculate2(ctx context.Context, resourceType st
 // Execute executes the request
 //
 //	@return ResourceBillingResponseForCustomer
-func (a *CalculateAPIService) GetCalculate2Execute(r ApiGetCalculate2Request) (*ResourceBillingResponseForCustomer, *http.Response, error) {
+func (a *CalculateAPIService) CalculateResourceBillingRateExecute(r ApiCalculateResourceBillingRateRequest) (*ResourceBillingResponseForCustomer, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -63,7 +63,7 @@ func (a *CalculateAPIService) GetCalculate2Execute(r ApiGetCalculate2Request) (*
 		localVarReturnValue *ResourceBillingResponseForCustomer
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CalculateAPIService.GetCalculate2")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CalculateAPIService.CalculateResourceBillingRate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

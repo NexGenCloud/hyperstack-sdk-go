@@ -80,6 +80,8 @@ type APIClient struct {
 
 	EnvironmentAPI *EnvironmentAPIService
 
+	FIPExclusionsAPI *FIPExclusionsAPIService
+
 	FirewallAttachmentAPI *FirewallAttachmentAPIService
 
 	FirewallsAPI *FirewallsAPIService
@@ -175,6 +177,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.DashboardAPI = (*DashboardAPIService)(&c.common)
 	c.DeploymentAPI = (*DeploymentAPIService)(&c.common)
 	c.EnvironmentAPI = (*EnvironmentAPIService)(&c.common)
+	c.FIPExclusionsAPI = (*FIPExclusionsAPIService)(&c.common)
 	c.FirewallAttachmentAPI = (*FirewallAttachmentAPIService)(&c.common)
 	c.FirewallsAPI = (*FirewallsAPIService)(&c.common)
 	c.FlavorAPI = (*FlavorAPIService)(&c.common)

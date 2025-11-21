@@ -131,12 +131,12 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// GetCalculate2 request
-	GetCalculate2(ctx context.Context, resourceType string, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CalculateResourceBillingRate request
+	CalculateResourceBillingRate(ctx context.Context, resourceType string, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) GetCalculate2(ctx context.Context, resourceType string, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetCalculate2Request(c.Server, resourceType, id)
+func (c *Client) CalculateResourceBillingRate(ctx context.Context, resourceType string, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCalculateResourceBillingRateRequest(c.Server, resourceType, id)
 	if err != nil {
 		return nil, err
 	}
@@ -147,8 +147,8 @@ func (c *Client) GetCalculate2(ctx context.Context, resourceType string, id int,
 	return c.Client.Do(req)
 }
 
-// NewGetCalculate2Request generates requests for GetCalculate2
-func NewGetCalculate2Request(server string, resourceType string, id int) (*http.Request, error) {
+// NewCalculateResourceBillingRateRequest generates requests for CalculateResourceBillingRate
+func NewCalculateResourceBillingRateRequest(server string, resourceType string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -231,11 +231,11 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// GetCalculate2WithResponse request
-	GetCalculate2WithResponse(ctx context.Context, resourceType string, id int, reqEditors ...RequestEditorFn) (*GetCalculate2Response, error)
+	// CalculateResourceBillingRateWithResponse request
+	CalculateResourceBillingRateWithResponse(ctx context.Context, resourceType string, id int, reqEditors ...RequestEditorFn) (*CalculateResourceBillingRateResponse, error)
 }
 
-type GetCalculate2Response struct {
+type CalculateResourceBillingRateResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResourceBillingResponseForCustomer
@@ -245,7 +245,7 @@ type GetCalculate2Response struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetCalculate2Response) Status() string {
+func (r CalculateResourceBillingRateResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -253,31 +253,31 @@ func (r GetCalculate2Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetCalculate2Response) StatusCode() int {
+func (r CalculateResourceBillingRateResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// GetCalculate2WithResponse request returning *GetCalculate2Response
-func (c *ClientWithResponses) GetCalculate2WithResponse(ctx context.Context, resourceType string, id int, reqEditors ...RequestEditorFn) (*GetCalculate2Response, error) {
-	rsp, err := c.GetCalculate2(ctx, resourceType, id, reqEditors...)
+// CalculateResourceBillingRateWithResponse request returning *CalculateResourceBillingRateResponse
+func (c *ClientWithResponses) CalculateResourceBillingRateWithResponse(ctx context.Context, resourceType string, id int, reqEditors ...RequestEditorFn) (*CalculateResourceBillingRateResponse, error) {
+	rsp, err := c.CalculateResourceBillingRate(ctx, resourceType, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetCalculate2Response(rsp)
+	return ParseCalculateResourceBillingRateResponse(rsp)
 }
 
-// ParseGetCalculate2Response parses an HTTP response from a GetCalculate2WithResponse call
-func ParseGetCalculate2Response(rsp *http.Response) (*GetCalculate2Response, error) {
+// ParseCalculateResourceBillingRateResponse parses an HTTP response from a CalculateResourceBillingRateWithResponse call
+func ParseCalculateResourceBillingRateResponse(rsp *http.Response) (*CalculateResourceBillingRateResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetCalculate2Response{
+	response := &CalculateResourceBillingRateResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

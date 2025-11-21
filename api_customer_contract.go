@@ -22,37 +22,219 @@ import (
 // CustomerContractAPIService CustomerContractAPI service
 type CustomerContractAPIService service
 
-type ApiGetCustomerContractRequest struct {
+type ApiGetContractGPUAllocationGraphRequest struct {
+	ctx        context.Context
+	ApiService *CustomerContractAPIService
+	contractId int32
+	startDate  *string
+	endDate    *string
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetContractGPUAllocationGraphRequest) StartDate(startDate string) ApiGetContractGPUAllocationGraphRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetContractGPUAllocationGraphRequest) EndDate(endDate string) ApiGetContractGPUAllocationGraphRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiGetContractGPUAllocationGraphRequest) Execute() (*ContractGPUAllocationGraphResponse, *http.Response, error) {
+	return r.ApiService.GetContractGPUAllocationGraphExecute(r)
+}
+
+/*
+GetContractGPUAllocationGraph Retrieve GPU Allocation Graph for Contract
+
+Retrieve GPU allocation count graph for a specific contract by providing the contract ID in the path. The endpoint returns the GPU allocation count graph for the contract within the specified date range.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param contractId
+	@return ApiGetContractGPUAllocationGraphRequest
+*/
+func (a *CustomerContractAPIService) GetContractGPUAllocationGraph(ctx context.Context, contractId int32) ApiGetContractGPUAllocationGraphRequest {
+	return ApiGetContractGPUAllocationGraphRequest{
+		ApiService: a,
+		ctx:        ctx,
+		contractId: contractId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ContractGPUAllocationGraphResponse
+func (a *CustomerContractAPIService) GetContractGPUAllocationGraphExecute(r ApiGetContractGPUAllocationGraphRequest) (*ContractGPUAllocationGraphResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ContractGPUAllocationGraphResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CustomerContractAPIService.GetContractGPUAllocationGraph")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pricebook/contracts/{contract_id}/gpu_allocation_graph"
+	localVarPath = strings.Replace(localVarPath, "{"+"contract_id"+"}", url.PathEscape(parameterValueToString(r.contractId, "contractId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 405 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiListCustomerContractsRequest struct {
 	ctx        context.Context
 	ApiService *CustomerContractAPIService
 	page       *int32
 	perPage    *int32
 }
 
-func (r ApiGetCustomerContractRequest) Page(page int32) ApiGetCustomerContractRequest {
+func (r ApiListCustomerContractsRequest) Page(page int32) ApiListCustomerContractsRequest {
 	r.page = &page
 	return r
 }
 
-func (r ApiGetCustomerContractRequest) PerPage(perPage int32) ApiGetCustomerContractRequest {
+func (r ApiListCustomerContractsRequest) PerPage(perPage int32) ApiListCustomerContractsRequest {
 	r.perPage = &perPage
 	return r
 }
 
-func (r ApiGetCustomerContractRequest) Execute() (*GetCustomerContractsListResponseModel, *http.Response, error) {
-	return r.ApiService.GetCustomerContractExecute(r)
+func (r ApiListCustomerContractsRequest) Execute() (*GetCustomerContractsListResponseModel, *http.Response, error) {
+	return r.ApiService.ListCustomerContractsExecute(r)
 }
 
 /*
-GetCustomerContract List Contracts
+ListCustomerContracts List Contracts
 
 Retrieves a list of contracts and their details, including the terms of each contract and the discounts applied to all resources under each contract. Pagination can be controlled using the `page` and `per_page` query parameters. For additional information about contracts, click [**here**](None/docs/billing-and-payment/contracts).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetCustomerContractRequest
+	@return ApiListCustomerContractsRequest
 */
-func (a *CustomerContractAPIService) GetCustomerContract(ctx context.Context) ApiGetCustomerContractRequest {
-	return ApiGetCustomerContractRequest{
+func (a *CustomerContractAPIService) ListCustomerContracts(ctx context.Context) ApiListCustomerContractsRequest {
+	return ApiListCustomerContractsRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -61,7 +243,7 @@ func (a *CustomerContractAPIService) GetCustomerContract(ctx context.Context) Ap
 // Execute executes the request
 //
 //	@return GetCustomerContractsListResponseModel
-func (a *CustomerContractAPIService) GetCustomerContractExecute(r ApiGetCustomerContractRequest) (*GetCustomerContractsListResponseModel, *http.Response, error) {
+func (a *CustomerContractAPIService) ListCustomerContractsExecute(r ApiListCustomerContractsRequest) (*GetCustomerContractsListResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -69,7 +251,7 @@ func (a *CustomerContractAPIService) GetCustomerContractExecute(r ApiGetCustomer
 		localVarReturnValue *GetCustomerContractsListResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CustomerContractAPIService.GetCustomerContract")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CustomerContractAPIService.ListCustomerContracts")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -187,27 +369,27 @@ func (a *CustomerContractAPIService) GetCustomerContractExecute(r ApiGetCustomer
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetCustomerContractDetailsRequest struct {
+type ApiRetrieveContractRequest struct {
 	ctx        context.Context
 	ApiService *CustomerContractAPIService
 	contractId int32
 }
 
-func (r ApiGetCustomerContractDetailsRequest) Execute() (*CustomerContractDetailResponseModel, *http.Response, error) {
-	return r.ApiService.GetCustomerContractDetailsExecute(r)
+func (r ApiRetrieveContractRequest) Execute() (*CustomerContractDetailResponseModel, *http.Response, error) {
+	return r.ApiService.RetrieveContractExecute(r)
 }
 
 /*
-GetCustomerContractDetails Retrieve Contract Details
+RetrieveContract Retrieve Contract Details
 
 Retrieve details of a specific contract by providing the contract ID in the path. The endpoint returns the contract object along with its associated discount plans. For more information, [**click here**](None/docs/api-reference/pricebook-resources/retrieve-contract-details).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param contractId
-	@return ApiGetCustomerContractDetailsRequest
+	@return ApiRetrieveContractRequest
 */
-func (a *CustomerContractAPIService) GetCustomerContractDetails(ctx context.Context, contractId int32) ApiGetCustomerContractDetailsRequest {
-	return ApiGetCustomerContractDetailsRequest{
+func (a *CustomerContractAPIService) RetrieveContract(ctx context.Context, contractId int32) ApiRetrieveContractRequest {
+	return ApiRetrieveContractRequest{
 		ApiService: a,
 		ctx:        ctx,
 		contractId: contractId,
@@ -217,7 +399,7 @@ func (a *CustomerContractAPIService) GetCustomerContractDetails(ctx context.Cont
 // Execute executes the request
 //
 //	@return CustomerContractDetailResponseModel
-func (a *CustomerContractAPIService) GetCustomerContractDetailsExecute(r ApiGetCustomerContractDetailsRequest) (*CustomerContractDetailResponseModel, *http.Response, error) {
+func (a *CustomerContractAPIService) RetrieveContractExecute(r ApiRetrieveContractRequest) (*CustomerContractDetailResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -225,7 +407,7 @@ func (a *CustomerContractAPIService) GetCustomerContractDetailsExecute(r ApiGetC
 		localVarReturnValue *CustomerContractDetailResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CustomerContractAPIService.GetCustomerContractDetails")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CustomerContractAPIService.RetrieveContract")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -237,188 +419,6 @@ func (a *CustomerContractAPIService) GetCustomerContractDetailsExecute(r ApiGetC
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 405 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetCustomerContractGpuAllocationGraphRequest struct {
-	ctx        context.Context
-	ApiService *CustomerContractAPIService
-	contractId int32
-	startDate  *string
-	endDate    *string
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetCustomerContractGpuAllocationGraphRequest) StartDate(startDate string) ApiGetCustomerContractGpuAllocationGraphRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetCustomerContractGpuAllocationGraphRequest) EndDate(endDate string) ApiGetCustomerContractGpuAllocationGraphRequest {
-	r.endDate = &endDate
-	return r
-}
-
-func (r ApiGetCustomerContractGpuAllocationGraphRequest) Execute() (*ContractGPUAllocationGraphResponse, *http.Response, error) {
-	return r.ApiService.GetCustomerContractGpuAllocationGraphExecute(r)
-}
-
-/*
-GetCustomerContractGpuAllocationGraph Retrieve GPU Allocation Graph for Contract
-
-Retrieve GPU allocation count graph for a specific contract by providing the contract ID in the path. The endpoint returns the GPU allocation count graph for the contract within the specified date range.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param contractId
-	@return ApiGetCustomerContractGpuAllocationGraphRequest
-*/
-func (a *CustomerContractAPIService) GetCustomerContractGpuAllocationGraph(ctx context.Context, contractId int32) ApiGetCustomerContractGpuAllocationGraphRequest {
-	return ApiGetCustomerContractGpuAllocationGraphRequest{
-		ApiService: a,
-		ctx:        ctx,
-		contractId: contractId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ContractGPUAllocationGraphResponse
-func (a *CustomerContractAPIService) GetCustomerContractGpuAllocationGraphExecute(r ApiGetCustomerContractGpuAllocationGraphRequest) (*ContractGPUAllocationGraphResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ContractGPUAllocationGraphResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CustomerContractAPIService.GetCustomerContractGpuAllocationGraph")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/pricebook/contracts/{contract_id}/gpu_allocation_graph"
-	localVarPath = strings.Replace(localVarPath, "{"+"contract_id"+"}", url.PathEscape(parameterValueToString(r.contractId, "contractId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 

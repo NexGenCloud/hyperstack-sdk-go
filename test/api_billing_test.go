@@ -23,6 +23,128 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
+	t.Run("Test BillingAPIService BucketsBillingHistoryHourlyChart", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var bucketId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.BucketsBillingHistoryHourlyChart(context.Background(), bucketId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetBucketBillingHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var bucketId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetBucketBillingHistory(context.Background(), bucketId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetClusterBillingHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var clusterId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetClusterBillingHistory(context.Background(), clusterId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetClusterBillingHistoryGraph", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var clusterId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetClusterBillingHistoryGraph(context.Background(), clusterId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetDataSynthesisBillingHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.GetDataSynthesisBillingHistory(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetDataSynthesisBillingHistoryGraph", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var resourceId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetDataSynthesisBillingHistoryGraph(context.Background(), resourceId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetDataSynthesisHistoryForResource", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var resourceId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetDataSynthesisHistoryForResource(context.Background(), resourceId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetFineTuningBillingHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.GetFineTuningBillingHistory(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetFineTuningBillingHistoryGraph", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var resourceId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetFineTuningBillingHistoryGraph(context.Background(), resourceId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test BillingAPIService GetLastDayCost", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -35,11 +157,11 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test BillingAPIService GetOrganizationThreshold", func(t *testing.T) {
+	t.Run("Test BillingAPIService GetModelEvaluationBillingHistory", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.BillingAPI.GetOrganizationThreshold(context.Background()).Execute()
+		resp, httpRes, err := apiClient.BillingAPI.GetModelEvaluationBillingHistory(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -47,53 +169,13 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test BillingAPIService GetUsage2", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUsage2(context.Background()).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingBucketDetailsGraph", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var bucketId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingBucketDetailsGraph(context.Background(), bucketId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingClusterDetailsGraph", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var clusterId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingClusterDetailsGraph(context.Background(), clusterId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingDataSynthesisDetailsGraph", func(t *testing.T) {
+	t.Run("Test BillingAPIService GetModelEvaluationBillingHistoryGraph", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var resourceId int32
 
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingDataSynthesisDetailsGraph(context.Background(), resourceId).Execute()
+		resp, httpRes, err := apiClient.BillingAPI.GetModelEvaluationBillingHistoryGraph(context.Background(), resourceId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -101,410 +183,328 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test BillingAPIService GetUserBillingFineTuningDetailsGraph", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var resourceId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingFineTuningDetailsGraph(context.Background(), resourceId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistory2", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistory2(context.Background()).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryBucket2", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryBucket2(context.Background()).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryBucketDetails", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var bucketId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryBucketDetails(context.Background(), bucketId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryCluster", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryCluster(context.Background()).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryClusterDetails", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var clusterId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryClusterDetails(context.Background(), clusterId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryContract", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryContract(context.Background()).Execute()
-
-		require.Nil(t, err)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryDataSynthesis", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryDataSynthesis(context.Background()).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryDataSynthesisDetails", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var resourceId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryDataSynthesisDetails(context.Background(), resourceId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryFineTuning", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryFineTuning(context.Background()).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryFineTuningDetails", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var resourceId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryFineTuningDetails(context.Background(), resourceId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryModelEvaluation", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryModelEvaluation(context.Background()).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryModelEvaluationDetails", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var resourceId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryModelEvaluationDetails(context.Background(), resourceId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryServerlessInference", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryServerlessInference(context.Background()).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryServerlessInferenceDetails", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var resourceId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryServerlessInferenceDetails(context.Background(), resourceId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistorySnapshot", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistorySnapshot(context.Background()).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistorySnapshotDetails", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var snapshotId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistorySnapshotDetails(context.Background(), snapshotId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryVm2", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryVm2(context.Background()).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryVmDetails2", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryVmDetails2(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryVmSubResourceGraph2", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryVmSubResourceGraph2(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryVmTotalCosts", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryVmTotalCosts(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryVolume2", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryVolume2(context.Background()).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingHistoryVolumeDetails2", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var volumeId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistoryVolumeDetails2(context.Background(), volumeId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingModelEvaluationDetailsGraph", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var resourceId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingModelEvaluationDetailsGraph(context.Background(), resourceId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingServerlessInferenceDetailsGraph", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var resourceId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingServerlessInferenceDetailsGraph(context.Background(), resourceId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingSnapshotDetailsGraph", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var snapshotId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingSnapshotDetailsGraph(context.Background(), snapshotId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingVmDetailsGraph2", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingVmDetailsGraph2(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserBillingVolumeDetailsGraph", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var volumeId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingVolumeDetailsGraph(context.Background(), volumeId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserVmBillingEvents", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserVmBillingEvents(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService GetUserVolumeBillingEvents", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var volumeId int32
-
-		resp, httpRes, err := apiClient.BillingAPI.GetUserVolumeBillingEvents(context.Background(), volumeId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BillingAPIService PutOrganizationThreshold", func(t *testing.T) {
+	t.Run("Test BillingAPIService GetNotificationThreshold", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var thresholdId int32
 
-		resp, httpRes, err := apiClient.BillingAPI.PutOrganizationThreshold(context.Background(), thresholdId).Execute()
+		resp, httpRes, err := apiClient.BillingAPI.GetNotificationThreshold(context.Background(), thresholdId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetResourceFineTuningBillingHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var resourceId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetResourceFineTuningBillingHistory(context.Background(), resourceId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetResourceModelEvaluationBillingHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var resourceId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetResourceModelEvaluationBillingHistory(context.Background(), resourceId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetServerlessInferenceBillingHistoryGraph", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var resourceId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetServerlessInferenceBillingHistoryGraph(context.Background(), resourceId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetServerlessInferencesBillingHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var resourceId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetServerlessInferencesBillingHistory(context.Background(), resourceId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetSnapshotBillingHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var snapshotId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetSnapshotBillingHistory(context.Background(), snapshotId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetSnapshotBillingHistoryGraph", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var snapshotId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetSnapshotBillingHistoryGraph(context.Background(), snapshotId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetUsage", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.GetUsage(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetUserBillingHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.GetUserBillingHistory(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetVMBillingDetails", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetVMBillingDetails(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetVMBillingEvents", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetVMBillingEvents(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetVMBillingGraph", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetVMBillingGraph(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetVMBillingHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.GetVMBillingHistory(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetVMSubResourceCosts", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetVMSubResourceCosts(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetVMSubResourceGraph", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetVMSubResourceGraph(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetVolumeBillingDetails", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var volumeId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetVolumeBillingDetails(context.Background(), volumeId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetVolumeBillingEvents", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var volumeId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetVolumeBillingEvents(context.Background(), volumeId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetVolumeBillingHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.GetVolumeBillingHistory(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetVolumeBillingHistoryGraph", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var volumeId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetVolumeBillingHistoryGraph(context.Background(), volumeId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService ListBillingContractHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		httpRes, err := apiClient.BillingAPI.ListBillingContractHistory(context.Background()).Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService ListBucketBillingHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.ListBucketBillingHistory(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService ListClustersBillingHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.ListClustersBillingHistory(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService ListOrgNotificationThresholds", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.ListOrgNotificationThresholds(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService ListServerlessInferenceBillingHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.ListServerlessInferenceBillingHistory(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService ListSnapshotBillingHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.ListSnapshotBillingHistory(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

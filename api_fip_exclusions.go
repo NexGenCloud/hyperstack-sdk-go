@@ -16,52 +16,57 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
-// StockAPIService StockAPI service
-type StockAPIService service
+// FIPExclusionsAPIService FIPExclusionsAPI service
+type FIPExclusionsAPIService service
 
-type ApiGetGPUStockRequest struct {
+type ApiCheckIfOrgIsExcludedFromFloatingIPDetachmentRequest struct {
 	ctx        context.Context
-	ApiService *StockAPIService
+	ApiService *FIPExclusionsAPIService
+	orgId      int32
 }
 
-func (r ApiGetGPUStockRequest) Execute() (*NewStockRetriveResponse, *http.Response, error) {
-	return r.ApiService.GetGPUStockExecute(r)
+func (r ApiCheckIfOrgIsExcludedFromFloatingIPDetachmentRequest) Execute() (*ResponseModel, *http.Response, error) {
+	return r.ApiService.CheckIfOrgIsExcludedFromFloatingIPDetachmentExecute(r)
 }
 
 /*
-GetGPUStock Retrieve GPU stocks
+CheckIfOrgIsExcludedFromFloatingIPDetachment Method for CheckIfOrgIsExcludedFromFloatingIPDetachment
 
-Returns information on current and upcoming GPU availability, organized byregion and GPU model. For additional information on GPU stocks,[**click here**](https://docs.hyperstack.cloud/docs/hardware/gpu-stock-information).
+is org excluded from floating ip detachment
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetGPUStockRequest
+	@param orgId
+	@return ApiCheckIfOrgIsExcludedFromFloatingIPDetachmentRequest
 */
-func (a *StockAPIService) GetGPUStock(ctx context.Context) ApiGetGPUStockRequest {
-	return ApiGetGPUStockRequest{
+func (a *FIPExclusionsAPIService) CheckIfOrgIsExcludedFromFloatingIPDetachment(ctx context.Context, orgId int32) ApiCheckIfOrgIsExcludedFromFloatingIPDetachmentRequest {
+	return ApiCheckIfOrgIsExcludedFromFloatingIPDetachmentRequest{
 		ApiService: a,
 		ctx:        ctx,
+		orgId:      orgId,
 	}
 }
 
 // Execute executes the request
 //
-//	@return NewStockRetriveResponse
-func (a *StockAPIService) GetGPUStockExecute(r ApiGetGPUStockRequest) (*NewStockRetriveResponse, *http.Response, error) {
+//	@return ResponseModel
+func (a *FIPExclusionsAPIService) CheckIfOrgIsExcludedFromFloatingIPDetachmentExecute(r ApiCheckIfOrgIsExcludedFromFloatingIPDetachmentRequest) (*ResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *NewStockRetriveResponse
+		localVarReturnValue *ResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "StockAPIService.GetGPUStock")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FIPExclusionsAPIService.CheckIfOrgIsExcludedFromFloatingIPDetachment")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/core/stocks"
+	localVarPath := localBasePath + "/core/fip-detachment-exclusions/org/{org_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"org_id"+"}", url.PathEscape(parameterValueToString(r.orgId, "orgId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -120,7 +125,40 @@ func (a *StockAPIService) GetGPUStockExecute(r ApiGetGPUStockRequest) (*NewStock
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
 		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
 			var v ErrorResponseModel
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {

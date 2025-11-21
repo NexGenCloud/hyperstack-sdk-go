@@ -22,27 +22,27 @@ import (
 // SnapshotEventsAPIService SnapshotEventsAPI service
 type SnapshotEventsAPIService service
 
-type ApiFetchAllEventsForASnapshotRequest struct {
+type ApiListSnapshotEventsRequest struct {
 	ctx        context.Context
 	ApiService *SnapshotEventsAPIService
 	snapshotId int32
 }
 
-func (r ApiFetchAllEventsForASnapshotRequest) Execute() (*http.Response, error) {
-	return r.ApiService.FetchAllEventsForASnapshotExecute(r)
+func (r ApiListSnapshotEventsRequest) Execute() (*http.Response, error) {
+	return r.ApiService.ListSnapshotEventsExecute(r)
 }
 
 /*
-FetchAllEventsForASnapshot Fetch all events for a snapshot
+ListSnapshotEvents Fetch all events for a snapshot
 
 Retrieves a list of all events for a Snapshot's history, which records actions performed on the specific snapshot. Requires the snapshot ID in the path.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param snapshotId
-	@return ApiFetchAllEventsForASnapshotRequest
+	@return ApiListSnapshotEventsRequest
 */
-func (a *SnapshotEventsAPIService) FetchAllEventsForASnapshot(ctx context.Context, snapshotId int32) ApiFetchAllEventsForASnapshotRequest {
-	return ApiFetchAllEventsForASnapshotRequest{
+func (a *SnapshotEventsAPIService) ListSnapshotEvents(ctx context.Context, snapshotId int32) ApiListSnapshotEventsRequest {
+	return ApiListSnapshotEventsRequest{
 		ApiService: a,
 		ctx:        ctx,
 		snapshotId: snapshotId,
@@ -50,14 +50,14 @@ func (a *SnapshotEventsAPIService) FetchAllEventsForASnapshot(ctx context.Contex
 }
 
 // Execute executes the request
-func (a *SnapshotEventsAPIService) FetchAllEventsForASnapshotExecute(r ApiFetchAllEventsForASnapshotRequest) (*http.Response, error) {
+func (a *SnapshotEventsAPIService) ListSnapshotEventsExecute(r ApiListSnapshotEventsRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodGet
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SnapshotEventsAPIService.FetchAllEventsForASnapshot")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SnapshotEventsAPIService.ListSnapshotEvents")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}

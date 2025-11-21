@@ -5,7 +5,7 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GetAlive**](AliveAPI.md#GetAlive) | **Get** /billing/alive | GET: Alive
-[**GetDoc**](AliveAPI.md#GetDoc) | **Get** /billing/alive/doc | 
+[**GetAliveDoc**](AliveAPI.md#GetAliveDoc) | **Get** /billing/alive/doc | 
 
 
 
@@ -68,9 +68,9 @@ Other parameters are passed through a pointer to a apiGetAliveRequest struct via
 [[Back to README]](../README.md)
 
 
-## GetDoc
+## GetAliveDoc
 
-> GetDoc(ctx).Execute()
+> GetAliveDoc(ctx).Execute()
 
 
 
@@ -90,9 +90,9 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.AliveAPI.GetDoc(context.Background()).Execute()
+	r, err := apiClient.AliveAPI.GetAliveDoc(context.Background()).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `AliveAPI.GetDoc``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `AliveAPI.GetAliveDoc``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
 }
@@ -104,7 +104,7 @@ This endpoint does not need any parameter.
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetDocRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetAliveDocRequest struct via the builder pattern
 
 
 ### Return type

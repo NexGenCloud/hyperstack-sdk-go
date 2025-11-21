@@ -4,76 +4,15 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetUser**](UserAPI.md#GetUser) | **Get** /billing/user/info | GET: Retrieve billing info
-[**PostUser**](UserAPI.md#PostUser) | **Post** /billing/user/info | POST: Insert billing info
-[**PutUser**](UserAPI.md#PutUser) | **Put** /billing/user/info | PUT: Update billing info
+[**AddUserBillingInfo**](UserAPI.md#AddUserBillingInfo) | **Post** /billing/user/info | POST: Insert billing info
+[**GetUserBillingInfo**](UserAPI.md#GetUserBillingInfo) | **Get** /billing/user/info | GET: Retrieve billing info
+[**UpdateUserBillingInfo**](UserAPI.md#UpdateUserBillingInfo) | **Put** /billing/user/info | PUT: Update billing info
 
 
 
-## GetUser
+## AddUserBillingInfo
 
-> UsersInfoListResponse GetUser(ctx).Execute()
-
-GET: Retrieve billing info
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.UserAPI.GetUser(context.Background()).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `UserAPI.GetUser``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `GetUser`: UsersInfoListResponse
-	fmt.Fprintf(os.Stdout, "Response from `UserAPI.GetUser`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-This endpoint does not need any parameter.
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetUserRequest struct via the builder pattern
-
-
-### Return type
-
-[**UsersInfoListResponse**](UsersInfoListResponse.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## PostUser
-
-> AddUserInfoSuccessResponseModel PostUser(ctx).Payload(payload).Execute()
+> AddUserInfoSuccessResponseModel AddUserBillingInfo(ctx).Payload(payload).Execute()
 
 POST: Insert billing info
 
@@ -96,13 +35,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.UserAPI.PostUser(context.Background()).Payload(payload).Execute()
+	resp, r, err := apiClient.UserAPI.AddUserBillingInfo(context.Background()).Payload(payload).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `UserAPI.PostUser``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `UserAPI.AddUserBillingInfo``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `PostUser`: AddUserInfoSuccessResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `UserAPI.PostUser`: %v\n", resp)
+	// response from `AddUserBillingInfo`: AddUserInfoSuccessResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `UserAPI.AddUserBillingInfo`: %v\n", resp)
 }
 ```
 
@@ -112,7 +51,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiPostUserRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiAddUserBillingInfoRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -137,9 +76,70 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## PutUser
+## GetUserBillingInfo
 
-> AddUserInfoSuccessResponseModel PutUser(ctx).Payload(payload).Execute()
+> UsersInfoListResponse GetUserBillingInfo(ctx).Execute()
+
+GET: Retrieve billing info
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.UserAPI.GetUserBillingInfo(context.Background()).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `UserAPI.GetUserBillingInfo``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetUserBillingInfo`: UsersInfoListResponse
+	fmt.Fprintf(os.Stdout, "Response from `UserAPI.GetUserBillingInfo`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetUserBillingInfoRequest struct via the builder pattern
+
+
+### Return type
+
+[**UsersInfoListResponse**](UsersInfoListResponse.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpdateUserBillingInfo
+
+> AddUserInfoSuccessResponseModel UpdateUserBillingInfo(ctx).Payload(payload).Execute()
 
 PUT: Update billing info
 
@@ -162,13 +162,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.UserAPI.PutUser(context.Background()).Payload(payload).Execute()
+	resp, r, err := apiClient.UserAPI.UpdateUserBillingInfo(context.Background()).Payload(payload).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `UserAPI.PutUser``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `UserAPI.UpdateUserBillingInfo``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `PutUser`: AddUserInfoSuccessResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `UserAPI.PutUser`: %v\n", resp)
+	// response from `UpdateUserBillingInfo`: AddUserInfoSuccessResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `UserAPI.UpdateUserBillingInfo`: %v\n", resp)
 }
 ```
 
@@ -178,7 +178,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiPutUserRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiUpdateUserBillingInfoRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes

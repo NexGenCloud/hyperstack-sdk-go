@@ -256,8 +256,8 @@ type ClientInterface interface {
 	// DeleteVolume request
 	DeleteVolume(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// FetchVolumeDetails request
-	FetchVolumeDetails(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetVolume request
+	GetVolume(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateVolumeWithBody request with any body
 	UpdateVolumeWithBody(ctx context.Context, volumeId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -337,8 +337,8 @@ func (c *Client) DeleteVolume(ctx context.Context, volumeId int, reqEditors ...R
 	return c.Client.Do(req)
 }
 
-func (c *Client) FetchVolumeDetails(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFetchVolumeDetailsRequest(c.Server, volumeId)
+func (c *Client) GetVolume(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVolumeRequest(c.Server, volumeId)
 	if err != nil {
 		return nil, err
 	}
@@ -605,8 +605,8 @@ func NewDeleteVolumeRequest(server string, volumeId int) (*http.Request, error) 
 	return req, nil
 }
 
-// NewFetchVolumeDetailsRequest generates requests for FetchVolumeDetails
-func NewFetchVolumeDetailsRequest(server string, volumeId int) (*http.Request, error) {
+// NewGetVolumeRequest generates requests for GetVolume
+func NewGetVolumeRequest(server string, volumeId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -746,8 +746,8 @@ type ClientWithResponsesInterface interface {
 	// DeleteVolumeWithResponse request
 	DeleteVolumeWithResponse(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*DeleteVolumeResponse, error)
 
-	// FetchVolumeDetailsWithResponse request
-	FetchVolumeDetailsWithResponse(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*FetchVolumeDetailsResponse, error)
+	// GetVolumeWithResponse request
+	GetVolumeWithResponse(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*GetVolumeResponse, error)
 
 	// UpdateVolumeWithBodyWithResponse request with any body
 	UpdateVolumeWithBodyWithResponse(ctx context.Context, volumeId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateVolumeResponse, error)
@@ -880,7 +880,7 @@ func (r DeleteVolumeResponse) StatusCode() int {
 	return 0
 }
 
-type FetchVolumeDetailsResponse struct {
+type GetVolumeResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Volume
@@ -891,7 +891,7 @@ type FetchVolumeDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r FetchVolumeDetailsResponse) Status() string {
+func (r GetVolumeResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -899,7 +899,7 @@ func (r FetchVolumeDetailsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r FetchVolumeDetailsResponse) StatusCode() int {
+func (r GetVolumeResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -985,13 +985,13 @@ func (c *ClientWithResponses) DeleteVolumeWithResponse(ctx context.Context, volu
 	return ParseDeleteVolumeResponse(rsp)
 }
 
-// FetchVolumeDetailsWithResponse request returning *FetchVolumeDetailsResponse
-func (c *ClientWithResponses) FetchVolumeDetailsWithResponse(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*FetchVolumeDetailsResponse, error) {
-	rsp, err := c.FetchVolumeDetails(ctx, volumeId, reqEditors...)
+// GetVolumeWithResponse request returning *GetVolumeResponse
+func (c *ClientWithResponses) GetVolumeWithResponse(ctx context.Context, volumeId int, reqEditors ...RequestEditorFn) (*GetVolumeResponse, error) {
+	rsp, err := c.GetVolume(ctx, volumeId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseFetchVolumeDetailsResponse(rsp)
+	return ParseGetVolumeResponse(rsp)
 }
 
 // UpdateVolumeWithBodyWithResponse request with arbitrary body returning *UpdateVolumeResponse
@@ -1246,15 +1246,15 @@ func ParseDeleteVolumeResponse(rsp *http.Response) (*DeleteVolumeResponse, error
 	return response, nil
 }
 
-// ParseFetchVolumeDetailsResponse parses an HTTP response from a FetchVolumeDetailsWithResponse call
-func ParseFetchVolumeDetailsResponse(rsp *http.Response) (*FetchVolumeDetailsResponse, error) {
+// ParseGetVolumeResponse parses an HTTP response from a GetVolumeWithResponse call
+func ParseGetVolumeResponse(rsp *http.Response) (*GetVolumeResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &FetchVolumeDetailsResponse{
+	response := &GetVolumeResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

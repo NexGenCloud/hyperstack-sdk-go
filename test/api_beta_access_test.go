@@ -23,11 +23,25 @@ func Test_hyperstack_BetaAccessAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test BetaAccessAPIService CreateABetaAccessRequest", func(t *testing.T) {
+	t.Run("Test BetaAccessAPIService CreateBetaAccessRequest", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.BetaAccessAPI.CreateABetaAccessRequest(context.Background()).Execute()
+		resp, httpRes, err := apiClient.BetaAccessAPI.CreateBetaAccessRequest(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BetaAccessAPIService GetBetaAccessRequests", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var program string
+
+		resp, httpRes, err := apiClient.BetaAccessAPI.GetBetaAccessRequests(context.Background(), program).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -40,20 +54,6 @@ func Test_hyperstack_BetaAccessAPIService(t *testing.T) {
 		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.BetaAccessAPI.GetBetaAccessStatus(context.Background()).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test BetaAccessAPIService GetBetaAccessStatus2", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var program string
-
-		resp, httpRes, err := apiClient.BetaAccessAPI.GetBetaAccessStatus2(context.Background(), program).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

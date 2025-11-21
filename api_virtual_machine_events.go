@@ -22,27 +22,27 @@ import (
 // VirtualMachineEventsAPIService VirtualMachineEventsAPI service
 type VirtualMachineEventsAPIService service
 
-type ApiListVirtualMachineEventsRequest struct {
+type ApiListVMEventsRequest struct {
 	ctx        context.Context
 	ApiService *VirtualMachineEventsAPIService
 	vmId       int32
 }
 
-func (r ApiListVirtualMachineEventsRequest) Execute() (*InstanceEvents, *http.Response, error) {
-	return r.ApiService.ListVirtualMachineEventsExecute(r)
+func (r ApiListVMEventsRequest) Execute() (*InstanceEvents, *http.Response, error) {
+	return r.ApiService.ListVMEventsExecute(r)
 }
 
 /*
-ListVirtualMachineEvents List virtual machine events
+ListVMEvents List virtual machine events
 
 Retrieves a list of all events in a virtual machine's history, which records actions performed on the specified virtual machine. Include the virtual machine ID in the path to retrieve the history of events. For more details on virtual machine events history, [**click here**](https://docs.hyperstack.cloud/docs/virtual-machines/vm-performance-metrics-and-events-history#events-history).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param vmId
-	@return ApiListVirtualMachineEventsRequest
+	@return ApiListVMEventsRequest
 */
-func (a *VirtualMachineEventsAPIService) ListVirtualMachineEvents(ctx context.Context, vmId int32) ApiListVirtualMachineEventsRequest {
-	return ApiListVirtualMachineEventsRequest{
+func (a *VirtualMachineEventsAPIService) ListVMEvents(ctx context.Context, vmId int32) ApiListVMEventsRequest {
+	return ApiListVMEventsRequest{
 		ApiService: a,
 		ctx:        ctx,
 		vmId:       vmId,
@@ -52,7 +52,7 @@ func (a *VirtualMachineEventsAPIService) ListVirtualMachineEvents(ctx context.Co
 // Execute executes the request
 //
 //	@return InstanceEvents
-func (a *VirtualMachineEventsAPIService) ListVirtualMachineEventsExecute(r ApiListVirtualMachineEventsRequest) (*InstanceEvents, *http.Response, error) {
+func (a *VirtualMachineEventsAPIService) ListVMEventsExecute(r ApiListVMEventsRequest) (*InstanceEvents, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -60,7 +60,7 @@ func (a *VirtualMachineEventsAPIService) ListVirtualMachineEventsExecute(r ApiLi
 		localVarReturnValue *InstanceEvents
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineEventsAPIService.ListVirtualMachineEvents")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineEventsAPIService.ListVMEvents")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

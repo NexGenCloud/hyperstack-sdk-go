@@ -6,8 +6,8 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateTemplate**](TemplateAPI.md#CreateTemplate) | **Post** /core/marketplace/templates | Create template
 [**DeleteTemplate**](TemplateAPI.md#DeleteTemplate) | **Delete** /core/marketplace/templates/{id} | Delete template
+[**GetTemplate**](TemplateAPI.md#GetTemplate) | **Get** /core/marketplace/templates/{id} | Retrieve template details
 [**ListTemplates**](TemplateAPI.md#ListTemplates) | **Get** /core/marketplace/templates | List templates
-[**RetrieveTemplateDetails**](TemplateAPI.md#RetrieveTemplateDetails) | **Get** /core/marketplace/templates/{id} | Retrieve template details
 [**UpdateTemplate**](TemplateAPI.md#UpdateTemplate) | **Put** /core/marketplace/templates/{id} | Update template
 
 
@@ -154,6 +154,76 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetTemplate
+
+> Template GetTemplate(ctx, id).Execute()
+
+Retrieve template details
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	id := int32(56) // int32 | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.TemplateAPI.GetTemplate(context.Background(), id).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `TemplateAPI.GetTemplate``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetTemplate`: Template
+	fmt.Fprintf(os.Stdout, "Response from `TemplateAPI.GetTemplate`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetTemplateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**Template**](Template.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## ListTemplates
 
 > Templates ListTemplates(ctx).Visibility(visibility).Execute()
@@ -205,76 +275,6 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**Templates**](Templates.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## RetrieveTemplateDetails
-
-> Template RetrieveTemplateDetails(ctx, id).Execute()
-
-Retrieve template details
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-	id := int32(56) // int32 | 
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.TemplateAPI.RetrieveTemplateDetails(context.Background(), id).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `TemplateAPI.RetrieveTemplateDetails``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `RetrieveTemplateDetails`: Template
-	fmt.Fprintf(os.Stdout, "Response from `TemplateAPI.RetrieveTemplateDetails`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **int32** |  | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiRetrieveTemplateDetailsRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-### Return type
-
-[**Template**](Template.md)
 
 ### Authorization
 

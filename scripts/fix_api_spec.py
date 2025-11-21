@@ -215,6 +215,22 @@ def attr_fix_components(data: AttrType) -> None:
   # paths["/core/virtual-machines/{virtual_machine_id}/sg-rules/{id}"]["delete"]["parameters"][1]["name"] = "id"
 
 
+def fix_operation_ids(data: AttrType) -> None:
+  """
+  Fixes operationIds to maintain backward compatibility with existing SDKs.
+  
+  Args:
+      data: Data chunk to process.
+  """
+  paths = data.get("paths", {})
+  
+  # Fix /auth/me operationId to maintain backward compatibility
+  if "/auth/me" in paths and "get" in paths["/auth/me"]:
+    if paths["/auth/me"]["get"].get("operationId") == "Get_Authenticated_User":
+      paths["/auth/me"]["get"]["operationId"] = "RetrieveAuthenticatedUserDetails"
+      print("Fixed operationId for /auth/me: Get_Authenticated_User -> RetrieveAuthenticatedUserDetails")
+
+
 def fix_api_spec(spec_file: str) -> None:
   """
   Updates specification file in place, applying various schema fixes.
@@ -228,6 +244,7 @@ def fix_api_spec(spec_file: str) -> None:
   attr_remove_ref_spaces(data)
   attr_fix_components(data)
   attr_fix_empty_types(data)
+  fix_operation_ids(data)
 
   with open(spec_file, 'w') as file:
     json.dump(data, file, indent=4)

@@ -51,13 +51,13 @@ func Test_hyperstack_ImageAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test ImageAPIService GetImageDetails", func(t *testing.T) {
+	t.Run("Test ImageAPIService GetImage", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var id int32
 
-		resp, httpRes, err := apiClient.ImageAPI.GetImageDetails(context.Background(), id).Execute()
+		resp, httpRes, err := apiClient.ImageAPI.GetImage(context.Background(), id).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -65,11 +65,11 @@ func Test_hyperstack_ImageAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test ImageAPIService ListImages2", func(t *testing.T) {
+	t.Run("Test ImageAPIService ListImages", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.ImageAPI.ListImages2(context.Background()).Execute()
+		resp, httpRes, err := apiClient.ImageAPI.ListImages(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

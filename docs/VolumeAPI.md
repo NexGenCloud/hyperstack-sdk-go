@@ -6,8 +6,8 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateVolume**](VolumeAPI.md#CreateVolume) | **Post** /core/volumes | Create volume
 [**DeleteVolume**](VolumeAPI.md#DeleteVolume) | **Delete** /core/volumes/{volume_id} | Delete volume
-[**FetchVolumeDetails**](VolumeAPI.md#FetchVolumeDetails) | **Get** /core/volumes/{volume_id} | Fetch Volume Details
 [**FetchVolumeNameAvailability**](VolumeAPI.md#FetchVolumeNameAvailability) | **Get** /core/volume/name-availability/{name} | Fetch volume name availability
+[**GetVolume**](VolumeAPI.md#GetVolume) | **Get** /core/volumes/{volume_id} | Fetch Volume Details
 [**ListVolumeTypes**](VolumeAPI.md#ListVolumeTypes) | **Get** /core/volume-types | List volume types
 [**ListVolumes**](VolumeAPI.md#ListVolumes) | **Get** /core/volumes | List volumes
 [**UpdateVolume**](VolumeAPI.md#UpdateVolume) | **Patch** /core/volumes/{volume_id} | Update volume fields
@@ -150,76 +150,6 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## FetchVolumeDetails
-
-> Volume FetchVolumeDetails(ctx, volumeId).Execute()
-
-Fetch Volume Details
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-	volumeId := int32(56) // int32 | 
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VolumeAPI.FetchVolumeDetails(context.Background(), volumeId).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VolumeAPI.FetchVolumeDetails``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `FetchVolumeDetails`: Volume
-	fmt.Fprintf(os.Stdout, "Response from `VolumeAPI.FetchVolumeDetails`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**volumeId** | **int32** |  | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiFetchVolumeDetailsRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-### Return type
-
-[**Volume**](Volume.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
 ## FetchVolumeNameAvailability
 
 > NameAvailableModel FetchVolumeNameAvailability(ctx, name).Execute()
@@ -275,6 +205,76 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**NameAvailableModel**](NameAvailableModel.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetVolume
+
+> Volume GetVolume(ctx, volumeId).Execute()
+
+Fetch Volume Details
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	volumeId := int32(56) // int32 | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.VolumeAPI.GetVolume(context.Background(), volumeId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `VolumeAPI.GetVolume``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetVolume`: Volume
+	fmt.Fprintf(os.Stdout, "Response from `VolumeAPI.GetVolume`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**volumeId** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetVolumeRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**Volume**](Volume.md)
 
 ### Authorization
 

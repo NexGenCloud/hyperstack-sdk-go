@@ -22,33 +22,33 @@ import (
 // VolumeAttachmentAPIService VolumeAttachmentAPI service
 type VolumeAttachmentAPIService service
 
-type ApiAttachVolumesToVirtualMachineRequest struct {
+type ApiAttachVolumesToVMRequest struct {
 	ctx        context.Context
 	ApiService *VolumeAttachmentAPIService
 	vmId       int32
 	payload    *AttachVolumesPayload
 }
 
-func (r ApiAttachVolumesToVirtualMachineRequest) Payload(payload AttachVolumesPayload) ApiAttachVolumesToVirtualMachineRequest {
+func (r ApiAttachVolumesToVMRequest) Payload(payload AttachVolumesPayload) ApiAttachVolumesToVMRequest {
 	r.payload = &payload
 	return r
 }
 
-func (r ApiAttachVolumesToVirtualMachineRequest) Execute() (*AttachVolumes, *http.Response, error) {
-	return r.ApiService.AttachVolumesToVirtualMachineExecute(r)
+func (r ApiAttachVolumesToVMRequest) Execute() (*AttachVolumes, *http.Response, error) {
+	return r.ApiService.AttachVolumesToVMExecute(r)
 }
 
 /*
-AttachVolumesToVirtualMachine Attach volumes to virtual machine
+AttachVolumesToVM Attach volumes to virtual machine
 
 Attaches one or more volumes to an existing virtual machine, expanding its storage capacity by 2PB per attached volume. Include the VM ID in the path and the volume IDs in the request body to attach the specified volumes. For more detailson volume attachment, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/volumes/volume-attachment/attach-volumes/).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param vmId
-	@return ApiAttachVolumesToVirtualMachineRequest
+	@return ApiAttachVolumesToVMRequest
 */
-func (a *VolumeAttachmentAPIService) AttachVolumesToVirtualMachine(ctx context.Context, vmId int32) ApiAttachVolumesToVirtualMachineRequest {
-	return ApiAttachVolumesToVirtualMachineRequest{
+func (a *VolumeAttachmentAPIService) AttachVolumesToVM(ctx context.Context, vmId int32) ApiAttachVolumesToVMRequest {
+	return ApiAttachVolumesToVMRequest{
 		ApiService: a,
 		ctx:        ctx,
 		vmId:       vmId,
@@ -58,7 +58,7 @@ func (a *VolumeAttachmentAPIService) AttachVolumesToVirtualMachine(ctx context.C
 // Execute executes the request
 //
 //	@return AttachVolumes
-func (a *VolumeAttachmentAPIService) AttachVolumesToVirtualMachineExecute(r ApiAttachVolumesToVirtualMachineRequest) (*AttachVolumes, *http.Response, error) {
+func (a *VolumeAttachmentAPIService) AttachVolumesToVMExecute(r ApiAttachVolumesToVMRequest) (*AttachVolumes, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -66,7 +66,7 @@ func (a *VolumeAttachmentAPIService) AttachVolumesToVirtualMachineExecute(r ApiA
 		localVarReturnValue *AttachVolumes
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VolumeAttachmentAPIService.AttachVolumesToVirtualMachine")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VolumeAttachmentAPIService.AttachVolumesToVM")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -195,33 +195,33 @@ func (a *VolumeAttachmentAPIService) AttachVolumesToVirtualMachineExecute(r ApiA
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiDetachVolumesFromVirtualMachineRequest struct {
+type ApiDetachVolumesFromVMRequest struct {
 	ctx        context.Context
 	ApiService *VolumeAttachmentAPIService
 	vmId       int32
 	payload    *DetachVolumesPayload
 }
 
-func (r ApiDetachVolumesFromVirtualMachineRequest) Payload(payload DetachVolumesPayload) ApiDetachVolumesFromVirtualMachineRequest {
+func (r ApiDetachVolumesFromVMRequest) Payload(payload DetachVolumesPayload) ApiDetachVolumesFromVMRequest {
 	r.payload = &payload
 	return r
 }
 
-func (r ApiDetachVolumesFromVirtualMachineRequest) Execute() (*DetachVolumes, *http.Response, error) {
-	return r.ApiService.DetachVolumesFromVirtualMachineExecute(r)
+func (r ApiDetachVolumesFromVMRequest) Execute() (*DetachVolumes, *http.Response, error) {
+	return r.ApiService.DetachVolumesFromVMExecute(r)
 }
 
 /*
-DetachVolumesFromVirtualMachine Detach volumes from virtual machine
+DetachVolumesFromVM Detach volumes from virtual machine
 
 Detaches one or more volumes attached to an existing virtual machine. Include the VM ID in the path and volume IDs in the request body to detach the specified volumes from the virtual machine.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param vmId
-	@return ApiDetachVolumesFromVirtualMachineRequest
+	@return ApiDetachVolumesFromVMRequest
 */
-func (a *VolumeAttachmentAPIService) DetachVolumesFromVirtualMachine(ctx context.Context, vmId int32) ApiDetachVolumesFromVirtualMachineRequest {
-	return ApiDetachVolumesFromVirtualMachineRequest{
+func (a *VolumeAttachmentAPIService) DetachVolumesFromVM(ctx context.Context, vmId int32) ApiDetachVolumesFromVMRequest {
+	return ApiDetachVolumesFromVMRequest{
 		ApiService: a,
 		ctx:        ctx,
 		vmId:       vmId,
@@ -231,7 +231,7 @@ func (a *VolumeAttachmentAPIService) DetachVolumesFromVirtualMachine(ctx context
 // Execute executes the request
 //
 //	@return DetachVolumes
-func (a *VolumeAttachmentAPIService) DetachVolumesFromVirtualMachineExecute(r ApiDetachVolumesFromVirtualMachineRequest) (*DetachVolumes, *http.Response, error) {
+func (a *VolumeAttachmentAPIService) DetachVolumesFromVMExecute(r ApiDetachVolumesFromVMRequest) (*DetachVolumes, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -239,7 +239,7 @@ func (a *VolumeAttachmentAPIService) DetachVolumesFromVirtualMachineExecute(r Ap
 		localVarReturnValue *DetachVolumes
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VolumeAttachmentAPIService.DetachVolumesFromVirtualMachine")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VolumeAttachmentAPIService.DetachVolumesFromVM")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -368,31 +368,31 @@ func (a *VolumeAttachmentAPIService) DetachVolumesFromVirtualMachineExecute(r Ap
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiUpdateAVolumeAttachmentRequest struct {
+type ApiUpdateVolumeAttachmentRequest struct {
 	ctx                context.Context
 	ApiService         *VolumeAttachmentAPIService
 	volumeAttachmentId int32
 	payload            *UpdateVolumeAttachmentPayload
 }
 
-func (r ApiUpdateAVolumeAttachmentRequest) Payload(payload UpdateVolumeAttachmentPayload) ApiUpdateAVolumeAttachmentRequest {
+func (r ApiUpdateVolumeAttachmentRequest) Payload(payload UpdateVolumeAttachmentPayload) ApiUpdateVolumeAttachmentRequest {
 	r.payload = &payload
 	return r
 }
 
-func (r ApiUpdateAVolumeAttachmentRequest) Execute() (*AttachVolumes, *http.Response, error) {
-	return r.ApiService.UpdateAVolumeAttachmentExecute(r)
+func (r ApiUpdateVolumeAttachmentRequest) Execute() (*AttachVolumes, *http.Response, error) {
+	return r.ApiService.UpdateVolumeAttachmentExecute(r)
 }
 
 /*
-UpdateAVolumeAttachment Update a volume attachment
+UpdateVolumeAttachment Update a volume attachment
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param volumeAttachmentId
-	@return ApiUpdateAVolumeAttachmentRequest
+	@return ApiUpdateVolumeAttachmentRequest
 */
-func (a *VolumeAttachmentAPIService) UpdateAVolumeAttachment(ctx context.Context, volumeAttachmentId int32) ApiUpdateAVolumeAttachmentRequest {
-	return ApiUpdateAVolumeAttachmentRequest{
+func (a *VolumeAttachmentAPIService) UpdateVolumeAttachment(ctx context.Context, volumeAttachmentId int32) ApiUpdateVolumeAttachmentRequest {
+	return ApiUpdateVolumeAttachmentRequest{
 		ApiService:         a,
 		ctx:                ctx,
 		volumeAttachmentId: volumeAttachmentId,
@@ -402,7 +402,7 @@ func (a *VolumeAttachmentAPIService) UpdateAVolumeAttachment(ctx context.Context
 // Execute executes the request
 //
 //	@return AttachVolumes
-func (a *VolumeAttachmentAPIService) UpdateAVolumeAttachmentExecute(r ApiUpdateAVolumeAttachmentRequest) (*AttachVolumes, *http.Response, error) {
+func (a *VolumeAttachmentAPIService) UpdateVolumeAttachmentExecute(r ApiUpdateVolumeAttachmentRequest) (*AttachVolumes, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPatch
 		localVarPostBody    interface{}
@@ -410,7 +410,7 @@ func (a *VolumeAttachmentAPIService) UpdateAVolumeAttachmentExecute(r ApiUpdateA
 		localVarReturnValue *AttachVolumes
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VolumeAttachmentAPIService.UpdateAVolumeAttachment")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VolumeAttachmentAPIService.UpdateVolumeAttachment")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

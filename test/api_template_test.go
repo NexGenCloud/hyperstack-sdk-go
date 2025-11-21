@@ -49,11 +49,13 @@ func Test_hyperstack_TemplateAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test TemplateAPIService ListTemplates", func(t *testing.T) {
+	t.Run("Test TemplateAPIService GetTemplate", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.TemplateAPI.ListTemplates(context.Background()).Execute()
+		var id int32
+
+		resp, httpRes, err := apiClient.TemplateAPI.GetTemplate(context.Background(), id).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -61,13 +63,11 @@ func Test_hyperstack_TemplateAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test TemplateAPIService RetrieveTemplateDetails", func(t *testing.T) {
+	t.Run("Test TemplateAPIService ListTemplates", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var id int32
-
-		resp, httpRes, err := apiClient.TemplateAPI.RetrieveTemplateDetails(context.Background(), id).Execute()
+		resp, httpRes, err := apiClient.TemplateAPI.ListTemplates(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

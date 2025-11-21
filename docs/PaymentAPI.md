@@ -4,76 +4,15 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetDetails**](PaymentAPI.md#GetDetails) | **Get** /billing/payment/payment-details | GET: View payment details
-[**GetPaymentReceipt2**](PaymentAPI.md#GetPaymentReceipt2) | **Get** /billing/payment/receipt/{payment_id} | Retrieve Payment Receipt
-[**PostPayment**](PaymentAPI.md#PostPayment) | **Post** /billing/payment/payment-initiate | POST: Initiate payment
+[**GetPaymentReceipt**](PaymentAPI.md#GetPaymentReceipt) | **Get** /billing/payment/receipt/{payment_id} | Retrieve Payment Receipt
+[**InitiatePayment**](PaymentAPI.md#InitiatePayment) | **Post** /billing/payment/payment-initiate | POST: Initiate payment
+[**ListPaymentDetails**](PaymentAPI.md#ListPaymentDetails) | **Get** /billing/payment/payment-details | GET: View payment details
 
 
 
-## GetDetails
+## GetPaymentReceipt
 
-> PaymentDetailsResponse GetDetails(ctx).Execute()
-
-GET: View payment details
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.PaymentAPI.GetDetails(context.Background()).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `PaymentAPI.GetDetails``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `GetDetails`: PaymentDetailsResponse
-	fmt.Fprintf(os.Stdout, "Response from `PaymentAPI.GetDetails`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-This endpoint does not need any parameter.
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetDetailsRequest struct via the builder pattern
-
-
-### Return type
-
-[**PaymentDetailsResponse**](PaymentDetailsResponse.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## GetPaymentReceipt2
-
-> GetPaymentReceipt2(ctx, paymentId).Execute()
+> GetPaymentReceipt(ctx, paymentId).Execute()
 
 Retrieve Payment Receipt
 
@@ -96,9 +35,9 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.PaymentAPI.GetPaymentReceipt2(context.Background(), paymentId).Execute()
+	r, err := apiClient.PaymentAPI.GetPaymentReceipt(context.Background(), paymentId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `PaymentAPI.GetPaymentReceipt2``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `PaymentAPI.GetPaymentReceipt``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
 }
@@ -114,7 +53,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetPaymentReceipt2Request struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetPaymentReceiptRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -139,9 +78,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## PostPayment
+## InitiatePayment
 
-> PaymentInitiateResponse PostPayment(ctx).Payload(payload).Execute()
+> PaymentInitiateResponse InitiatePayment(ctx).Payload(payload).Execute()
 
 POST: Initiate payment
 
@@ -164,13 +103,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.PaymentAPI.PostPayment(context.Background()).Payload(payload).Execute()
+	resp, r, err := apiClient.PaymentAPI.InitiatePayment(context.Background()).Payload(payload).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `PaymentAPI.PostPayment``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `PaymentAPI.InitiatePayment``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `PostPayment`: PaymentInitiateResponse
-	fmt.Fprintf(os.Stdout, "Response from `PaymentAPI.PostPayment`: %v\n", resp)
+	// response from `InitiatePayment`: PaymentInitiateResponse
+	fmt.Fprintf(os.Stdout, "Response from `PaymentAPI.InitiatePayment`: %v\n", resp)
 }
 ```
 
@@ -180,7 +119,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiPostPaymentRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiInitiatePaymentRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -198,6 +137,67 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListPaymentDetails
+
+> PaymentDetailsResponse ListPaymentDetails(ctx).Execute()
+
+GET: View payment details
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.PaymentAPI.ListPaymentDetails(context.Background()).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `PaymentAPI.ListPaymentDetails``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListPaymentDetails`: PaymentDetailsResponse
+	fmt.Fprintf(os.Stdout, "Response from `PaymentAPI.ListPaymentDetails`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListPaymentDetailsRequest struct via the builder pattern
+
+
+### Return type
+
+[**PaymentDetailsResponse**](PaymentDetailsResponse.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

@@ -118,8 +118,8 @@ type ClientInterface interface {
 	// GetVNCURL request
 	GetVNCURL(ctx context.Context, vmId int, jobId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetVncUrl request
-	GetVncUrl(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RequestVMConsole request
+	RequestVMConsole(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) GetVNCURL(ctx context.Context, vmId int, jobId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -134,8 +134,8 @@ func (c *Client) GetVNCURL(ctx context.Context, vmId int, jobId int, reqEditors 
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetVncUrl(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetVncUrlRequest(c.Server, vmId)
+func (c *Client) RequestVMConsole(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRequestVMConsoleRequest(c.Server, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -187,8 +187,8 @@ func NewGetVNCURLRequest(server string, vmId int, jobId int) (*http.Request, err
 	return req, nil
 }
 
-// NewGetVncUrlRequest generates requests for GetVncUrl
-func NewGetVncUrlRequest(server string, vmId int) (*http.Request, error) {
+// NewRequestVMConsoleRequest generates requests for RequestVMConsole
+func NewRequestVMConsoleRequest(server string, vmId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -267,8 +267,8 @@ type ClientWithResponsesInterface interface {
 	// GetVNCURLWithResponse request
 	GetVNCURLWithResponse(ctx context.Context, vmId int, jobId int, reqEditors ...RequestEditorFn) (*GetVNCURLResponse, error)
 
-	// GetVncUrlWithResponse request
-	GetVncUrlWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetVncUrlResponse, error)
+	// RequestVMConsoleWithResponse request
+	RequestVMConsoleWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*RequestVMConsoleResponse, error)
 }
 
 type GetVNCURLResponse struct {
@@ -296,7 +296,7 @@ func (r GetVNCURLResponse) StatusCode() int {
 	return 0
 }
 
-type GetVncUrlResponse struct {
+type RequestVMConsoleResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *RequestConsole
@@ -306,7 +306,7 @@ type GetVncUrlResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetVncUrlResponse) Status() string {
+func (r RequestVMConsoleResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -314,7 +314,7 @@ func (r GetVncUrlResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetVncUrlResponse) StatusCode() int {
+func (r RequestVMConsoleResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -330,13 +330,13 @@ func (c *ClientWithResponses) GetVNCURLWithResponse(ctx context.Context, vmId in
 	return ParseGetVNCURLResponse(rsp)
 }
 
-// GetVncUrlWithResponse request returning *GetVncUrlResponse
-func (c *ClientWithResponses) GetVncUrlWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetVncUrlResponse, error) {
-	rsp, err := c.GetVncUrl(ctx, vmId, reqEditors...)
+// RequestVMConsoleWithResponse request returning *RequestVMConsoleResponse
+func (c *ClientWithResponses) RequestVMConsoleWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*RequestVMConsoleResponse, error) {
+	rsp, err := c.RequestVMConsole(ctx, vmId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetVncUrlResponse(rsp)
+	return ParseRequestVMConsoleResponse(rsp)
 }
 
 // ParseGetVNCURLResponse parses an HTTP response from a GetVNCURLWithResponse call
@@ -386,15 +386,15 @@ func ParseGetVNCURLResponse(rsp *http.Response) (*GetVNCURLResponse, error) {
 	return response, nil
 }
 
-// ParseGetVncUrlResponse parses an HTTP response from a GetVncUrlWithResponse call
-func ParseGetVncUrlResponse(rsp *http.Response) (*GetVncUrlResponse, error) {
+// ParseRequestVMConsoleResponse parses an HTTP response from a RequestVMConsoleWithResponse call
+func ParseRequestVMConsoleResponse(rsp *http.Response) (*RequestVMConsoleResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetVncUrlResponse{
+	response := &RequestVMConsoleResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

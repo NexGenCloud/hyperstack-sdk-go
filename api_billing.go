@@ -22,6 +22,1697 @@ import (
 // BillingAPIService BillingAPI service
 type BillingAPIService service
 
+type ApiBucketsBillingHistoryHourlyChartRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	bucketId   int32
+	startDate  *string
+	endDate    *string
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiBucketsBillingHistoryHourlyChartRequest) StartDate(startDate string) ApiBucketsBillingHistoryHourlyChartRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiBucketsBillingHistoryHourlyChartRequest) EndDate(endDate string) ApiBucketsBillingHistoryHourlyChartRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiBucketsBillingHistoryHourlyChartRequest) Execute() (*ResourceLevelGraphBillingDetailsBucket, *http.Response, error) {
+	return r.ApiService.BucketsBillingHistoryHourlyChartExecute(r)
+}
+
+/*
+BucketsBillingHistoryHourlyChart Retrieve hourly cost datapoints of a Specific Bucket for a specific billing cycle
+
+User will receive hourly cost datapoints for a Bucket for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param bucketId
+	@return ApiBucketsBillingHistoryHourlyChartRequest
+*/
+func (a *BillingAPIService) BucketsBillingHistoryHourlyChart(ctx context.Context, bucketId int32) ApiBucketsBillingHistoryHourlyChartRequest {
+	return ApiBucketsBillingHistoryHourlyChartRequest{
+		ApiService: a,
+		ctx:        ctx,
+		bucketId:   bucketId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ResourceLevelGraphBillingDetailsBucket
+func (a *BillingAPIService) BucketsBillingHistoryHourlyChartExecute(r ApiBucketsBillingHistoryHourlyChartRequest) (*ResourceLevelGraphBillingDetailsBucket, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceLevelGraphBillingDetailsBucket
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.BucketsBillingHistoryHourlyChart")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/bucket/{bucket_id}/graph"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucket_id"+"}", url.PathEscape(parameterValueToString(r.bucketId, "bucketId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetBucketBillingHistoryRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	bucketId   int32
+	startDate  *string
+	endDate    *string
+}
+
+// Datetime should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetBucketBillingHistoryRequest) StartDate(startDate string) ApiGetBucketBillingHistoryRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Datetime should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetBucketBillingHistoryRequest) EndDate(endDate string) ApiGetBucketBillingHistoryRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiGetBucketBillingHistoryRequest) Execute() (*ResourceLevelBucketBillingDetailsResponseModel, *http.Response, error) {
+	return r.ApiService.GetBucketBillingHistoryExecute(r)
+}
+
+/*
+GetBucketBillingHistory Retrieve Billing History of a Specific Snapshot for a specific Billing Cycle
+
+Retrieve billing history of a specific Bucket for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour', 'incurred_bill', 'usage_time', 'non_discounted_price_per_hour', 'non_discounted_bill'.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param bucketId
+	@return ApiGetBucketBillingHistoryRequest
+*/
+func (a *BillingAPIService) GetBucketBillingHistory(ctx context.Context, bucketId int32) ApiGetBucketBillingHistoryRequest {
+	return ApiGetBucketBillingHistoryRequest{
+		ApiService: a,
+		ctx:        ctx,
+		bucketId:   bucketId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ResourceLevelBucketBillingDetailsResponseModel
+func (a *BillingAPIService) GetBucketBillingHistoryExecute(r ApiGetBucketBillingHistoryRequest) (*ResourceLevelBucketBillingDetailsResponseModel, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceLevelBucketBillingDetailsResponseModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetBucketBillingHistory")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/bucket/{bucket_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucket_id"+"}", url.PathEscape(parameterValueToString(r.bucketId, "bucketId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetClusterBillingHistoryRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	clusterId  int32
+	startDate  *string
+	endDate    *string
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetClusterBillingHistoryRequest) StartDate(startDate string) ApiGetClusterBillingHistoryRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetClusterBillingHistoryRequest) EndDate(endDate string) ApiGetClusterBillingHistoryRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiGetClusterBillingHistoryRequest) Execute() (*ResourceLevelClusterBillingDetailsResponseModel, *http.Response, error) {
+	return r.ApiService.GetClusterBillingHistoryExecute(r)
+}
+
+/*
+GetClusterBillingHistory Retrieve Billing History of a Specific Cluster for a specific Billing Cycle
+
+User will receive billing history of a specific Cluster for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour', 'non_discounted_price_per_hour', 'incurred_bill', 'non_discounted_bill', 'usage_time', 'usage_time_ACTIVE', 'usage_time_SHUTOFF', 'usage_time_HIBERNATED'.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param clusterId
+	@return ApiGetClusterBillingHistoryRequest
+*/
+func (a *BillingAPIService) GetClusterBillingHistory(ctx context.Context, clusterId int32) ApiGetClusterBillingHistoryRequest {
+	return ApiGetClusterBillingHistoryRequest{
+		ApiService: a,
+		ctx:        ctx,
+		clusterId:  clusterId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ResourceLevelClusterBillingDetailsResponseModel
+func (a *BillingAPIService) GetClusterBillingHistoryExecute(r ApiGetClusterBillingHistoryRequest) (*ResourceLevelClusterBillingDetailsResponseModel, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceLevelClusterBillingDetailsResponseModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetClusterBillingHistory")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/cluster/{cluster_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"cluster_id"+"}", url.PathEscape(parameterValueToString(r.clusterId, "clusterId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetClusterBillingHistoryGraphRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	clusterId  int32
+	startDate  *string
+	endDate    *string
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetClusterBillingHistoryGraphRequest) StartDate(startDate string) ApiGetClusterBillingHistoryGraphRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetClusterBillingHistoryGraphRequest) EndDate(endDate string) ApiGetClusterBillingHistoryGraphRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiGetClusterBillingHistoryGraphRequest) Execute() (*ResourceLevelClusterGraphBillingDetailsResponseModel, *http.Response, error) {
+	return r.ApiService.GetClusterBillingHistoryGraphExecute(r)
+}
+
+/*
+GetClusterBillingHistoryGraph Retrieve hourly cost datapoints of a specific Cluster for a specific billing cycle
+
+User will receive hourly cost datapoints for a Cluster for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param clusterId
+	@return ApiGetClusterBillingHistoryGraphRequest
+*/
+func (a *BillingAPIService) GetClusterBillingHistoryGraph(ctx context.Context, clusterId int32) ApiGetClusterBillingHistoryGraphRequest {
+	return ApiGetClusterBillingHistoryGraphRequest{
+		ApiService: a,
+		ctx:        ctx,
+		clusterId:  clusterId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ResourceLevelClusterGraphBillingDetailsResponseModel
+func (a *BillingAPIService) GetClusterBillingHistoryGraphExecute(r ApiGetClusterBillingHistoryGraphRequest) (*ResourceLevelClusterGraphBillingDetailsResponseModel, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceLevelClusterGraphBillingDetailsResponseModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetClusterBillingHistoryGraph")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/cluster/{cluster_id}/graph"
+	localVarPath = strings.Replace(localVarPath, "{"+"cluster_id"+"}", url.PathEscape(parameterValueToString(r.clusterId, "clusterId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetDataSynthesisBillingHistoryRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	startDate  *string
+	endDate    *string
+	search     *string
+	perPage    *int32
+	page       *int32
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetDataSynthesisBillingHistoryRequest) StartDate(startDate string) ApiGetDataSynthesisBillingHistoryRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetDataSynthesisBillingHistoryRequest) EndDate(endDate string) ApiGetDataSynthesisBillingHistoryRequest {
+	r.endDate = &endDate
+	return r
+}
+
+// Search by resource \&quot;Name\&quot; or \&quot;ID\&quot;
+func (r ApiGetDataSynthesisBillingHistoryRequest) Search(search string) ApiGetDataSynthesisBillingHistoryRequest {
+	r.search = &search
+	return r
+}
+
+// Number of items to return per page
+func (r ApiGetDataSynthesisBillingHistoryRequest) PerPage(perPage int32) ApiGetDataSynthesisBillingHistoryRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Page number
+func (r ApiGetDataSynthesisBillingHistoryRequest) Page(page int32) ApiGetDataSynthesisBillingHistoryRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiGetDataSynthesisBillingHistoryRequest) Execute() (*TokenBasedBillingHistoryResponse, *http.Response, error) {
+	return r.ApiService.GetDataSynthesisBillingHistoryExecute(r)
+}
+
+/*
+GetDataSynthesisBillingHistory Retrieve Billing History of data synthesis for a specific Billing Cycle
+
+User will receive billing history of data_synthesis for the specified billing cycle.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetDataSynthesisBillingHistoryRequest
+*/
+func (a *BillingAPIService) GetDataSynthesisBillingHistory(ctx context.Context) ApiGetDataSynthesisBillingHistoryRequest {
+	return ApiGetDataSynthesisBillingHistoryRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return TokenBasedBillingHistoryResponse
+func (a *BillingAPIService) GetDataSynthesisBillingHistoryExecute(r ApiGetDataSynthesisBillingHistoryRequest) (*TokenBasedBillingHistoryResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *TokenBasedBillingHistoryResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetDataSynthesisBillingHistory")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/data_synthesis"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	if r.search != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	}
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetDataSynthesisBillingHistoryGraphRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	resourceId int32
+	startDate  *string
+	endDate    *string
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetDataSynthesisBillingHistoryGraphRequest) StartDate(startDate string) ApiGetDataSynthesisBillingHistoryGraphRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetDataSynthesisBillingHistoryGraphRequest) EndDate(endDate string) ApiGetDataSynthesisBillingHistoryGraphRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiGetDataSynthesisBillingHistoryGraphRequest) Execute() (*DataSynthesisBillingHistoryDetailsResponseSchema, *http.Response, error) {
+	return r.ApiService.GetDataSynthesisBillingHistoryGraphExecute(r)
+}
+
+/*
+GetDataSynthesisBillingHistoryGraph Retrieve hourly cost datapoints of a Specific Data Synthesis for a specific
+
+User will receive hourly cost datapoints for a data synthesis job for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
+billing cycle
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param resourceId
+	@return ApiGetDataSynthesisBillingHistoryGraphRequest
+*/
+func (a *BillingAPIService) GetDataSynthesisBillingHistoryGraph(ctx context.Context, resourceId int32) ApiGetDataSynthesisBillingHistoryGraphRequest {
+	return ApiGetDataSynthesisBillingHistoryGraphRequest{
+		ApiService: a,
+		ctx:        ctx,
+		resourceId: resourceId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return DataSynthesisBillingHistoryDetailsResponseSchema
+func (a *BillingAPIService) GetDataSynthesisBillingHistoryGraphExecute(r ApiGetDataSynthesisBillingHistoryGraphRequest) (*DataSynthesisBillingHistoryDetailsResponseSchema, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *DataSynthesisBillingHistoryDetailsResponseSchema
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetDataSynthesisBillingHistoryGraph")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/data_synthesis/{resource_id}/graph"
+	localVarPath = strings.Replace(localVarPath, "{"+"resource_id"+"}", url.PathEscape(parameterValueToString(r.resourceId, "resourceId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetDataSynthesisHistoryForResourceRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	resourceId int32
+	startDate  *string
+	endDate    *string
+}
+
+// YYYY-MM-DDTHH:MM:SS
+func (r ApiGetDataSynthesisHistoryForResourceRequest) StartDate(startDate string) ApiGetDataSynthesisHistoryForResourceRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// YYYY-MM-DDTHH:MM:SS
+func (r ApiGetDataSynthesisHistoryForResourceRequest) EndDate(endDate string) ApiGetDataSynthesisHistoryForResourceRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiGetDataSynthesisHistoryForResourceRequest) Execute() (*DataSynthesisBillingHistoryDetailsResponseSchema, *http.Response, error) {
+	return r.ApiService.GetDataSynthesisHistoryForResourceExecute(r)
+}
+
+/*
+GetDataSynthesisHistoryForResource Method for GetDataSynthesisHistoryForResource
+
+Retrieve billing history for a specific Data Synthesis resource. Includes: 'resource_name', 'infrahub_id', 'base_model', 'base_model_display_name', 'lora_adapter', 'incurred_bill', 'non_discounted_bill', 'usage_time', 'input_tokens', 'output_tokens', 'input_tokens_incurred_bill', 'input_tokens_non_discounted_bill', 'output_tokens_incurred_bill', 'output_tokens_non_discounted_bill'
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param resourceId
+	@return ApiGetDataSynthesisHistoryForResourceRequest
+*/
+func (a *BillingAPIService) GetDataSynthesisHistoryForResource(ctx context.Context, resourceId int32) ApiGetDataSynthesisHistoryForResourceRequest {
+	return ApiGetDataSynthesisHistoryForResourceRequest{
+		ApiService: a,
+		ctx:        ctx,
+		resourceId: resourceId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return DataSynthesisBillingHistoryDetailsResponseSchema
+func (a *BillingAPIService) GetDataSynthesisHistoryForResourceExecute(r ApiGetDataSynthesisHistoryForResourceRequest) (*DataSynthesisBillingHistoryDetailsResponseSchema, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *DataSynthesisBillingHistoryDetailsResponseSchema
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetDataSynthesisHistoryForResource")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/data_synthesis/{resource_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"resource_id"+"}", url.PathEscape(parameterValueToString(r.resourceId, "resourceId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetFineTuningBillingHistoryRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	startDate  *string
+	endDate    *string
+	search     *string
+	perPage    *int32
+	page       *int32
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetFineTuningBillingHistoryRequest) StartDate(startDate string) ApiGetFineTuningBillingHistoryRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetFineTuningBillingHistoryRequest) EndDate(endDate string) ApiGetFineTuningBillingHistoryRequest {
+	r.endDate = &endDate
+	return r
+}
+
+// Search by resource \&quot;Name\&quot; or \&quot;ID\&quot;
+func (r ApiGetFineTuningBillingHistoryRequest) Search(search string) ApiGetFineTuningBillingHistoryRequest {
+	r.search = &search
+	return r
+}
+
+// Number of items to return per page
+func (r ApiGetFineTuningBillingHistoryRequest) PerPage(perPage int32) ApiGetFineTuningBillingHistoryRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Page number
+func (r ApiGetFineTuningBillingHistoryRequest) Page(page int32) ApiGetFineTuningBillingHistoryRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiGetFineTuningBillingHistoryRequest) Execute() (*WorkloadBillingHistoryResponse, *http.Response, error) {
+	return r.ApiService.GetFineTuningBillingHistoryExecute(r)
+}
+
+/*
+GetFineTuningBillingHistory Retrieve Billing History of model evaluation for a specific Billing Cycle
+
+User will receive billing history of fine_tuning for the specified billing cycle.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetFineTuningBillingHistoryRequest
+*/
+func (a *BillingAPIService) GetFineTuningBillingHistory(ctx context.Context) ApiGetFineTuningBillingHistoryRequest {
+	return ApiGetFineTuningBillingHistoryRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return WorkloadBillingHistoryResponse
+func (a *BillingAPIService) GetFineTuningBillingHistoryExecute(r ApiGetFineTuningBillingHistoryRequest) (*WorkloadBillingHistoryResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *WorkloadBillingHistoryResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetFineTuningBillingHistory")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/fine_tuning"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	if r.search != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	}
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetFineTuningBillingHistoryGraphRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	resourceId int32
+	startDate  *string
+	endDate    *string
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetFineTuningBillingHistoryGraphRequest) StartDate(startDate string) ApiGetFineTuningBillingHistoryGraphRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetFineTuningBillingHistoryGraphRequest) EndDate(endDate string) ApiGetFineTuningBillingHistoryGraphRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiGetFineTuningBillingHistoryGraphRequest) Execute() (*ResourceLevelVolumeGraphBillingDetailsResponseModel, *http.Response, error) {
+	return r.ApiService.GetFineTuningBillingHistoryGraphExecute(r)
+}
+
+/*
+GetFineTuningBillingHistoryGraph Retrieve hourly cost datapoints of a Specific Fine Tuning for a specific billing cycle
+
+User will receive hourly cost datapoints for a Fine Tunings for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param resourceId
+	@return ApiGetFineTuningBillingHistoryGraphRequest
+*/
+func (a *BillingAPIService) GetFineTuningBillingHistoryGraph(ctx context.Context, resourceId int32) ApiGetFineTuningBillingHistoryGraphRequest {
+	return ApiGetFineTuningBillingHistoryGraphRequest{
+		ApiService: a,
+		ctx:        ctx,
+		resourceId: resourceId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ResourceLevelVolumeGraphBillingDetailsResponseModel
+func (a *BillingAPIService) GetFineTuningBillingHistoryGraphExecute(r ApiGetFineTuningBillingHistoryGraphRequest) (*ResourceLevelVolumeGraphBillingDetailsResponseModel, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceLevelVolumeGraphBillingDetailsResponseModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetFineTuningBillingHistoryGraph")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/fine_tuning/{resource_id}/graph"
+	localVarPath = strings.Replace(localVarPath, "{"+"resource_id"+"}", url.PathEscape(parameterValueToString(r.resourceId, "resourceId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiGetLastDayCostRequest struct {
 	ctx        context.Context
 	ApiService *BillingAPIService
@@ -180,1260 +1871,7 @@ func (a *BillingAPIService) GetLastDayCostExecute(r ApiGetLastDayCostRequest) (*
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetOrganizationThresholdRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-}
-
-func (r ApiGetOrganizationThresholdRequest) Execute() (*OrganizationThresholdsResponse, *http.Response, error) {
-	return r.ApiService.GetOrganizationThresholdExecute(r)
-}
-
-/*
-GetOrganizationThreshold GET: All Thresholds for Organization
-
-Retrieve all the notification thresholds for an organization.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetOrganizationThresholdRequest
-*/
-func (a *BillingAPIService) GetOrganizationThreshold(ctx context.Context) ApiGetOrganizationThresholdRequest {
-	return ApiGetOrganizationThresholdRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return OrganizationThresholdsResponse
-func (a *BillingAPIService) GetOrganizationThresholdExecute(r ApiGetOrganizationThresholdRequest) (*OrganizationThresholdsResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *OrganizationThresholdsResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetOrganizationThreshold")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/threshold"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUsage2Request struct {
-	ctx         context.Context
-	ApiService  *BillingAPIService
-	deleted     *string
-	environment *string
-}
-
-// &#x60;true&#x60; will return inactive resources and &#x60;false&#x60; will return active resources. By defualt(&#x60;deleted&#x3D;false&#x60;)
-func (r ApiGetUsage2Request) Deleted(deleted string) ApiGetUsage2Request {
-	r.deleted = &deleted
-	return r
-}
-
-// Filter resources by environment ID or Name
-func (r ApiGetUsage2Request) Environment(environment string) ApiGetUsage2Request {
-	r.environment = &environment
-	return r
-}
-
-func (r ApiGetUsage2Request) Execute() (*BillingMetricesResponse, *http.Response, error) {
-	return r.ApiService.GetUsage2Execute(r)
-}
-
-/*
-GetUsage2 GET: Billing usage
-
-Retrieve active billing metrics for the organization's resources, including pricing, uptime, and total cost. Returns usage details for each active resource by defualt(`deleted=false` will return active resources). Additionally, adding `deleted=true` in query parameter will return inactive resources. For additional information on view usage costs for all resources, [**click here**](None/docs/billing/pricebook/)
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUsage2Request
-*/
-func (a *BillingAPIService) GetUsage2(ctx context.Context) ApiGetUsage2Request {
-	return ApiGetUsage2Request{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return BillingMetricesResponse
-func (a *BillingAPIService) GetUsage2Execute(r ApiGetUsage2Request) (*BillingMetricesResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *BillingMetricesResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUsage2")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/usage"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.deleted != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "deleted", r.deleted, "form", "")
-	}
-	if r.environment != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "environment", r.environment, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingBucketDetailsGraphRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	bucketId   int32
-	startDate  *string
-	endDate    *string
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingBucketDetailsGraphRequest) StartDate(startDate string) ApiGetUserBillingBucketDetailsGraphRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingBucketDetailsGraphRequest) EndDate(endDate string) ApiGetUserBillingBucketDetailsGraphRequest {
-	r.endDate = &endDate
-	return r
-}
-
-func (r ApiGetUserBillingBucketDetailsGraphRequest) Execute() (*ResourceLevelGraphBillingDetailsBucket, *http.Response, error) {
-	return r.ApiService.GetUserBillingBucketDetailsGraphExecute(r)
-}
-
-/*
-GetUserBillingBucketDetailsGraph Retrieve hourly cost datapoints of a Specific Bucket for a specific billing cycle
-
-User will recieve hourly cost datapoints for a Bucket for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param bucketId
-	@return ApiGetUserBillingBucketDetailsGraphRequest
-*/
-func (a *BillingAPIService) GetUserBillingBucketDetailsGraph(ctx context.Context, bucketId int32) ApiGetUserBillingBucketDetailsGraphRequest {
-	return ApiGetUserBillingBucketDetailsGraphRequest{
-		ApiService: a,
-		ctx:        ctx,
-		bucketId:   bucketId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ResourceLevelGraphBillingDetailsBucket
-func (a *BillingAPIService) GetUserBillingBucketDetailsGraphExecute(r ApiGetUserBillingBucketDetailsGraphRequest) (*ResourceLevelGraphBillingDetailsBucket, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ResourceLevelGraphBillingDetailsBucket
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingBucketDetailsGraph")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/bucket/{bucket_id}/graph"
-	localVarPath = strings.Replace(localVarPath, "{"+"bucket_id"+"}", url.PathEscape(parameterValueToString(r.bucketId, "bucketId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingClusterDetailsGraphRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	clusterId  int32
-	startDate  *string
-	endDate    *string
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingClusterDetailsGraphRequest) StartDate(startDate string) ApiGetUserBillingClusterDetailsGraphRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingClusterDetailsGraphRequest) EndDate(endDate string) ApiGetUserBillingClusterDetailsGraphRequest {
-	r.endDate = &endDate
-	return r
-}
-
-func (r ApiGetUserBillingClusterDetailsGraphRequest) Execute() (*ResourceLevelClusterGraphBillingDetailsResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingClusterDetailsGraphExecute(r)
-}
-
-/*
-GetUserBillingClusterDetailsGraph Retrieve hourly cost datapoints of a specific Cluster for a specific billing cycle
-
-User will receive hourly cost datapoints for a Cluster for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param clusterId
-	@return ApiGetUserBillingClusterDetailsGraphRequest
-*/
-func (a *BillingAPIService) GetUserBillingClusterDetailsGraph(ctx context.Context, clusterId int32) ApiGetUserBillingClusterDetailsGraphRequest {
-	return ApiGetUserBillingClusterDetailsGraphRequest{
-		ApiService: a,
-		ctx:        ctx,
-		clusterId:  clusterId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ResourceLevelClusterGraphBillingDetailsResponseModel
-func (a *BillingAPIService) GetUserBillingClusterDetailsGraphExecute(r ApiGetUserBillingClusterDetailsGraphRequest) (*ResourceLevelClusterGraphBillingDetailsResponseModel, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ResourceLevelClusterGraphBillingDetailsResponseModel
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingClusterDetailsGraph")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/cluster/{cluster_id}/graph"
-	localVarPath = strings.Replace(localVarPath, "{"+"cluster_id"+"}", url.PathEscape(parameterValueToString(r.clusterId, "clusterId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingDataSynthesisDetailsGraphRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	resourceId int32
-	startDate  *string
-	endDate    *string
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingDataSynthesisDetailsGraphRequest) StartDate(startDate string) ApiGetUserBillingDataSynthesisDetailsGraphRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingDataSynthesisDetailsGraphRequest) EndDate(endDate string) ApiGetUserBillingDataSynthesisDetailsGraphRequest {
-	r.endDate = &endDate
-	return r
-}
-
-func (r ApiGetUserBillingDataSynthesisDetailsGraphRequest) Execute() (*DataSynthesisBillingHistoryDetailsResponseSchema, *http.Response, error) {
-	return r.ApiService.GetUserBillingDataSynthesisDetailsGraphExecute(r)
-}
-
-/*
-GetUserBillingDataSynthesisDetailsGraph Retrieve hourly cost datapoints of a Specific Data Synthesis for a specific
-
-User will receive hourly cost datapoints for a data synthesis job for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
-billing cycle
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param resourceId
-	@return ApiGetUserBillingDataSynthesisDetailsGraphRequest
-*/
-func (a *BillingAPIService) GetUserBillingDataSynthesisDetailsGraph(ctx context.Context, resourceId int32) ApiGetUserBillingDataSynthesisDetailsGraphRequest {
-	return ApiGetUserBillingDataSynthesisDetailsGraphRequest{
-		ApiService: a,
-		ctx:        ctx,
-		resourceId: resourceId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return DataSynthesisBillingHistoryDetailsResponseSchema
-func (a *BillingAPIService) GetUserBillingDataSynthesisDetailsGraphExecute(r ApiGetUserBillingDataSynthesisDetailsGraphRequest) (*DataSynthesisBillingHistoryDetailsResponseSchema, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *DataSynthesisBillingHistoryDetailsResponseSchema
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingDataSynthesisDetailsGraph")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/data_synthesis/{resource_id}/graph"
-	localVarPath = strings.Replace(localVarPath, "{"+"resource_id"+"}", url.PathEscape(parameterValueToString(r.resourceId, "resourceId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingFineTuningDetailsGraphRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	resourceId int32
-	startDate  *string
-	endDate    *string
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingFineTuningDetailsGraphRequest) StartDate(startDate string) ApiGetUserBillingFineTuningDetailsGraphRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingFineTuningDetailsGraphRequest) EndDate(endDate string) ApiGetUserBillingFineTuningDetailsGraphRequest {
-	r.endDate = &endDate
-	return r
-}
-
-func (r ApiGetUserBillingFineTuningDetailsGraphRequest) Execute() (*ResourceLevelVolumeGraphBillingDetailsResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingFineTuningDetailsGraphExecute(r)
-}
-
-/*
-GetUserBillingFineTuningDetailsGraph Retrieve hourly cost datapoints of a Specific Fine Tuning for a specific billing cycle
-
-User will recieve hourly cost datapoints for a Fine Tunings for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param resourceId
-	@return ApiGetUserBillingFineTuningDetailsGraphRequest
-*/
-func (a *BillingAPIService) GetUserBillingFineTuningDetailsGraph(ctx context.Context, resourceId int32) ApiGetUserBillingFineTuningDetailsGraphRequest {
-	return ApiGetUserBillingFineTuningDetailsGraphRequest{
-		ApiService: a,
-		ctx:        ctx,
-		resourceId: resourceId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ResourceLevelVolumeGraphBillingDetailsResponseModel
-func (a *BillingAPIService) GetUserBillingFineTuningDetailsGraphExecute(r ApiGetUserBillingFineTuningDetailsGraphRequest) (*ResourceLevelVolumeGraphBillingDetailsResponseModel, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ResourceLevelVolumeGraphBillingDetailsResponseModel
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingFineTuningDetailsGraph")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/fine_tuning/{resource_id}/graph"
-	localVarPath = strings.Replace(localVarPath, "{"+"resource_id"+"}", url.PathEscape(parameterValueToString(r.resourceId, "resourceId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingHistory2Request struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	startDate  *string
-	endDate    *string
-	graph      *string
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistory2Request) StartDate(startDate string) ApiGetUserBillingHistory2Request {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistory2Request) EndDate(endDate string) ApiGetUserBillingHistory2Request {
-	r.endDate = &endDate
-	return r
-}
-
-// Set this value to \&quot;true\&quot; for getting graph value
-func (r ApiGetUserBillingHistory2Request) Graph(graph string) ApiGetUserBillingHistory2Request {
-	r.graph = &graph
-	return r
-}
-
-func (r ApiGetUserBillingHistory2Request) Execute() (*OrganizationLevelBillingHistoryResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistory2Execute(r)
-}
-
-/*
-GetUserBillingHistory2 Retrieve Billing History for a specific Billing Cycle
-
-User will recieve billing history for the specified billing cycle. This data will include 'incurred_bill', 'non_discounted_bill', 'vm_cost', 'volume_cost'
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUserBillingHistory2Request
-*/
-func (a *BillingAPIService) GetUserBillingHistory2(ctx context.Context) ApiGetUserBillingHistory2Request {
-	return ApiGetUserBillingHistory2Request{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return OrganizationLevelBillingHistoryResponseModel
-func (a *BillingAPIService) GetUserBillingHistory2Execute(r ApiGetUserBillingHistory2Request) (*OrganizationLevelBillingHistoryResponseModel, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *OrganizationLevelBillingHistoryResponseModel
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistory2")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	if r.graph != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "graph", r.graph, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingHistoryBucket2Request struct {
+type ApiGetModelEvaluationBillingHistoryRequest struct {
 	ctx        context.Context
 	ApiService *BillingAPIService
 	startDate  *string
@@ -1444,1005 +1882,49 @@ type ApiGetUserBillingHistoryBucket2Request struct {
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryBucket2Request) StartDate(startDate string) ApiGetUserBillingHistoryBucket2Request {
+func (r ApiGetModelEvaluationBillingHistoryRequest) StartDate(startDate string) ApiGetModelEvaluationBillingHistoryRequest {
 	r.startDate = &startDate
 	return r
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryBucket2Request) EndDate(endDate string) ApiGetUserBillingHistoryBucket2Request {
+func (r ApiGetModelEvaluationBillingHistoryRequest) EndDate(endDate string) ApiGetModelEvaluationBillingHistoryRequest {
 	r.endDate = &endDate
 	return r
 }
 
 // Search by resource \&quot;Name\&quot; or \&quot;ID\&quot;
-func (r ApiGetUserBillingHistoryBucket2Request) Search(search string) ApiGetUserBillingHistoryBucket2Request {
+func (r ApiGetModelEvaluationBillingHistoryRequest) Search(search string) ApiGetModelEvaluationBillingHistoryRequest {
 	r.search = &search
 	return r
 }
 
 // Number of items to return per page
-func (r ApiGetUserBillingHistoryBucket2Request) PerPage(perPage int32) ApiGetUserBillingHistoryBucket2Request {
+func (r ApiGetModelEvaluationBillingHistoryRequest) PerPage(perPage int32) ApiGetModelEvaluationBillingHistoryRequest {
 	r.perPage = &perPage
 	return r
 }
 
 // Page number
-func (r ApiGetUserBillingHistoryBucket2Request) Page(page int32) ApiGetUserBillingHistoryBucket2Request {
+func (r ApiGetModelEvaluationBillingHistoryRequest) Page(page int32) ApiGetModelEvaluationBillingHistoryRequest {
 	r.page = &page
 	return r
 }
 
-func (r ApiGetUserBillingHistoryBucket2Request) Execute() (*ResourceLevelBucketBillingHistoryResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryBucket2Execute(r)
+func (r ApiGetModelEvaluationBillingHistoryRequest) Execute() (*TokenBasedBillingHistoryResponse, *http.Response, error) {
+	return r.ApiService.GetModelEvaluationBillingHistoryExecute(r)
 }
 
 /*
-GetUserBillingHistoryBucket2 Retrieve Billing History of Volume for a specific Billing Cycle
+GetModelEvaluationBillingHistory Retrieve Billing History of model evaluation for a specific Billing Cycle
 
-User will recieve billing history of buckets for thespecified billing cycle. This data will include 'resource_name', 'infrahub_id', 'status', 'incurred_bill', 'usage_time', 'price_per_hour'
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUserBillingHistoryBucket2Request
-*/
-func (a *BillingAPIService) GetUserBillingHistoryBucket2(ctx context.Context) ApiGetUserBillingHistoryBucket2Request {
-	return ApiGetUserBillingHistoryBucket2Request{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ResourceLevelBucketBillingHistoryResponseModel
-func (a *BillingAPIService) GetUserBillingHistoryBucket2Execute(r ApiGetUserBillingHistoryBucket2Request) (*ResourceLevelBucketBillingHistoryResponseModel, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ResourceLevelBucketBillingHistoryResponseModel
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryBucket2")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/bucket"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	if r.search != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
-	}
-	if r.perPage != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
-	}
-	if r.page != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingHistoryBucketDetailsRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	bucketId   int32
-	startDate  *string
-	endDate    *string
-}
-
-// Datetime should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryBucketDetailsRequest) StartDate(startDate string) ApiGetUserBillingHistoryBucketDetailsRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Datetime should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryBucketDetailsRequest) EndDate(endDate string) ApiGetUserBillingHistoryBucketDetailsRequest {
-	r.endDate = &endDate
-	return r
-}
-
-func (r ApiGetUserBillingHistoryBucketDetailsRequest) Execute() (*ResourceLevelBucketBillingDetailsResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryBucketDetailsExecute(r)
-}
-
-/*
-GetUserBillingHistoryBucketDetails Retrieve Billing History of a Specific Snapshot for a specific Billing Cycle
-
-Retrieve billing history of a specific Bucket for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour', 'incurred_bill', 'usage_time', 'non_discounted_price_per_hour', 'non_discounted_bill'.
+User will receive billing history of model_evaluation for the specified billing cycle.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param bucketId
-	@return ApiGetUserBillingHistoryBucketDetailsRequest
+	@return ApiGetModelEvaluationBillingHistoryRequest
 */
-func (a *BillingAPIService) GetUserBillingHistoryBucketDetails(ctx context.Context, bucketId int32) ApiGetUserBillingHistoryBucketDetailsRequest {
-	return ApiGetUserBillingHistoryBucketDetailsRequest{
-		ApiService: a,
-		ctx:        ctx,
-		bucketId:   bucketId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ResourceLevelBucketBillingDetailsResponseModel
-func (a *BillingAPIService) GetUserBillingHistoryBucketDetailsExecute(r ApiGetUserBillingHistoryBucketDetailsRequest) (*ResourceLevelBucketBillingDetailsResponseModel, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ResourceLevelBucketBillingDetailsResponseModel
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryBucketDetails")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/bucket/{bucket_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"bucket_id"+"}", url.PathEscape(parameterValueToString(r.bucketId, "bucketId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingHistoryClusterRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	startDate  *string
-	endDate    *string
-	search     *string
-	perPage    *int32
-	page       *int32
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryClusterRequest) StartDate(startDate string) ApiGetUserBillingHistoryClusterRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryClusterRequest) EndDate(endDate string) ApiGetUserBillingHistoryClusterRequest {
-	r.endDate = &endDate
-	return r
-}
-
-// Search by resource \&quot;Name\&quot; or \&quot;ID\&quot;
-func (r ApiGetUserBillingHistoryClusterRequest) Search(search string) ApiGetUserBillingHistoryClusterRequest {
-	r.search = &search
-	return r
-}
-
-// Number of items to return per page
-func (r ApiGetUserBillingHistoryClusterRequest) PerPage(perPage int32) ApiGetUserBillingHistoryClusterRequest {
-	r.perPage = &perPage
-	return r
-}
-
-// Page number
-func (r ApiGetUserBillingHistoryClusterRequest) Page(page int32) ApiGetUserBillingHistoryClusterRequest {
-	r.page = &page
-	return r
-}
-
-func (r ApiGetUserBillingHistoryClusterRequest) Execute() (*ResourceLevelClusterBillingHistoryResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryClusterExecute(r)
-}
-
-/*
-GetUserBillingHistoryCluster Retrieve Billing History of Clusters for a specific Billing Cycle
-
-User will receive billing history of clusters for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'status', 'incurred_bill', 'usage_time', 'price_per_hour'
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUserBillingHistoryClusterRequest
-*/
-func (a *BillingAPIService) GetUserBillingHistoryCluster(ctx context.Context) ApiGetUserBillingHistoryClusterRequest {
-	return ApiGetUserBillingHistoryClusterRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ResourceLevelClusterBillingHistoryResponseModel
-func (a *BillingAPIService) GetUserBillingHistoryClusterExecute(r ApiGetUserBillingHistoryClusterRequest) (*ResourceLevelClusterBillingHistoryResponseModel, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ResourceLevelClusterBillingHistoryResponseModel
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryCluster")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/cluster"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	if r.search != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
-	}
-	if r.perPage != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
-	}
-	if r.page != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingHistoryClusterDetailsRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	clusterId  int32
-	startDate  *string
-	endDate    *string
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryClusterDetailsRequest) StartDate(startDate string) ApiGetUserBillingHistoryClusterDetailsRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryClusterDetailsRequest) EndDate(endDate string) ApiGetUserBillingHistoryClusterDetailsRequest {
-	r.endDate = &endDate
-	return r
-}
-
-func (r ApiGetUserBillingHistoryClusterDetailsRequest) Execute() (*ResourceLevelClusterBillingDetailsResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryClusterDetailsExecute(r)
-}
-
-/*
-GetUserBillingHistoryClusterDetails Retrieve Billing History of a Specific Cluster for a specific Billing Cycle
-
-User will receive billing history of a specific Cluster for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour', 'non_discounted_price_per_hour', 'incurred_bill', 'non_discounted_bill', 'usage_time', 'usage_time_ACTIVE', 'usage_time_SHUTOFF', 'usage_time_HIBERNATED'.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param clusterId
-	@return ApiGetUserBillingHistoryClusterDetailsRequest
-*/
-func (a *BillingAPIService) GetUserBillingHistoryClusterDetails(ctx context.Context, clusterId int32) ApiGetUserBillingHistoryClusterDetailsRequest {
-	return ApiGetUserBillingHistoryClusterDetailsRequest{
-		ApiService: a,
-		ctx:        ctx,
-		clusterId:  clusterId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ResourceLevelClusterBillingDetailsResponseModel
-func (a *BillingAPIService) GetUserBillingHistoryClusterDetailsExecute(r ApiGetUserBillingHistoryClusterDetailsRequest) (*ResourceLevelClusterBillingDetailsResponseModel, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ResourceLevelClusterBillingDetailsResponseModel
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryClusterDetails")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/cluster/{cluster_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"cluster_id"+"}", url.PathEscape(parameterValueToString(r.clusterId, "clusterId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingHistoryContractRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	startDate  *string
-	endDate    *string
-	search     *string
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryContractRequest) StartDate(startDate string) ApiGetUserBillingHistoryContractRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryContractRequest) EndDate(endDate string) ApiGetUserBillingHistoryContractRequest {
-	r.endDate = &endDate
-	return r
-}
-
-// Search by Contract \&quot;Description\&quot; or \&quot;ID\&quot;
-func (r ApiGetUserBillingHistoryContractRequest) Search(search string) ApiGetUserBillingHistoryContractRequest {
-	r.search = &search
-	return r
-}
-
-func (r ApiGetUserBillingHistoryContractRequest) Execute() (*http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryContractExecute(r)
-}
-
-/*
-GetUserBillingHistoryContract Retrieve Billing History of Contract for a specific Billing Cycle
-
-User will recieve billing history of contracts for the specified billing cycle. This data will include 'description', gpu_type','infrahub_id', 'status', 'incurred_bill', 'price_per_hour'
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUserBillingHistoryContractRequest
-*/
-func (a *BillingAPIService) GetUserBillingHistoryContract(ctx context.Context) ApiGetUserBillingHistoryContractRequest {
-	return ApiGetUserBillingHistoryContractRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-func (a *BillingAPIService) GetUserBillingHistoryContractExecute(r ApiGetUserBillingHistoryContractRequest) (*http.Response, error) {
-	var (
-		localVarHTTPMethod = http.MethodGet
-		localVarPostBody   interface{}
-		formFiles          []formFile
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryContract")
-	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/contract"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	if r.search != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarHTTPResponse, newErr
-		}
-		return localVarHTTPResponse, newErr
-	}
-
-	return localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingHistoryDataSynthesisRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	startDate  *string
-	endDate    *string
-	search     *string
-	perPage    *int32
-	page       *int32
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryDataSynthesisRequest) StartDate(startDate string) ApiGetUserBillingHistoryDataSynthesisRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryDataSynthesisRequest) EndDate(endDate string) ApiGetUserBillingHistoryDataSynthesisRequest {
-	r.endDate = &endDate
-	return r
-}
-
-// Search by resource \&quot;Name\&quot; or \&quot;ID\&quot;
-func (r ApiGetUserBillingHistoryDataSynthesisRequest) Search(search string) ApiGetUserBillingHistoryDataSynthesisRequest {
-	r.search = &search
-	return r
-}
-
-// Number of items to return per page
-func (r ApiGetUserBillingHistoryDataSynthesisRequest) PerPage(perPage int32) ApiGetUserBillingHistoryDataSynthesisRequest {
-	r.perPage = &perPage
-	return r
-}
-
-// Page number
-func (r ApiGetUserBillingHistoryDataSynthesisRequest) Page(page int32) ApiGetUserBillingHistoryDataSynthesisRequest {
-	r.page = &page
-	return r
-}
-
-func (r ApiGetUserBillingHistoryDataSynthesisRequest) Execute() (*TokenBasedBillingHistoryResponse, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryDataSynthesisExecute(r)
-}
-
-/*
-GetUserBillingHistoryDataSynthesis Retrieve Billing History of data synthesis for a specific Billing Cycle
-
-User will recieve billing history of data_synthesis for the specified billing cycle.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUserBillingHistoryDataSynthesisRequest
-*/
-func (a *BillingAPIService) GetUserBillingHistoryDataSynthesis(ctx context.Context) ApiGetUserBillingHistoryDataSynthesisRequest {
-	return ApiGetUserBillingHistoryDataSynthesisRequest{
+func (a *BillingAPIService) GetModelEvaluationBillingHistory(ctx context.Context) ApiGetModelEvaluationBillingHistoryRequest {
+	return ApiGetModelEvaluationBillingHistoryRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -2451,7 +1933,7 @@ func (a *BillingAPIService) GetUserBillingHistoryDataSynthesis(ctx context.Conte
 // Execute executes the request
 //
 //	@return TokenBasedBillingHistoryResponse
-func (a *BillingAPIService) GetUserBillingHistoryDataSynthesisExecute(r ApiGetUserBillingHistoryDataSynthesisRequest) (*TokenBasedBillingHistoryResponse, *http.Response, error) {
+func (a *BillingAPIService) GetModelEvaluationBillingHistoryExecute(r ApiGetModelEvaluationBillingHistoryRequest) (*TokenBasedBillingHistoryResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -2459,787 +1941,7 @@ func (a *BillingAPIService) GetUserBillingHistoryDataSynthesisExecute(r ApiGetUs
 		localVarReturnValue *TokenBasedBillingHistoryResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryDataSynthesis")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/data_synthesis"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	if r.search != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
-	}
-	if r.perPage != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
-	}
-	if r.page != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingHistoryDataSynthesisDetailsRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	resourceId int32
-	startDate  *string
-	endDate    *string
-}
-
-// YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryDataSynthesisDetailsRequest) StartDate(startDate string) ApiGetUserBillingHistoryDataSynthesisDetailsRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryDataSynthesisDetailsRequest) EndDate(endDate string) ApiGetUserBillingHistoryDataSynthesisDetailsRequest {
-	r.endDate = &endDate
-	return r
-}
-
-func (r ApiGetUserBillingHistoryDataSynthesisDetailsRequest) Execute() (*DataSynthesisBillingHistoryDetailsResponseSchema, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryDataSynthesisDetailsExecute(r)
-}
-
-/*
-GetUserBillingHistoryDataSynthesisDetails Method for GetUserBillingHistoryDataSynthesisDetails
-
-Retrieve billing history for a specific Data Synthesis resource. Includes: 'resource_name', 'infrahub_id', 'base_model', 'base_model_display_name', 'lora_adapter', 'incurred_bill', 'non_discounted_bill', 'usage_time', 'input_tokens', 'output_tokens', 'input_tokens_incurred_bill', 'input_tokens_non_discounted_bill', 'output_tokens_incurred_bill', 'output_tokens_non_discounted_bill'
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param resourceId
-	@return ApiGetUserBillingHistoryDataSynthesisDetailsRequest
-*/
-func (a *BillingAPIService) GetUserBillingHistoryDataSynthesisDetails(ctx context.Context, resourceId int32) ApiGetUserBillingHistoryDataSynthesisDetailsRequest {
-	return ApiGetUserBillingHistoryDataSynthesisDetailsRequest{
-		ApiService: a,
-		ctx:        ctx,
-		resourceId: resourceId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return DataSynthesisBillingHistoryDetailsResponseSchema
-func (a *BillingAPIService) GetUserBillingHistoryDataSynthesisDetailsExecute(r ApiGetUserBillingHistoryDataSynthesisDetailsRequest) (*DataSynthesisBillingHistoryDetailsResponseSchema, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *DataSynthesisBillingHistoryDetailsResponseSchema
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryDataSynthesisDetails")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/data_synthesis/{resource_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"resource_id"+"}", url.PathEscape(parameterValueToString(r.resourceId, "resourceId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingHistoryFineTuningRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	startDate  *string
-	endDate    *string
-	search     *string
-	perPage    *int32
-	page       *int32
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryFineTuningRequest) StartDate(startDate string) ApiGetUserBillingHistoryFineTuningRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryFineTuningRequest) EndDate(endDate string) ApiGetUserBillingHistoryFineTuningRequest {
-	r.endDate = &endDate
-	return r
-}
-
-// Search by resource \&quot;Name\&quot; or \&quot;ID\&quot;
-func (r ApiGetUserBillingHistoryFineTuningRequest) Search(search string) ApiGetUserBillingHistoryFineTuningRequest {
-	r.search = &search
-	return r
-}
-
-// Number of items to return per page
-func (r ApiGetUserBillingHistoryFineTuningRequest) PerPage(perPage int32) ApiGetUserBillingHistoryFineTuningRequest {
-	r.perPage = &perPage
-	return r
-}
-
-// Page number
-func (r ApiGetUserBillingHistoryFineTuningRequest) Page(page int32) ApiGetUserBillingHistoryFineTuningRequest {
-	r.page = &page
-	return r
-}
-
-func (r ApiGetUserBillingHistoryFineTuningRequest) Execute() (*WorkloadBillingHistoryResponse, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryFineTuningExecute(r)
-}
-
-/*
-GetUserBillingHistoryFineTuning Retrieve Billing History of model evaluation for a specific Billing Cycle
-
-User will recieve billing history of fine_tuning for the specified billing cycle.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUserBillingHistoryFineTuningRequest
-*/
-func (a *BillingAPIService) GetUserBillingHistoryFineTuning(ctx context.Context) ApiGetUserBillingHistoryFineTuningRequest {
-	return ApiGetUserBillingHistoryFineTuningRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return WorkloadBillingHistoryResponse
-func (a *BillingAPIService) GetUserBillingHistoryFineTuningExecute(r ApiGetUserBillingHistoryFineTuningRequest) (*WorkloadBillingHistoryResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *WorkloadBillingHistoryResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryFineTuning")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/fine_tuning"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	if r.search != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
-	}
-	if r.perPage != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
-	}
-	if r.page != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingHistoryFineTuningDetailsRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	resourceId int32
-	startDate  *string
-	endDate    *string
-}
-
-// Datetime should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryFineTuningDetailsRequest) StartDate(startDate string) ApiGetUserBillingHistoryFineTuningDetailsRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Datetime should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryFineTuningDetailsRequest) EndDate(endDate string) ApiGetUserBillingHistoryFineTuningDetailsRequest {
-	r.endDate = &endDate
-	return r
-}
-
-func (r ApiGetUserBillingHistoryFineTuningDetailsRequest) Execute() (*ResourceLevelVolumeBillingDetailsResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryFineTuningDetailsExecute(r)
-}
-
-/*
-GetUserBillingHistoryFineTuningDetails Retrieve Billing History of a Specific Fine Tuning for a specific Billing Cycle
-
-Retrieve billing history of a specific Fine tunning for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour', 'incurred_bill', 'usage_time', 'non_discounted_price_per_hour', 'non_discounted_bill'.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param resourceId
-	@return ApiGetUserBillingHistoryFineTuningDetailsRequest
-*/
-func (a *BillingAPIService) GetUserBillingHistoryFineTuningDetails(ctx context.Context, resourceId int32) ApiGetUserBillingHistoryFineTuningDetailsRequest {
-	return ApiGetUserBillingHistoryFineTuningDetailsRequest{
-		ApiService: a,
-		ctx:        ctx,
-		resourceId: resourceId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ResourceLevelVolumeBillingDetailsResponseModel
-func (a *BillingAPIService) GetUserBillingHistoryFineTuningDetailsExecute(r ApiGetUserBillingHistoryFineTuningDetailsRequest) (*ResourceLevelVolumeBillingDetailsResponseModel, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ResourceLevelVolumeBillingDetailsResponseModel
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryFineTuningDetails")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/fine_tuning/{resource_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"resource_id"+"}", url.PathEscape(parameterValueToString(r.resourceId, "resourceId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingHistoryModelEvaluationRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	startDate  *string
-	endDate    *string
-	search     *string
-	perPage    *int32
-	page       *int32
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryModelEvaluationRequest) StartDate(startDate string) ApiGetUserBillingHistoryModelEvaluationRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryModelEvaluationRequest) EndDate(endDate string) ApiGetUserBillingHistoryModelEvaluationRequest {
-	r.endDate = &endDate
-	return r
-}
-
-// Search by resource \&quot;Name\&quot; or \&quot;ID\&quot;
-func (r ApiGetUserBillingHistoryModelEvaluationRequest) Search(search string) ApiGetUserBillingHistoryModelEvaluationRequest {
-	r.search = &search
-	return r
-}
-
-// Number of items to return per page
-func (r ApiGetUserBillingHistoryModelEvaluationRequest) PerPage(perPage int32) ApiGetUserBillingHistoryModelEvaluationRequest {
-	r.perPage = &perPage
-	return r
-}
-
-// Page number
-func (r ApiGetUserBillingHistoryModelEvaluationRequest) Page(page int32) ApiGetUserBillingHistoryModelEvaluationRequest {
-	r.page = &page
-	return r
-}
-
-func (r ApiGetUserBillingHistoryModelEvaluationRequest) Execute() (*TokenBasedBillingHistoryResponse, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryModelEvaluationExecute(r)
-}
-
-/*
-GetUserBillingHistoryModelEvaluation Retrieve Billing History of model evaluation for a specific Billing Cycle
-
-User will recieve billing history of model_evaluation for the specified billing cycle.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUserBillingHistoryModelEvaluationRequest
-*/
-func (a *BillingAPIService) GetUserBillingHistoryModelEvaluation(ctx context.Context) ApiGetUserBillingHistoryModelEvaluationRequest {
-	return ApiGetUserBillingHistoryModelEvaluationRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return TokenBasedBillingHistoryResponse
-func (a *BillingAPIService) GetUserBillingHistoryModelEvaluationExecute(r ApiGetUserBillingHistoryModelEvaluationRequest) (*TokenBasedBillingHistoryResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *TokenBasedBillingHistoryResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryModelEvaluation")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetModelEvaluationBillingHistory")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -3377,7 +2079,7 @@ func (a *BillingAPIService) GetUserBillingHistoryModelEvaluationExecute(r ApiGet
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetUserBillingHistoryModelEvaluationDetailsRequest struct {
+type ApiGetModelEvaluationBillingHistoryGraphRequest struct {
 	ctx        context.Context
 	ApiService *BillingAPIService
 	resourceId int32
@@ -3385,33 +2087,34 @@ type ApiGetUserBillingHistoryModelEvaluationDetailsRequest struct {
 	endDate    *string
 }
 
-// YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryModelEvaluationDetailsRequest) StartDate(startDate string) ApiGetUserBillingHistoryModelEvaluationDetailsRequest {
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetModelEvaluationBillingHistoryGraphRequest) StartDate(startDate string) ApiGetModelEvaluationBillingHistoryGraphRequest {
 	r.startDate = &startDate
 	return r
 }
 
-// YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryModelEvaluationDetailsRequest) EndDate(endDate string) ApiGetUserBillingHistoryModelEvaluationDetailsRequest {
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetModelEvaluationBillingHistoryGraphRequest) EndDate(endDate string) ApiGetModelEvaluationBillingHistoryGraphRequest {
 	r.endDate = &endDate
 	return r
 }
 
-func (r ApiGetUserBillingHistoryModelEvaluationDetailsRequest) Execute() (*ModelEvaluationBillingHistoryDetailsResponseSchema, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryModelEvaluationDetailsExecute(r)
+func (r ApiGetModelEvaluationBillingHistoryGraphRequest) Execute() (*ModelEvaluationBillingHistoryDetailsResponseSchema, *http.Response, error) {
+	return r.ApiService.GetModelEvaluationBillingHistoryGraphExecute(r)
 }
 
 /*
-GetUserBillingHistoryModelEvaluationDetails Method for GetUserBillingHistoryModelEvaluationDetails
+GetModelEvaluationBillingHistoryGraph Retrieve hourly cost datapoints of a Specific Model Evaluation for a specific
 
-Retrieve billing history for a specific Model Evaluation resource. Includes: 'resource_name', 'infrahub_id', 'base_model', 'base_model_display_name', 'lora_adapter', 'incurred_bill', 'non_discounted_bill', 'usage_time', 'input_tokens', 'output_tokens', 'input_tokens_incurred_bill', 'input_tokens_non_discounted_bill', 'output_tokens_incurred_bill', 'output_tokens_non_discounted_bill'
+User will receive hourly cost datapoints for a model evaluation for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
+billing cycle
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param resourceId
-	@return ApiGetUserBillingHistoryModelEvaluationDetailsRequest
+	@return ApiGetModelEvaluationBillingHistoryGraphRequest
 */
-func (a *BillingAPIService) GetUserBillingHistoryModelEvaluationDetails(ctx context.Context, resourceId int32) ApiGetUserBillingHistoryModelEvaluationDetailsRequest {
-	return ApiGetUserBillingHistoryModelEvaluationDetailsRequest{
+func (a *BillingAPIService) GetModelEvaluationBillingHistoryGraph(ctx context.Context, resourceId int32) ApiGetModelEvaluationBillingHistoryGraphRequest {
+	return ApiGetModelEvaluationBillingHistoryGraphRequest{
 		ApiService: a,
 		ctx:        ctx,
 		resourceId: resourceId,
@@ -3421,7 +2124,7 @@ func (a *BillingAPIService) GetUserBillingHistoryModelEvaluationDetails(ctx cont
 // Execute executes the request
 //
 //	@return ModelEvaluationBillingHistoryDetailsResponseSchema
-func (a *BillingAPIService) GetUserBillingHistoryModelEvaluationDetailsExecute(r ApiGetUserBillingHistoryModelEvaluationDetailsRequest) (*ModelEvaluationBillingHistoryDetailsResponseSchema, *http.Response, error) {
+func (a *BillingAPIService) GetModelEvaluationBillingHistoryGraphExecute(r ApiGetModelEvaluationBillingHistoryGraphRequest) (*ModelEvaluationBillingHistoryDetailsResponseSchema, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -3429,7 +2132,544 @@ func (a *BillingAPIService) GetUserBillingHistoryModelEvaluationDetailsExecute(r
 		localVarReturnValue *ModelEvaluationBillingHistoryDetailsResponseSchema
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryModelEvaluationDetails")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetModelEvaluationBillingHistoryGraph")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/model_evaluation/{resource_id}/graph"
+	localVarPath = strings.Replace(localVarPath, "{"+"resource_id"+"}", url.PathEscape(parameterValueToString(r.resourceId, "resourceId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetNotificationThresholdRequest struct {
+	ctx         context.Context
+	ApiService  *BillingAPIService
+	thresholdId int32
+	payload     *SubscribeOrUnsubscribeUpdatePayload
+}
+
+func (r ApiGetNotificationThresholdRequest) Payload(payload SubscribeOrUnsubscribeUpdatePayload) ApiGetNotificationThresholdRequest {
+	r.payload = &payload
+	return r
+}
+
+func (r ApiGetNotificationThresholdRequest) Execute() (*OrganizationThresholdUpdateResponse, *http.Response, error) {
+	return r.ApiService.GetNotificationThresholdExecute(r)
+}
+
+/*
+GetNotificationThreshold Update: Subscribe or Unsubscribe Notification Threshold
+
+By default, you are subscribed to all the threshold values and you will be receiving the email notification for these default thresholds values. `false` indicates that the user will no longer receive notifications for this specific threshold, whereas `true` signifies that the user will receive notification emails.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param thresholdId
+	@return ApiGetNotificationThresholdRequest
+*/
+func (a *BillingAPIService) GetNotificationThreshold(ctx context.Context, thresholdId int32) ApiGetNotificationThresholdRequest {
+	return ApiGetNotificationThresholdRequest{
+		ApiService:  a,
+		ctx:         ctx,
+		thresholdId: thresholdId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return OrganizationThresholdUpdateResponse
+func (a *BillingAPIService) GetNotificationThresholdExecute(r ApiGetNotificationThresholdRequest) (*OrganizationThresholdUpdateResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPut
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *OrganizationThresholdUpdateResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetNotificationThreshold")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/threshold/{threshold_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"threshold_id"+"}", url.PathEscape(parameterValueToString(r.thresholdId, "thresholdId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.payload == nil {
+		return localVarReturnValue, nil, reportError("payload is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.payload
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetResourceFineTuningBillingHistoryRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	resourceId int32
+	startDate  *string
+	endDate    *string
+}
+
+// Datetime should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetResourceFineTuningBillingHistoryRequest) StartDate(startDate string) ApiGetResourceFineTuningBillingHistoryRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Datetime should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetResourceFineTuningBillingHistoryRequest) EndDate(endDate string) ApiGetResourceFineTuningBillingHistoryRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiGetResourceFineTuningBillingHistoryRequest) Execute() (*ResourceLevelVolumeBillingDetailsResponseModel, *http.Response, error) {
+	return r.ApiService.GetResourceFineTuningBillingHistoryExecute(r)
+}
+
+/*
+GetResourceFineTuningBillingHistory Retrieve Billing History of a Specific Fine Tuning for a specific Billing Cycle
+
+Retrieve billing history of a specific Fine tuning for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour', 'incurred_bill', 'usage_time', 'non_discounted_price_per_hour', 'non_discounted_bill'.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param resourceId
+	@return ApiGetResourceFineTuningBillingHistoryRequest
+*/
+func (a *BillingAPIService) GetResourceFineTuningBillingHistory(ctx context.Context, resourceId int32) ApiGetResourceFineTuningBillingHistoryRequest {
+	return ApiGetResourceFineTuningBillingHistoryRequest{
+		ApiService: a,
+		ctx:        ctx,
+		resourceId: resourceId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ResourceLevelVolumeBillingDetailsResponseModel
+func (a *BillingAPIService) GetResourceFineTuningBillingHistoryExecute(r ApiGetResourceFineTuningBillingHistoryRequest) (*ResourceLevelVolumeBillingDetailsResponseModel, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceLevelVolumeBillingDetailsResponseModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetResourceFineTuningBillingHistory")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/fine_tuning/{resource_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"resource_id"+"}", url.PathEscape(parameterValueToString(r.resourceId, "resourceId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetResourceModelEvaluationBillingHistoryRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	resourceId int32
+	startDate  *string
+	endDate    *string
+}
+
+// YYYY-MM-DDTHH:MM:SS
+func (r ApiGetResourceModelEvaluationBillingHistoryRequest) StartDate(startDate string) ApiGetResourceModelEvaluationBillingHistoryRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// YYYY-MM-DDTHH:MM:SS
+func (r ApiGetResourceModelEvaluationBillingHistoryRequest) EndDate(endDate string) ApiGetResourceModelEvaluationBillingHistoryRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiGetResourceModelEvaluationBillingHistoryRequest) Execute() (*ModelEvaluationBillingHistoryDetailsResponseSchema, *http.Response, error) {
+	return r.ApiService.GetResourceModelEvaluationBillingHistoryExecute(r)
+}
+
+/*
+GetResourceModelEvaluationBillingHistory Method for GetResourceModelEvaluationBillingHistory
+
+Retrieve billing history for a specific Model Evaluation resource. Includes: 'resource_name', 'infrahub_id', 'base_model', 'base_model_display_name', 'lora_adapter', 'incurred_bill', 'non_discounted_bill', 'usage_time', 'input_tokens', 'output_tokens', 'input_tokens_incurred_bill', 'input_tokens_non_discounted_bill', 'output_tokens_incurred_bill', 'output_tokens_non_discounted_bill'
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param resourceId
+	@return ApiGetResourceModelEvaluationBillingHistoryRequest
+*/
+func (a *BillingAPIService) GetResourceModelEvaluationBillingHistory(ctx context.Context, resourceId int32) ApiGetResourceModelEvaluationBillingHistoryRequest {
+	return ApiGetResourceModelEvaluationBillingHistoryRequest{
+		ApiService: a,
+		ctx:        ctx,
+		resourceId: resourceId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ModelEvaluationBillingHistoryDetailsResponseSchema
+func (a *BillingAPIService) GetResourceModelEvaluationBillingHistoryExecute(r ApiGetResourceModelEvaluationBillingHistoryRequest) (*ModelEvaluationBillingHistoryDetailsResponseSchema, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ModelEvaluationBillingHistoryDetailsResponseSchema
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetResourceModelEvaluationBillingHistory")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -3559,82 +2799,66 @@ func (a *BillingAPIService) GetUserBillingHistoryModelEvaluationDetailsExecute(r
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetUserBillingHistoryServerlessInferenceRequest struct {
+type ApiGetServerlessInferenceBillingHistoryGraphRequest struct {
 	ctx        context.Context
 	ApiService *BillingAPIService
+	resourceId int32
 	startDate  *string
 	endDate    *string
-	search     *string
-	perPage    *int32
-	page       *int32
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryServerlessInferenceRequest) StartDate(startDate string) ApiGetUserBillingHistoryServerlessInferenceRequest {
+func (r ApiGetServerlessInferenceBillingHistoryGraphRequest) StartDate(startDate string) ApiGetServerlessInferenceBillingHistoryGraphRequest {
 	r.startDate = &startDate
 	return r
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryServerlessInferenceRequest) EndDate(endDate string) ApiGetUserBillingHistoryServerlessInferenceRequest {
+func (r ApiGetServerlessInferenceBillingHistoryGraphRequest) EndDate(endDate string) ApiGetServerlessInferenceBillingHistoryGraphRequest {
 	r.endDate = &endDate
 	return r
 }
 
-// Search by resource \&quot;Name\&quot; or \&quot;ID\&quot;
-func (r ApiGetUserBillingHistoryServerlessInferenceRequest) Search(search string) ApiGetUserBillingHistoryServerlessInferenceRequest {
-	r.search = &search
-	return r
-}
-
-// Number of items to return per page
-func (r ApiGetUserBillingHistoryServerlessInferenceRequest) PerPage(perPage int32) ApiGetUserBillingHistoryServerlessInferenceRequest {
-	r.perPage = &perPage
-	return r
-}
-
-// Page number
-func (r ApiGetUserBillingHistoryServerlessInferenceRequest) Page(page int32) ApiGetUserBillingHistoryServerlessInferenceRequest {
-	r.page = &page
-	return r
-}
-
-func (r ApiGetUserBillingHistoryServerlessInferenceRequest) Execute() (*TokenBasedBillingHistoryResponse, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryServerlessInferenceExecute(r)
+func (r ApiGetServerlessInferenceBillingHistoryGraphRequest) Execute() (*ServerlessInferencedBillingHistoryDetailsResponseSchema, *http.Response, error) {
+	return r.ApiService.GetServerlessInferenceBillingHistoryGraphExecute(r)
 }
 
 /*
-GetUserBillingHistoryServerlessInference Retrieve Billing History of serverless inference for a specific Billing Cycle
+GetServerlessInferenceBillingHistoryGraph Retrieve hourly cost datapoints of a Specific Serverless Inference for a specific
 
-User will recieve billing history of serverless_inference for the specified billing cycle.
+User will receive hourly cost datapoints for a serverless inference for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
+billing cycle
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUserBillingHistoryServerlessInferenceRequest
+	@param resourceId
+	@return ApiGetServerlessInferenceBillingHistoryGraphRequest
 */
-func (a *BillingAPIService) GetUserBillingHistoryServerlessInference(ctx context.Context) ApiGetUserBillingHistoryServerlessInferenceRequest {
-	return ApiGetUserBillingHistoryServerlessInferenceRequest{
+func (a *BillingAPIService) GetServerlessInferenceBillingHistoryGraph(ctx context.Context, resourceId int32) ApiGetServerlessInferenceBillingHistoryGraphRequest {
+	return ApiGetServerlessInferenceBillingHistoryGraphRequest{
 		ApiService: a,
 		ctx:        ctx,
+		resourceId: resourceId,
 	}
 }
 
 // Execute executes the request
 //
-//	@return TokenBasedBillingHistoryResponse
-func (a *BillingAPIService) GetUserBillingHistoryServerlessInferenceExecute(r ApiGetUserBillingHistoryServerlessInferenceRequest) (*TokenBasedBillingHistoryResponse, *http.Response, error) {
+//	@return ServerlessInferencedBillingHistoryDetailsResponseSchema
+func (a *BillingAPIService) GetServerlessInferenceBillingHistoryGraphExecute(r ApiGetServerlessInferenceBillingHistoryGraphRequest) (*ServerlessInferencedBillingHistoryDetailsResponseSchema, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *TokenBasedBillingHistoryResponse
+		localVarReturnValue *ServerlessInferencedBillingHistoryDetailsResponseSchema
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryServerlessInference")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetServerlessInferenceBillingHistoryGraph")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/billing/billing/history/serverless_inference"
+	localVarPath := localBasePath + "/billing/billing/history/serverless_inference/{resource_id}/graph"
+	localVarPath = strings.Replace(localVarPath, "{"+"resource_id"+"}", url.PathEscape(parameterValueToString(r.resourceId, "resourceId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -3645,15 +2869,6 @@ func (a *BillingAPIService) GetUserBillingHistoryServerlessInferenceExecute(r Ap
 	}
 	if r.endDate != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	if r.search != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
-	}
-	if r.perPage != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
-	}
-	if r.page != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -3767,7 +2982,7 @@ func (a *BillingAPIService) GetUserBillingHistoryServerlessInferenceExecute(r Ap
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetUserBillingHistoryServerlessInferenceDetailsRequest struct {
+type ApiGetServerlessInferencesBillingHistoryRequest struct {
 	ctx        context.Context
 	ApiService *BillingAPIService
 	resourceId int32
@@ -3776,32 +2991,32 @@ type ApiGetUserBillingHistoryServerlessInferenceDetailsRequest struct {
 }
 
 // YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryServerlessInferenceDetailsRequest) StartDate(startDate string) ApiGetUserBillingHistoryServerlessInferenceDetailsRequest {
+func (r ApiGetServerlessInferencesBillingHistoryRequest) StartDate(startDate string) ApiGetServerlessInferencesBillingHistoryRequest {
 	r.startDate = &startDate
 	return r
 }
 
 // YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryServerlessInferenceDetailsRequest) EndDate(endDate string) ApiGetUserBillingHistoryServerlessInferenceDetailsRequest {
+func (r ApiGetServerlessInferencesBillingHistoryRequest) EndDate(endDate string) ApiGetServerlessInferencesBillingHistoryRequest {
 	r.endDate = &endDate
 	return r
 }
 
-func (r ApiGetUserBillingHistoryServerlessInferenceDetailsRequest) Execute() (*ServerlessInferencedBillingHistoryDetailsResponseSchema, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryServerlessInferenceDetailsExecute(r)
+func (r ApiGetServerlessInferencesBillingHistoryRequest) Execute() (*ServerlessInferencedBillingHistoryDetailsResponseSchema, *http.Response, error) {
+	return r.ApiService.GetServerlessInferencesBillingHistoryExecute(r)
 }
 
 /*
-GetUserBillingHistoryServerlessInferenceDetails Method for GetUserBillingHistoryServerlessInferenceDetails
+GetServerlessInferencesBillingHistory Method for GetServerlessInferencesBillingHistory
 
 Retrieve billing history for a specific Serverless Inference resource. Includes: 'resource_name', 'infrahub_id', 'base_model', 'base_model_display_name', 'lora_adapter', 'incurred_bill', 'non_discounted_bill', 'usage_time', 'input_tokens', 'output_tokens', 'input_tokens_incurred_bill', 'input_tokens_non_discounted_bill', 'output_tokens_incurred_bill', 'output_tokens_non_discounted_bill'
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param resourceId
-	@return ApiGetUserBillingHistoryServerlessInferenceDetailsRequest
+	@return ApiGetServerlessInferencesBillingHistoryRequest
 */
-func (a *BillingAPIService) GetUserBillingHistoryServerlessInferenceDetails(ctx context.Context, resourceId int32) ApiGetUserBillingHistoryServerlessInferenceDetailsRequest {
-	return ApiGetUserBillingHistoryServerlessInferenceDetailsRequest{
+func (a *BillingAPIService) GetServerlessInferencesBillingHistory(ctx context.Context, resourceId int32) ApiGetServerlessInferencesBillingHistoryRequest {
+	return ApiGetServerlessInferencesBillingHistoryRequest{
 		ApiService: a,
 		ctx:        ctx,
 		resourceId: resourceId,
@@ -3811,7 +3026,7 @@ func (a *BillingAPIService) GetUserBillingHistoryServerlessInferenceDetails(ctx 
 // Execute executes the request
 //
 //	@return ServerlessInferencedBillingHistoryDetailsResponseSchema
-func (a *BillingAPIService) GetUserBillingHistoryServerlessInferenceDetailsExecute(r ApiGetUserBillingHistoryServerlessInferenceDetailsRequest) (*ServerlessInferencedBillingHistoryDetailsResponseSchema, *http.Response, error) {
+func (a *BillingAPIService) GetServerlessInferencesBillingHistoryExecute(r ApiGetServerlessInferencesBillingHistoryRequest) (*ServerlessInferencedBillingHistoryDetailsResponseSchema, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -3819,7 +3034,7 @@ func (a *BillingAPIService) GetUserBillingHistoryServerlessInferenceDetailsExecu
 		localVarReturnValue *ServerlessInferencedBillingHistoryDetailsResponseSchema
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryServerlessInferenceDetails")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetServerlessInferencesBillingHistory")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -3949,215 +3164,7 @@ func (a *BillingAPIService) GetUserBillingHistoryServerlessInferenceDetailsExecu
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetUserBillingHistorySnapshotRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	startDate  *string
-	endDate    *string
-	search     *string
-	perPage    *int32
-	page       *int32
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistorySnapshotRequest) StartDate(startDate string) ApiGetUserBillingHistorySnapshotRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistorySnapshotRequest) EndDate(endDate string) ApiGetUserBillingHistorySnapshotRequest {
-	r.endDate = &endDate
-	return r
-}
-
-// Search by resource \&quot;Name\&quot; or \&quot;ID\&quot;
-func (r ApiGetUserBillingHistorySnapshotRequest) Search(search string) ApiGetUserBillingHistorySnapshotRequest {
-	r.search = &search
-	return r
-}
-
-// Number of items to return per page
-func (r ApiGetUserBillingHistorySnapshotRequest) PerPage(perPage int32) ApiGetUserBillingHistorySnapshotRequest {
-	r.perPage = &perPage
-	return r
-}
-
-// Page number
-func (r ApiGetUserBillingHistorySnapshotRequest) Page(page int32) ApiGetUserBillingHistorySnapshotRequest {
-	r.page = &page
-	return r
-}
-
-func (r ApiGetUserBillingHistorySnapshotRequest) Execute() (*ResourceLevelVolumeBillingHistoryResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistorySnapshotExecute(r)
-}
-
-/*
-GetUserBillingHistorySnapshot Retrieve Billing History of Snapshot for a specific Billing Cycle
-
-User will recieve billing history of snapshots for thespecified billing cycle. This data will include 'resource_name', 'infrahub_id', 'status', 'incurred_bill', 'usage_time', 'price_per_hour'
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUserBillingHistorySnapshotRequest
-*/
-func (a *BillingAPIService) GetUserBillingHistorySnapshot(ctx context.Context) ApiGetUserBillingHistorySnapshotRequest {
-	return ApiGetUserBillingHistorySnapshotRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ResourceLevelVolumeBillingHistoryResponseModel
-func (a *BillingAPIService) GetUserBillingHistorySnapshotExecute(r ApiGetUserBillingHistorySnapshotRequest) (*ResourceLevelVolumeBillingHistoryResponseModel, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ResourceLevelVolumeBillingHistoryResponseModel
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistorySnapshot")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/snapshot"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	if r.search != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
-	}
-	if r.perPage != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
-	}
-	if r.page != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingHistorySnapshotDetailsRequest struct {
+type ApiGetSnapshotBillingHistoryRequest struct {
 	ctx        context.Context
 	ApiService *BillingAPIService
 	snapshotId int32
@@ -4166,32 +3173,32 @@ type ApiGetUserBillingHistorySnapshotDetailsRequest struct {
 }
 
 // Datetime should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistorySnapshotDetailsRequest) StartDate(startDate string) ApiGetUserBillingHistorySnapshotDetailsRequest {
+func (r ApiGetSnapshotBillingHistoryRequest) StartDate(startDate string) ApiGetSnapshotBillingHistoryRequest {
 	r.startDate = &startDate
 	return r
 }
 
 // Datetime should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistorySnapshotDetailsRequest) EndDate(endDate string) ApiGetUserBillingHistorySnapshotDetailsRequest {
+func (r ApiGetSnapshotBillingHistoryRequest) EndDate(endDate string) ApiGetSnapshotBillingHistoryRequest {
 	r.endDate = &endDate
 	return r
 }
 
-func (r ApiGetUserBillingHistorySnapshotDetailsRequest) Execute() (*ResourceLevelVolumeBillingDetailsResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistorySnapshotDetailsExecute(r)
+func (r ApiGetSnapshotBillingHistoryRequest) Execute() (*ResourceLevelVolumeBillingDetailsResponseModel, *http.Response, error) {
+	return r.ApiService.GetSnapshotBillingHistoryExecute(r)
 }
 
 /*
-GetUserBillingHistorySnapshotDetails Retrieve Billing History of a Specific Snapshot for a specific Billing Cycle
+GetSnapshotBillingHistory Retrieve Billing History of a Specific Snapshot for a specific Billing Cycle
 
 Retrieve billing history of a specific Snapshot for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour', 'incurred_bill', 'usage_time', 'non_discounted_price_per_hour', 'non_discounted_bill'.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param snapshotId
-	@return ApiGetUserBillingHistorySnapshotDetailsRequest
+	@return ApiGetSnapshotBillingHistoryRequest
 */
-func (a *BillingAPIService) GetUserBillingHistorySnapshotDetails(ctx context.Context, snapshotId int32) ApiGetUserBillingHistorySnapshotDetailsRequest {
-	return ApiGetUserBillingHistorySnapshotDetailsRequest{
+func (a *BillingAPIService) GetSnapshotBillingHistory(ctx context.Context, snapshotId int32) ApiGetSnapshotBillingHistoryRequest {
+	return ApiGetSnapshotBillingHistoryRequest{
 		ApiService: a,
 		ctx:        ctx,
 		snapshotId: snapshotId,
@@ -4201,7 +3208,7 @@ func (a *BillingAPIService) GetUserBillingHistorySnapshotDetails(ctx context.Con
 // Execute executes the request
 //
 //	@return ResourceLevelVolumeBillingDetailsResponseModel
-func (a *BillingAPIService) GetUserBillingHistorySnapshotDetailsExecute(r ApiGetUserBillingHistorySnapshotDetailsRequest) (*ResourceLevelVolumeBillingDetailsResponseModel, *http.Response, error) {
+func (a *BillingAPIService) GetSnapshotBillingHistoryExecute(r ApiGetSnapshotBillingHistoryRequest) (*ResourceLevelVolumeBillingDetailsResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -4209,7 +3216,7 @@ func (a *BillingAPIService) GetUserBillingHistorySnapshotDetailsExecute(r ApiGet
 		localVarReturnValue *ResourceLevelVolumeBillingDetailsResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistorySnapshotDetails")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetSnapshotBillingHistory")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -4339,7 +3346,1090 @@ func (a *BillingAPIService) GetUserBillingHistorySnapshotDetailsExecute(r ApiGet
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetUserBillingHistoryVm2Request struct {
+type ApiGetSnapshotBillingHistoryGraphRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	snapshotId int32
+	startDate  *string
+	endDate    *string
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetSnapshotBillingHistoryGraphRequest) StartDate(startDate string) ApiGetSnapshotBillingHistoryGraphRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetSnapshotBillingHistoryGraphRequest) EndDate(endDate string) ApiGetSnapshotBillingHistoryGraphRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiGetSnapshotBillingHistoryGraphRequest) Execute() (*ResourceLevelVolumeGraphBillingDetailsResponseModel, *http.Response, error) {
+	return r.ApiService.GetSnapshotBillingHistoryGraphExecute(r)
+}
+
+/*
+GetSnapshotBillingHistoryGraph Retrieve hourly cost datapoints of a Specific Snapshot for a specific billing cycle
+
+User will receive hourly cost datapoints for a Snapshot for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param snapshotId
+	@return ApiGetSnapshotBillingHistoryGraphRequest
+*/
+func (a *BillingAPIService) GetSnapshotBillingHistoryGraph(ctx context.Context, snapshotId int32) ApiGetSnapshotBillingHistoryGraphRequest {
+	return ApiGetSnapshotBillingHistoryGraphRequest{
+		ApiService: a,
+		ctx:        ctx,
+		snapshotId: snapshotId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ResourceLevelVolumeGraphBillingDetailsResponseModel
+func (a *BillingAPIService) GetSnapshotBillingHistoryGraphExecute(r ApiGetSnapshotBillingHistoryGraphRequest) (*ResourceLevelVolumeGraphBillingDetailsResponseModel, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceLevelVolumeGraphBillingDetailsResponseModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetSnapshotBillingHistoryGraph")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/snapshot/{snapshot_id}/graph"
+	localVarPath = strings.Replace(localVarPath, "{"+"snapshot_id"+"}", url.PathEscape(parameterValueToString(r.snapshotId, "snapshotId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetUsageRequest struct {
+	ctx         context.Context
+	ApiService  *BillingAPIService
+	deleted     *string
+	environment *string
+}
+
+// &#x60;true&#x60; will return inactive resources and &#x60;false&#x60; will return active resources. By defualt(&#x60;deleted&#x3D;false&#x60;)
+func (r ApiGetUsageRequest) Deleted(deleted string) ApiGetUsageRequest {
+	r.deleted = &deleted
+	return r
+}
+
+// Filter resources by environment ID or Name
+func (r ApiGetUsageRequest) Environment(environment string) ApiGetUsageRequest {
+	r.environment = &environment
+	return r
+}
+
+func (r ApiGetUsageRequest) Execute() (*BillingMetricesResponse, *http.Response, error) {
+	return r.ApiService.GetUsageExecute(r)
+}
+
+/*
+GetUsage GET: Billing usage
+
+Retrieve active billing metrics for the organization's resources, including pricing, uptime, and total cost. Returns usage details for each active resource by defualt(`deleted=false` will return active resources). Additionally, adding `deleted=true` in query parameter will return inactive resources. For additional information on view usage costs for all resources, [**click here**](None/docs/billing/pricebook/)
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetUsageRequest
+*/
+func (a *BillingAPIService) GetUsage(ctx context.Context) ApiGetUsageRequest {
+	return ApiGetUsageRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return BillingMetricesResponse
+func (a *BillingAPIService) GetUsageExecute(r ApiGetUsageRequest) (*BillingMetricesResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BillingMetricesResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUsage")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/usage"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.deleted != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "deleted", r.deleted, "form", "")
+	}
+	if r.environment != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "environment", r.environment, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetUserBillingHistoryRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	startDate  *string
+	endDate    *string
+	graph      *string
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetUserBillingHistoryRequest) StartDate(startDate string) ApiGetUserBillingHistoryRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetUserBillingHistoryRequest) EndDate(endDate string) ApiGetUserBillingHistoryRequest {
+	r.endDate = &endDate
+	return r
+}
+
+// Set this value to \&quot;true\&quot; for getting graph value
+func (r ApiGetUserBillingHistoryRequest) Graph(graph string) ApiGetUserBillingHistoryRequest {
+	r.graph = &graph
+	return r
+}
+
+func (r ApiGetUserBillingHistoryRequest) Execute() (*OrganizationLevelBillingHistoryResponseModel, *http.Response, error) {
+	return r.ApiService.GetUserBillingHistoryExecute(r)
+}
+
+/*
+GetUserBillingHistory Retrieve Billing History for a specific Billing Cycle
+
+User will receive billing history for the specified billing cycle. This data will include 'incurred_bill', 'non_discounted_bill', 'vm_cost', 'volume_cost'
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetUserBillingHistoryRequest
+*/
+func (a *BillingAPIService) GetUserBillingHistory(ctx context.Context) ApiGetUserBillingHistoryRequest {
+	return ApiGetUserBillingHistoryRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return OrganizationLevelBillingHistoryResponseModel
+func (a *BillingAPIService) GetUserBillingHistoryExecute(r ApiGetUserBillingHistoryRequest) (*OrganizationLevelBillingHistoryResponseModel, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *OrganizationLevelBillingHistoryResponseModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistory")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	if r.graph != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "graph", r.graph, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetVMBillingDetailsRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	vmId       int32
+	startDate  *string
+	endDate    *string
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetVMBillingDetailsRequest) StartDate(startDate string) ApiGetVMBillingDetailsRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetVMBillingDetailsRequest) EndDate(endDate string) ApiGetVMBillingDetailsRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiGetVMBillingDetailsRequest) Execute() (*ResourceLevelVMBillingDetailsResponseModel, *http.Response, error) {
+	return r.ApiService.GetVMBillingDetailsExecute(r)
+}
+
+/*
+GetVMBillingDetails Retrieve Billing History of a Specific Virtual Machine for a specific Billing Cycle
+
+User will receive billing history of a specific Virtual Machine for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour', 'non_discounted_price_per_hour', 'incurred_bill', 'non_discounted_bill', 'usage_time', 'usage_time_ACTIVE', 'usage_time_SHUTOFF', 'usage_time_HIBERNATED'
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param vmId
+	@return ApiGetVMBillingDetailsRequest
+*/
+func (a *BillingAPIService) GetVMBillingDetails(ctx context.Context, vmId int32) ApiGetVMBillingDetailsRequest {
+	return ApiGetVMBillingDetailsRequest{
+		ApiService: a,
+		ctx:        ctx,
+		vmId:       vmId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ResourceLevelVMBillingDetailsResponseModel
+func (a *BillingAPIService) GetVMBillingDetailsExecute(r ApiGetVMBillingDetailsRequest) (*ResourceLevelVMBillingDetailsResponseModel, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceLevelVMBillingDetailsResponseModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetVMBillingDetails")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/virtual-machine/{vm_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetVMBillingEventsRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	vmId       int32
+	startDate  *string
+	endDate    *string
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetVMBillingEventsRequest) StartDate(startDate string) ApiGetVMBillingEventsRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetVMBillingEventsRequest) EndDate(endDate string) ApiGetVMBillingEventsRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiGetVMBillingEventsRequest) Execute() (*ResourceBillingEventsHistoryResponse, *http.Response, error) {
+	return r.ApiService.GetVMBillingEventsExecute(r)
+}
+
+/*
+GetVMBillingEvents Retrieve VM billing events history
+
+User will receive vm billing events history
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param vmId
+	@return ApiGetVMBillingEventsRequest
+*/
+func (a *BillingAPIService) GetVMBillingEvents(ctx context.Context, vmId int32) ApiGetVMBillingEventsRequest {
+	return ApiGetVMBillingEventsRequest{
+		ApiService: a,
+		ctx:        ctx,
+		vmId:       vmId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ResourceBillingEventsHistoryResponse
+func (a *BillingAPIService) GetVMBillingEventsExecute(r ApiGetVMBillingEventsRequest) (*ResourceBillingEventsHistoryResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceBillingEventsHistoryResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetVMBillingEvents")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/virtual-machine/{vm_id}/billing-events"
+	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetVMBillingGraphRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	vmId       int32
+	startDate  *string
+	endDate    *string
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetVMBillingGraphRequest) StartDate(startDate string) ApiGetVMBillingGraphRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetVMBillingGraphRequest) EndDate(endDate string) ApiGetVMBillingGraphRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiGetVMBillingGraphRequest) Execute() (*ResourceLevelVmGraphBillingDetailsResponseModel, *http.Response, error) {
+	return r.ApiService.GetVMBillingGraphExecute(r)
+}
+
+/*
+GetVMBillingGraph Retrieve hourly cost datapoints of a Specific Virtual Machine for a specific billing cycle
+
+User will receive hourly cost datapoints for a VM for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param vmId
+	@return ApiGetVMBillingGraphRequest
+*/
+func (a *BillingAPIService) GetVMBillingGraph(ctx context.Context, vmId int32) ApiGetVMBillingGraphRequest {
+	return ApiGetVMBillingGraphRequest{
+		ApiService: a,
+		ctx:        ctx,
+		vmId:       vmId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ResourceLevelVmGraphBillingDetailsResponseModel
+func (a *BillingAPIService) GetVMBillingGraphExecute(r ApiGetVMBillingGraphRequest) (*ResourceLevelVmGraphBillingDetailsResponseModel, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceLevelVmGraphBillingDetailsResponseModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetVMBillingGraph")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/virtual-machine/{vm_id}/graph"
+	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetVMBillingHistoryRequest struct {
 	ctx        context.Context
 	ApiService *BillingAPIService
 	startDate  *string
@@ -4350,49 +4440,49 @@ type ApiGetUserBillingHistoryVm2Request struct {
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryVm2Request) StartDate(startDate string) ApiGetUserBillingHistoryVm2Request {
+func (r ApiGetVMBillingHistoryRequest) StartDate(startDate string) ApiGetVMBillingHistoryRequest {
 	r.startDate = &startDate
 	return r
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryVm2Request) EndDate(endDate string) ApiGetUserBillingHistoryVm2Request {
+func (r ApiGetVMBillingHistoryRequest) EndDate(endDate string) ApiGetVMBillingHistoryRequest {
 	r.endDate = &endDate
 	return r
 }
 
 // Search by resource \&quot;Name\&quot; or \&quot;ID\&quot;
-func (r ApiGetUserBillingHistoryVm2Request) Search(search string) ApiGetUserBillingHistoryVm2Request {
+func (r ApiGetVMBillingHistoryRequest) Search(search string) ApiGetVMBillingHistoryRequest {
 	r.search = &search
 	return r
 }
 
 // Number of items to return per page
-func (r ApiGetUserBillingHistoryVm2Request) PerPage(perPage int32) ApiGetUserBillingHistoryVm2Request {
+func (r ApiGetVMBillingHistoryRequest) PerPage(perPage int32) ApiGetVMBillingHistoryRequest {
 	r.perPage = &perPage
 	return r
 }
 
 // Page number
-func (r ApiGetUserBillingHistoryVm2Request) Page(page int32) ApiGetUserBillingHistoryVm2Request {
+func (r ApiGetVMBillingHistoryRequest) Page(page int32) ApiGetVMBillingHistoryRequest {
 	r.page = &page
 	return r
 }
 
-func (r ApiGetUserBillingHistoryVm2Request) Execute() (*ResourceLevelVmBillingHistoryResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryVm2Execute(r)
+func (r ApiGetVMBillingHistoryRequest) Execute() (*ResourceLevelVmBillingHistoryResponseModel, *http.Response, error) {
+	return r.ApiService.GetVMBillingHistoryExecute(r)
 }
 
 /*
-GetUserBillingHistoryVm2 Retrieve Billing History of Virtual Machine for a specific Billing Cycle
+GetVMBillingHistory Retrieve Billing History of Virtual Machine for a specific Billing Cycle
 
-User will recieve billing history of virtual machine for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'status', 'incurred_bill', 'usage_time', 'price_per_hour'
+User will receive billing history of virtual machine for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'status', 'incurred_bill', 'usage_time', 'price_per_hour'
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUserBillingHistoryVm2Request
+	@return ApiGetVMBillingHistoryRequest
 */
-func (a *BillingAPIService) GetUserBillingHistoryVm2(ctx context.Context) ApiGetUserBillingHistoryVm2Request {
-	return ApiGetUserBillingHistoryVm2Request{
+func (a *BillingAPIService) GetVMBillingHistory(ctx context.Context) ApiGetVMBillingHistoryRequest {
+	return ApiGetVMBillingHistoryRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -4401,7 +4491,7 @@ func (a *BillingAPIService) GetUserBillingHistoryVm2(ctx context.Context) ApiGet
 // Execute executes the request
 //
 //	@return ResourceLevelVmBillingHistoryResponseModel
-func (a *BillingAPIService) GetUserBillingHistoryVm2Execute(r ApiGetUserBillingHistoryVm2Request) (*ResourceLevelVmBillingHistoryResponseModel, *http.Response, error) {
+func (a *BillingAPIService) GetVMBillingHistoryExecute(r ApiGetVMBillingHistoryRequest) (*ResourceLevelVmBillingHistoryResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -4409,7 +4499,7 @@ func (a *BillingAPIService) GetUserBillingHistoryVm2Execute(r ApiGetUserBillingH
 		localVarReturnValue *ResourceLevelVmBillingHistoryResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryVm2")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetVMBillingHistory")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -4547,7 +4637,7 @@ func (a *BillingAPIService) GetUserBillingHistoryVm2Execute(r ApiGetUserBillingH
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetUserBillingHistoryVmDetails2Request struct {
+type ApiGetVMSubResourceCostsRequest struct {
 	ctx        context.Context
 	ApiService *BillingAPIService
 	vmId       int32
@@ -4556,398 +4646,33 @@ type ApiGetUserBillingHistoryVmDetails2Request struct {
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryVmDetails2Request) StartDate(startDate string) ApiGetUserBillingHistoryVmDetails2Request {
+func (r ApiGetVMSubResourceCostsRequest) StartDate(startDate string) ApiGetVMSubResourceCostsRequest {
 	r.startDate = &startDate
 	return r
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryVmDetails2Request) EndDate(endDate string) ApiGetUserBillingHistoryVmDetails2Request {
+func (r ApiGetVMSubResourceCostsRequest) EndDate(endDate string) ApiGetVMSubResourceCostsRequest {
 	r.endDate = &endDate
 	return r
 }
 
-func (r ApiGetUserBillingHistoryVmDetails2Request) Execute() (*ResourceLevelVMBillingDetailsResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryVmDetails2Execute(r)
+func (r ApiGetVMSubResourceCostsRequest) Execute() (*SubResourcesCostsResponseModel, *http.Response, error) {
+	return r.ApiService.GetVMSubResourceCostsExecute(r)
 }
 
 /*
-GetUserBillingHistoryVmDetails2 Retrieve Billing History of a Specific Virtual Machine for a specific Billing Cycle
-
-User will recieve billing history of a specific Virtual Machine for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour', 'non_discounted_price_per_hour', 'incurred_bill', 'non_discounted_bill', 'usage_time', 'usage_time_ACTIVE', 'usage_time_SHUTOFF', 'usage_time_HIBERNATED'
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param vmId
-	@return ApiGetUserBillingHistoryVmDetails2Request
-*/
-func (a *BillingAPIService) GetUserBillingHistoryVmDetails2(ctx context.Context, vmId int32) ApiGetUserBillingHistoryVmDetails2Request {
-	return ApiGetUserBillingHistoryVmDetails2Request{
-		ApiService: a,
-		ctx:        ctx,
-		vmId:       vmId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ResourceLevelVMBillingDetailsResponseModel
-func (a *BillingAPIService) GetUserBillingHistoryVmDetails2Execute(r ApiGetUserBillingHistoryVmDetails2Request) (*ResourceLevelVMBillingDetailsResponseModel, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ResourceLevelVMBillingDetailsResponseModel
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryVmDetails2")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/virtual-machine/{vm_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingHistoryVmSubResourceGraph2Request struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	vmId       int32
-	startDate  *string
-	endDate    *string
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryVmSubResourceGraph2Request) StartDate(startDate string) ApiGetUserBillingHistoryVmSubResourceGraph2Request {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryVmSubResourceGraph2Request) EndDate(endDate string) ApiGetUserBillingHistoryVmSubResourceGraph2Request {
-	r.endDate = &endDate
-	return r
-}
-
-func (r ApiGetUserBillingHistoryVmSubResourceGraph2Request) Execute() (*SubResourcesGraphResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryVmSubResourceGraph2Execute(r)
-}
-
-/*
-GetUserBillingHistoryVmSubResourceGraph2 Retrieve Sub-Resources Historical Cost datapoints of a Virtual
-
-User will recieve sub-resources historical cost datapoints for a VM sub resources for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
-Machine sub resources for a specific billing cycle
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param vmId
-	@return ApiGetUserBillingHistoryVmSubResourceGraph2Request
-*/
-func (a *BillingAPIService) GetUserBillingHistoryVmSubResourceGraph2(ctx context.Context, vmId int32) ApiGetUserBillingHistoryVmSubResourceGraph2Request {
-	return ApiGetUserBillingHistoryVmSubResourceGraph2Request{
-		ApiService: a,
-		ctx:        ctx,
-		vmId:       vmId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return SubResourcesGraphResponseModel
-func (a *BillingAPIService) GetUserBillingHistoryVmSubResourceGraph2Execute(r ApiGetUserBillingHistoryVmSubResourceGraph2Request) (*SubResourcesGraphResponseModel, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *SubResourcesGraphResponseModel
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryVmSubResourceGraph2")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/virtual-machine/{vm_id}/sub-resource/graph"
-	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingHistoryVmTotalCostsRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	vmId       int32
-	startDate  *string
-	endDate    *string
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryVmTotalCostsRequest) StartDate(startDate string) ApiGetUserBillingHistoryVmTotalCostsRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryVmTotalCostsRequest) EndDate(endDate string) ApiGetUserBillingHistoryVmTotalCostsRequest {
-	r.endDate = &endDate
-	return r
-}
-
-func (r ApiGetUserBillingHistoryVmTotalCostsRequest) Execute() (*SubResourcesCostsResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryVmTotalCostsExecute(r)
-}
-
-/*
-GetUserBillingHistoryVmTotalCosts Retrieve Total Costs and Non Discount Costs for Sub Resources
+GetVMSubResourceCosts Retrieve Total Costs and Non Discount Costs for Sub Resources
 
 User will get total costs and non_discount costs of sub resources on a specific Virtual Machine for the specified billing cycle.
 on a Specific VM for the Specified Billing Cycle
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param vmId
-	@return ApiGetUserBillingHistoryVmTotalCostsRequest
+	@return ApiGetVMSubResourceCostsRequest
 */
-func (a *BillingAPIService) GetUserBillingHistoryVmTotalCosts(ctx context.Context, vmId int32) ApiGetUserBillingHistoryVmTotalCostsRequest {
-	return ApiGetUserBillingHistoryVmTotalCostsRequest{
+func (a *BillingAPIService) GetVMSubResourceCosts(ctx context.Context, vmId int32) ApiGetVMSubResourceCostsRequest {
+	return ApiGetVMSubResourceCostsRequest{
 		ApiService: a,
 		ctx:        ctx,
 		vmId:       vmId,
@@ -4957,7 +4682,7 @@ func (a *BillingAPIService) GetUserBillingHistoryVmTotalCosts(ctx context.Contex
 // Execute executes the request
 //
 //	@return SubResourcesCostsResponseModel
-func (a *BillingAPIService) GetUserBillingHistoryVmTotalCostsExecute(r ApiGetUserBillingHistoryVmTotalCostsRequest) (*SubResourcesCostsResponseModel, *http.Response, error) {
+func (a *BillingAPIService) GetVMSubResourceCostsExecute(r ApiGetVMSubResourceCostsRequest) (*SubResourcesCostsResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -4965,7 +4690,7 @@ func (a *BillingAPIService) GetUserBillingHistoryVmTotalCostsExecute(r ApiGetUse
 		localVarReturnValue *SubResourcesCostsResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryVmTotalCosts")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetVMSubResourceCosts")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -5095,7 +4820,543 @@ func (a *BillingAPIService) GetUserBillingHistoryVmTotalCostsExecute(r ApiGetUse
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetUserBillingHistoryVolume2Request struct {
+type ApiGetVMSubResourceGraphRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	vmId       int32
+	startDate  *string
+	endDate    *string
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetVMSubResourceGraphRequest) StartDate(startDate string) ApiGetVMSubResourceGraphRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetVMSubResourceGraphRequest) EndDate(endDate string) ApiGetVMSubResourceGraphRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiGetVMSubResourceGraphRequest) Execute() (*SubResourcesGraphResponseModel, *http.Response, error) {
+	return r.ApiService.GetVMSubResourceGraphExecute(r)
+}
+
+/*
+GetVMSubResourceGraph Retrieve Sub-Resources Historical Cost datapoints of a Virtual
+
+User will receive sub-resources historical cost datapoints for a VM sub resources for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
+Machine sub resources for a specific billing cycle
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param vmId
+	@return ApiGetVMSubResourceGraphRequest
+*/
+func (a *BillingAPIService) GetVMSubResourceGraph(ctx context.Context, vmId int32) ApiGetVMSubResourceGraphRequest {
+	return ApiGetVMSubResourceGraphRequest{
+		ApiService: a,
+		ctx:        ctx,
+		vmId:       vmId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return SubResourcesGraphResponseModel
+func (a *BillingAPIService) GetVMSubResourceGraphExecute(r ApiGetVMSubResourceGraphRequest) (*SubResourcesGraphResponseModel, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *SubResourcesGraphResponseModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetVMSubResourceGraph")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/virtual-machine/{vm_id}/sub-resource/graph"
+	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetVolumeBillingDetailsRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	volumeId   int32
+	startDate  *string
+	endDate    *string
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetVolumeBillingDetailsRequest) StartDate(startDate string) ApiGetVolumeBillingDetailsRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetVolumeBillingDetailsRequest) EndDate(endDate string) ApiGetVolumeBillingDetailsRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiGetVolumeBillingDetailsRequest) Execute() (*ResourceLevelVolumeBillingDetailsResponseModel, *http.Response, error) {
+	return r.ApiService.GetVolumeBillingDetailsExecute(r)
+}
+
+/*
+GetVolumeBillingDetails Retrieve Billing History of a Specific Volume for a specific Billing Cycle
+
+Retrieve billing history of a specific Volume for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour', 'incurred_bill', 'usage_time', 'non_discounted_price_per_hour', 'non_discounted_bill'.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param volumeId
+	@return ApiGetVolumeBillingDetailsRequest
+*/
+func (a *BillingAPIService) GetVolumeBillingDetails(ctx context.Context, volumeId int32) ApiGetVolumeBillingDetailsRequest {
+	return ApiGetVolumeBillingDetailsRequest{
+		ApiService: a,
+		ctx:        ctx,
+		volumeId:   volumeId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ResourceLevelVolumeBillingDetailsResponseModel
+func (a *BillingAPIService) GetVolumeBillingDetailsExecute(r ApiGetVolumeBillingDetailsRequest) (*ResourceLevelVolumeBillingDetailsResponseModel, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceLevelVolumeBillingDetailsResponseModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetVolumeBillingDetails")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/volume/{volume_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"volume_id"+"}", url.PathEscape(parameterValueToString(r.volumeId, "volumeId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetVolumeBillingEventsRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	volumeId   int32
+	startDate  *string
+	endDate    *string
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetVolumeBillingEventsRequest) StartDate(startDate string) ApiGetVolumeBillingEventsRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiGetVolumeBillingEventsRequest) EndDate(endDate string) ApiGetVolumeBillingEventsRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r ApiGetVolumeBillingEventsRequest) Execute() (*ResourceBillingEventsHistoryResponse, *http.Response, error) {
+	return r.ApiService.GetVolumeBillingEventsExecute(r)
+}
+
+/*
+GetVolumeBillingEvents Retrieve Volume billing events history
+
+User will receive volume billing events history
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param volumeId
+	@return ApiGetVolumeBillingEventsRequest
+*/
+func (a *BillingAPIService) GetVolumeBillingEvents(ctx context.Context, volumeId int32) ApiGetVolumeBillingEventsRequest {
+	return ApiGetVolumeBillingEventsRequest{
+		ApiService: a,
+		ctx:        ctx,
+		volumeId:   volumeId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ResourceBillingEventsHistoryResponse
+func (a *BillingAPIService) GetVolumeBillingEventsExecute(r ApiGetVolumeBillingEventsRequest) (*ResourceBillingEventsHistoryResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceBillingEventsHistoryResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetVolumeBillingEvents")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/volume/{volume_id}/billing-events"
+	localVarPath = strings.Replace(localVarPath, "{"+"volume_id"+"}", url.PathEscape(parameterValueToString(r.volumeId, "volumeId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetVolumeBillingHistoryRequest struct {
 	ctx        context.Context
 	ApiService *BillingAPIService
 	startDate  *string
@@ -5106,49 +5367,49 @@ type ApiGetUserBillingHistoryVolume2Request struct {
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryVolume2Request) StartDate(startDate string) ApiGetUserBillingHistoryVolume2Request {
+func (r ApiGetVolumeBillingHistoryRequest) StartDate(startDate string) ApiGetVolumeBillingHistoryRequest {
 	r.startDate = &startDate
 	return r
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryVolume2Request) EndDate(endDate string) ApiGetUserBillingHistoryVolume2Request {
+func (r ApiGetVolumeBillingHistoryRequest) EndDate(endDate string) ApiGetVolumeBillingHistoryRequest {
 	r.endDate = &endDate
 	return r
 }
 
 // Search by resource \&quot;Name\&quot; or \&quot;ID\&quot;
-func (r ApiGetUserBillingHistoryVolume2Request) Search(search string) ApiGetUserBillingHistoryVolume2Request {
+func (r ApiGetVolumeBillingHistoryRequest) Search(search string) ApiGetVolumeBillingHistoryRequest {
 	r.search = &search
 	return r
 }
 
 // Number of items to return per page
-func (r ApiGetUserBillingHistoryVolume2Request) PerPage(perPage int32) ApiGetUserBillingHistoryVolume2Request {
+func (r ApiGetVolumeBillingHistoryRequest) PerPage(perPage int32) ApiGetVolumeBillingHistoryRequest {
 	r.perPage = &perPage
 	return r
 }
 
 // Page number
-func (r ApiGetUserBillingHistoryVolume2Request) Page(page int32) ApiGetUserBillingHistoryVolume2Request {
+func (r ApiGetVolumeBillingHistoryRequest) Page(page int32) ApiGetVolumeBillingHistoryRequest {
 	r.page = &page
 	return r
 }
 
-func (r ApiGetUserBillingHistoryVolume2Request) Execute() (*ResourceLevelVolumeBillingHistoryResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryVolume2Execute(r)
+func (r ApiGetVolumeBillingHistoryRequest) Execute() (*ResourceLevelVolumeBillingHistoryResponseModel, *http.Response, error) {
+	return r.ApiService.GetVolumeBillingHistoryExecute(r)
 }
 
 /*
-GetUserBillingHistoryVolume2 Retrieve Billing History of Volume for a specific Billing Cycle
+GetVolumeBillingHistory Retrieve Billing History of Volume for a specific Billing Cycle
 
-User will recieve billing history of volumes for thespecified billing cycle. This data will include 'resource_name', 'infrahub_id', 'status', 'incurred_bill', 'usage_time', 'price_per_hour'
+User will receive billing history of volumes for thespecified billing cycle. This data will include 'resource_name', 'infrahub_id', 'status', 'incurred_bill', 'usage_time', 'price_per_hour'
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUserBillingHistoryVolume2Request
+	@return ApiGetVolumeBillingHistoryRequest
 */
-func (a *BillingAPIService) GetUserBillingHistoryVolume2(ctx context.Context) ApiGetUserBillingHistoryVolume2Request {
-	return ApiGetUserBillingHistoryVolume2Request{
+func (a *BillingAPIService) GetVolumeBillingHistory(ctx context.Context) ApiGetVolumeBillingHistoryRequest {
+	return ApiGetVolumeBillingHistoryRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -5157,7 +5418,7 @@ func (a *BillingAPIService) GetUserBillingHistoryVolume2(ctx context.Context) Ap
 // Execute executes the request
 //
 //	@return ResourceLevelVolumeBillingHistoryResponseModel
-func (a *BillingAPIService) GetUserBillingHistoryVolume2Execute(r ApiGetUserBillingHistoryVolume2Request) (*ResourceLevelVolumeBillingHistoryResponseModel, *http.Response, error) {
+func (a *BillingAPIService) GetVolumeBillingHistoryExecute(r ApiGetVolumeBillingHistoryRequest) (*ResourceLevelVolumeBillingHistoryResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -5165,7 +5426,7 @@ func (a *BillingAPIService) GetUserBillingHistoryVolume2Execute(r ApiGetUserBill
 		localVarReturnValue *ResourceLevelVolumeBillingHistoryResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryVolume2")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetVolumeBillingHistory")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -5303,7 +5564,7 @@ func (a *BillingAPIService) GetUserBillingHistoryVolume2Execute(r ApiGetUserBill
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetUserBillingHistoryVolumeDetails2Request struct {
+type ApiGetVolumeBillingHistoryGraphRequest struct {
 	ctx        context.Context
 	ApiService *BillingAPIService
 	volumeId   int32
@@ -5312,944 +5573,32 @@ type ApiGetUserBillingHistoryVolumeDetails2Request struct {
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryVolumeDetails2Request) StartDate(startDate string) ApiGetUserBillingHistoryVolumeDetails2Request {
+func (r ApiGetVolumeBillingHistoryGraphRequest) StartDate(startDate string) ApiGetVolumeBillingHistoryGraphRequest {
 	r.startDate = &startDate
 	return r
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingHistoryVolumeDetails2Request) EndDate(endDate string) ApiGetUserBillingHistoryVolumeDetails2Request {
+func (r ApiGetVolumeBillingHistoryGraphRequest) EndDate(endDate string) ApiGetVolumeBillingHistoryGraphRequest {
 	r.endDate = &endDate
 	return r
 }
 
-func (r ApiGetUserBillingHistoryVolumeDetails2Request) Execute() (*ResourceLevelVolumeBillingDetailsResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingHistoryVolumeDetails2Execute(r)
+func (r ApiGetVolumeBillingHistoryGraphRequest) Execute() (*ResourceLevelVolumeGraphBillingDetailsResponseModel, *http.Response, error) {
+	return r.ApiService.GetVolumeBillingHistoryGraphExecute(r)
 }
 
 /*
-GetUserBillingHistoryVolumeDetails2 Retrieve Billing History of a Specific Volume for a specific Billing Cycle
+GetVolumeBillingHistoryGraph Retrieve hourly cost datapoints of a Specific Volume for a specific billing cycle
 
-Retrieve billing history of a specific Volume for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour', 'incurred_bill', 'usage_time', 'non_discounted_price_per_hour', 'non_discounted_bill'.
+User will receive hourly cost datapoints for a Volume for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param volumeId
-	@return ApiGetUserBillingHistoryVolumeDetails2Request
+	@return ApiGetVolumeBillingHistoryGraphRequest
 */
-func (a *BillingAPIService) GetUserBillingHistoryVolumeDetails2(ctx context.Context, volumeId int32) ApiGetUserBillingHistoryVolumeDetails2Request {
-	return ApiGetUserBillingHistoryVolumeDetails2Request{
-		ApiService: a,
-		ctx:        ctx,
-		volumeId:   volumeId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ResourceLevelVolumeBillingDetailsResponseModel
-func (a *BillingAPIService) GetUserBillingHistoryVolumeDetails2Execute(r ApiGetUserBillingHistoryVolumeDetails2Request) (*ResourceLevelVolumeBillingDetailsResponseModel, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ResourceLevelVolumeBillingDetailsResponseModel
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingHistoryVolumeDetails2")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/volume/{volume_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"volume_id"+"}", url.PathEscape(parameterValueToString(r.volumeId, "volumeId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingModelEvaluationDetailsGraphRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	resourceId int32
-	startDate  *string
-	endDate    *string
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingModelEvaluationDetailsGraphRequest) StartDate(startDate string) ApiGetUserBillingModelEvaluationDetailsGraphRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingModelEvaluationDetailsGraphRequest) EndDate(endDate string) ApiGetUserBillingModelEvaluationDetailsGraphRequest {
-	r.endDate = &endDate
-	return r
-}
-
-func (r ApiGetUserBillingModelEvaluationDetailsGraphRequest) Execute() (*ModelEvaluationBillingHistoryDetailsResponseSchema, *http.Response, error) {
-	return r.ApiService.GetUserBillingModelEvaluationDetailsGraphExecute(r)
-}
-
-/*
-GetUserBillingModelEvaluationDetailsGraph Retrieve hourly cost datapoints of a Specific Model Evaluation for a specific
-
-User will receive hourly cost datapoints for a model evaluation for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
-billing cycle
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param resourceId
-	@return ApiGetUserBillingModelEvaluationDetailsGraphRequest
-*/
-func (a *BillingAPIService) GetUserBillingModelEvaluationDetailsGraph(ctx context.Context, resourceId int32) ApiGetUserBillingModelEvaluationDetailsGraphRequest {
-	return ApiGetUserBillingModelEvaluationDetailsGraphRequest{
-		ApiService: a,
-		ctx:        ctx,
-		resourceId: resourceId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ModelEvaluationBillingHistoryDetailsResponseSchema
-func (a *BillingAPIService) GetUserBillingModelEvaluationDetailsGraphExecute(r ApiGetUserBillingModelEvaluationDetailsGraphRequest) (*ModelEvaluationBillingHistoryDetailsResponseSchema, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ModelEvaluationBillingHistoryDetailsResponseSchema
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingModelEvaluationDetailsGraph")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/model_evaluation/{resource_id}/graph"
-	localVarPath = strings.Replace(localVarPath, "{"+"resource_id"+"}", url.PathEscape(parameterValueToString(r.resourceId, "resourceId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingServerlessInferenceDetailsGraphRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	resourceId int32
-	startDate  *string
-	endDate    *string
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingServerlessInferenceDetailsGraphRequest) StartDate(startDate string) ApiGetUserBillingServerlessInferenceDetailsGraphRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingServerlessInferenceDetailsGraphRequest) EndDate(endDate string) ApiGetUserBillingServerlessInferenceDetailsGraphRequest {
-	r.endDate = &endDate
-	return r
-}
-
-func (r ApiGetUserBillingServerlessInferenceDetailsGraphRequest) Execute() (*ServerlessInferencedBillingHistoryDetailsResponseSchema, *http.Response, error) {
-	return r.ApiService.GetUserBillingServerlessInferenceDetailsGraphExecute(r)
-}
-
-/*
-GetUserBillingServerlessInferenceDetailsGraph Retrieve hourly cost datapoints of a Specific Serverless Inference for a specific
-
-User will recieve hourly cost datapoints for a serverles inference for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
-billing cycle
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param resourceId
-	@return ApiGetUserBillingServerlessInferenceDetailsGraphRequest
-*/
-func (a *BillingAPIService) GetUserBillingServerlessInferenceDetailsGraph(ctx context.Context, resourceId int32) ApiGetUserBillingServerlessInferenceDetailsGraphRequest {
-	return ApiGetUserBillingServerlessInferenceDetailsGraphRequest{
-		ApiService: a,
-		ctx:        ctx,
-		resourceId: resourceId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ServerlessInferencedBillingHistoryDetailsResponseSchema
-func (a *BillingAPIService) GetUserBillingServerlessInferenceDetailsGraphExecute(r ApiGetUserBillingServerlessInferenceDetailsGraphRequest) (*ServerlessInferencedBillingHistoryDetailsResponseSchema, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ServerlessInferencedBillingHistoryDetailsResponseSchema
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingServerlessInferenceDetailsGraph")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/serverless_inference/{resource_id}/graph"
-	localVarPath = strings.Replace(localVarPath, "{"+"resource_id"+"}", url.PathEscape(parameterValueToString(r.resourceId, "resourceId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingSnapshotDetailsGraphRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	snapshotId int32
-	startDate  *string
-	endDate    *string
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingSnapshotDetailsGraphRequest) StartDate(startDate string) ApiGetUserBillingSnapshotDetailsGraphRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingSnapshotDetailsGraphRequest) EndDate(endDate string) ApiGetUserBillingSnapshotDetailsGraphRequest {
-	r.endDate = &endDate
-	return r
-}
-
-func (r ApiGetUserBillingSnapshotDetailsGraphRequest) Execute() (*ResourceLevelVolumeGraphBillingDetailsResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingSnapshotDetailsGraphExecute(r)
-}
-
-/*
-GetUserBillingSnapshotDetailsGraph Retrieve hourly cost datapoints of a Specific Snapshot for a specific billing cycle
-
-User will recieve hourly cost datapoints for a Snapshot for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param snapshotId
-	@return ApiGetUserBillingSnapshotDetailsGraphRequest
-*/
-func (a *BillingAPIService) GetUserBillingSnapshotDetailsGraph(ctx context.Context, snapshotId int32) ApiGetUserBillingSnapshotDetailsGraphRequest {
-	return ApiGetUserBillingSnapshotDetailsGraphRequest{
-		ApiService: a,
-		ctx:        ctx,
-		snapshotId: snapshotId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ResourceLevelVolumeGraphBillingDetailsResponseModel
-func (a *BillingAPIService) GetUserBillingSnapshotDetailsGraphExecute(r ApiGetUserBillingSnapshotDetailsGraphRequest) (*ResourceLevelVolumeGraphBillingDetailsResponseModel, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ResourceLevelVolumeGraphBillingDetailsResponseModel
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingSnapshotDetailsGraph")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/snapshot/{snapshot_id}/graph"
-	localVarPath = strings.Replace(localVarPath, "{"+"snapshot_id"+"}", url.PathEscape(parameterValueToString(r.snapshotId, "snapshotId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingVmDetailsGraph2Request struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	vmId       int32
-	startDate  *string
-	endDate    *string
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingVmDetailsGraph2Request) StartDate(startDate string) ApiGetUserBillingVmDetailsGraph2Request {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingVmDetailsGraph2Request) EndDate(endDate string) ApiGetUserBillingVmDetailsGraph2Request {
-	r.endDate = &endDate
-	return r
-}
-
-func (r ApiGetUserBillingVmDetailsGraph2Request) Execute() (*ResourceLevelVmGraphBillingDetailsResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingVmDetailsGraph2Execute(r)
-}
-
-/*
-GetUserBillingVmDetailsGraph2 Retrieve hourly cost datapoints of a Specific Virtual Machine for a specific billing cycle
-
-User will recieve hourly cost datapoints for a VM for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param vmId
-	@return ApiGetUserBillingVmDetailsGraph2Request
-*/
-func (a *BillingAPIService) GetUserBillingVmDetailsGraph2(ctx context.Context, vmId int32) ApiGetUserBillingVmDetailsGraph2Request {
-	return ApiGetUserBillingVmDetailsGraph2Request{
-		ApiService: a,
-		ctx:        ctx,
-		vmId:       vmId,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ResourceLevelVmGraphBillingDetailsResponseModel
-func (a *BillingAPIService) GetUserBillingVmDetailsGraph2Execute(r ApiGetUserBillingVmDetailsGraph2Request) (*ResourceLevelVmGraphBillingDetailsResponseModel, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ResourceLevelVmGraphBillingDetailsResponseModel
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingVmDetailsGraph2")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/billing/history/virtual-machine/{vm_id}/graph"
-	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.startDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
-	}
-	if r.endDate != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetUserBillingVolumeDetailsGraphRequest struct {
-	ctx        context.Context
-	ApiService *BillingAPIService
-	volumeId   int32
-	startDate  *string
-	endDate    *string
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingVolumeDetailsGraphRequest) StartDate(startDate string) ApiGetUserBillingVolumeDetailsGraphRequest {
-	r.startDate = &startDate
-	return r
-}
-
-// Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserBillingVolumeDetailsGraphRequest) EndDate(endDate string) ApiGetUserBillingVolumeDetailsGraphRequest {
-	r.endDate = &endDate
-	return r
-}
-
-func (r ApiGetUserBillingVolumeDetailsGraphRequest) Execute() (*ResourceLevelVolumeGraphBillingDetailsResponseModel, *http.Response, error) {
-	return r.ApiService.GetUserBillingVolumeDetailsGraphExecute(r)
-}
-
-/*
-GetUserBillingVolumeDetailsGraph Retrieve hourly cost datapoints of a Specific Volume for a specific billing cycle
-
-User will recieve hourly cost datapoints for a Volume for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param volumeId
-	@return ApiGetUserBillingVolumeDetailsGraphRequest
-*/
-func (a *BillingAPIService) GetUserBillingVolumeDetailsGraph(ctx context.Context, volumeId int32) ApiGetUserBillingVolumeDetailsGraphRequest {
-	return ApiGetUserBillingVolumeDetailsGraphRequest{
+func (a *BillingAPIService) GetVolumeBillingHistoryGraph(ctx context.Context, volumeId int32) ApiGetVolumeBillingHistoryGraphRequest {
+	return ApiGetVolumeBillingHistoryGraphRequest{
 		ApiService: a,
 		ctx:        ctx,
 		volumeId:   volumeId,
@@ -6259,7 +5608,7 @@ func (a *BillingAPIService) GetUserBillingVolumeDetailsGraph(ctx context.Context
 // Execute executes the request
 //
 //	@return ResourceLevelVolumeGraphBillingDetailsResponseModel
-func (a *BillingAPIService) GetUserBillingVolumeDetailsGraphExecute(r ApiGetUserBillingVolumeDetailsGraphRequest) (*ResourceLevelVolumeGraphBillingDetailsResponseModel, *http.Response, error) {
+func (a *BillingAPIService) GetVolumeBillingHistoryGraphExecute(r ApiGetVolumeBillingHistoryGraphRequest) (*ResourceLevelVolumeGraphBillingDetailsResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -6267,7 +5616,7 @@ func (a *BillingAPIService) GetUserBillingVolumeDetailsGraphExecute(r ApiGetUser
 		localVarReturnValue *ResourceLevelVolumeGraphBillingDetailsResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserBillingVolumeDetailsGraph")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetVolumeBillingHistoryGraph")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -6397,65 +5746,65 @@ func (a *BillingAPIService) GetUserBillingVolumeDetailsGraphExecute(r ApiGetUser
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetUserVmBillingEventsRequest struct {
+type ApiListBillingContractHistoryRequest struct {
 	ctx        context.Context
 	ApiService *BillingAPIService
-	vmId       int32
 	startDate  *string
 	endDate    *string
+	search     *string
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserVmBillingEventsRequest) StartDate(startDate string) ApiGetUserVmBillingEventsRequest {
+func (r ApiListBillingContractHistoryRequest) StartDate(startDate string) ApiListBillingContractHistoryRequest {
 	r.startDate = &startDate
 	return r
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserVmBillingEventsRequest) EndDate(endDate string) ApiGetUserVmBillingEventsRequest {
+func (r ApiListBillingContractHistoryRequest) EndDate(endDate string) ApiListBillingContractHistoryRequest {
 	r.endDate = &endDate
 	return r
 }
 
-func (r ApiGetUserVmBillingEventsRequest) Execute() (*ResourceBillingEventsHistoryResponse, *http.Response, error) {
-	return r.ApiService.GetUserVmBillingEventsExecute(r)
+// Search by Contract \&quot;Description\&quot; or \&quot;ID\&quot;
+func (r ApiListBillingContractHistoryRequest) Search(search string) ApiListBillingContractHistoryRequest {
+	r.search = &search
+	return r
+}
+
+func (r ApiListBillingContractHistoryRequest) Execute() (*http.Response, error) {
+	return r.ApiService.ListBillingContractHistoryExecute(r)
 }
 
 /*
-GetUserVmBillingEvents Retrieve VM billing events history
+ListBillingContractHistory Retrieve Billing History of Contract for a specific Billing Cycle
 
-User will receive vm billing events history
+User will receive billing history of contracts for the specified billing cycle. This data will include 'description', gpu_type','infrahub_id', 'status', 'incurred_bill', 'price_per_hour'
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param vmId
-	@return ApiGetUserVmBillingEventsRequest
+	@return ApiListBillingContractHistoryRequest
 */
-func (a *BillingAPIService) GetUserVmBillingEvents(ctx context.Context, vmId int32) ApiGetUserVmBillingEventsRequest {
-	return ApiGetUserVmBillingEventsRequest{
+func (a *BillingAPIService) ListBillingContractHistory(ctx context.Context) ApiListBillingContractHistoryRequest {
+	return ApiListBillingContractHistoryRequest{
 		ApiService: a,
 		ctx:        ctx,
-		vmId:       vmId,
 	}
 }
 
 // Execute executes the request
-//
-//	@return ResourceBillingEventsHistoryResponse
-func (a *BillingAPIService) GetUserVmBillingEventsExecute(r ApiGetUserVmBillingEventsRequest) (*ResourceBillingEventsHistoryResponse, *http.Response, error) {
+func (a *BillingAPIService) ListBillingContractHistoryExecute(r ApiListBillingContractHistoryRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ResourceBillingEventsHistoryResponse
+		localVarHTTPMethod = http.MethodGet
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserVmBillingEvents")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.ListBillingContractHistory")
 	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/billing/billing/virtual-machine/{vm_id}/billing-events"
-	localVarPath = strings.Replace(localVarPath, "{"+"vm_id"+"}", url.PathEscape(parameterValueToString(r.vmId, "vmId")), -1)
+	localVarPath := localBasePath + "/billing/billing/history/contract"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -6466,6 +5815,208 @@ func (a *BillingAPIService) GetUserVmBillingEventsExecute(r ApiGetUserVmBillingE
 	}
 	if r.endDate != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	if r.search != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type ApiListBucketBillingHistoryRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	startDate  *string
+	endDate    *string
+	search     *string
+	perPage    *int32
+	page       *int32
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiListBucketBillingHistoryRequest) StartDate(startDate string) ApiListBucketBillingHistoryRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiListBucketBillingHistoryRequest) EndDate(endDate string) ApiListBucketBillingHistoryRequest {
+	r.endDate = &endDate
+	return r
+}
+
+// Search by resource \&quot;Name\&quot; or \&quot;ID\&quot;
+func (r ApiListBucketBillingHistoryRequest) Search(search string) ApiListBucketBillingHistoryRequest {
+	r.search = &search
+	return r
+}
+
+// Number of items to return per page
+func (r ApiListBucketBillingHistoryRequest) PerPage(perPage int32) ApiListBucketBillingHistoryRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Page number
+func (r ApiListBucketBillingHistoryRequest) Page(page int32) ApiListBucketBillingHistoryRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiListBucketBillingHistoryRequest) Execute() (*ResourceLevelBucketBillingHistoryResponseModel, *http.Response, error) {
+	return r.ApiService.ListBucketBillingHistoryExecute(r)
+}
+
+/*
+ListBucketBillingHistory Retrieve Billing History of a Bucket for a specific Billing Cycle
+
+User will receive billing history of buckets for thespecified billing cycle. This data will include 'resource_name', 'infrahub_id', 'status', 'incurred_bill', 'usage_time', 'price_per_hour'
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiListBucketBillingHistoryRequest
+*/
+func (a *BillingAPIService) ListBucketBillingHistory(ctx context.Context) ApiListBucketBillingHistoryRequest {
+	return ApiListBucketBillingHistoryRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ResourceLevelBucketBillingHistoryResponseModel
+func (a *BillingAPIService) ListBucketBillingHistoryExecute(r ApiListBucketBillingHistoryRequest) (*ResourceLevelBucketBillingHistoryResponseModel, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceLevelBucketBillingHistoryResponseModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.ListBucketBillingHistory")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/bucket"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	if r.search != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	}
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -6553,6 +6104,17 @@ func (a *BillingAPIService) GetUserVmBillingEventsExecute(r ApiGetUserVmBillingE
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -6568,65 +6130,82 @@ func (a *BillingAPIService) GetUserVmBillingEventsExecute(r ApiGetUserVmBillingE
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetUserVolumeBillingEventsRequest struct {
+type ApiListClustersBillingHistoryRequest struct {
 	ctx        context.Context
 	ApiService *BillingAPIService
-	volumeId   int32
 	startDate  *string
 	endDate    *string
+	search     *string
+	perPage    *int32
+	page       *int32
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserVolumeBillingEventsRequest) StartDate(startDate string) ApiGetUserVolumeBillingEventsRequest {
+func (r ApiListClustersBillingHistoryRequest) StartDate(startDate string) ApiListClustersBillingHistoryRequest {
 	r.startDate = &startDate
 	return r
 }
 
 // Date should be formatted in YYYY-MM-DDTHH:MM:SS
-func (r ApiGetUserVolumeBillingEventsRequest) EndDate(endDate string) ApiGetUserVolumeBillingEventsRequest {
+func (r ApiListClustersBillingHistoryRequest) EndDate(endDate string) ApiListClustersBillingHistoryRequest {
 	r.endDate = &endDate
 	return r
 }
 
-func (r ApiGetUserVolumeBillingEventsRequest) Execute() (*ResourceBillingEventsHistoryResponse, *http.Response, error) {
-	return r.ApiService.GetUserVolumeBillingEventsExecute(r)
+// Search by resource \&quot;Name\&quot; or \&quot;ID\&quot;
+func (r ApiListClustersBillingHistoryRequest) Search(search string) ApiListClustersBillingHistoryRequest {
+	r.search = &search
+	return r
+}
+
+// Number of items to return per page
+func (r ApiListClustersBillingHistoryRequest) PerPage(perPage int32) ApiListClustersBillingHistoryRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Page number
+func (r ApiListClustersBillingHistoryRequest) Page(page int32) ApiListClustersBillingHistoryRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiListClustersBillingHistoryRequest) Execute() (*ResourceLevelClusterBillingHistoryResponseModel, *http.Response, error) {
+	return r.ApiService.ListClustersBillingHistoryExecute(r)
 }
 
 /*
-GetUserVolumeBillingEvents Retrieve Volume billing events history
+ListClustersBillingHistory Retrieve Billing History of Clusters for a specific Billing Cycle
 
-User will receive volume billing events history
+User will receive billing history of clusters for the specified billing cycle. This data will include 'resource_name', 'infrahub_id', 'status', 'incurred_bill', 'usage_time', 'price_per_hour'
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param volumeId
-	@return ApiGetUserVolumeBillingEventsRequest
+	@return ApiListClustersBillingHistoryRequest
 */
-func (a *BillingAPIService) GetUserVolumeBillingEvents(ctx context.Context, volumeId int32) ApiGetUserVolumeBillingEventsRequest {
-	return ApiGetUserVolumeBillingEventsRequest{
+func (a *BillingAPIService) ListClustersBillingHistory(ctx context.Context) ApiListClustersBillingHistoryRequest {
+	return ApiListClustersBillingHistoryRequest{
 		ApiService: a,
 		ctx:        ctx,
-		volumeId:   volumeId,
 	}
 }
 
 // Execute executes the request
 //
-//	@return ResourceBillingEventsHistoryResponse
-func (a *BillingAPIService) GetUserVolumeBillingEventsExecute(r ApiGetUserVolumeBillingEventsRequest) (*ResourceBillingEventsHistoryResponse, *http.Response, error) {
+//	@return ResourceLevelClusterBillingHistoryResponseModel
+func (a *BillingAPIService) ListClustersBillingHistoryExecute(r ApiListClustersBillingHistoryRequest) (*ResourceLevelClusterBillingHistoryResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *ResourceBillingEventsHistoryResponse
+		localVarReturnValue *ResourceLevelClusterBillingHistoryResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetUserVolumeBillingEvents")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.ListClustersBillingHistory")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/billing/billing/volume/{volume_id}/billing-events"
-	localVarPath = strings.Replace(localVarPath, "{"+"volume_id"+"}", url.PathEscape(parameterValueToString(r.volumeId, "volumeId")), -1)
+	localVarPath := localBasePath + "/billing/billing/history/cluster"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -6637,6 +6216,15 @@ func (a *BillingAPIService) GetUserVolumeBillingEventsExecute(r ApiGetUserVolume
 	}
 	if r.endDate != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	if r.search != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	}
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -6724,6 +6312,17 @@ func (a *BillingAPIService) GetUserVolumeBillingEventsExecute(r ApiGetUserVolume
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -6739,67 +6338,54 @@ func (a *BillingAPIService) GetUserVolumeBillingEventsExecute(r ApiGetUserVolume
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiPutOrganizationThresholdRequest struct {
-	ctx         context.Context
-	ApiService  *BillingAPIService
-	thresholdId int32
-	payload     *SubscribeOrUnsubscribeUpdatePayload
+type ApiListOrgNotificationThresholdsRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
 }
 
-func (r ApiPutOrganizationThresholdRequest) Payload(payload SubscribeOrUnsubscribeUpdatePayload) ApiPutOrganizationThresholdRequest {
-	r.payload = &payload
-	return r
-}
-
-func (r ApiPutOrganizationThresholdRequest) Execute() (*OrganizationThresholdUpdateResponse, *http.Response, error) {
-	return r.ApiService.PutOrganizationThresholdExecute(r)
+func (r ApiListOrgNotificationThresholdsRequest) Execute() (*OrganizationThresholdsResponse, *http.Response, error) {
+	return r.ApiService.ListOrgNotificationThresholdsExecute(r)
 }
 
 /*
-PutOrganizationThreshold Update: Subscribe or Unsubscribe Notification Threshold
+ListOrgNotificationThresholds GET: All Thresholds for Organization
 
-By default, you are subscribed to all the threshold values and you will be receiving the email notification for these default thresholds values. `false` indicates that the user will no longer receive notifications for this specific threshold, whereas `true` signifies that the user will receive notification emails.
+Retrieve all the notification thresholds for an organization.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param thresholdId
-	@return ApiPutOrganizationThresholdRequest
+	@return ApiListOrgNotificationThresholdsRequest
 */
-func (a *BillingAPIService) PutOrganizationThreshold(ctx context.Context, thresholdId int32) ApiPutOrganizationThresholdRequest {
-	return ApiPutOrganizationThresholdRequest{
-		ApiService:  a,
-		ctx:         ctx,
-		thresholdId: thresholdId,
+func (a *BillingAPIService) ListOrgNotificationThresholds(ctx context.Context) ApiListOrgNotificationThresholdsRequest {
+	return ApiListOrgNotificationThresholdsRequest{
+		ApiService: a,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
 //
-//	@return OrganizationThresholdUpdateResponse
-func (a *BillingAPIService) PutOrganizationThresholdExecute(r ApiPutOrganizationThresholdRequest) (*OrganizationThresholdUpdateResponse, *http.Response, error) {
+//	@return OrganizationThresholdsResponse
+func (a *BillingAPIService) ListOrgNotificationThresholdsExecute(r ApiListOrgNotificationThresholdsRequest) (*OrganizationThresholdsResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPut
+		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *OrganizationThresholdUpdateResponse
+		localVarReturnValue *OrganizationThresholdsResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.PutOrganizationThreshold")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.ListOrgNotificationThresholds")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/billing/billing/threshold/{threshold_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"threshold_id"+"}", url.PathEscape(parameterValueToString(r.thresholdId, "thresholdId")), -1)
+	localVarPath := localBasePath + "/billing/billing/threshold"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.payload == nil {
-		return localVarReturnValue, nil, reportError("payload is required and must be specified")
-	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
+	localVarHTTPContentTypes := []string{}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -6815,8 +6401,422 @@ func (a *BillingAPIService) PutOrganizationThresholdExecute(r ApiPutOrganization
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	// body params
-	localVarPostBody = r.payload
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiListServerlessInferenceBillingHistoryRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	startDate  *string
+	endDate    *string
+	search     *string
+	perPage    *int32
+	page       *int32
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiListServerlessInferenceBillingHistoryRequest) StartDate(startDate string) ApiListServerlessInferenceBillingHistoryRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiListServerlessInferenceBillingHistoryRequest) EndDate(endDate string) ApiListServerlessInferenceBillingHistoryRequest {
+	r.endDate = &endDate
+	return r
+}
+
+// Search by resource \&quot;Name\&quot; or \&quot;ID\&quot;
+func (r ApiListServerlessInferenceBillingHistoryRequest) Search(search string) ApiListServerlessInferenceBillingHistoryRequest {
+	r.search = &search
+	return r
+}
+
+// Number of items to return per page
+func (r ApiListServerlessInferenceBillingHistoryRequest) PerPage(perPage int32) ApiListServerlessInferenceBillingHistoryRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Page number
+func (r ApiListServerlessInferenceBillingHistoryRequest) Page(page int32) ApiListServerlessInferenceBillingHistoryRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiListServerlessInferenceBillingHistoryRequest) Execute() (*TokenBasedBillingHistoryResponse, *http.Response, error) {
+	return r.ApiService.ListServerlessInferenceBillingHistoryExecute(r)
+}
+
+/*
+ListServerlessInferenceBillingHistory Retrieve Billing History of serverless inference for a specific Billing Cycle
+
+User will receive billing history of serverless_inference for the specified billing cycle.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiListServerlessInferenceBillingHistoryRequest
+*/
+func (a *BillingAPIService) ListServerlessInferenceBillingHistory(ctx context.Context) ApiListServerlessInferenceBillingHistoryRequest {
+	return ApiListServerlessInferenceBillingHistoryRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return TokenBasedBillingHistoryResponse
+func (a *BillingAPIService) ListServerlessInferenceBillingHistoryExecute(r ApiListServerlessInferenceBillingHistoryRequest) (*TokenBasedBillingHistoryResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *TokenBasedBillingHistoryResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.ListServerlessInferenceBillingHistory")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/serverless_inference"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	if r.search != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	}
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiListSnapshotBillingHistoryRequest struct {
+	ctx        context.Context
+	ApiService *BillingAPIService
+	startDate  *string
+	endDate    *string
+	search     *string
+	perPage    *int32
+	page       *int32
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiListSnapshotBillingHistoryRequest) StartDate(startDate string) ApiListSnapshotBillingHistoryRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date should be formatted in YYYY-MM-DDTHH:MM:SS
+func (r ApiListSnapshotBillingHistoryRequest) EndDate(endDate string) ApiListSnapshotBillingHistoryRequest {
+	r.endDate = &endDate
+	return r
+}
+
+// Search by resource \&quot;Name\&quot; or \&quot;ID\&quot;
+func (r ApiListSnapshotBillingHistoryRequest) Search(search string) ApiListSnapshotBillingHistoryRequest {
+	r.search = &search
+	return r
+}
+
+// Number of items to return per page
+func (r ApiListSnapshotBillingHistoryRequest) PerPage(perPage int32) ApiListSnapshotBillingHistoryRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Page number
+func (r ApiListSnapshotBillingHistoryRequest) Page(page int32) ApiListSnapshotBillingHistoryRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiListSnapshotBillingHistoryRequest) Execute() (*ResourceLevelVolumeBillingHistoryResponseModel, *http.Response, error) {
+	return r.ApiService.ListSnapshotBillingHistoryExecute(r)
+}
+
+/*
+ListSnapshotBillingHistory Retrieve Billing History of Snapshot for a specific Billing Cycle
+
+User will receive billing history of snapshots for thespecified billing cycle. This data will include 'resource_name', 'infrahub_id', 'status', 'incurred_bill', 'usage_time', 'price_per_hour'
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiListSnapshotBillingHistoryRequest
+*/
+func (a *BillingAPIService) ListSnapshotBillingHistory(ctx context.Context) ApiListSnapshotBillingHistoryRequest {
+	return ApiListSnapshotBillingHistoryRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ResourceLevelVolumeBillingHistoryResponseModel
+func (a *BillingAPIService) ListSnapshotBillingHistoryExecute(r ApiListSnapshotBillingHistoryRequest) (*ResourceLevelVolumeBillingHistoryResponseModel, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceLevelVolumeBillingHistoryResponseModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.ListSnapshotBillingHistory")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/billing/history/snapshot"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_date", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_date", r.endDate, "form", "")
+	}
+	if r.search != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	}
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {

@@ -23,11 +23,11 @@ func Test_hyperstack_DashboardAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test DashboardAPIService RetrieveDashboard", func(t *testing.T) {
+	t.Run("Test DashboardAPIService GetDashboard", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.DashboardAPI.RetrieveDashboard(context.Background()).Execute()
+		resp, httpRes, err := apiClient.DashboardAPI.GetDashboard(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

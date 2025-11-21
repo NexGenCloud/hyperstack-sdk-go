@@ -4,13 +4,13 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**ListVirtualMachineEvents**](VirtualMachineEventsAPI.md#ListVirtualMachineEvents) | **Get** /core/virtual-machines/{vm_id}/events | List virtual machine events
+[**ListVMEvents**](VirtualMachineEventsAPI.md#ListVMEvents) | **Get** /core/virtual-machines/{vm_id}/events | List virtual machine events
 
 
 
-## ListVirtualMachineEvents
+## ListVMEvents
 
-> InstanceEvents ListVirtualMachineEvents(ctx, vmId).Execute()
+> InstanceEvents ListVMEvents(ctx, vmId).Execute()
 
 List virtual machine events
 
@@ -33,13 +33,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VirtualMachineEventsAPI.ListVirtualMachineEvents(context.Background(), vmId).Execute()
+	resp, r, err := apiClient.VirtualMachineEventsAPI.ListVMEvents(context.Background(), vmId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineEventsAPI.ListVirtualMachineEvents``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineEventsAPI.ListVMEvents``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ListVirtualMachineEvents`: InstanceEvents
-	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineEventsAPI.ListVirtualMachineEvents`: %v\n", resp)
+	// response from `ListVMEvents`: InstanceEvents
+	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineEventsAPI.ListVMEvents`: %v\n", resp)
 }
 ```
 
@@ -53,7 +53,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiListVirtualMachineEventsRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiListVMEventsRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes

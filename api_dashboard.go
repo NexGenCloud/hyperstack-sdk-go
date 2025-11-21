@@ -21,25 +21,25 @@ import (
 // DashboardAPIService DashboardAPI service
 type DashboardAPIService service
 
-type ApiRetrieveDashboardRequest struct {
+type ApiGetDashboardRequest struct {
 	ctx        context.Context
 	ApiService *DashboardAPIService
 }
 
-func (r ApiRetrieveDashboardRequest) Execute() (*DashboardInfoResponse, *http.Response, error) {
-	return r.ApiService.RetrieveDashboardExecute(r)
+func (r ApiGetDashboardRequest) Execute() (*DashboardInfoResponse, *http.Response, error) {
+	return r.ApiService.GetDashboardExecute(r)
 }
 
 /*
-RetrieveDashboard Retrieve Dashboard
+GetDashboard Retrieve Dashboard
 
 Returns hardware and pricing overview for your active resources, includingvirtual machines, containers, and volumes. For more details on the Dashboard feature, [**click here**](https://docs.hyperstack.cloud/docs/resource-management/dashboard/).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiRetrieveDashboardRequest
+	@return ApiGetDashboardRequest
 */
-func (a *DashboardAPIService) RetrieveDashboard(ctx context.Context) ApiRetrieveDashboardRequest {
-	return ApiRetrieveDashboardRequest{
+func (a *DashboardAPIService) GetDashboard(ctx context.Context) ApiGetDashboardRequest {
+	return ApiGetDashboardRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -48,7 +48,7 @@ func (a *DashboardAPIService) RetrieveDashboard(ctx context.Context) ApiRetrieve
 // Execute executes the request
 //
 //	@return DashboardInfoResponse
-func (a *DashboardAPIService) RetrieveDashboardExecute(r ApiRetrieveDashboardRequest) (*DashboardInfoResponse, *http.Response, error) {
+func (a *DashboardAPIService) GetDashboardExecute(r ApiGetDashboardRequest) (*DashboardInfoResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -56,7 +56,7 @@ func (a *DashboardAPIService) RetrieveDashboardExecute(r ApiRetrieveDashboardReq
 		localVarReturnValue *DashboardInfoResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DashboardAPIService.RetrieveDashboard")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DashboardAPIService.GetDashboard")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

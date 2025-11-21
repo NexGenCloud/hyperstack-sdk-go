@@ -22,25 +22,25 @@ import (
 // ClusterEventsAPIService ClusterEventsAPI service
 type ClusterEventsAPIService service
 
-type ApiFetchAllOfAClusterEventsRequest struct {
+type ApiListClusterEventsRequest struct {
 	ctx        context.Context
 	ApiService *ClusterEventsAPIService
 	clusterId  string
 }
 
-func (r ApiFetchAllOfAClusterEventsRequest) Execute() (*ClusterEvents, *http.Response, error) {
-	return r.ApiService.FetchAllOfAClusterEventsExecute(r)
+func (r ApiListClusterEventsRequest) Execute() (*ClusterEvents, *http.Response, error) {
+	return r.ApiService.ListClusterEventsExecute(r)
 }
 
 /*
-FetchAllOfAClusterEvents Fetch all of a cluster events
+ListClusterEvents Fetch all of a cluster events
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param clusterId
-	@return ApiFetchAllOfAClusterEventsRequest
+	@return ApiListClusterEventsRequest
 */
-func (a *ClusterEventsAPIService) FetchAllOfAClusterEvents(ctx context.Context, clusterId string) ApiFetchAllOfAClusterEventsRequest {
-	return ApiFetchAllOfAClusterEventsRequest{
+func (a *ClusterEventsAPIService) ListClusterEvents(ctx context.Context, clusterId string) ApiListClusterEventsRequest {
+	return ApiListClusterEventsRequest{
 		ApiService: a,
 		ctx:        ctx,
 		clusterId:  clusterId,
@@ -50,7 +50,7 @@ func (a *ClusterEventsAPIService) FetchAllOfAClusterEvents(ctx context.Context, 
 // Execute executes the request
 //
 //	@return ClusterEvents
-func (a *ClusterEventsAPIService) FetchAllOfAClusterEventsExecute(r ApiFetchAllOfAClusterEventsRequest) (*ClusterEvents, *http.Response, error) {
+func (a *ClusterEventsAPIService) ListClusterEventsExecute(r ApiListClusterEventsRequest) (*ClusterEvents, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -58,7 +58,7 @@ func (a *ClusterEventsAPIService) FetchAllOfAClusterEventsExecute(r ApiFetchAllO
 		localVarReturnValue *ClusterEvents
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ClusterEventsAPIService.FetchAllOfAClusterEvents")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ClusterEventsAPIService.ListClusterEvents")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

@@ -5,7 +5,7 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**DeleteDeployment**](DeploymentAPI.md#DeleteDeployment) | **Delete** /core/marketplace/deployments/{id} | Delete Deployment
-[**DetailsOfDeploymentByID**](DeploymentAPI.md#DetailsOfDeploymentByID) | **Get** /core/marketplace/deployments/{id} | Details of Deployment by ID
+[**GetDeployment**](DeploymentAPI.md#GetDeployment) | **Get** /core/marketplace/deployments/{id} | Details of Deployment by ID
 [**ListDeployments**](DeploymentAPI.md#ListDeployments) | **Get** /core/marketplace/deployments | List Deployments
 [**StartDeployment**](DeploymentAPI.md#StartDeployment) | **Post** /core/marketplace/deployments | Start Deployment
 
@@ -79,9 +79,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## DetailsOfDeploymentByID
+## GetDeployment
 
-> StartDeployment DetailsOfDeploymentByID(ctx, id).Execute()
+> StartDeployment GetDeployment(ctx, id).Execute()
 
 Details of Deployment by ID
 
@@ -102,13 +102,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.DeploymentAPI.DetailsOfDeploymentByID(context.Background(), id).Execute()
+	resp, r, err := apiClient.DeploymentAPI.GetDeployment(context.Background(), id).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `DeploymentAPI.DetailsOfDeploymentByID``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `DeploymentAPI.GetDeployment``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `DetailsOfDeploymentByID`: StartDeployment
-	fmt.Fprintf(os.Stdout, "Response from `DeploymentAPI.DetailsOfDeploymentByID`: %v\n", resp)
+	// response from `GetDeployment`: StartDeployment
+	fmt.Fprintf(os.Stdout, "Response from `DeploymentAPI.GetDeployment`: %v\n", resp)
 }
 ```
 
@@ -122,7 +122,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiDetailsOfDeploymentByIDRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetDeploymentRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes

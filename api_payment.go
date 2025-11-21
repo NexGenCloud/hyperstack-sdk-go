@@ -22,185 +22,27 @@ import (
 // PaymentAPIService PaymentAPI service
 type PaymentAPIService service
 
-type ApiGetDetailsRequest struct {
-	ctx        context.Context
-	ApiService *PaymentAPIService
-}
-
-func (r ApiGetDetailsRequest) Execute() (*PaymentDetailsResponse, *http.Response, error) {
-	return r.ApiService.GetDetailsExecute(r)
-}
-
-/*
-GetDetails GET: View payment details
-
-Retrieves a list of all payments made within your [**organization**](/docs/rbac/organization) and their details, including the amount, payment status, and more. For additional information [**click here**](None/docs/api-reference/billing-resources/retrieve-payment-history/).
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetDetailsRequest
-*/
-func (a *PaymentAPIService) GetDetails(ctx context.Context) ApiGetDetailsRequest {
-	return ApiGetDetailsRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return PaymentDetailsResponse
-func (a *PaymentAPIService) GetDetailsExecute(r ApiGetDetailsRequest) (*PaymentDetailsResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *PaymentDetailsResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PaymentAPIService.GetDetails")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/payment/payment-details"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetPaymentReceipt2Request struct {
+type ApiGetPaymentReceiptRequest struct {
 	ctx        context.Context
 	ApiService *PaymentAPIService
 	paymentId  string
 }
 
-func (r ApiGetPaymentReceipt2Request) Execute() (*http.Response, error) {
-	return r.ApiService.GetPaymentReceipt2Execute(r)
+func (r ApiGetPaymentReceiptRequest) Execute() (*http.Response, error) {
+	return r.ApiService.GetPaymentReceiptExecute(r)
 }
 
 /*
-GetPaymentReceipt2 Retrieve Payment Receipt
+GetPaymentReceipt Retrieve Payment Receipt
 
 Retrieve the payment receipt from Stripe for a specific payment
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param paymentId
-	@return ApiGetPaymentReceipt2Request
+	@return ApiGetPaymentReceiptRequest
 */
-func (a *PaymentAPIService) GetPaymentReceipt2(ctx context.Context, paymentId string) ApiGetPaymentReceipt2Request {
-	return ApiGetPaymentReceipt2Request{
+func (a *PaymentAPIService) GetPaymentReceipt(ctx context.Context, paymentId string) ApiGetPaymentReceiptRequest {
+	return ApiGetPaymentReceiptRequest{
 		ApiService: a,
 		ctx:        ctx,
 		paymentId:  paymentId,
@@ -208,14 +50,14 @@ func (a *PaymentAPIService) GetPaymentReceipt2(ctx context.Context, paymentId st
 }
 
 // Execute executes the request
-func (a *PaymentAPIService) GetPaymentReceipt2Execute(r ApiGetPaymentReceipt2Request) (*http.Response, error) {
+func (a *PaymentAPIService) GetPaymentReceiptExecute(r ApiGetPaymentReceiptRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodGet
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PaymentAPIService.GetPaymentReceipt2")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PaymentAPIService.GetPaymentReceipt")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -330,31 +172,31 @@ func (a *PaymentAPIService) GetPaymentReceipt2Execute(r ApiGetPaymentReceipt2Req
 	return localVarHTTPResponse, nil
 }
 
-type ApiPostPaymentRequest struct {
+type ApiInitiatePaymentRequest struct {
 	ctx        context.Context
 	ApiService *PaymentAPIService
 	payload    *PaymentInitiatePayload
 }
 
-func (r ApiPostPaymentRequest) Payload(payload PaymentInitiatePayload) ApiPostPaymentRequest {
+func (r ApiInitiatePaymentRequest) Payload(payload PaymentInitiatePayload) ApiInitiatePaymentRequest {
 	r.payload = &payload
 	return r
 }
 
-func (r ApiPostPaymentRequest) Execute() (*PaymentInitiateResponse, *http.Response, error) {
-	return r.ApiService.PostPaymentExecute(r)
+func (r ApiInitiatePaymentRequest) Execute() (*PaymentInitiateResponse, *http.Response, error) {
+	return r.ApiService.InitiatePaymentExecute(r)
 }
 
 /*
-PostPayment POST: Initiate payment
+InitiatePayment POST: Initiate payment
 
 Creates a payment for a specified amount, adding credit to the balance of your [**organization**](/docs/rbac/organization). Include the `amount` in the body of the request to make a payment for the specified value in dollars. View a history of past payments by calling the [**Retrieve Payment History**](/docs/api-reference/billing-resources/retrieve-payment-history) API. For additional information [**click here**](None/docs/api-reference/billing-resources/create-payment).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiPostPaymentRequest
+	@return ApiInitiatePaymentRequest
 */
-func (a *PaymentAPIService) PostPayment(ctx context.Context) ApiPostPaymentRequest {
-	return ApiPostPaymentRequest{
+func (a *PaymentAPIService) InitiatePayment(ctx context.Context) ApiInitiatePaymentRequest {
+	return ApiInitiatePaymentRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -363,7 +205,7 @@ func (a *PaymentAPIService) PostPayment(ctx context.Context) ApiPostPaymentReque
 // Execute executes the request
 //
 //	@return PaymentInitiateResponse
-func (a *PaymentAPIService) PostPaymentExecute(r ApiPostPaymentRequest) (*PaymentInitiateResponse, *http.Response, error) {
+func (a *PaymentAPIService) InitiatePaymentExecute(r ApiInitiatePaymentRequest) (*PaymentInitiateResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -371,7 +213,7 @@ func (a *PaymentAPIService) PostPaymentExecute(r ApiPostPaymentRequest) (*Paymen
 		localVarReturnValue *PaymentInitiateResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PaymentAPIService.PostPayment")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PaymentAPIService.InitiatePayment")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -404,6 +246,164 @@ func (a *PaymentAPIService) PostPaymentExecute(r ApiPostPaymentRequest) (*Paymen
 	}
 	// body params
 	localVarPostBody = r.payload
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiListPaymentDetailsRequest struct {
+	ctx        context.Context
+	ApiService *PaymentAPIService
+}
+
+func (r ApiListPaymentDetailsRequest) Execute() (*PaymentDetailsResponse, *http.Response, error) {
+	return r.ApiService.ListPaymentDetailsExecute(r)
+}
+
+/*
+ListPaymentDetails GET: View payment details
+
+Retrieves a list of all payments made within your [**organization**](/docs/rbac/organization) and their details, including the amount, payment status, and more. For additional information [**click here**](None/docs/api-reference/billing-resources/retrieve-payment-history/).
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiListPaymentDetailsRequest
+*/
+func (a *PaymentAPIService) ListPaymentDetails(ctx context.Context) ApiListPaymentDetailsRequest {
+	return ApiListPaymentDetailsRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return PaymentDetailsResponse
+func (a *PaymentAPIService) ListPaymentDetailsExecute(r ApiListPaymentDetailsRequest) (*PaymentDetailsResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *PaymentDetailsResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PaymentAPIService.ListPaymentDetails")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/payment/payment-details"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {

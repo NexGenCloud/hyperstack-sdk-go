@@ -171,25 +171,25 @@ func (a *DeploymentAPIService) DeleteDeploymentExecute(r ApiDeleteDeploymentRequ
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiDetailsOfDeploymentByIDRequest struct {
+type ApiGetDeploymentRequest struct {
 	ctx        context.Context
 	ApiService *DeploymentAPIService
 	id         int32
 }
 
-func (r ApiDetailsOfDeploymentByIDRequest) Execute() (*StartDeployment, *http.Response, error) {
-	return r.ApiService.DetailsOfDeploymentByIDExecute(r)
+func (r ApiGetDeploymentRequest) Execute() (*StartDeployment, *http.Response, error) {
+	return r.ApiService.GetDeploymentExecute(r)
 }
 
 /*
-DetailsOfDeploymentByID Details of Deployment by ID
+GetDeployment Details of Deployment by ID
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param id
-	@return ApiDetailsOfDeploymentByIDRequest
+	@return ApiGetDeploymentRequest
 */
-func (a *DeploymentAPIService) DetailsOfDeploymentByID(ctx context.Context, id int32) ApiDetailsOfDeploymentByIDRequest {
-	return ApiDetailsOfDeploymentByIDRequest{
+func (a *DeploymentAPIService) GetDeployment(ctx context.Context, id int32) ApiGetDeploymentRequest {
+	return ApiGetDeploymentRequest{
 		ApiService: a,
 		ctx:        ctx,
 		id:         id,
@@ -199,7 +199,7 @@ func (a *DeploymentAPIService) DetailsOfDeploymentByID(ctx context.Context, id i
 // Execute executes the request
 //
 //	@return StartDeployment
-func (a *DeploymentAPIService) DetailsOfDeploymentByIDExecute(r ApiDetailsOfDeploymentByIDRequest) (*StartDeployment, *http.Response, error) {
+func (a *DeploymentAPIService) GetDeploymentExecute(r ApiGetDeploymentRequest) (*StartDeployment, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -207,7 +207,7 @@ func (a *DeploymentAPIService) DetailsOfDeploymentByIDExecute(r ApiDetailsOfDepl
 		localVarReturnValue *StartDeployment
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.DetailsOfDeploymentByID")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.GetDeployment")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

@@ -4,13 +4,13 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetCalculate2**](CalculateAPI.md#GetCalculate2) | **Get** /pricebook/calculate/resource/{resource_type}/{id} | Retrieve Billing Rate for Resource
+[**CalculateResourceBillingRate**](CalculateAPI.md#CalculateResourceBillingRate) | **Get** /pricebook/calculate/resource/{resource_type}/{id} | Retrieve Billing Rate for Resource
 
 
 
-## GetCalculate2
+## CalculateResourceBillingRate
 
-> ResourceBillingResponseForCustomer GetCalculate2(ctx, resourceType, id).Execute()
+> ResourceBillingResponseForCustomer CalculateResourceBillingRate(ctx, resourceType, id).Execute()
 
 Retrieve Billing Rate for Resource
 
@@ -34,13 +34,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.CalculateAPI.GetCalculate2(context.Background(), resourceType, id).Execute()
+	resp, r, err := apiClient.CalculateAPI.CalculateResourceBillingRate(context.Background(), resourceType, id).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `CalculateAPI.GetCalculate2``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `CalculateAPI.CalculateResourceBillingRate``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetCalculate2`: ResourceBillingResponseForCustomer
-	fmt.Fprintf(os.Stdout, "Response from `CalculateAPI.GetCalculate2`: %v\n", resp)
+	// response from `CalculateResourceBillingRate`: ResourceBillingResponseForCustomer
+	fmt.Fprintf(os.Stdout, "Response from `CalculateAPI.CalculateResourceBillingRate`: %v\n", resp)
 }
 ```
 
@@ -55,7 +55,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetCalculate2Request struct via the builder pattern
+Other parameters are passed through a pointer to a apiCalculateResourceBillingRateRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes

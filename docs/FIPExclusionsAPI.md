@@ -1,18 +1,20 @@
-# \ClusterEventsAPI
+# \FIPExclusionsAPI
 
 All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**ListClusterEvents**](ClusterEventsAPI.md#ListClusterEvents) | **Get** /core/clusters/{cluster_id}/events | Fetch all of a cluster events
+[**CheckIfOrgIsExcludedFromFloatingIPDetachment**](FIPExclusionsAPI.md#CheckIfOrgIsExcludedFromFloatingIPDetachment) | **Get** /core/fip-detachment-exclusions/org/{org_id} | 
 
 
 
-## ListClusterEvents
+## CheckIfOrgIsExcludedFromFloatingIPDetachment
 
-> ClusterEvents ListClusterEvents(ctx, clusterId).Execute()
+> ResponseModel CheckIfOrgIsExcludedFromFloatingIPDetachment(ctx, orgId).Execute()
 
-Fetch all of a cluster events
+
+
+
 
 ### Example
 
@@ -27,17 +29,17 @@ import (
 )
 
 func main() {
-	clusterId := "clusterId_example" // string | 
+	orgId := int32(56) // int32 | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ClusterEventsAPI.ListClusterEvents(context.Background(), clusterId).Execute()
+	resp, r, err := apiClient.FIPExclusionsAPI.CheckIfOrgIsExcludedFromFloatingIPDetachment(context.Background(), orgId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ClusterEventsAPI.ListClusterEvents``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `FIPExclusionsAPI.CheckIfOrgIsExcludedFromFloatingIPDetachment``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ListClusterEvents`: ClusterEvents
-	fmt.Fprintf(os.Stdout, "Response from `ClusterEventsAPI.ListClusterEvents`: %v\n", resp)
+	// response from `CheckIfOrgIsExcludedFromFloatingIPDetachment`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `FIPExclusionsAPI.CheckIfOrgIsExcludedFromFloatingIPDetachment`: %v\n", resp)
 }
 ```
 
@@ -47,11 +49,11 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**clusterId** | **string** |  | 
+**orgId** | **int32** |  | 
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiListClusterEventsRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiCheckIfOrgIsExcludedFromFloatingIPDetachmentRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -60,7 +62,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ClusterEvents**](ClusterEvents.md)
+[**ResponseModel**](ResponseModel.md)
 
 ### Authorization
 

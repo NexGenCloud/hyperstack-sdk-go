@@ -4,18 +4,18 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateANewCustomImage**](SnapshotsAPI.md#CreateANewCustomImage) | **Post** /core/snapshots/{snapshot_id}/image | Create an image from a snapshot
-[**DeleteAnExistingSnapshot**](SnapshotsAPI.md#DeleteAnExistingSnapshot) | **Delete** /core/snapshots/{id} | Delete snapshot
+[**CreateCustomImage**](SnapshotsAPI.md#CreateCustomImage) | **Post** /core/snapshots/{snapshot_id}/image | Create an image from a snapshot
+[**DeleteSnapshot**](SnapshotsAPI.md#DeleteSnapshot) | **Delete** /core/snapshots/{id} | Delete snapshot
 [**FetchSnapshotNameAvailability**](SnapshotsAPI.md#FetchSnapshotNameAvailability) | **Get** /core/snapshots/name-availability/{name} | Fetch snapshot name availability
-[**RestoreASnapshot**](SnapshotsAPI.md#RestoreASnapshot) | **Post** /core/snapshots/{id}/restore | Restore a snapshot
-[**RetrieveAnExistingSnapshot**](SnapshotsAPI.md#RetrieveAnExistingSnapshot) | **Get** /core/snapshots/{id} | Retrieve a snapshot
-[**RetrievesAListOfSnapshots**](SnapshotsAPI.md#RetrievesAListOfSnapshots) | **Get** /core/snapshots | Retrieve list of snapshots with pagination
+[**GetSnapshot**](SnapshotsAPI.md#GetSnapshot) | **Get** /core/snapshots/{id} | Retrieve a snapshot
+[**ListSnapshots**](SnapshotsAPI.md#ListSnapshots) | **Get** /core/snapshots | Retrieve list of snapshots with pagination
+[**RestoreSnapshot**](SnapshotsAPI.md#RestoreSnapshot) | **Post** /core/snapshots/{id}/restore | Restore a snapshot
 
 
 
-## CreateANewCustomImage
+## CreateCustomImage
 
-> CreateImage CreateANewCustomImage(ctx, snapshotId).Payload(payload).Execute()
+> CreateImage CreateCustomImage(ctx, snapshotId).Payload(payload).Execute()
 
 Create an image from a snapshot
 
@@ -39,13 +39,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.SnapshotsAPI.CreateANewCustomImage(context.Background(), snapshotId).Payload(payload).Execute()
+	resp, r, err := apiClient.SnapshotsAPI.CreateCustomImage(context.Background(), snapshotId).Payload(payload).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `SnapshotsAPI.CreateANewCustomImage``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `SnapshotsAPI.CreateCustomImage``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `CreateANewCustomImage`: CreateImage
-	fmt.Fprintf(os.Stdout, "Response from `SnapshotsAPI.CreateANewCustomImage`: %v\n", resp)
+	// response from `CreateCustomImage`: CreateImage
+	fmt.Fprintf(os.Stdout, "Response from `SnapshotsAPI.CreateCustomImage`: %v\n", resp)
 }
 ```
 
@@ -59,7 +59,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiCreateANewCustomImageRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiCreateCustomImageRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -85,9 +85,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## DeleteAnExistingSnapshot
+## DeleteSnapshot
 
-> ResponseModel DeleteAnExistingSnapshot(ctx, id).Execute()
+> ResponseModel DeleteSnapshot(ctx, id).Execute()
 
 Delete snapshot
 
@@ -110,13 +110,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.SnapshotsAPI.DeleteAnExistingSnapshot(context.Background(), id).Execute()
+	resp, r, err := apiClient.SnapshotsAPI.DeleteSnapshot(context.Background(), id).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `SnapshotsAPI.DeleteAnExistingSnapshot``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `SnapshotsAPI.DeleteSnapshot``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `DeleteAnExistingSnapshot`: ResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `SnapshotsAPI.DeleteAnExistingSnapshot`: %v\n", resp)
+	// response from `DeleteSnapshot`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `SnapshotsAPI.DeleteSnapshot`: %v\n", resp)
 }
 ```
 
@@ -130,7 +130,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiDeleteAnExistingSnapshotRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiDeleteSnapshotRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -225,81 +225,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## RestoreASnapshot
+## GetSnapshot
 
-> Instance RestoreASnapshot(ctx, id).Payload(payload).Execute()
-
-Restore a snapshot
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-	id := int32(56) // int32 | 
-	payload := *openapiclient.NewSnapshotRestoreRequest("NewVmName_example") // SnapshotRestoreRequest | 
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.SnapshotsAPI.RestoreASnapshot(context.Background(), id).Payload(payload).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `SnapshotsAPI.RestoreASnapshot``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `RestoreASnapshot`: Instance
-	fmt.Fprintf(os.Stdout, "Response from `SnapshotsAPI.RestoreASnapshot`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **int32** |  | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiRestoreASnapshotRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **payload** | [**SnapshotRestoreRequest**](SnapshotRestoreRequest.md) |  | 
-
-### Return type
-
-[**Instance**](Instance.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## RetrieveAnExistingSnapshot
-
-> SnapshotRetrieve RetrieveAnExistingSnapshot(ctx, id).Execute()
+> SnapshotRetrieve GetSnapshot(ctx, id).Execute()
 
 Retrieve a snapshot
 
@@ -322,13 +250,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.SnapshotsAPI.RetrieveAnExistingSnapshot(context.Background(), id).Execute()
+	resp, r, err := apiClient.SnapshotsAPI.GetSnapshot(context.Background(), id).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `SnapshotsAPI.RetrieveAnExistingSnapshot``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `SnapshotsAPI.GetSnapshot``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `RetrieveAnExistingSnapshot`: SnapshotRetrieve
-	fmt.Fprintf(os.Stdout, "Response from `SnapshotsAPI.RetrieveAnExistingSnapshot`: %v\n", resp)
+	// response from `GetSnapshot`: SnapshotRetrieve
+	fmt.Fprintf(os.Stdout, "Response from `SnapshotsAPI.GetSnapshot`: %v\n", resp)
 }
 ```
 
@@ -342,7 +270,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiRetrieveAnExistingSnapshotRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetSnapshotRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -367,9 +295,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## RetrievesAListOfSnapshots
+## ListSnapshots
 
-> Snapshots RetrievesAListOfSnapshots(ctx).Page(page).PageSize(pageSize).Search(search).Execute()
+> Snapshots ListSnapshots(ctx).Page(page).PageSize(pageSize).Search(search).Execute()
 
 Retrieve list of snapshots with pagination
 
@@ -394,13 +322,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.SnapshotsAPI.RetrievesAListOfSnapshots(context.Background()).Page(page).PageSize(pageSize).Search(search).Execute()
+	resp, r, err := apiClient.SnapshotsAPI.ListSnapshots(context.Background()).Page(page).PageSize(pageSize).Search(search).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `SnapshotsAPI.RetrievesAListOfSnapshots``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `SnapshotsAPI.ListSnapshots``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `RetrievesAListOfSnapshots`: Snapshots
-	fmt.Fprintf(os.Stdout, "Response from `SnapshotsAPI.RetrievesAListOfSnapshots`: %v\n", resp)
+	// response from `ListSnapshots`: Snapshots
+	fmt.Fprintf(os.Stdout, "Response from `SnapshotsAPI.ListSnapshots`: %v\n", resp)
 }
 ```
 
@@ -410,7 +338,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiRetrievesAListOfSnapshotsRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiListSnapshotsRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -430,6 +358,78 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## RestoreSnapshot
+
+> Instance RestoreSnapshot(ctx, id).Payload(payload).Execute()
+
+Restore a snapshot
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	id := int32(56) // int32 | 
+	payload := *openapiclient.NewSnapshotRestoreRequest("NewVmName_example") // SnapshotRestoreRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.SnapshotsAPI.RestoreSnapshot(context.Background(), id).Payload(payload).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `SnapshotsAPI.RestoreSnapshot``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `RestoreSnapshot`: Instance
+	fmt.Fprintf(os.Stdout, "Response from `SnapshotsAPI.RestoreSnapshot`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRestoreSnapshotRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **payload** | [**SnapshotRestoreRequest**](SnapshotRestoreRequest.md) |  | 
+
+### Return type
+
+[**Instance**](Instance.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

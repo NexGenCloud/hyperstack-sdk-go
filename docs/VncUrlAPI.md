@@ -5,7 +5,7 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GetVNCURL**](VncUrlAPI.md#GetVNCURL) | **Get** /core/virtual-machines/{vm_id}/console/{job_id} | Get VNC Console Link
-[**GetVncUrl**](VncUrlAPI.md#GetVncUrl) | **Get** /core/virtual-machines/{vm_id}/request-console | Request Instance Console
+[**RequestVMConsole**](VncUrlAPI.md#RequestVMConsole) | **Get** /core/virtual-machines/{vm_id}/request-console | Request Instance Console
 
 
 
@@ -82,9 +82,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetVncUrl
+## RequestVMConsole
 
-> RequestConsole GetVncUrl(ctx, vmId).Execute()
+> RequestConsole RequestVMConsole(ctx, vmId).Execute()
 
 Request Instance Console
 
@@ -107,13 +107,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VncUrlAPI.GetVncUrl(context.Background(), vmId).Execute()
+	resp, r, err := apiClient.VncUrlAPI.RequestVMConsole(context.Background(), vmId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VncUrlAPI.GetVncUrl``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `VncUrlAPI.RequestVMConsole``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetVncUrl`: RequestConsole
-	fmt.Fprintf(os.Stdout, "Response from `VncUrlAPI.GetVncUrl`: %v\n", resp)
+	// response from `RequestVMConsole`: RequestConsole
+	fmt.Fprintf(os.Stdout, "Response from `VncUrlAPI.RequestVMConsole`: %v\n", resp)
 }
 ```
 
@@ -127,7 +127,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetVncUrlRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiRequestVMConsoleRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes

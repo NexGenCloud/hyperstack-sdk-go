@@ -4,92 +4,24 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**AttemptToManuallyReconcileACluster**](ClustersAPI.md#AttemptToManuallyReconcileACluster) | **Post** /core/clusters/{cluster_id}/reconcile | Reconcile a cluster
 [**CreateCluster**](ClustersAPI.md#CreateCluster) | **Post** /core/clusters | Create Cluster
 [**CreateNode**](ClustersAPI.md#CreateNode) | **Post** /core/clusters/{cluster_id}/nodes | Create Node
 [**CreateNodeGroup**](ClustersAPI.md#CreateNodeGroup) | **Post** /core/clusters/{cluster_id}/node-groups | Create a node group in a cluster
-[**DeleteACluster**](ClustersAPI.md#DeleteACluster) | **Delete** /core/clusters/{id} | Delete a cluster
-[**DeleteANodeGroup**](ClustersAPI.md#DeleteANodeGroup) | **Delete** /core/clusters/{cluster_id}/node-groups/{node_group_id} | Delete a node group
+[**DeleteCluster**](ClustersAPI.md#DeleteCluster) | **Delete** /core/clusters/{id} | Delete a cluster
 [**DeleteClusterNode**](ClustersAPI.md#DeleteClusterNode) | **Delete** /core/clusters/{cluster_id}/nodes/{node_id} | Delete Cluster Node
 [**DeleteClusterNodes**](ClustersAPI.md#DeleteClusterNodes) | **Post** /core/clusters/{cluster_id}/nodes/delete | Delete Multiple Cluster Nodes
+[**DeleteNodeGroup**](ClustersAPI.md#DeleteNodeGroup) | **Delete** /core/clusters/{cluster_id}/node-groups/{node_group_id} | Delete a node group
 [**FetchClusterNameAvailability**](ClustersAPI.md#FetchClusterNameAvailability) | **Get** /core/clusters/name-availability/{name} | Fetch cluster name availability
 [**GetClusterMasterFlavors**](ClustersAPI.md#GetClusterMasterFlavors) | **Get** /core/clusters/master-flavors | Get Cluster Master Flavors
 [**GetClusterNodes**](ClustersAPI.md#GetClusterNodes) | **Get** /core/clusters/{cluster_id}/nodes | Get Cluster Nodes
 [**GetClusterVersions**](ClustersAPI.md#GetClusterVersions) | **Get** /core/clusters/versions | List Cluster Versions
+[**GetNodeGroup**](ClustersAPI.md#GetNodeGroup) | **Get** /core/clusters/{cluster_id}/node-groups/{node_group_id} | Retrieve a node group in a cluster
 [**GettingClusterDetail**](ClustersAPI.md#GettingClusterDetail) | **Get** /core/clusters/{id} | Getting Cluster Detail
 [**ListClusters**](ClustersAPI.md#ListClusters) | **Get** /core/clusters | List Clusters
 [**ListNodeGroups**](ClustersAPI.md#ListNodeGroups) | **Get** /core/clusters/{cluster_id}/node-groups | List node groups for a cluster
-[**RetrieveANodeGroup**](ClustersAPI.md#RetrieveANodeGroup) | **Get** /core/clusters/{cluster_id}/node-groups/{node_group_id} | Retrieve a node group in a cluster
-[**UpdateANodeGroup**](ClustersAPI.md#UpdateANodeGroup) | **Patch** /core/clusters/{cluster_id}/node-groups/{node_group_id} | Update a node group in a cluster
+[**ReconcileCluster**](ClustersAPI.md#ReconcileCluster) | **Post** /core/clusters/{cluster_id}/reconcile | Reconcile a cluster
+[**UpdateNodeGroup**](ClustersAPI.md#UpdateNodeGroup) | **Patch** /core/clusters/{cluster_id}/node-groups/{node_group_id} | Update a node group in a cluster
 
-
-
-## AttemptToManuallyReconcileACluster
-
-> ManualReconciliationModel AttemptToManuallyReconcileACluster(ctx, clusterId).Execute()
-
-Reconcile a cluster
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-	clusterId := int32(56) // int32 | 
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ClustersAPI.AttemptToManuallyReconcileACluster(context.Background(), clusterId).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.AttemptToManuallyReconcileACluster``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `AttemptToManuallyReconcileACluster`: ManualReconciliationModel
-	fmt.Fprintf(os.Stdout, "Response from `ClustersAPI.AttemptToManuallyReconcileACluster`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**clusterId** | **int32** |  | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiAttemptToManuallyReconcileAClusterRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-### Return type
-
-[**ManualReconciliationModel**](ManualReconciliationModel.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
 
 
 ## CreateCluster
@@ -296,9 +228,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## DeleteACluster
+## DeleteCluster
 
-> ResponseModel DeleteACluster(ctx, id).Execute()
+> ResponseModel DeleteCluster(ctx, id).Execute()
 
 Delete a cluster
 
@@ -319,13 +251,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ClustersAPI.DeleteACluster(context.Background(), id).Execute()
+	resp, r, err := apiClient.ClustersAPI.DeleteCluster(context.Background(), id).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.DeleteACluster``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.DeleteCluster``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `DeleteACluster`: ResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `ClustersAPI.DeleteACluster`: %v\n", resp)
+	// response from `DeleteCluster`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `ClustersAPI.DeleteCluster`: %v\n", resp)
 }
 ```
 
@@ -339,82 +271,11 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiDeleteAClusterRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiDeleteClusterRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-
-
-### Return type
-
-[**ResponseModel**](ResponseModel.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## DeleteANodeGroup
-
-> ResponseModel DeleteANodeGroup(ctx, clusterId, nodeGroupId).Execute()
-
-Delete a node group
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-	clusterId := int32(56) // int32 | 
-	nodeGroupId := int32(56) // int32 | 
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ClustersAPI.DeleteANodeGroup(context.Background(), clusterId, nodeGroupId).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.DeleteANodeGroup``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `DeleteANodeGroup`: ResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `ClustersAPI.DeleteANodeGroup`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**clusterId** | **int32** |  | 
-**nodeGroupId** | **int32** |  | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiDeleteANodeGroupRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
 
 
 ### Return type
@@ -569,6 +430,77 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## DeleteNodeGroup
+
+> ResponseModel DeleteNodeGroup(ctx, clusterId, nodeGroupId).Execute()
+
+Delete a node group
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	clusterId := int32(56) // int32 | 
+	nodeGroupId := int32(56) // int32 | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ClustersAPI.DeleteNodeGroup(context.Background(), clusterId, nodeGroupId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.DeleteNodeGroup``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `DeleteNodeGroup`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `ClustersAPI.DeleteNodeGroup`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**clusterId** | **int32** |  | 
+**nodeGroupId** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteNodeGroupRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+### Return type
+
+[**ResponseModel**](ResponseModel.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -839,6 +771,77 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetNodeGroup
+
+> ClusterNodeGroupsGetResponse GetNodeGroup(ctx, clusterId, nodeGroupId).Execute()
+
+Retrieve a node group in a cluster
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	clusterId := int32(56) // int32 | 
+	nodeGroupId := int32(56) // int32 | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ClustersAPI.GetNodeGroup(context.Background(), clusterId, nodeGroupId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.GetNodeGroup``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetNodeGroup`: ClusterNodeGroupsGetResponse
+	fmt.Fprintf(os.Stdout, "Response from `ClustersAPI.GetNodeGroup`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**clusterId** | **int32** |  | 
+**nodeGroupId** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetNodeGroupRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+### Return type
+
+[**ClusterNodeGroupsGetResponse**](ClusterNodeGroupsGetResponse.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GettingClusterDetail
 
 > ClusterResponse GettingClusterDetail(ctx, id).Execute()
@@ -1045,11 +1048,11 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## RetrieveANodeGroup
+## ReconcileCluster
 
-> ClusterNodeGroupsGetResponse RetrieveANodeGroup(ctx, clusterId, nodeGroupId).Execute()
+> ManualReconciliationModel ReconcileCluster(ctx, clusterId).Execute()
 
-Retrieve a node group in a cluster
+Reconcile a cluster
 
 ### Example
 
@@ -1065,17 +1068,16 @@ import (
 
 func main() {
 	clusterId := int32(56) // int32 | 
-	nodeGroupId := int32(56) // int32 | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ClustersAPI.RetrieveANodeGroup(context.Background(), clusterId, nodeGroupId).Execute()
+	resp, r, err := apiClient.ClustersAPI.ReconcileCluster(context.Background(), clusterId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.RetrieveANodeGroup``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.ReconcileCluster``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `RetrieveANodeGroup`: ClusterNodeGroupsGetResponse
-	fmt.Fprintf(os.Stdout, "Response from `ClustersAPI.RetrieveANodeGroup`: %v\n", resp)
+	// response from `ReconcileCluster`: ManualReconciliationModel
+	fmt.Fprintf(os.Stdout, "Response from `ClustersAPI.ReconcileCluster`: %v\n", resp)
 }
 ```
 
@@ -1086,21 +1088,19 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
 **clusterId** | **int32** |  | 
-**nodeGroupId** | **int32** |  | 
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiRetrieveANodeGroupRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiReconcileClusterRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
-
 ### Return type
 
-[**ClusterNodeGroupsGetResponse**](ClusterNodeGroupsGetResponse.md)
+[**ManualReconciliationModel**](ManualReconciliationModel.md)
 
 ### Authorization
 
@@ -1116,9 +1116,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UpdateANodeGroup
+## UpdateNodeGroup
 
-> ClusterNodeGroupsCreateResponse UpdateANodeGroup(ctx, clusterId, nodeGroupId).Payload(payload).Execute()
+> ClusterNodeGroupsCreateResponse UpdateNodeGroup(ctx, clusterId, nodeGroupId).Payload(payload).Execute()
 
 Update a node group in a cluster
 
@@ -1141,13 +1141,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ClustersAPI.UpdateANodeGroup(context.Background(), clusterId, nodeGroupId).Payload(payload).Execute()
+	resp, r, err := apiClient.ClustersAPI.UpdateNodeGroup(context.Background(), clusterId, nodeGroupId).Payload(payload).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.UpdateANodeGroup``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.UpdateNodeGroup``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `UpdateANodeGroup`: ClusterNodeGroupsCreateResponse
-	fmt.Fprintf(os.Stdout, "Response from `ClustersAPI.UpdateANodeGroup`: %v\n", resp)
+	// response from `UpdateNodeGroup`: ClusterNodeGroupsCreateResponse
+	fmt.Fprintf(os.Stdout, "Response from `ClustersAPI.UpdateNodeGroup`: %v\n", resp)
 }
 ```
 
@@ -1162,7 +1162,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiUpdateANodeGroupRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiUpdateNodeGroupRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes

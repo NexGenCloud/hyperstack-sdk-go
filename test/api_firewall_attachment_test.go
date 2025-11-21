@@ -23,13 +23,13 @@ func Test_hyperstack_FirewallAttachmentAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test FirewallAttachmentAPIService AttachFirewallToVirtualMachines", func(t *testing.T) {
+	t.Run("Test FirewallAttachmentAPIService AttachFirewallToVMs", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var firewallId int32
 
-		resp, httpRes, err := apiClient.FirewallAttachmentAPI.AttachFirewallToVirtualMachines(context.Background(), firewallId).Execute()
+		resp, httpRes, err := apiClient.FirewallAttachmentAPI.AttachFirewallToVMs(context.Background(), firewallId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

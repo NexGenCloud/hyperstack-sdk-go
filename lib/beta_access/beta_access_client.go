@@ -103,8 +103,8 @@ type ErrorResponseModel struct {
 	Status      *bool   `json:"status,omitempty"`
 }
 
-// CreateABetaAccessRequestJSONRequestBody defines body for CreateABetaAccessRequest for application/json ContentType.
-type CreateABetaAccessRequestJSONRequestBody = BetaAccessRequestPayload
+// CreateBetaAccessRequestJSONRequestBody defines body for CreateBetaAccessRequest for application/json ContentType.
+type CreateBetaAccessRequestJSONRequestBody = BetaAccessRequestPayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -182,13 +182,13 @@ type ClientInterface interface {
 	// GetBetaAccessStatus request
 	GetBetaAccessStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateABetaAccessRequestWithBody request with any body
-	CreateABetaAccessRequestWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateBetaAccessRequestWithBody request with any body
+	CreateBetaAccessRequestWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	CreateABetaAccessRequest(ctx context.Context, body CreateABetaAccessRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateBetaAccessRequest(ctx context.Context, body CreateBetaAccessRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetBetaAccessStatus2 request
-	GetBetaAccessStatus2(ctx context.Context, program string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetBetaAccessRequests request
+	GetBetaAccessRequests(ctx context.Context, program string, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) GetBetaAccessStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -203,8 +203,8 @@ func (c *Client) GetBetaAccessStatus(ctx context.Context, reqEditors ...RequestE
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateABetaAccessRequestWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateABetaAccessRequestRequestWithBody(c.Server, contentType, body)
+func (c *Client) CreateBetaAccessRequestWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateBetaAccessRequestRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -215,8 +215,8 @@ func (c *Client) CreateABetaAccessRequestWithBody(ctx context.Context, contentTy
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateABetaAccessRequest(ctx context.Context, body CreateABetaAccessRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateABetaAccessRequestRequest(c.Server, body)
+func (c *Client) CreateBetaAccessRequest(ctx context.Context, body CreateBetaAccessRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateBetaAccessRequestRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -227,8 +227,8 @@ func (c *Client) CreateABetaAccessRequest(ctx context.Context, body CreateABetaA
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetBetaAccessStatus2(ctx context.Context, program string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetBetaAccessStatus2Request(c.Server, program)
+func (c *Client) GetBetaAccessRequests(ctx context.Context, program string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetBetaAccessRequestsRequest(c.Server, program)
 	if err != nil {
 		return nil, err
 	}
@@ -266,19 +266,19 @@ func NewGetBetaAccessStatusRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewCreateABetaAccessRequestRequest calls the generic CreateABetaAccessRequest builder with application/json body
-func NewCreateABetaAccessRequestRequest(server string, body CreateABetaAccessRequestJSONRequestBody) (*http.Request, error) {
+// NewCreateBetaAccessRequestRequest calls the generic CreateBetaAccessRequest builder with application/json body
+func NewCreateBetaAccessRequestRequest(server string, body CreateBetaAccessRequestJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewCreateABetaAccessRequestRequestWithBody(server, "application/json", bodyReader)
+	return NewCreateBetaAccessRequestRequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewCreateABetaAccessRequestRequestWithBody generates requests for CreateABetaAccessRequest with any type of body
-func NewCreateABetaAccessRequestRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewCreateBetaAccessRequestRequestWithBody generates requests for CreateBetaAccessRequest with any type of body
+func NewCreateBetaAccessRequestRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -306,8 +306,8 @@ func NewCreateABetaAccessRequestRequestWithBody(server string, contentType strin
 	return req, nil
 }
 
-// NewGetBetaAccessStatus2Request generates requests for GetBetaAccessStatus2
-func NewGetBetaAccessStatus2Request(server string, program string) (*http.Request, error) {
+// NewGetBetaAccessRequestsRequest generates requests for GetBetaAccessRequests
+func NewGetBetaAccessRequestsRequest(server string, program string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -386,13 +386,13 @@ type ClientWithResponsesInterface interface {
 	// GetBetaAccessStatusWithResponse request
 	GetBetaAccessStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetBetaAccessStatusResponse, error)
 
-	// CreateABetaAccessRequestWithBodyWithResponse request with any body
-	CreateABetaAccessRequestWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateABetaAccessRequestResponse, error)
+	// CreateBetaAccessRequestWithBodyWithResponse request with any body
+	CreateBetaAccessRequestWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateBetaAccessRequestResponse, error)
 
-	CreateABetaAccessRequestWithResponse(ctx context.Context, body CreateABetaAccessRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateABetaAccessRequestResponse, error)
+	CreateBetaAccessRequestWithResponse(ctx context.Context, body CreateBetaAccessRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateBetaAccessRequestResponse, error)
 
-	// GetBetaAccessStatus2WithResponse request
-	GetBetaAccessStatus2WithResponse(ctx context.Context, program string, reqEditors ...RequestEditorFn) (*GetBetaAccessStatus2Response, error)
+	// GetBetaAccessRequestsWithResponse request
+	GetBetaAccessRequestsWithResponse(ctx context.Context, program string, reqEditors ...RequestEditorFn) (*GetBetaAccessRequestsResponse, error)
 }
 
 type GetBetaAccessStatusResponse struct {
@@ -420,7 +420,7 @@ func (r GetBetaAccessStatusResponse) StatusCode() int {
 	return 0
 }
 
-type CreateABetaAccessRequestResponse struct {
+type CreateBetaAccessRequestResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *BetaAccessRequestResponseModel
@@ -430,7 +430,7 @@ type CreateABetaAccessRequestResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r CreateABetaAccessRequestResponse) Status() string {
+func (r CreateBetaAccessRequestResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -438,14 +438,14 @@ func (r CreateABetaAccessRequestResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CreateABetaAccessRequestResponse) StatusCode() int {
+func (r CreateBetaAccessRequestResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetBetaAccessStatus2Response struct {
+type GetBetaAccessRequestsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *BetaAccessStatusResponseModel
@@ -455,7 +455,7 @@ type GetBetaAccessStatus2Response struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetBetaAccessStatus2Response) Status() string {
+func (r GetBetaAccessRequestsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -463,7 +463,7 @@ func (r GetBetaAccessStatus2Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetBetaAccessStatus2Response) StatusCode() int {
+func (r GetBetaAccessRequestsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -479,30 +479,30 @@ func (c *ClientWithResponses) GetBetaAccessStatusWithResponse(ctx context.Contex
 	return ParseGetBetaAccessStatusResponse(rsp)
 }
 
-// CreateABetaAccessRequestWithBodyWithResponse request with arbitrary body returning *CreateABetaAccessRequestResponse
-func (c *ClientWithResponses) CreateABetaAccessRequestWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateABetaAccessRequestResponse, error) {
-	rsp, err := c.CreateABetaAccessRequestWithBody(ctx, contentType, body, reqEditors...)
+// CreateBetaAccessRequestWithBodyWithResponse request with arbitrary body returning *CreateBetaAccessRequestResponse
+func (c *ClientWithResponses) CreateBetaAccessRequestWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateBetaAccessRequestResponse, error) {
+	rsp, err := c.CreateBetaAccessRequestWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreateABetaAccessRequestResponse(rsp)
+	return ParseCreateBetaAccessRequestResponse(rsp)
 }
 
-func (c *ClientWithResponses) CreateABetaAccessRequestWithResponse(ctx context.Context, body CreateABetaAccessRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateABetaAccessRequestResponse, error) {
-	rsp, err := c.CreateABetaAccessRequest(ctx, body, reqEditors...)
+func (c *ClientWithResponses) CreateBetaAccessRequestWithResponse(ctx context.Context, body CreateBetaAccessRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateBetaAccessRequestResponse, error) {
+	rsp, err := c.CreateBetaAccessRequest(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreateABetaAccessRequestResponse(rsp)
+	return ParseCreateBetaAccessRequestResponse(rsp)
 }
 
-// GetBetaAccessStatus2WithResponse request returning *GetBetaAccessStatus2Response
-func (c *ClientWithResponses) GetBetaAccessStatus2WithResponse(ctx context.Context, program string, reqEditors ...RequestEditorFn) (*GetBetaAccessStatus2Response, error) {
-	rsp, err := c.GetBetaAccessStatus2(ctx, program, reqEditors...)
+// GetBetaAccessRequestsWithResponse request returning *GetBetaAccessRequestsResponse
+func (c *ClientWithResponses) GetBetaAccessRequestsWithResponse(ctx context.Context, program string, reqEditors ...RequestEditorFn) (*GetBetaAccessRequestsResponse, error) {
+	rsp, err := c.GetBetaAccessRequests(ctx, program, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetBetaAccessStatus2Response(rsp)
+	return ParseGetBetaAccessRequestsResponse(rsp)
 }
 
 // ParseGetBetaAccessStatusResponse parses an HTTP response from a GetBetaAccessStatusWithResponse call
@@ -552,15 +552,15 @@ func ParseGetBetaAccessStatusResponse(rsp *http.Response) (*GetBetaAccessStatusR
 	return response, nil
 }
 
-// ParseCreateABetaAccessRequestResponse parses an HTTP response from a CreateABetaAccessRequestWithResponse call
-func ParseCreateABetaAccessRequestResponse(rsp *http.Response) (*CreateABetaAccessRequestResponse, error) {
+// ParseCreateBetaAccessRequestResponse parses an HTTP response from a CreateBetaAccessRequestWithResponse call
+func ParseCreateBetaAccessRequestResponse(rsp *http.Response) (*CreateBetaAccessRequestResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CreateABetaAccessRequestResponse{
+	response := &CreateBetaAccessRequestResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -599,15 +599,15 @@ func ParseCreateABetaAccessRequestResponse(rsp *http.Response) (*CreateABetaAcce
 	return response, nil
 }
 
-// ParseGetBetaAccessStatus2Response parses an HTTP response from a GetBetaAccessStatus2WithResponse call
-func ParseGetBetaAccessStatus2Response(rsp *http.Response) (*GetBetaAccessStatus2Response, error) {
+// ParseGetBetaAccessRequestsResponse parses an HTTP response from a GetBetaAccessRequestsWithResponse call
+func ParseGetBetaAccessRequestsResponse(rsp *http.Response) (*GetBetaAccessRequestsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetBetaAccessStatus2Response{
+	response := &GetBetaAccessRequestsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

@@ -23,13 +23,13 @@ func Test_hyperstack_VirtualMachineAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test VirtualMachineAPIService AttachFirewallsToAVirtualMachine", func(t *testing.T) {
+	t.Run("Test VirtualMachineAPIService AddVMLabel", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var vmId int32
 
-		resp, httpRes, err := apiClient.VirtualMachineAPI.AttachFirewallsToAVirtualMachine(context.Background(), vmId).Execute()
+		resp, httpRes, err := apiClient.VirtualMachineAPI.AddVMLabel(context.Background(), vmId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -37,11 +37,13 @@ func Test_hyperstack_VirtualMachineAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test VirtualMachineAPIService CreateOneOrMoreVirtualMachines", func(t *testing.T) {
+	t.Run("Test VirtualMachineAPIService AttachFirewallsToVM", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.VirtualMachineAPI.CreateOneOrMoreVirtualMachines(context.Background()).Execute()
+		var vmId int32
+
+		resp, httpRes, err := apiClient.VirtualMachineAPI.AttachFirewallsToVM(context.Background(), vmId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -49,14 +51,68 @@ func Test_hyperstack_VirtualMachineAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test VirtualMachineAPIService DeleteSecurityRule", func(t *testing.T) {
+	t.Run("Test VirtualMachineAPIService CheckVMNameAvailability", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var name string
+
+		resp, httpRes, err := apiClient.VirtualMachineAPI.CheckVMNameAvailability(context.Background(), name).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test VirtualMachineAPIService CreateFirewallRuleForVM", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.VirtualMachineAPI.CreateFirewallRuleForVM(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test VirtualMachineAPIService CreateSnapshotForVM", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.VirtualMachineAPI.CreateSnapshotForVM(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test VirtualMachineAPIService CreateVMs", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.VirtualMachineAPI.CreateVMs(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test VirtualMachineAPIService DeleteFirewallRuleForVM", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var vmId int32
 		var sgRuleId int32
 
-		resp, httpRes, err := apiClient.VirtualMachineAPI.DeleteSecurityRule(context.Background(), vmId, sgRuleId).Execute()
+		resp, httpRes, err := apiClient.VirtualMachineAPI.DeleteFirewallRuleForVM(context.Background(), vmId, sgRuleId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -64,13 +120,13 @@ func Test_hyperstack_VirtualMachineAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test VirtualMachineAPIService DeleteVirtualMachine", func(t *testing.T) {
+	t.Run("Test VirtualMachineAPIService DeleteVM", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var vmId int32
 
-		resp, httpRes, err := apiClient.VirtualMachineAPI.DeleteVirtualMachine(context.Background(), vmId).Execute()
+		resp, httpRes, err := apiClient.VirtualMachineAPI.DeleteVM(context.Background(), vmId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -78,221 +134,165 @@ func Test_hyperstack_VirtualMachineAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test VirtualMachineAPIService FetchVirtualMachineNameAvailability", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var name string
-
-		resp, httpRes, err := apiClient.VirtualMachineAPI.FetchVirtualMachineNameAvailability(context.Background(), name).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test VirtualMachineAPIService GetInstanceHardReboot", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.VirtualMachineAPI.GetInstanceHardReboot(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test VirtualMachineAPIService GetInstanceHibernate", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.VirtualMachineAPI.GetInstanceHibernate(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test VirtualMachineAPIService GetInstanceHibernateRestore", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.VirtualMachineAPI.GetInstanceHibernateRestore(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test VirtualMachineAPIService GetInstanceLogs", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.VirtualMachineAPI.GetInstanceLogs(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test VirtualMachineAPIService GetInstanceMetrics", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.VirtualMachineAPI.GetInstanceMetrics(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test VirtualMachineAPIService GetInstanceStart", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.VirtualMachineAPI.GetInstanceStart(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test VirtualMachineAPIService GetInstanceStop", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.VirtualMachineAPI.GetInstanceStop(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test VirtualMachineAPIService ListVirtualMachines", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		resp, httpRes, err := apiClient.VirtualMachineAPI.ListVirtualMachines(context.Background()).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test VirtualMachineAPIService PostInstanceLogs", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.VirtualMachineAPI.PostInstanceLogs(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test VirtualMachineAPIService PostInstanceResize", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.VirtualMachineAPI.PostInstanceResize(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test VirtualMachineAPIService PostSecurityRule", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.VirtualMachineAPI.PostSecurityRule(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test VirtualMachineAPIService PostSnapshots", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.VirtualMachineAPI.PostSnapshots(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test VirtualMachineAPIService PutLabels", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.VirtualMachineAPI.PutLabels(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test VirtualMachineAPIService RetrieveVirtualMachineDetails", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var vmId int32
-
-		resp, httpRes, err := apiClient.VirtualMachineAPI.RetrieveVirtualMachineDetails(context.Background(), vmId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test VirtualMachineAPIService RetrieveVirtualMachinesAssociatedWithAContract", func(t *testing.T) {
+	t.Run("Test VirtualMachineAPIService GetContractVMs", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var contractId int32
 
-		resp, httpRes, err := apiClient.VirtualMachineAPI.RetrieveVirtualMachinesAssociatedWithAContract(context.Background(), contractId).Execute()
+		resp, httpRes, err := apiClient.VirtualMachineAPI.GetContractVMs(context.Background(), contractId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test VirtualMachineAPIService GetVM", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.VirtualMachineAPI.GetVM(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test VirtualMachineAPIService GetVMLogs", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.VirtualMachineAPI.GetVMLogs(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test VirtualMachineAPIService GetVMMetrics", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.VirtualMachineAPI.GetVMMetrics(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test VirtualMachineAPIService HardRebootVM", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.VirtualMachineAPI.HardRebootVM(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test VirtualMachineAPIService HibernateVM", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.VirtualMachineAPI.HibernateVM(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test VirtualMachineAPIService ListVMs", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.VirtualMachineAPI.ListVMs(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test VirtualMachineAPIService RequestVMLogs", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.VirtualMachineAPI.RequestVMLogs(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test VirtualMachineAPIService ResizeVM", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.VirtualMachineAPI.ResizeVM(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test VirtualMachineAPIService RestoreVMFromHibernation", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.VirtualMachineAPI.RestoreVMFromHibernation(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test VirtualMachineAPIService StartVM", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.VirtualMachineAPI.StartVM(context.Background(), vmId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test VirtualMachineAPIService StopVM", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var vmId int32
+
+		resp, httpRes, err := apiClient.VirtualMachineAPI.StopVM(context.Background(), vmId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

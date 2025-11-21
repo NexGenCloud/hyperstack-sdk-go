@@ -115,12 +115,12 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// ListVirtualMachineEvents request
-	ListVirtualMachineEvents(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListVMEvents request
+	ListVMEvents(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) ListVirtualMachineEvents(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListVirtualMachineEventsRequest(c.Server, vmId)
+func (c *Client) ListVMEvents(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListVMEventsRequest(c.Server, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -131,8 +131,8 @@ func (c *Client) ListVirtualMachineEvents(ctx context.Context, vmId int, reqEdit
 	return c.Client.Do(req)
 }
 
-// NewListVirtualMachineEventsRequest generates requests for ListVirtualMachineEvents
-func NewListVirtualMachineEventsRequest(server string, vmId int) (*http.Request, error) {
+// NewListVMEventsRequest generates requests for ListVMEvents
+func NewListVMEventsRequest(server string, vmId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -208,11 +208,11 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// ListVirtualMachineEventsWithResponse request
-	ListVirtualMachineEventsWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*ListVirtualMachineEventsResponse, error)
+	// ListVMEventsWithResponse request
+	ListVMEventsWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*ListVMEventsResponse, error)
 }
 
-type ListVirtualMachineEventsResponse struct {
+type ListVMEventsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *InstanceEvents
@@ -222,7 +222,7 @@ type ListVirtualMachineEventsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ListVirtualMachineEventsResponse) Status() string {
+func (r ListVMEventsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -230,31 +230,31 @@ func (r ListVirtualMachineEventsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ListVirtualMachineEventsResponse) StatusCode() int {
+func (r ListVMEventsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// ListVirtualMachineEventsWithResponse request returning *ListVirtualMachineEventsResponse
-func (c *ClientWithResponses) ListVirtualMachineEventsWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*ListVirtualMachineEventsResponse, error) {
-	rsp, err := c.ListVirtualMachineEvents(ctx, vmId, reqEditors...)
+// ListVMEventsWithResponse request returning *ListVMEventsResponse
+func (c *ClientWithResponses) ListVMEventsWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*ListVMEventsResponse, error) {
+	rsp, err := c.ListVMEvents(ctx, vmId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseListVirtualMachineEventsResponse(rsp)
+	return ParseListVMEventsResponse(rsp)
 }
 
-// ParseListVirtualMachineEventsResponse parses an HTTP response from a ListVirtualMachineEventsWithResponse call
-func ParseListVirtualMachineEventsResponse(rsp *http.Response) (*ListVirtualMachineEventsResponse, error) {
+// ParseListVMEventsResponse parses an HTTP response from a ListVMEventsWithResponse call
+func ParseListVMEventsResponse(rsp *http.Response) (*ListVMEventsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ListVirtualMachineEventsResponse{
+	response := &ListVMEventsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

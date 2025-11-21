@@ -86,6 +86,8 @@ tags:
   name: Snapshots
 - description: Snapshot Events APIs
   name: snapshot events
+- description: Floating IP Detachment Exclusions
+  name: FIP Exclusions
 - description: Pricebook APIs
   name: Pricebook
 - description: Calculate APIs
@@ -103,7 +105,7 @@ paths:
     get:
       description: "Retrieves your API keys, granting access to the Infrahub APIs.\
         \ For further details on API keys, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/auth-resources/api-key/retrieve-api-key)."
-      operationId: Retrieve_API_Key
+      operationId: Get_API_Key
       responses:
         "200":
           content:
@@ -324,7 +326,7 @@ paths:
       - beta access
     post:
       description: Creates a new beta access request for the current user
-      operationId: Create_a_beta_access_request
+      operationId: Create_beta_access_request
       requestBody:
         content:
           application/json:
@@ -369,7 +371,7 @@ paths:
   /auth/beta-access/requests/{program}:
     get:
       description: Check the status of a particular beta access requests.
-      operationId: Get_beta_access_status_2
+      operationId: Get_beta_access_requests
       parameters:
       - explode: false
         in: path
@@ -587,7 +589,7 @@ paths:
     get:
       description: "Retrieves detailed information about the currently authenticated\
         \ user. For additional information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/auth-resources/auth)."
-      operationId: Retrieve_Authenticated_User_Details
+      operationId: Get_Authenticated_User
       responses:
         "200":
           content:
@@ -1439,7 +1441,7 @@ paths:
       description: "Retrieve the billing status of your account to ensure that it\
         \ is active. An active billing status ensures uninterrupted service. For additional\
         \ information [**click here**](None/docs/api-reference/billing-resources/alive/)."
-      operationId: get_alive
+      operationId: Get_alive
       responses:
         "200":
           content: {}
@@ -1452,7 +1454,7 @@ paths:
       - alive
   /billing/alive/doc:
     get:
-      operationId: get_doc
+      operationId: Get_alive_doc
       responses:
         "200":
           content: {}
@@ -1464,10 +1466,10 @@ paths:
       - alive
   /billing/billing/history:
     get:
-      description: "User will recieve billing history for the specified billing cycle.\
+      description: "User will receive billing history for the specified billing cycle.\
         \ This data will include 'incurred_bill', 'non_discounted_bill', 'vm_cost',\
         \ 'volume_cost'"
-      operationId: get_user_billing_history_2
+      operationId: Get_User_Billing_History
       parameters:
       - description: Date should be formatted in YYYY-MM-DDTHH:MM:SS
         explode: true
@@ -1535,10 +1537,10 @@ paths:
       - billing
   /billing/billing/history/bucket:
     get:
-      description: "User will recieve billing history of buckets for thespecified\
+      description: "User will receive billing history of buckets for thespecified\
         \ billing cycle. This data will include 'resource_name', 'infrahub_id', 'status',\
         \ 'incurred_bill', 'usage_time', 'price_per_hour'"
-      operationId: get_user_billing_history_bucket_2
+      operationId: List_Bucket_Billing_History
       parameters:
       - description: Date should be formatted in YYYY-MM-DDTHH:MM:SS
         explode: true
@@ -1617,7 +1619,7 @@ paths:
       security:
       - accessToken: []
       - apiKey: []
-      summary: Retrieve Billing History of Volume for a specific Billing Cycle
+      summary: Retrieve Billing History of a Bucket for a specific Billing Cycle
       tags:
       - billing
   /billing/billing/history/bucket/{bucket_id}:
@@ -1625,7 +1627,7 @@ paths:
       description: "Retrieve billing history of a specific Bucket for the specified\
         \ billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour',\
         \ 'incurred_bill', 'usage_time', 'non_discounted_price_per_hour', 'non_discounted_bill'."
-      operationId: get_user_billing_history_bucket_details
+      operationId: Get_Bucket_billing_history
       parameters:
       - explode: false
         in: path
@@ -1693,9 +1695,9 @@ paths:
       - billing
   /billing/billing/history/bucket/{bucket_id}/graph:
     get:
-      description: User will recieve hourly cost datapoints for a Bucket for a specified
+      description: User will receive hourly cost datapoints for a Bucket for a specified
         billing cycle. This data will include 'incurred_bill' graph datapoints.
-      operationId: get_user_billing_bucket_details_graph
+      operationId: Buckets_billing_history_hourly_chart
       parameters:
       - explode: false
         in: path
@@ -1766,7 +1768,7 @@ paths:
       description: "User will receive billing history of clusters for the specified\
         \ billing cycle. This data will include 'resource_name', 'infrahub_id', 'status',\
         \ 'incurred_bill', 'usage_time', 'price_per_hour'"
-      operationId: get_user_billing_history_cluster
+      operationId: List_Clusters_billing_history
       parameters:
       - description: Date should be formatted in YYYY-MM-DDTHH:MM:SS
         explode: true
@@ -1854,7 +1856,7 @@ paths:
         \ specified billing cycle. This data will include 'resource_name', 'infrahub_id',\
         \ 'price_per_hour', 'non_discounted_price_per_hour', 'incurred_bill', 'non_discounted_bill',\
         \ 'usage_time', 'usage_time_ACTIVE', 'usage_time_SHUTOFF', 'usage_time_HIBERNATED'."
-      operationId: get_user_billing_history_cluster_details
+      operationId: Get_Cluster_billing_history
       parameters:
       - explode: false
         in: path
@@ -1924,7 +1926,7 @@ paths:
     get:
       description: User will receive hourly cost datapoints for a Cluster for a specified
         billing cycle. This data will include 'incurred_bill' graph datapoints.
-      operationId: get_user_billing_cluster_details_graph
+      operationId: Get_cluster_billing_history_graph
       parameters:
       - explode: false
         in: path
@@ -1992,10 +1994,10 @@ paths:
       - billing
   /billing/billing/history/contract:
     get:
-      description: "User will recieve billing history of contracts for the specified\
+      description: "User will receive billing history of contracts for the specified\
         \ billing cycle. This data will include 'description', gpu_type','infrahub_id',\
         \ 'status', 'incurred_bill', 'price_per_hour'"
-      operationId: get_user_billing_history_contract
+      operationId: List_billing_contract_history
       parameters:
       - description: Date should be formatted in YYYY-MM-DDTHH:MM:SS
         explode: true
@@ -2057,9 +2059,9 @@ paths:
       - billing
   /billing/billing/history/data_synthesis:
     get:
-      description: User will recieve billing history of data_synthesis for the specified
+      description: User will receive billing history of data_synthesis for the specified
         billing cycle.
-      operationId: get_user_billing_history_data_synthesis
+      operationId: Get_data_synthesis_billing_history
       parameters:
       - description: Date should be formatted in YYYY-MM-DDTHH:MM:SS
         explode: true
@@ -2148,7 +2150,7 @@ paths:
         \ 'lora_adapter', 'incurred_bill', 'non_discounted_bill', 'usage_time', 'input_tokens',\
         \ 'output_tokens', 'input_tokens_incurred_bill', 'input_tokens_non_discounted_bill',\
         \ 'output_tokens_incurred_bill', 'output_tokens_non_discounted_bill'"
-      operationId: get_user_billing_history_data_synthesis_details
+      operationId: Get_data_synthesis_history_for_resource
       parameters:
       - explode: false
         in: path
@@ -2217,7 +2219,7 @@ paths:
       description: |-
         User will receive hourly cost datapoints for a data synthesis job for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
         billing cycle
-      operationId: get_user_billing_data_synthesis_details_graph
+      operationId: Get_data_synthesis_billing_history_graph
       parameters:
       - explode: false
         in: path
@@ -2285,9 +2287,9 @@ paths:
       - billing
   /billing/billing/history/fine_tuning:
     get:
-      description: User will recieve billing history of fine_tuning for the specified
+      description: User will receive billing history of fine_tuning for the specified
         billing cycle.
-      operationId: get_user_billing_history_fine_tuning
+      operationId: Get_fine-tuning_billing_history
       parameters:
       - description: Date should be formatted in YYYY-MM-DDTHH:MM:SS
         explode: true
@@ -2372,10 +2374,10 @@ paths:
       - billing
   /billing/billing/history/fine_tuning/{resource_id}:
     get:
-      description: "Retrieve billing history of a specific Fine tunning for the specified\
+      description: "Retrieve billing history of a specific Fine tuning for the specified\
         \ billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour',\
         \ 'incurred_bill', 'usage_time', 'non_discounted_price_per_hour', 'non_discounted_bill'."
-      operationId: get_user_billing_history_fine_tuning_details
+      operationId: Get_resource_fine-tuning_billing_history
       parameters:
       - explode: false
         in: path
@@ -2443,9 +2445,9 @@ paths:
       - billing
   /billing/billing/history/fine_tuning/{resource_id}/graph:
     get:
-      description: User will recieve hourly cost datapoints for a Fine Tunings for
+      description: User will receive hourly cost datapoints for a Fine Tunings for
         a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
-      operationId: get_user_billing_fine_tuning_details_graph
+      operationId: Get_fine-tuning_billing_history_graph
       parameters:
       - explode: false
         in: path
@@ -2513,9 +2515,9 @@ paths:
       - billing
   /billing/billing/history/model_evaluation:
     get:
-      description: User will recieve billing history of model_evaluation for the specified
+      description: User will receive billing history of model_evaluation for the specified
         billing cycle.
-      operationId: get_user_billing_history_model_evaluation
+      operationId: Get_model_evaluation_billing_history
       parameters:
       - description: Date should be formatted in YYYY-MM-DDTHH:MM:SS
         explode: true
@@ -2605,7 +2607,7 @@ paths:
         \ 'lora_adapter', 'incurred_bill', 'non_discounted_bill', 'usage_time', 'input_tokens',\
         \ 'output_tokens', 'input_tokens_incurred_bill', 'input_tokens_non_discounted_bill',\
         \ 'output_tokens_incurred_bill', 'output_tokens_non_discounted_bill'"
-      operationId: get_user_billing_history_model_evaluation_details
+      operationId: Get_resource_model_evaluation_billing_history
       parameters:
       - explode: false
         in: path
@@ -2674,7 +2676,7 @@ paths:
       description: |-
         User will receive hourly cost datapoints for a model evaluation for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
         billing cycle
-      operationId: get_user_billing_model_evaluation_details_graph
+      operationId: Get_model_evaluation_billing_history_graph
       parameters:
       - explode: false
         in: path
@@ -2742,9 +2744,9 @@ paths:
       - billing
   /billing/billing/history/serverless_inference:
     get:
-      description: User will recieve billing history of serverless_inference for the
+      description: User will receive billing history of serverless_inference for the
         specified billing cycle.
-      operationId: get_user_billing_history_serverless_inference
+      operationId: List_serverless_inference_billing_history
       parameters:
       - description: Date should be formatted in YYYY-MM-DDTHH:MM:SS
         explode: true
@@ -2834,7 +2836,7 @@ paths:
         \ 'lora_adapter', 'incurred_bill', 'non_discounted_bill', 'usage_time', 'input_tokens',\
         \ 'output_tokens', 'input_tokens_incurred_bill', 'input_tokens_non_discounted_bill',\
         \ 'output_tokens_incurred_bill', 'output_tokens_non_discounted_bill'"
-      operationId: get_user_billing_history_serverless_inference_details
+      operationId: Get_serverless_inferences_billing_history
       parameters:
       - explode: false
         in: path
@@ -2901,9 +2903,9 @@ paths:
   /billing/billing/history/serverless_inference/{resource_id}/graph:
     get:
       description: |-
-        User will recieve hourly cost datapoints for a serverles inference for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
+        User will receive hourly cost datapoints for a serverless inference for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
         billing cycle
-      operationId: get_user_billing_serverless_inference_details_graph
+      operationId: Get_serverless_inference_billing_history_graph
       parameters:
       - explode: false
         in: path
@@ -2971,10 +2973,10 @@ paths:
       - billing
   /billing/billing/history/snapshot:
     get:
-      description: "User will recieve billing history of snapshots for thespecified\
+      description: "User will receive billing history of snapshots for thespecified\
         \ billing cycle. This data will include 'resource_name', 'infrahub_id', 'status',\
         \ 'incurred_bill', 'usage_time', 'price_per_hour'"
-      operationId: get_user_billing_history_snapshot
+      operationId: List_snapshot_billing_history
       parameters:
       - description: Date should be formatted in YYYY-MM-DDTHH:MM:SS
         explode: true
@@ -3061,7 +3063,7 @@ paths:
       description: "Retrieve billing history of a specific Snapshot for the specified\
         \ billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour',\
         \ 'incurred_bill', 'usage_time', 'non_discounted_price_per_hour', 'non_discounted_bill'."
-      operationId: get_user_billing_history_snapshot_details
+      operationId: Get_Snapshot_billing_history
       parameters:
       - explode: false
         in: path
@@ -3129,9 +3131,9 @@ paths:
       - billing
   /billing/billing/history/snapshot/{snapshot_id}/graph:
     get:
-      description: User will recieve hourly cost datapoints for a Snapshot for a specified
+      description: User will receive hourly cost datapoints for a Snapshot for a specified
         billing cycle. This data will include 'incurred_bill' graph datapoints.
-      operationId: get_user_billing_snapshot_details_graph
+      operationId: Get_snapshot_billing_history_graph
       parameters:
       - explode: false
         in: path
@@ -3199,10 +3201,10 @@ paths:
       - billing
   /billing/billing/history/virtual-machine:
     get:
-      description: "User will recieve billing history of virtual machine for the specified\
+      description: "User will receive billing history of virtual machine for the specified\
         \ billing cycle. This data will include 'resource_name', 'infrahub_id', 'status',\
         \ 'incurred_bill', 'usage_time', 'price_per_hour'"
-      operationId: get_user_billing_history_vm_2
+      operationId: Get_VM_Billing_History
       parameters:
       - description: Date should be formatted in YYYY-MM-DDTHH:MM:SS
         explode: true
@@ -3287,12 +3289,12 @@ paths:
       - billing
   /billing/billing/history/virtual-machine/{vm_id}:
     get:
-      description: "User will recieve billing history of a specific Virtual Machine\
+      description: "User will receive billing history of a specific Virtual Machine\
         \ for the specified billing cycle. This data will include 'resource_name',\
         \ 'infrahub_id', 'price_per_hour', 'non_discounted_price_per_hour', 'incurred_bill',\
         \ 'non_discounted_bill', 'usage_time', 'usage_time_ACTIVE', 'usage_time_SHUTOFF',\
         \ 'usage_time_HIBERNATED'"
-      operationId: get_user_billing_history_vm_details_2
+      operationId: Get_VM_Billing_Details
       parameters:
       - explode: false
         in: path
@@ -3360,9 +3362,9 @@ paths:
       - billing
   /billing/billing/history/virtual-machine/{vm_id}/graph:
     get:
-      description: User will recieve hourly cost datapoints for a VM for a specified
+      description: User will receive hourly cost datapoints for a VM for a specified
         billing cycle. This data will include 'incurred_bill' graph datapoints.
-      operationId: get_user_billing_vm_details_graph_2
+      operationId: Get_VM_Billing_Graph
       parameters:
       - explode: false
         in: path
@@ -3430,10 +3432,10 @@ paths:
       - billing
   /billing/billing/history/volume:
     get:
-      description: "User will recieve billing history of volumes for thespecified\
+      description: "User will receive billing history of volumes for thespecified\
         \ billing cycle. This data will include 'resource_name', 'infrahub_id', 'status',\
         \ 'incurred_bill', 'usage_time', 'price_per_hour'"
-      operationId: get_user_billing_history_volume_2
+      operationId: Get_Volume_Billing_History
       parameters:
       - description: Date should be formatted in YYYY-MM-DDTHH:MM:SS
         explode: true
@@ -3520,7 +3522,7 @@ paths:
       description: "Retrieve billing history of a specific Volume for the specified\
         \ billing cycle. This data will include 'resource_name', 'infrahub_id', 'price_per_hour',\
         \ 'incurred_bill', 'usage_time', 'non_discounted_price_per_hour', 'non_discounted_bill'."
-      operationId: get_user_billing_history_volume_details_2
+      operationId: Get_Volume_Billing_Details
       parameters:
       - explode: false
         in: path
@@ -3588,9 +3590,9 @@ paths:
       - billing
   /billing/billing/history/volume/{volume_id}/graph:
     get:
-      description: User will recieve hourly cost datapoints for a Volume for a specified
+      description: User will receive hourly cost datapoints for a Volume for a specified
         billing cycle. This data will include 'incurred_bill' graph datapoints.
-      operationId: get_user_billing_volume_details_graph
+      operationId: Get_Volume_Billing_History_Graph
       parameters:
       - explode: false
         in: path
@@ -3662,7 +3664,7 @@ paths:
         \ clusters. Returns a breakdown of  the costs and the total cost for the last\
         \ day. For additional information on Retrieve Previous Day Usage Costs, [**click\
         \ here**](None/docs/api-reference/billing-resources/last-day-usage/)"
-      operationId: get_last_day_cost
+      operationId: Get_last_day_cost
       responses:
         "200":
           content:
@@ -3706,7 +3708,7 @@ paths:
   /billing/billing/threshold:
     get:
       description: Retrieve all the notification thresholds for an organization.
-      operationId: get_organization_threshold
+      operationId: List_Org_notification_thresholds
       responses:
         "200":
           content:
@@ -3754,7 +3756,7 @@ paths:
         \ values. `false` indicates that the user will no longer receive notifications\
         \ for this specific threshold, whereas `true` signifies that the user will\
         \ receive notification emails."
-      operationId: put_organization_threshold
+      operationId: Get_notification_threshold
       parameters:
       - explode: false
         in: path
@@ -3818,7 +3820,7 @@ paths:
         \ Additionally, adding `deleted=true` in query parameter will return inactive\
         \ resources. For additional information on view usage costs for all resources,\
         \ [**click here**](None/docs/billing/pricebook/)"
-      operationId: get_usage_2
+      operationId: Get_usage
       parameters:
       - description: '`true` will return inactive resources and `false` will return
           active resources. By defualt(`deleted=false`)'
@@ -3880,7 +3882,7 @@ paths:
   /billing/billing/virtual-machine/{vm_id}/billing-events:
     get:
       description: User will receive vm billing events history
-      operationId: get_user_vm_billing_events
+      operationId: Get_VM_billing_events
       parameters:
       - explode: false
         in: path
@@ -3944,7 +3946,7 @@ paths:
       description: |-
         User will get total costs and non_discount costs of sub resources on a specific Virtual Machine for the specified billing cycle.
         on a Specific VM for the Specified Billing Cycle
-      operationId: get_user_billing_history_vm_total_costs
+      operationId: Get_VM_sub-resource_costs
       parameters:
       - explode: false
         in: path
@@ -4012,9 +4014,9 @@ paths:
   /billing/billing/virtual-machine/{vm_id}/sub-resource/graph:
     get:
       description: |-
-        User will recieve sub-resources historical cost datapoints for a VM sub resources for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
+        User will receive sub-resources historical cost datapoints for a VM sub resources for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
         Machine sub resources for a specific billing cycle
-      operationId: get_user_billing_history_vm_sub_resource_graph_2
+      operationId: Get_VM_sub-resource_graph
       parameters:
       - explode: false
         in: path
@@ -4082,7 +4084,7 @@ paths:
   /billing/billing/volume/{volume_id}/billing-events:
     get:
       description: User will receive volume billing events history
-      operationId: get_user_volume_billing_events
+      operationId: Get_volume_billing_events
       parameters:
       - explode: false
         in: path
@@ -4197,7 +4199,7 @@ paths:
       description: "Retrieves a list of all payments made within your [**organization**](/docs/rbac/organization)\
         \ and their details, including the amount, payment status, and more. For additional\
         \ information [**click here**](None/docs/api-reference/billing-resources/retrieve-payment-history/)."
-      operationId: get_details
+      operationId: List_payment_details
       responses:
         "200":
           content:
@@ -4246,7 +4248,7 @@ paths:
         \ value in dollars. View a history of past payments by calling the [**Retrieve\
         \ Payment History**](/docs/api-reference/billing-resources/retrieve-payment-history)\
         \ API. For additional information [**click here**](None/docs/api-reference/billing-resources/create-payment)."
-      operationId: post_payment
+      operationId: Initiate_Payment
       requestBody:
         content:
           application/json:
@@ -4297,7 +4299,7 @@ paths:
   /billing/payment/receipt/{payment_id}:
     get:
       description: Retrieve the payment receipt from Stripe for a specific payment
-      operationId: get_payment_receipt_2
+      operationId: Get_payment_receipt
       parameters:
       - explode: false
         in: path
@@ -4350,7 +4352,7 @@ paths:
         \ for prepaid accounts, if the credit balance falls below $0, all associated\
         \ resources will be temporarily suspended until a [**payment**](/docs/api-reference/billing-resources/create-payment)\
         \ is made. For additional information, [**click here**](None/docs/api-reference/billing-resources/retrieve-credit-balance/)."
-      operationId: get_credit_2
+      operationId: Get_user_credit
       responses:
         "200":
           content:
@@ -4393,8 +4395,8 @@ paths:
       - credit
   /billing/user/info:
     get:
-      description: Retrieve the billing details associated with your organization.
-      operationId: get_user
+      description: Retrieve the billing details associated with your user.
+      operationId: Get_User_billing_info
       responses:
         "200":
           content:
@@ -4436,9 +4438,8 @@ paths:
       tags:
       - user
     post:
-      description: Add billing details associated with your organization in the request
-        body.
-      operationId: post_user
+      description: Add billing details associated with your user in the request body.
+      operationId: Add_user_billing_info
       requestBody:
         content:
           application/json:
@@ -4487,9 +4488,8 @@ paths:
       - user
       x-codegen-request-body-name: payload
     put:
-      description: Update the billing information for your organization in the request
-        body.
-      operationId: put_user
+      description: Update the billing information for your user in the request body.
+      operationId: Update_user_billing_info
       requestBody:
         content:
           application/json:
@@ -4776,7 +4776,7 @@ paths:
       - clusters
   /core/clusters/{cluster_id}/events:
     get:
-      operationId: Fetch_all_of_a_cluster_events
+      operationId: List_cluster_events
       parameters:
       - explode: false
         in: path
@@ -4923,7 +4923,7 @@ paths:
       x-codegen-request-body-name: payload
   /core/clusters/{cluster_id}/node-groups/{node_group_id}:
     delete:
-      operationId: Delete_a_Node_Group
+      operationId: Delete_Node_Group
       parameters:
       - explode: false
         in: path
@@ -4980,7 +4980,7 @@ paths:
       tags:
       - clusters
     get:
-      operationId: Retrieve_a_Node_Group
+      operationId: Get_Node_Group
       parameters:
       - explode: false
         in: path
@@ -5031,7 +5031,7 @@ paths:
       tags:
       - clusters
     patch:
-      operationId: Update_a_Node_Group
+      operationId: Update_Node_Group
       parameters:
       - explode: false
         in: path
@@ -5302,7 +5302,7 @@ paths:
       - clusters
   /core/clusters/{cluster_id}/reconcile:
     post:
-      operationId: Attempt_to_manually_reconcile_a_cluster
+      operationId: Reconcile_cluster
       parameters:
       - explode: false
         in: path
@@ -5347,7 +5347,7 @@ paths:
       - clusters
   /core/clusters/{id}:
     delete:
-      operationId: Delete_a_cluster
+      operationId: Delete_cluster
       parameters:
       - explode: false
         in: path
@@ -5441,7 +5441,7 @@ paths:
         \ for RAM in GB, number of vCPUs, and system disk capacity in GB. Use the\
         \ optional `gpu` model parameter in the query string to filter responses by\
         \ GPU model. For additional details on GPU compliance, [**click here**](https://docs.hyperstack.cloud/docs/hardware/flavors#adhering-to-gpu-compliance)."
-      operationId: Retrieve_compliance
+      operationId: Get_compliance
       parameters:
       - description: This is for gpu model
         explode: true
@@ -5547,7 +5547,7 @@ paths:
       - compliance
       x-codegen-request-body-name: payload
     put:
-      operationId: Update_a_compliance
+      operationId: Update_compliance
       requestBody:
         content:
           application/json:
@@ -5597,7 +5597,7 @@ paths:
       x-codegen-request-body-name: payload
   /core/compliance/{gpu_model}:
     delete:
-      operationId: Delete_a_compliance
+      operationId: Delete_compliance
       parameters:
       - explode: false
         in: path
@@ -5645,7 +5645,7 @@ paths:
       description: "Returns hardware and pricing overview for your active resources,\
         \ includingvirtual machines, containers, and volumes. For more details on\
         \ the Dashboard feature, [**click here**](https://docs.hyperstack.cloud/docs/resource-management/dashboard/)."
-      operationId: Retrieve_Dashboard
+      operationId: Get_Dashboard
       responses:
         "200":
           content:
@@ -5884,7 +5884,7 @@ paths:
       description: Retrieves details about a specific environment. Provide the environment
         ID in the path and the new environment `name` in the request body to modify
         the specified environment.
-      operationId: Retrieve_environment
+      operationId: Get_environment
       parameters:
       - explode: false
         in: path
@@ -5981,6 +5981,57 @@ paths:
       tags:
       - environment
       x-codegen-request-body-name: payload
+  /core/fip-detachment-exclusions/org/{org_id}:
+    get:
+      description: is org excluded from floating ip detachment
+      operationId: Check_if_Org_is_Excluded_from_Floating_IP_Detachment
+      parameters:
+      - explode: false
+        in: path
+        name: org_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Not Found
+        "500":
+          content: {}
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      - apiKey: []
+      tags:
+      - FIP Exclusions
   /core/firewalls:
     get:
       description: "Retrieves a list of existing firewalls and their details, including\
@@ -6060,7 +6111,7 @@ paths:
         \ optional description. To obtain the ID of the environment, make a request\
         \ to the [**list environments**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/environments/list-environments)\
         \ endpoint."
-      operationId: Create_a_new_firewall
+      operationId: Create_firewall
       requestBody:
         content:
           application/json:
@@ -6119,7 +6170,7 @@ paths:
       description: "Creates a [**firewall rule**](https://docs.hyperstack.cloud/docs/network-security/security-rules)\
         \ and adds it to an existing firewall. Include the firewall ID in the path,\
         \ and provide the firewall rule configuration in the request body."
-      operationId: Add_firewall_rule_to_an_existing_firewall
+      operationId: Add_rule_to_firewall
       parameters:
       - explode: false
         in: path
@@ -6173,7 +6224,7 @@ paths:
     delete:
       description: "Removes a firewall rule from firewall by providing the firewall\
         \ ID and firewall rule ID in the path. For more information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/firewalls/remove-firewall-rule-from-firewall)."
-      operationId: Delete_firewall_rules_from_firewall
+      operationId: Delete_rule_from_firewall
       parameters:
       - explode: false
         in: path
@@ -6240,7 +6291,7 @@ paths:
       description: "Attach a firewall to one or more virtual machines by providing\
         \ the virtual machine IDs in the request body and the firewall ID in the path.\
         \ For more information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/firewalls/attach-firewall-to-vms)."
-      operationId: Attach_firewall_to_virtual_machines
+      operationId: Attach_firewall_to_VMs
       parameters:
       - explode: false
         in: path
@@ -6366,7 +6417,7 @@ paths:
       description: "Retrieves the details of an existing firewall, including the security\
         \ rules it contains and information about the virtual machines to which it\
         \ is attached."
-      operationId: Retrieve_the_details_of_an_existing_firewall
+      operationId: Get_firewall
       parameters:
       - explode: false
         in: path
@@ -6554,7 +6605,7 @@ paths:
         \ Additionally, use the `include_public` parameter to specify whether to include\
         \ public images in the response. For more information onOS images, [**click\
         \ here**](https://docs.hyperstack.cloud/docs/virtual-machines/images)."
-      operationId: List_Images_2
+      operationId: List_Images
       parameters:
       - description: Region Name
         explode: true
@@ -6686,7 +6737,7 @@ paths:
       - image
     get:
       description: Retrieve details of a specific image by providing the image ID.
-      operationId: Get_Image_Details
+      operationId: Get_Image
       parameters:
       - explode: false
         in: path
@@ -7071,7 +7122,7 @@ paths:
       tags:
       - deployment
     get:
-      operationId: Details_of_Deployment_by_ID
+      operationId: Get_deployment
       parameters:
       - explode: false
         in: path
@@ -7253,7 +7304,7 @@ paths:
       description: "Retrieves the resource configuration details for a specified template.Provide\
         \ the template ID in the path to retrieve details for the specified template.For\
         \ additional information on template configuration details,[**click here**](https://docs.hyperstack.cloud/docs/api-references/)."
-      operationId: Retrieve_template_details
+      operationId: Get_template
       parameters:
       - explode: false
         in: path
@@ -7482,7 +7533,7 @@ paths:
       description: "Retrieves details for an existing provisioning profile by supplying\
         \ the profile ID in the request path. For more information about profiles,\
         \ [**click here**](https://docs.hyperstack.cloud/docs/virtual-machines/provisioning-profiles)."
-      operationId: Retrieve_profile_details
+      operationId: Get_profile
       parameters:
       - explode: false
         in: path
@@ -7596,7 +7647,7 @@ paths:
     get:
       description: "Retrieves a list of snapshots, providing details such as snapshot\
         \ name, timestamp, VM ID, and other relevant information."
-      operationId: Retrieves_a_list_of_snapshots
+      operationId: List_snapshots
       parameters:
       - description: Page Number
         explode: true
@@ -7702,7 +7753,7 @@ paths:
         \ the specified snapshot. If the snapshot is connected with an image, that\
         \ image will also bedeleted and the deleted image ID will be returned in the\
         \ success message response."
-      operationId: Delete_an_existing_snapshot
+      operationId: Delete_snapshot
       parameters:
       - explode: false
         in: path
@@ -7753,7 +7804,7 @@ paths:
       - Snapshots
     get:
       description: Retrieve a snapshot.
-      operationId: Retrieve_an_existing_snapshot
+      operationId: Get_snapshot
       parameters:
       - explode: false
         in: path
@@ -7793,7 +7844,7 @@ paths:
   /core/snapshots/{id}/restore:
     post:
       description: Restore a snapshot.
-      operationId: Restore_a_snapshot
+      operationId: Restore_snapshot
       parameters:
       - explode: false
         in: path
@@ -7842,7 +7893,7 @@ paths:
       description: "Retrieves a list of all events for a Snapshot's history, which\
         \ records actions performed on the specific snapshot. Requires the snapshot\
         \ ID in the path."
-      operationId: Fetch_all_events_for_a_snapshot
+      operationId: List_Snapshot_Events
       parameters:
       - explode: false
         in: path
@@ -7865,7 +7916,7 @@ paths:
     post:
       description: Create a new custom image from an existing snapshot.Requires a
         name and any labels for your new custom image.
-      operationId: Create_a_new_custom_image
+      operationId: Create_custom_image
       parameters:
       - explode: false
         in: path
@@ -7926,7 +7977,7 @@ paths:
       description: "Returns information on current and upcoming GPU availability,\
         \ organized byregion and GPU model. For additional information on GPU stocks,[**click\
         \ here**](https://docs.hyperstack.cloud/docs/hardware/gpu-stock-information)."
-      operationId: Retrieve_GPU_stocks
+      operationId: Get_GPU_stock
       responses:
         "200":
           content:
@@ -7954,9 +8005,9 @@ paths:
       - stock
   /core/user/resources/defaults:
     get:
-      description: "Retrieve the default choices for virtual machine deployment, including\
-        \ the default region, flavor, and image."
-      operationId: Retrieve_Default_Flavors_and_Images
+      description: "Retrieves the default options for virtual machine deployment,\
+        \ including the default region, flavor, and image."
+      operationId: List_Default_Flavors_and_Images
       responses:
         "200":
           content:
@@ -7996,7 +8047,7 @@ paths:
       description: "Returns a list of your existing virtual machines, providing configuration\
         \ details for each. The list is sorted by creation date, with the oldest virtual\
         \ machines displayed first."
-      operationId: List_virtual_machines
+      operationId: List_VMs
       parameters:
       - explode: true
         in: query
@@ -8069,7 +8120,7 @@ paths:
       description: "Creates one or more virtual machines with the specified custom\
         \ configuration and features provided in the request body. For more information\
         \ about the virtual machine features offered by Infrahub, [**click here**](https://docs.hyperstack.cloud/docs/virtual-machines/virtual-machine-features#create-a-virtual-machine-with-custom-features)."
-      operationId: Create_one_or_more_virtual_machines
+      operationId: Create_VMs
       requestBody:
         content:
           application/json:
@@ -8129,7 +8180,7 @@ paths:
         \ providing details such as virtual machine name, timestamp, flavor name,\
         \ and other relevant information. Please provide the ID of the relevant contract\
         \ in the path."
-      operationId: Retrieve_virtual_machines_associated_with_a_contract
+      operationId: Get_contract_VMs
       parameters:
       - explode: false
         in: path
@@ -8193,7 +8244,7 @@ paths:
   /core/virtual-machines/name-availability/{name}:
     get:
       description: Check if a Virtual Machine name is available
-      operationId: Fetch_virtual_machine_name_availability
+      operationId: Check_VM_name_availability
       parameters:
       - explode: false
         in: path
@@ -8240,7 +8291,7 @@ paths:
     delete:
       description: Permanently deletes a virtual machine. Provide the virtual machine
         ID in the path to delete the specified virtual machine.
-      operationId: Delete_virtual_machine
+      operationId: Delete_VM
       parameters:
       - explode: false
         in: path
@@ -8293,7 +8344,7 @@ paths:
       description: "Retrieves the details of an existing virtual machine. Provide\
         \ the virtual machine ID in the path, and Infrahub will return information\
         \ about the corresponding VM."
-      operationId: Retrieve_virtual_machine_details
+      operationId: Get_VM
       parameters:
       - explode: false
         in: path
@@ -8343,7 +8394,7 @@ paths:
         \ URL. Provide the callback URL in the request body and the ID of the virtual\
         \ machine to which it is being attached in the path. For more details on virtual\
         \ machine callback URLs, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/callbacks-vms/attach-callback-vm)."
-      operationId: Attach_callback_to_virtual_machine
+      operationId: Attach_callback_to_VM
       parameters:
       - explode: false
         in: path
@@ -8400,7 +8451,7 @@ paths:
       description: Attach firewalls to a virtual machine by providing the virtual
         machine ID in the path and the IDs of the firewalls in the request body; any
         firewalls not included will be detached.
-      operationId: Attach_firewalls_to_a_virtual_machine
+      operationId: Attach_firewalls_to_VM
       parameters:
       - explode: false
         in: path
@@ -8456,7 +8507,7 @@ paths:
         \ to an existing virtual machine, making it accessible through the internet.\
         \ Include the virtual machine ID in the path to attach a public IP to the\
         \ specified VM. For more information on public IP addresses, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/floating-ip/attach-floating-ip/)."
-      operationId: Attach_public_IP_to_virtual_machine
+      operationId: Attach_public_IP_to_VM
       parameters:
       - explode: false
         in: path
@@ -8511,7 +8562,7 @@ paths:
         \ its storage capacity by 2PB per attached volume. Include the VM ID in the\
         \ path and the volume IDs in the request body to attach the specified volumes.\
         \ For more detailson volume attachment, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/volumes/volume-attachment/attach-volumes/)."
-      operationId: Attach_volumes_to_virtual_machine
+      operationId: Attach_volumes_to_VM
       parameters:
       - explode: false
         in: path
@@ -8627,7 +8678,7 @@ paths:
       description: "Permanently deletes the callback URL associated with a specified\
         \ virtual machine by providing the virtual machine ID in the request path.\
         \ For additional information on virtual machine callback URLs, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/callbacks-vms/delete-callback-vm)."
-      operationId: Delete_virtual_machine_callback
+      operationId: Delete_VM_callback
       parameters:
       - explode: false
         in: path
@@ -8676,7 +8727,7 @@ paths:
         \ disabling internet accessibility to the VM. Include the virtual machine\
         \ ID in the path to detach the public IP from the specified VM. For more information\
         \ on public IP addresses, [**click here**](https://docs.hyperstack.cloud/docs/virtual-machines/public-ip)."
-      operationId: Detach_public_IP_from_virtual_machine
+      operationId: Detach_public_IP_from_VM
       parameters:
       - explode: false
         in: path
@@ -8724,7 +8775,7 @@ paths:
       description: Detaches one or more volumes attached to an existing virtual machine.
         Include the VM ID in the path and volume IDs in the request body to detach
         the specified volumes from the virtual machine.
-      operationId: Detach_volumes_from_virtual_machine
+      operationId: Detach_volumes_from_VM
       parameters:
       - explode: false
         in: path
@@ -8786,7 +8837,7 @@ paths:
         \ which records actions performed on the specified virtual machine. Include\
         \ the virtual machine ID in the path to retrieve the history of events. For\
         \ more details on virtual machine events history, [**click here**](https://docs.hyperstack.cloud/docs/virtual-machines/vm-performance-metrics-and-events-history#events-history)."
-      operationId: List_virtual_machine_events
+      operationId: List_VM_events
       parameters:
       - explode: false
         in: path
@@ -8835,7 +8886,7 @@ paths:
         \ process of unplugging and rebooting a physical machine. Provide the virtual\
         \ machine ID in the path to execute a hard reboot for the specified virtual\
         \ machine."
-      operationId: get_instance_hard_reboot
+      operationId: Hard_reboot_VM
       parameters:
       - explode: false
         in: path
@@ -8883,7 +8934,7 @@ paths:
       description: "Initiates the hibernation of a virtual machine, saving its current\
         \ state to disk before powering off. Provide the virtual machine ID in the\
         \ path to specify the virtual machine to be hibernated."
-      operationId: get_instance_hibernate
+      operationId: Hibernate_VM
       parameters:
       - explode: false
         in: path
@@ -8892,6 +8943,14 @@ paths:
         schema:
           type: integer
         style: simple
+      - description: "false"
+        explode: true
+        in: query
+        name: retain_ip
+        required: false
+        schema:
+          type: string
+        style: form
       responses:
         "200":
           content:
@@ -8931,7 +8990,7 @@ paths:
       description: "Resumes a virtual machine from hibernation, bringing it back to\
         \ an active state. Provide the virtual machine ID that you want to restore\
         \ from hibernation."
-      operationId: get_instance_hibernate_restore
+      operationId: Restore_VM_from_hibernation
       parameters:
       - explode: false
         in: path
@@ -8980,7 +9039,7 @@ paths:
       description: "Adds one or more labels to an existing virtual machine. Provide\
         \ the virtual machine ID in the path to add labels to the specified VM. For\
         \ multiple labels, add a space between each label in the request body."
-      operationId: put_labels
+      operationId: Add_VM_Label
       parameters:
       - explode: false
         in: path
@@ -9039,7 +9098,7 @@ paths:
   /core/virtual-machines/{vm_id}/logs:
     get:
       description: Retrieve console logs for a virtual machine
-      operationId: get_instance_logs
+      operationId: Get_VM_Logs
       parameters:
       - explode: false
         in: path
@@ -9097,7 +9156,7 @@ paths:
       - virtual machine
     post:
       description: Request console logs for a virtual machine
-      operationId: post_instance_logs
+      operationId: Request_VM_Logs
       parameters:
       - explode: false
         in: path
@@ -9162,7 +9221,7 @@ paths:
         \ can be used to specify the period for retrieving performance metrics; the\
         \ default value will retrieve all available data. To learn more about virtual\
         \ machine performance metrics, [**click here**](https://docs.hyperstack.cloud/docs/virtual-machines/vm-performance-metrics-and-events-history#performance-metrics)."
-      operationId: get_instance_metrics
+      operationId: Get_VM_metrics
       parameters:
       - explode: false
         in: path
@@ -9235,7 +9294,7 @@ paths:
       description: "Retrieves the path of the VNC console for the given virtual machine\
         \ ID by providing the virtual machine ID in the path. For more information,\
         \ [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/vnc-console/retrieve-console-path)."
-      operationId: get_vnc_url
+      operationId: Request_VM_Console
       parameters:
       - explode: false
         in: path
@@ -9285,7 +9344,7 @@ paths:
         \ Include the virtual machine ID in the path and provide the new configuration,\
         \ referred to as a `flavor`, in the body of the request. For additional information\
         \ resizing, [**click here**](https://docs.hyperstack.cloud/docs/hardware/flavors#modify-the-flavor-of-an-existing-virtual-machine)."
-      operationId: post_instance_resize
+      operationId: Resize_VM
       parameters:
       - explode: false
         in: path
@@ -9347,7 +9406,7 @@ paths:
         \ machine ID in the path, and provide the firewall rule configuration in the\
         \ request body, as detailed below. For additional information on firewall\
         \ rules, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/vm-firewall-rules/add-firewall-rule-to-vm)."
-      operationId: post_security_rule
+      operationId: Create_firewall_rule_for_VM
       parameters:
       - explode: false
         in: path
@@ -9409,7 +9468,7 @@ paths:
       description: Deletes a firewall rule associated with a virtual machine. Provide
         the virtual machine ID and the firewall rule ID in the path to remove the
         specified rule from the specified virtual machine.
-      operationId: delete_security_rule
+      operationId: Delete_firewall_rule_for_VM
       parameters:
       - explode: false
         in: path
@@ -9464,7 +9523,7 @@ paths:
     post:
       description: Create snapshots of a virtual machine by providing the virtual
         machine ID in the path
-      operationId: post_snapshots
+      operationId: Create_Snapshot_for_VM
       parameters:
       - explode: false
         in: path
@@ -9518,7 +9577,7 @@ paths:
     get:
       description: Initiates the startup of a virtual machine. Provide the virtual
         machine ID in the path to initiate the starting of the specified virtual machine.
-      operationId: get_instance_start
+      operationId: Start_VM
       parameters:
       - explode: false
         in: path
@@ -9565,7 +9624,7 @@ paths:
     get:
       description: Shuts down a virtual machine. Provide the virtual machine ID in
         the path to initiate the shutdown process for the specified virtual machine.
-      operationId: get_instance_stop
+      operationId: Stop_VM
       parameters:
       - explode: false
         in: path
@@ -9614,7 +9673,7 @@ paths:
         \ the new callback URL in the request body, along with the ID of the associated\
         \ virtual machine in the path. For additional information on virtual machine\
         \ callback URLs, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/callbacks-vms)."
-      operationId: Update_virtual_machine_callback
+      operationId: Update_VM_callback
       parameters:
       - explode: false
         in: path
@@ -9666,7 +9725,7 @@ paths:
       x-codegen-request-body-name: payload
   /core/volume-attachments/{volume_attachment_id}:
     patch:
-      operationId: Update_a_volume_attachment
+      operationId: Update_volume_attachment
       parameters:
       - explode: false
         in: path
@@ -9975,7 +10034,7 @@ paths:
       description: "Fetch volume details for specific volume. This endpoint returns\
         \ id, name, volume size, volume type, status, description, image_id, os_image,\
         \ created_at, updated_at etc."
-      operationId: Fetch_Volume_Details
+      operationId: Get_Volume
       parameters:
       - explode: false
         in: path
@@ -10252,7 +10311,7 @@ paths:
       description: "Retrieves the Infrahub Pricebook, detailing hourly running costs\
         \ for all resources offered by Infrahub. For more information on Pricebook\
         \ [**click here**](None/docs/api-reference/pricebook-resources/pricebook/)."
-      operationId: get_pricebook
+      operationId: Get_pricebook
       responses:
         "200":
           content:
@@ -10292,7 +10351,7 @@ paths:
     get:
       description: Calculate the hourly billing rate of a specified resource by including
         the resource ID in the path.
-      operationId: get_calculate_2
+      operationId: Calculate_resource_billing_rate
       parameters:
       - explode: false
         in: path
@@ -10348,7 +10407,7 @@ paths:
         \ terms of each contract and the discounts applied to all resources under\
         \ each contract. Pagination can be controlled using the `page` and `per_page`\
         \ query parameters. For additional information about contracts, click [**here**](None/docs/billing-and-payment/contracts)."
-      operationId: get_customer_contract
+      operationId: List_customer_contracts
       parameters:
       - explode: true
         in: query
@@ -10403,7 +10462,7 @@ paths:
       description: "Retrieve details of a specific contract by providing the contract\
         \ ID in the path. The endpoint returns the contract object along with its\
         \ associated discount plans. For more information, [**click here**](None/docs/api-reference/pricebook-resources/retrieve-contract-details)."
-      operationId: get_customer_contract_details
+      operationId: Retrieve_contract
       parameters:
       - explode: false
         in: path
@@ -10457,7 +10516,7 @@ paths:
       description: Retrieve GPU allocation count graph for a specific contract by
         providing the contract ID in the path. The endpoint returns the GPU allocation
         count graph for the contract within the specified date range.
-      operationId: get_customer_contract_gpu_allocation_graph
+      operationId: Get_contract_GPU_allocation_graph
       parameters:
       - explode: false
         in: path

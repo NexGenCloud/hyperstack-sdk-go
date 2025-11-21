@@ -4,18 +4,18 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**AttachCallbackToVirtualMachine**](CallbacksAPI.md#AttachCallbackToVirtualMachine) | **Post** /core/virtual-machines/{vm_id}/attach-callback | Attach callback to virtual machine
+[**AttachCallbackToVM**](CallbacksAPI.md#AttachCallbackToVM) | **Post** /core/virtual-machines/{vm_id}/attach-callback | Attach callback to virtual machine
 [**AttachCallbackToVolume**](CallbacksAPI.md#AttachCallbackToVolume) | **Post** /core/volumes/{volume_id}/attach-callback | Attach callback to volume
-[**DeleteVirtualMachineCallback**](CallbacksAPI.md#DeleteVirtualMachineCallback) | **Delete** /core/virtual-machines/{vm_id}/delete-callback | Delete virtual machine callback
+[**DeleteVMCallback**](CallbacksAPI.md#DeleteVMCallback) | **Delete** /core/virtual-machines/{vm_id}/delete-callback | Delete virtual machine callback
 [**DeleteVolumeCallback**](CallbacksAPI.md#DeleteVolumeCallback) | **Delete** /core/volumes/{volume_id}/delete-callback | Delete volume callback
-[**UpdateVirtualMachineCallback**](CallbacksAPI.md#UpdateVirtualMachineCallback) | **Put** /core/virtual-machines/{vm_id}/update-callback | Update virtual machine callback
+[**UpdateVMCallback**](CallbacksAPI.md#UpdateVMCallback) | **Put** /core/virtual-machines/{vm_id}/update-callback | Update virtual machine callback
 [**UpdateVolumeCallback**](CallbacksAPI.md#UpdateVolumeCallback) | **Put** /core/volumes/{volume_id}/update-callback | Update volume callback
 
 
 
-## AttachCallbackToVirtualMachine
+## AttachCallbackToVM
 
-> AttachCallbackResponse AttachCallbackToVirtualMachine(ctx, vmId).Payload(payload).Execute()
+> AttachCallbackResponse AttachCallbackToVM(ctx, vmId).Payload(payload).Execute()
 
 Attach callback to virtual machine
 
@@ -39,13 +39,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.CallbacksAPI.AttachCallbackToVirtualMachine(context.Background(), vmId).Payload(payload).Execute()
+	resp, r, err := apiClient.CallbacksAPI.AttachCallbackToVM(context.Background(), vmId).Payload(payload).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `CallbacksAPI.AttachCallbackToVirtualMachine``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `CallbacksAPI.AttachCallbackToVM``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `AttachCallbackToVirtualMachine`: AttachCallbackResponse
-	fmt.Fprintf(os.Stdout, "Response from `CallbacksAPI.AttachCallbackToVirtualMachine`: %v\n", resp)
+	// response from `AttachCallbackToVM`: AttachCallbackResponse
+	fmt.Fprintf(os.Stdout, "Response from `CallbacksAPI.AttachCallbackToVM`: %v\n", resp)
 }
 ```
 
@@ -59,7 +59,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiAttachCallbackToVirtualMachineRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiAttachCallbackToVMRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -157,9 +157,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## DeleteVirtualMachineCallback
+## DeleteVMCallback
 
-> ResponseModel DeleteVirtualMachineCallback(ctx, vmId).Execute()
+> ResponseModel DeleteVMCallback(ctx, vmId).Execute()
 
 Delete virtual machine callback
 
@@ -182,13 +182,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.CallbacksAPI.DeleteVirtualMachineCallback(context.Background(), vmId).Execute()
+	resp, r, err := apiClient.CallbacksAPI.DeleteVMCallback(context.Background(), vmId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `CallbacksAPI.DeleteVirtualMachineCallback``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `CallbacksAPI.DeleteVMCallback``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `DeleteVirtualMachineCallback`: ResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `CallbacksAPI.DeleteVirtualMachineCallback`: %v\n", resp)
+	// response from `DeleteVMCallback`: ResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `CallbacksAPI.DeleteVMCallback`: %v\n", resp)
 }
 ```
 
@@ -202,7 +202,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiDeleteVirtualMachineCallbackRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiDeleteVMCallbackRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -297,9 +297,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UpdateVirtualMachineCallback
+## UpdateVMCallback
 
-> AttachCallbackResponse UpdateVirtualMachineCallback(ctx, vmId).Payload(payload).Execute()
+> AttachCallbackResponse UpdateVMCallback(ctx, vmId).Payload(payload).Execute()
 
 Update virtual machine callback
 
@@ -323,13 +323,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.CallbacksAPI.UpdateVirtualMachineCallback(context.Background(), vmId).Payload(payload).Execute()
+	resp, r, err := apiClient.CallbacksAPI.UpdateVMCallback(context.Background(), vmId).Payload(payload).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `CallbacksAPI.UpdateVirtualMachineCallback``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `CallbacksAPI.UpdateVMCallback``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `UpdateVirtualMachineCallback`: AttachCallbackResponse
-	fmt.Fprintf(os.Stdout, "Response from `CallbacksAPI.UpdateVirtualMachineCallback`: %v\n", resp)
+	// response from `UpdateVMCallback`: AttachCallbackResponse
+	fmt.Fprintf(os.Stdout, "Response from `CallbacksAPI.UpdateVMCallback`: %v\n", resp)
 }
 ```
 
@@ -343,7 +343,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiUpdateVirtualMachineCallbackRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiUpdateVMCallbackRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes

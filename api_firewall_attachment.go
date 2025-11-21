@@ -22,33 +22,33 @@ import (
 // FirewallAttachmentAPIService FirewallAttachmentAPI service
 type FirewallAttachmentAPIService service
 
-type ApiAttachFirewallToVirtualMachinesRequest struct {
+type ApiAttachFirewallToVMsRequest struct {
 	ctx        context.Context
 	ApiService *FirewallAttachmentAPIService
 	firewallId int32
 	payload    *AttachFirewallWithVM
 }
 
-func (r ApiAttachFirewallToVirtualMachinesRequest) Payload(payload AttachFirewallWithVM) ApiAttachFirewallToVirtualMachinesRequest {
+func (r ApiAttachFirewallToVMsRequest) Payload(payload AttachFirewallWithVM) ApiAttachFirewallToVMsRequest {
 	r.payload = &payload
 	return r
 }
 
-func (r ApiAttachFirewallToVirtualMachinesRequest) Execute() (*ResponseModel, *http.Response, error) {
-	return r.ApiService.AttachFirewallToVirtualMachinesExecute(r)
+func (r ApiAttachFirewallToVMsRequest) Execute() (*ResponseModel, *http.Response, error) {
+	return r.ApiService.AttachFirewallToVMsExecute(r)
 }
 
 /*
-AttachFirewallToVirtualMachines Attach Firewalls to VMs
+AttachFirewallToVMs Attach Firewalls to VMs
 
 Attach a firewall to one or more virtual machines by providing the virtual machine IDs in the request body and the firewall ID in the path. For more information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/firewalls/attach-firewall-to-vms).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param firewallId
-	@return ApiAttachFirewallToVirtualMachinesRequest
+	@return ApiAttachFirewallToVMsRequest
 */
-func (a *FirewallAttachmentAPIService) AttachFirewallToVirtualMachines(ctx context.Context, firewallId int32) ApiAttachFirewallToVirtualMachinesRequest {
-	return ApiAttachFirewallToVirtualMachinesRequest{
+func (a *FirewallAttachmentAPIService) AttachFirewallToVMs(ctx context.Context, firewallId int32) ApiAttachFirewallToVMsRequest {
+	return ApiAttachFirewallToVMsRequest{
 		ApiService: a,
 		ctx:        ctx,
 		firewallId: firewallId,
@@ -58,7 +58,7 @@ func (a *FirewallAttachmentAPIService) AttachFirewallToVirtualMachines(ctx conte
 // Execute executes the request
 //
 //	@return ResponseModel
-func (a *FirewallAttachmentAPIService) AttachFirewallToVirtualMachinesExecute(r ApiAttachFirewallToVirtualMachinesRequest) (*ResponseModel, *http.Response, error) {
+func (a *FirewallAttachmentAPIService) AttachFirewallToVMsExecute(r ApiAttachFirewallToVMsRequest) (*ResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -66,7 +66,7 @@ func (a *FirewallAttachmentAPIService) AttachFirewallToVirtualMachinesExecute(r 
 		localVarReturnValue *ResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FirewallAttachmentAPIService.AttachFirewallToVirtualMachines")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FirewallAttachmentAPIService.AttachFirewallToVMs")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

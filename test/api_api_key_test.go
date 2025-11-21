@@ -49,11 +49,11 @@ func Test_hyperstack_ApiKeyAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test ApiKeyAPIService RetrieveAPIKey", func(t *testing.T) {
+	t.Run("Test ApiKeyAPIService GetAPIKey", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.ApiKeyAPI.RetrieveAPIKey(context.Background()).Execute()
+		resp, httpRes, err := apiClient.ApiKeyAPI.GetAPIKey(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

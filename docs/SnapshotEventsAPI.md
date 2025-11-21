@@ -4,13 +4,13 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**FetchAllEventsForASnapshot**](SnapshotEventsAPI.md#FetchAllEventsForASnapshot) | **Get** /core/snapshots/{snapshot_id}/events | Fetch all events for a snapshot
+[**ListSnapshotEvents**](SnapshotEventsAPI.md#ListSnapshotEvents) | **Get** /core/snapshots/{snapshot_id}/events | Fetch all events for a snapshot
 
 
 
-## FetchAllEventsForASnapshot
+## ListSnapshotEvents
 
-> FetchAllEventsForASnapshot(ctx, snapshotId).Execute()
+> ListSnapshotEvents(ctx, snapshotId).Execute()
 
 Fetch all events for a snapshot
 
@@ -33,9 +33,9 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.SnapshotEventsAPI.FetchAllEventsForASnapshot(context.Background(), snapshotId).Execute()
+	r, err := apiClient.SnapshotEventsAPI.ListSnapshotEvents(context.Background(), snapshotId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `SnapshotEventsAPI.FetchAllEventsForASnapshot``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `SnapshotEventsAPI.ListSnapshotEvents``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
 }
@@ -51,7 +51,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiFetchAllEventsForASnapshotRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiListSnapshotEventsRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes

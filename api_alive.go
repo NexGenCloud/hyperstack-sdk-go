@@ -123,37 +123,37 @@ func (a *AliveAPIService) GetAliveExecute(r ApiGetAliveRequest) (*http.Response,
 	return localVarHTTPResponse, nil
 }
 
-type ApiGetDocRequest struct {
+type ApiGetAliveDocRequest struct {
 	ctx        context.Context
 	ApiService *AliveAPIService
 }
 
-func (r ApiGetDocRequest) Execute() (*http.Response, error) {
-	return r.ApiService.GetDocExecute(r)
+func (r ApiGetAliveDocRequest) Execute() (*http.Response, error) {
+	return r.ApiService.GetAliveDocExecute(r)
 }
 
 /*
-GetDoc Method for GetDoc
+GetAliveDoc Method for GetAliveDoc
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetDocRequest
+	@return ApiGetAliveDocRequest
 */
-func (a *AliveAPIService) GetDoc(ctx context.Context) ApiGetDocRequest {
-	return ApiGetDocRequest{
+func (a *AliveAPIService) GetAliveDoc(ctx context.Context) ApiGetAliveDocRequest {
+	return ApiGetAliveDocRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-func (a *AliveAPIService) GetDocExecute(r ApiGetDocRequest) (*http.Response, error) {
+func (a *AliveAPIService) GetAliveDocExecute(r ApiGetAliveDocRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodGet
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AliveAPIService.GetDoc")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AliveAPIService.GetAliveDoc")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}

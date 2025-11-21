@@ -6,8 +6,8 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**DeleteImage**](ImageAPI.md#DeleteImage) | **Delete** /core/images/{id} | Delete an image
 [**FetchImageNameAvailability**](ImageAPI.md#FetchImageNameAvailability) | **Get** /core/image/name-availability/{name} | Fetch name availability for Images
-[**GetImageDetails**](ImageAPI.md#GetImageDetails) | **Get** /core/images/{id} | Get Private Image Details
-[**ListImages2**](ImageAPI.md#ListImages2) | **Get** /core/images | List Images
+[**GetImage**](ImageAPI.md#GetImage) | **Get** /core/images/{id} | Get Private Image Details
+[**ListImages**](ImageAPI.md#ListImages) | **Get** /core/images | List Images
 
 
 
@@ -151,9 +151,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetImageDetails
+## GetImage
 
-> Image GetImageDetails(ctx, id).IncludeRelatedVms(includeRelatedVms).Execute()
+> Image GetImage(ctx, id).IncludeRelatedVms(includeRelatedVms).Execute()
 
 Get Private Image Details
 
@@ -177,13 +177,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ImageAPI.GetImageDetails(context.Background(), id).IncludeRelatedVms(includeRelatedVms).Execute()
+	resp, r, err := apiClient.ImageAPI.GetImage(context.Background(), id).IncludeRelatedVms(includeRelatedVms).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ImageAPI.GetImageDetails``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ImageAPI.GetImage``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetImageDetails`: Image
-	fmt.Fprintf(os.Stdout, "Response from `ImageAPI.GetImageDetails`: %v\n", resp)
+	// response from `GetImage`: Image
+	fmt.Fprintf(os.Stdout, "Response from `ImageAPI.GetImage`: %v\n", resp)
 }
 ```
 
@@ -197,7 +197,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetImageDetailsRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetImageRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -223,9 +223,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## ListImages2
+## ListImages
 
-> Images ListImages2(ctx).Region(region).IncludePublic(includePublic).Search(search).Page(page).PerPage(perPage).Execute()
+> Images ListImages(ctx).Region(region).IncludePublic(includePublic).Search(search).Page(page).PerPage(perPage).Execute()
 
 List Images
 
@@ -252,13 +252,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ImageAPI.ListImages2(context.Background()).Region(region).IncludePublic(includePublic).Search(search).Page(page).PerPage(perPage).Execute()
+	resp, r, err := apiClient.ImageAPI.ListImages(context.Background()).Region(region).IncludePublic(includePublic).Search(search).Page(page).PerPage(perPage).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ImageAPI.ListImages2``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ImageAPI.ListImages``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ListImages2`: Images
-	fmt.Fprintf(os.Stdout, "Response from `ImageAPI.ListImages2`: %v\n", resp)
+	// response from `ListImages`: Images
+	fmt.Fprintf(os.Stdout, "Response from `ImageAPI.ListImages`: %v\n", resp)
 }
 ```
 
@@ -268,7 +268,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiListImages2Request struct via the builder pattern
+Other parameters are passed through a pointer to a apiListImagesRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes

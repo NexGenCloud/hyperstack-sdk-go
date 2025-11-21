@@ -4,13 +4,13 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**RetrieveGPUStocks**](StockAPI.md#RetrieveGPUStocks) | **Get** /core/stocks | Retrieve GPU stocks
+[**GetGPUStock**](StockAPI.md#GetGPUStock) | **Get** /core/stocks | Retrieve GPU stocks
 
 
 
-## RetrieveGPUStocks
+## GetGPUStock
 
-> NewStockRetriveResponse RetrieveGPUStocks(ctx).Execute()
+> NewStockRetriveResponse GetGPUStock(ctx).Execute()
 
 Retrieve GPU stocks
 
@@ -32,13 +32,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.StockAPI.RetrieveGPUStocks(context.Background()).Execute()
+	resp, r, err := apiClient.StockAPI.GetGPUStock(context.Background()).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `StockAPI.RetrieveGPUStocks``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `StockAPI.GetGPUStock``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `RetrieveGPUStocks`: NewStockRetriveResponse
-	fmt.Fprintf(os.Stdout, "Response from `StockAPI.RetrieveGPUStocks`: %v\n", resp)
+	// response from `GetGPUStock`: NewStockRetriveResponse
+	fmt.Fprintf(os.Stdout, "Response from `StockAPI.GetGPUStock`: %v\n", resp)
 }
 ```
 
@@ -48,7 +48,7 @@ This endpoint does not need any parameter.
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiRetrieveGPUStocksRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetGPUStockRequest struct via the builder pattern
 
 
 ### Return type

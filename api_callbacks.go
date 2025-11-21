@@ -22,33 +22,33 @@ import (
 // CallbacksAPIService CallbacksAPI service
 type CallbacksAPIService service
 
-type ApiAttachCallbackToVirtualMachineRequest struct {
+type ApiAttachCallbackToVMRequest struct {
 	ctx        context.Context
 	ApiService *CallbacksAPIService
 	vmId       int32
 	payload    *AttachCallbackPayload
 }
 
-func (r ApiAttachCallbackToVirtualMachineRequest) Payload(payload AttachCallbackPayload) ApiAttachCallbackToVirtualMachineRequest {
+func (r ApiAttachCallbackToVMRequest) Payload(payload AttachCallbackPayload) ApiAttachCallbackToVMRequest {
 	r.payload = &payload
 	return r
 }
 
-func (r ApiAttachCallbackToVirtualMachineRequest) Execute() (*AttachCallbackResponse, *http.Response, error) {
-	return r.ApiService.AttachCallbackToVirtualMachineExecute(r)
+func (r ApiAttachCallbackToVMRequest) Execute() (*AttachCallbackResponse, *http.Response, error) {
+	return r.ApiService.AttachCallbackToVMExecute(r)
 }
 
 /*
-AttachCallbackToVirtualMachine Attach callback to virtual machine
+AttachCallbackToVM Attach callback to virtual machine
 
 Creates a callback URL for a specified virtual machine, enabling the posting of action events executed on the virtual machine to the specified URL. Provide the callback URL in the request body and the ID of the virtual machine to which it is being attached in the path. For more details on virtual machine callback URLs, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/callbacks-vms/attach-callback-vm).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param vmId
-	@return ApiAttachCallbackToVirtualMachineRequest
+	@return ApiAttachCallbackToVMRequest
 */
-func (a *CallbacksAPIService) AttachCallbackToVirtualMachine(ctx context.Context, vmId int32) ApiAttachCallbackToVirtualMachineRequest {
-	return ApiAttachCallbackToVirtualMachineRequest{
+func (a *CallbacksAPIService) AttachCallbackToVM(ctx context.Context, vmId int32) ApiAttachCallbackToVMRequest {
+	return ApiAttachCallbackToVMRequest{
 		ApiService: a,
 		ctx:        ctx,
 		vmId:       vmId,
@@ -58,7 +58,7 @@ func (a *CallbacksAPIService) AttachCallbackToVirtualMachine(ctx context.Context
 // Execute executes the request
 //
 //	@return AttachCallbackResponse
-func (a *CallbacksAPIService) AttachCallbackToVirtualMachineExecute(r ApiAttachCallbackToVirtualMachineRequest) (*AttachCallbackResponse, *http.Response, error) {
+func (a *CallbacksAPIService) AttachCallbackToVMExecute(r ApiAttachCallbackToVMRequest) (*AttachCallbackResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -66,7 +66,7 @@ func (a *CallbacksAPIService) AttachCallbackToVirtualMachineExecute(r ApiAttachC
 		localVarReturnValue *AttachCallbackResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksAPIService.AttachCallbackToVirtualMachine")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksAPIService.AttachCallbackToVM")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -346,27 +346,27 @@ func (a *CallbacksAPIService) AttachCallbackToVolumeExecute(r ApiAttachCallbackT
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiDeleteVirtualMachineCallbackRequest struct {
+type ApiDeleteVMCallbackRequest struct {
 	ctx        context.Context
 	ApiService *CallbacksAPIService
 	vmId       int32
 }
 
-func (r ApiDeleteVirtualMachineCallbackRequest) Execute() (*ResponseModel, *http.Response, error) {
-	return r.ApiService.DeleteVirtualMachineCallbackExecute(r)
+func (r ApiDeleteVMCallbackRequest) Execute() (*ResponseModel, *http.Response, error) {
+	return r.ApiService.DeleteVMCallbackExecute(r)
 }
 
 /*
-DeleteVirtualMachineCallback Delete virtual machine callback
+DeleteVMCallback Delete virtual machine callback
 
 Permanently deletes the callback URL associated with a specified virtual machine by providing the virtual machine ID in the request path. For additional information on virtual machine callback URLs, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/callbacks-vms/delete-callback-vm).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param vmId
-	@return ApiDeleteVirtualMachineCallbackRequest
+	@return ApiDeleteVMCallbackRequest
 */
-func (a *CallbacksAPIService) DeleteVirtualMachineCallback(ctx context.Context, vmId int32) ApiDeleteVirtualMachineCallbackRequest {
-	return ApiDeleteVirtualMachineCallbackRequest{
+func (a *CallbacksAPIService) DeleteVMCallback(ctx context.Context, vmId int32) ApiDeleteVMCallbackRequest {
+	return ApiDeleteVMCallbackRequest{
 		ApiService: a,
 		ctx:        ctx,
 		vmId:       vmId,
@@ -376,7 +376,7 @@ func (a *CallbacksAPIService) DeleteVirtualMachineCallback(ctx context.Context, 
 // Execute executes the request
 //
 //	@return ResponseModel
-func (a *CallbacksAPIService) DeleteVirtualMachineCallbackExecute(r ApiDeleteVirtualMachineCallbackRequest) (*ResponseModel, *http.Response, error) {
+func (a *CallbacksAPIService) DeleteVMCallbackExecute(r ApiDeleteVMCallbackRequest) (*ResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
@@ -384,7 +384,7 @@ func (a *CallbacksAPIService) DeleteVirtualMachineCallbackExecute(r ApiDeleteVir
 		localVarReturnValue *ResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksAPIService.DeleteVirtualMachineCallback")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksAPIService.DeleteVMCallback")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -648,33 +648,33 @@ func (a *CallbacksAPIService) DeleteVolumeCallbackExecute(r ApiDeleteVolumeCallb
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiUpdateVirtualMachineCallbackRequest struct {
+type ApiUpdateVMCallbackRequest struct {
 	ctx        context.Context
 	ApiService *CallbacksAPIService
 	vmId       int32
 	payload    *AttachCallbackPayload
 }
 
-func (r ApiUpdateVirtualMachineCallbackRequest) Payload(payload AttachCallbackPayload) ApiUpdateVirtualMachineCallbackRequest {
+func (r ApiUpdateVMCallbackRequest) Payload(payload AttachCallbackPayload) ApiUpdateVMCallbackRequest {
 	r.payload = &payload
 	return r
 }
 
-func (r ApiUpdateVirtualMachineCallbackRequest) Execute() (*AttachCallbackResponse, *http.Response, error) {
-	return r.ApiService.UpdateVirtualMachineCallbackExecute(r)
+func (r ApiUpdateVMCallbackRequest) Execute() (*AttachCallbackResponse, *http.Response, error) {
+	return r.ApiService.UpdateVMCallbackExecute(r)
 }
 
 /*
-UpdateVirtualMachineCallback Update virtual machine callback
+UpdateVMCallback Update virtual machine callback
 
 Updates the callback URL for a specified virtual machine. Provide the new callback URL in the request body, along with the ID of the associated virtual machine in the path. For additional information on virtual machine callback URLs, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/core-resources/virtual-machines/callbacks-vms).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param vmId
-	@return ApiUpdateVirtualMachineCallbackRequest
+	@return ApiUpdateVMCallbackRequest
 */
-func (a *CallbacksAPIService) UpdateVirtualMachineCallback(ctx context.Context, vmId int32) ApiUpdateVirtualMachineCallbackRequest {
-	return ApiUpdateVirtualMachineCallbackRequest{
+func (a *CallbacksAPIService) UpdateVMCallback(ctx context.Context, vmId int32) ApiUpdateVMCallbackRequest {
+	return ApiUpdateVMCallbackRequest{
 		ApiService: a,
 		ctx:        ctx,
 		vmId:       vmId,
@@ -684,7 +684,7 @@ func (a *CallbacksAPIService) UpdateVirtualMachineCallback(ctx context.Context, 
 // Execute executes the request
 //
 //	@return AttachCallbackResponse
-func (a *CallbacksAPIService) UpdateVirtualMachineCallbackExecute(r ApiUpdateVirtualMachineCallbackRequest) (*AttachCallbackResponse, *http.Response, error) {
+func (a *CallbacksAPIService) UpdateVMCallbackExecute(r ApiUpdateVMCallbackRequest) (*AttachCallbackResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
@@ -692,7 +692,7 @@ func (a *CallbacksAPIService) UpdateVirtualMachineCallbackExecute(r ApiUpdateVir
 		localVarReturnValue *AttachCallbackResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksAPIService.UpdateVirtualMachineCallback")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksAPIService.UpdateVMCallback")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

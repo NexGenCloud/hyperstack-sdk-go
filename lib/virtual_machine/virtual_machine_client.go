@@ -512,8 +512,8 @@ type VolumeFieldsForInstance struct {
 	VolumeType  *string `json:"volume_type,omitempty"`
 }
 
-// ListVirtualMachinesParams defines parameters for ListVirtualMachines.
-type ListVirtualMachinesParams struct {
+// ListVMsParams defines parameters for ListVMs.
+type ListVMsParams struct {
 	Page             *int           `form:"page,omitempty" json:"page,omitempty"`
 	PageSize         *int           `form:"pageSize,omitempty" json:"pageSize,omitempty"`
 	Search           *string        `form:"search,omitempty" json:"search,omitempty"`
@@ -521,43 +521,48 @@ type ListVirtualMachinesParams struct {
 	ExcludeFirewalls *[]interface{} `form:"exclude_firewalls,omitempty" json:"exclude_firewalls,omitempty"`
 }
 
-// RetrieveVirtualMachinesAssociatedWithAContractParams defines parameters for RetrieveVirtualMachinesAssociatedWithAContract.
-type RetrieveVirtualMachinesAssociatedWithAContractParams struct {
+// GetContractVMsParams defines parameters for GetContractVMs.
+type GetContractVMsParams struct {
 	Page     *string `form:"page,omitempty" json:"page,omitempty"`
 	PageSize *string `form:"pageSize,omitempty" json:"pageSize,omitempty"`
 	Search   *string `form:"search,omitempty" json:"search,omitempty"`
 }
 
-// GetInstanceLogsParams defines parameters for GetInstanceLogs.
-type GetInstanceLogsParams struct {
+// HibernateVMParams defines parameters for HibernateVM.
+type HibernateVMParams struct {
+	RetainIp *string `form:"retain_ip,omitempty" json:"retain_ip,omitempty"`
+}
+
+// GetVMLogsParams defines parameters for GetVMLogs.
+type GetVMLogsParams struct {
 	RequestId int `form:"request_id" json:"request_id"`
 }
 
-// GetInstanceMetricsParams defines parameters for GetInstanceMetrics.
-type GetInstanceMetricsParams struct {
+// GetVMMetricsParams defines parameters for GetVMMetrics.
+type GetVMMetricsParams struct {
 	Duration *string `form:"duration,omitempty" json:"duration,omitempty"`
 }
 
-// CreateOneOrMoreVirtualMachinesJSONRequestBody defines body for CreateOneOrMoreVirtualMachines for application/json ContentType.
-type CreateOneOrMoreVirtualMachinesJSONRequestBody = CreateInstancesPayload
+// CreateVMsJSONRequestBody defines body for CreateVMs for application/json ContentType.
+type CreateVMsJSONRequestBody = CreateInstancesPayload
 
-// AttachFirewallsToAVirtualMachineJSONRequestBody defines body for AttachFirewallsToAVirtualMachine for application/json ContentType.
-type AttachFirewallsToAVirtualMachineJSONRequestBody = AttachFirewallsToVMPayload
+// AttachFirewallsToVMJSONRequestBody defines body for AttachFirewallsToVM for application/json ContentType.
+type AttachFirewallsToVMJSONRequestBody = AttachFirewallsToVMPayload
 
-// PutLabelsJSONRequestBody defines body for PutLabels for application/json ContentType.
-type PutLabelsJSONRequestBody = EditLabelOfAnExistingVMPayload
+// AddVMLabelJSONRequestBody defines body for AddVMLabel for application/json ContentType.
+type AddVMLabelJSONRequestBody = EditLabelOfAnExistingVMPayload
 
-// PostInstanceLogsJSONRequestBody defines body for PostInstanceLogs for application/json ContentType.
-type PostInstanceLogsJSONRequestBody = RequestInstanceLogsPayload
+// RequestVMLogsJSONRequestBody defines body for RequestVMLogs for application/json ContentType.
+type RequestVMLogsJSONRequestBody = RequestInstanceLogsPayload
 
-// PostInstanceResizeJSONRequestBody defines body for PostInstanceResize for application/json ContentType.
-type PostInstanceResizeJSONRequestBody = InstanceResizePayload
+// ResizeVMJSONRequestBody defines body for ResizeVM for application/json ContentType.
+type ResizeVMJSONRequestBody = InstanceResizePayload
 
-// PostSecurityRuleJSONRequestBody defines body for PostSecurityRule for application/json ContentType.
-type PostSecurityRuleJSONRequestBody = CreateSecurityRulePayload
+// CreateFirewallRuleForVMJSONRequestBody defines body for CreateFirewallRuleForVM for application/json ContentType.
+type CreateFirewallRuleForVMJSONRequestBody = CreateSecurityRulePayload
 
-// PostSnapshotsJSONRequestBody defines body for PostSnapshots for application/json ContentType.
-type PostSnapshotsJSONRequestBody = CreateSnapshotPayload
+// CreateSnapshotForVMJSONRequestBody defines body for CreateSnapshotForVM for application/json ContentType.
+type CreateSnapshotForVMJSONRequestBody = CreateSnapshotPayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -632,83 +637,83 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// ListVirtualMachines request
-	ListVirtualMachines(ctx context.Context, params *ListVirtualMachinesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListVMs request
+	ListVMs(ctx context.Context, params *ListVMsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateOneOrMoreVirtualMachinesWithBody request with any body
-	CreateOneOrMoreVirtualMachinesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateVMsWithBody request with any body
+	CreateVMsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	CreateOneOrMoreVirtualMachines(ctx context.Context, body CreateOneOrMoreVirtualMachinesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateVMs(ctx context.Context, body CreateVMsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RetrieveVirtualMachinesAssociatedWithAContract request
-	RetrieveVirtualMachinesAssociatedWithAContract(ctx context.Context, contractId int, params *RetrieveVirtualMachinesAssociatedWithAContractParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetContractVMs request
+	GetContractVMs(ctx context.Context, contractId int, params *GetContractVMsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// FetchVirtualMachineNameAvailability request
-	FetchVirtualMachineNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CheckVMNameAvailability request
+	CheckVMNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteVirtualMachine request
-	DeleteVirtualMachine(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteVM request
+	DeleteVM(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RetrieveVirtualMachineDetails request
-	RetrieveVirtualMachineDetails(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetVM request
+	GetVM(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// AttachFirewallsToAVirtualMachineWithBody request with any body
-	AttachFirewallsToAVirtualMachineWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// AttachFirewallsToVMWithBody request with any body
+	AttachFirewallsToVMWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	AttachFirewallsToAVirtualMachine(ctx context.Context, vmId int, body AttachFirewallsToAVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	AttachFirewallsToVM(ctx context.Context, vmId int, body AttachFirewallsToVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetInstanceHardReboot request
-	GetInstanceHardReboot(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// HardRebootVM request
+	HardRebootVM(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetInstanceHibernate request
-	GetInstanceHibernate(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// HibernateVM request
+	HibernateVM(ctx context.Context, vmId int, params *HibernateVMParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetInstanceHibernateRestore request
-	GetInstanceHibernateRestore(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RestoreVMFromHibernation request
+	RestoreVMFromHibernation(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PutLabelsWithBody request with any body
-	PutLabelsWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// AddVMLabelWithBody request with any body
+	AddVMLabelWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PutLabels(ctx context.Context, vmId int, body PutLabelsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	AddVMLabel(ctx context.Context, vmId int, body AddVMLabelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetInstanceLogs request
-	GetInstanceLogs(ctx context.Context, vmId int, params *GetInstanceLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetVMLogs request
+	GetVMLogs(ctx context.Context, vmId int, params *GetVMLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostInstanceLogsWithBody request with any body
-	PostInstanceLogsWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RequestVMLogsWithBody request with any body
+	RequestVMLogsWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PostInstanceLogs(ctx context.Context, vmId int, body PostInstanceLogsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	RequestVMLogs(ctx context.Context, vmId int, body RequestVMLogsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetInstanceMetrics request
-	GetInstanceMetrics(ctx context.Context, vmId int, params *GetInstanceMetricsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetVMMetrics request
+	GetVMMetrics(ctx context.Context, vmId int, params *GetVMMetricsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostInstanceResizeWithBody request with any body
-	PostInstanceResizeWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ResizeVMWithBody request with any body
+	ResizeVMWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PostInstanceResize(ctx context.Context, vmId int, body PostInstanceResizeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ResizeVM(ctx context.Context, vmId int, body ResizeVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostSecurityRuleWithBody request with any body
-	PostSecurityRuleWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateFirewallRuleForVMWithBody request with any body
+	CreateFirewallRuleForVMWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PostSecurityRule(ctx context.Context, vmId int, body PostSecurityRuleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateFirewallRuleForVM(ctx context.Context, vmId int, body CreateFirewallRuleForVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteSecurityRule request
-	DeleteSecurityRule(ctx context.Context, vmId int, sgRuleId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteFirewallRuleForVM request
+	DeleteFirewallRuleForVM(ctx context.Context, vmId int, sgRuleId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostSnapshotsWithBody request with any body
-	PostSnapshotsWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateSnapshotForVMWithBody request with any body
+	CreateSnapshotForVMWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PostSnapshots(ctx context.Context, vmId int, body PostSnapshotsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateSnapshotForVM(ctx context.Context, vmId int, body CreateSnapshotForVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetInstanceStart request
-	GetInstanceStart(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// StartVM request
+	StartVM(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetInstanceStop request
-	GetInstanceStop(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// StopVM request
+	StopVM(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) ListVirtualMachines(ctx context.Context, params *ListVirtualMachinesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListVirtualMachinesRequest(c.Server, params)
+func (c *Client) ListVMs(ctx context.Context, params *ListVMsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListVMsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -719,8 +724,8 @@ func (c *Client) ListVirtualMachines(ctx context.Context, params *ListVirtualMac
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateOneOrMoreVirtualMachinesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateOneOrMoreVirtualMachinesRequestWithBody(c.Server, contentType, body)
+func (c *Client) CreateVMsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVMsRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -731,8 +736,8 @@ func (c *Client) CreateOneOrMoreVirtualMachinesWithBody(ctx context.Context, con
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateOneOrMoreVirtualMachines(ctx context.Context, body CreateOneOrMoreVirtualMachinesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateOneOrMoreVirtualMachinesRequest(c.Server, body)
+func (c *Client) CreateVMs(ctx context.Context, body CreateVMsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVMsRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -743,8 +748,8 @@ func (c *Client) CreateOneOrMoreVirtualMachines(ctx context.Context, body Create
 	return c.Client.Do(req)
 }
 
-func (c *Client) RetrieveVirtualMachinesAssociatedWithAContract(ctx context.Context, contractId int, params *RetrieveVirtualMachinesAssociatedWithAContractParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveVirtualMachinesAssociatedWithAContractRequest(c.Server, contractId, params)
+func (c *Client) GetContractVMs(ctx context.Context, contractId int, params *GetContractVMsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetContractVMsRequest(c.Server, contractId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -755,8 +760,8 @@ func (c *Client) RetrieveVirtualMachinesAssociatedWithAContract(ctx context.Cont
 	return c.Client.Do(req)
 }
 
-func (c *Client) FetchVirtualMachineNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFetchVirtualMachineNameAvailabilityRequest(c.Server, name)
+func (c *Client) CheckVMNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCheckVMNameAvailabilityRequest(c.Server, name)
 	if err != nil {
 		return nil, err
 	}
@@ -767,8 +772,8 @@ func (c *Client) FetchVirtualMachineNameAvailability(ctx context.Context, name s
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteVirtualMachine(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteVirtualMachineRequest(c.Server, vmId)
+func (c *Client) DeleteVM(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteVMRequest(c.Server, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -779,8 +784,8 @@ func (c *Client) DeleteVirtualMachine(ctx context.Context, vmId int, reqEditors 
 	return c.Client.Do(req)
 }
 
-func (c *Client) RetrieveVirtualMachineDetails(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveVirtualMachineDetailsRequest(c.Server, vmId)
+func (c *Client) GetVM(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVMRequest(c.Server, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -791,8 +796,8 @@ func (c *Client) RetrieveVirtualMachineDetails(ctx context.Context, vmId int, re
 	return c.Client.Do(req)
 }
 
-func (c *Client) AttachFirewallsToAVirtualMachineWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAttachFirewallsToAVirtualMachineRequestWithBody(c.Server, vmId, contentType, body)
+func (c *Client) AttachFirewallsToVMWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachFirewallsToVMRequestWithBody(c.Server, vmId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -803,8 +808,8 @@ func (c *Client) AttachFirewallsToAVirtualMachineWithBody(ctx context.Context, v
 	return c.Client.Do(req)
 }
 
-func (c *Client) AttachFirewallsToAVirtualMachine(ctx context.Context, vmId int, body AttachFirewallsToAVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAttachFirewallsToAVirtualMachineRequest(c.Server, vmId, body)
+func (c *Client) AttachFirewallsToVM(ctx context.Context, vmId int, body AttachFirewallsToVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachFirewallsToVMRequest(c.Server, vmId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -815,8 +820,8 @@ func (c *Client) AttachFirewallsToAVirtualMachine(ctx context.Context, vmId int,
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetInstanceHardReboot(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetInstanceHardRebootRequest(c.Server, vmId)
+func (c *Client) HardRebootVM(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewHardRebootVMRequest(c.Server, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -827,8 +832,8 @@ func (c *Client) GetInstanceHardReboot(ctx context.Context, vmId int, reqEditors
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetInstanceHibernate(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetInstanceHibernateRequest(c.Server, vmId)
+func (c *Client) HibernateVM(ctx context.Context, vmId int, params *HibernateVMParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewHibernateVMRequest(c.Server, vmId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -839,8 +844,8 @@ func (c *Client) GetInstanceHibernate(ctx context.Context, vmId int, reqEditors 
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetInstanceHibernateRestore(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetInstanceHibernateRestoreRequest(c.Server, vmId)
+func (c *Client) RestoreVMFromHibernation(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRestoreVMFromHibernationRequest(c.Server, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -851,8 +856,8 @@ func (c *Client) GetInstanceHibernateRestore(ctx context.Context, vmId int, reqE
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutLabelsWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutLabelsRequestWithBody(c.Server, vmId, contentType, body)
+func (c *Client) AddVMLabelWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddVMLabelRequestWithBody(c.Server, vmId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -863,8 +868,8 @@ func (c *Client) PutLabelsWithBody(ctx context.Context, vmId int, contentType st
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutLabels(ctx context.Context, vmId int, body PutLabelsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutLabelsRequest(c.Server, vmId, body)
+func (c *Client) AddVMLabel(ctx context.Context, vmId int, body AddVMLabelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddVMLabelRequest(c.Server, vmId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -875,8 +880,8 @@ func (c *Client) PutLabels(ctx context.Context, vmId int, body PutLabelsJSONRequ
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetInstanceLogs(ctx context.Context, vmId int, params *GetInstanceLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetInstanceLogsRequest(c.Server, vmId, params)
+func (c *Client) GetVMLogs(ctx context.Context, vmId int, params *GetVMLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVMLogsRequest(c.Server, vmId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -887,8 +892,8 @@ func (c *Client) GetInstanceLogs(ctx context.Context, vmId int, params *GetInsta
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostInstanceLogsWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostInstanceLogsRequestWithBody(c.Server, vmId, contentType, body)
+func (c *Client) RequestVMLogsWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRequestVMLogsRequestWithBody(c.Server, vmId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -899,8 +904,8 @@ func (c *Client) PostInstanceLogsWithBody(ctx context.Context, vmId int, content
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostInstanceLogs(ctx context.Context, vmId int, body PostInstanceLogsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostInstanceLogsRequest(c.Server, vmId, body)
+func (c *Client) RequestVMLogs(ctx context.Context, vmId int, body RequestVMLogsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRequestVMLogsRequest(c.Server, vmId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -911,8 +916,8 @@ func (c *Client) PostInstanceLogs(ctx context.Context, vmId int, body PostInstan
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetInstanceMetrics(ctx context.Context, vmId int, params *GetInstanceMetricsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetInstanceMetricsRequest(c.Server, vmId, params)
+func (c *Client) GetVMMetrics(ctx context.Context, vmId int, params *GetVMMetricsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVMMetricsRequest(c.Server, vmId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -923,8 +928,8 @@ func (c *Client) GetInstanceMetrics(ctx context.Context, vmId int, params *GetIn
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostInstanceResizeWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostInstanceResizeRequestWithBody(c.Server, vmId, contentType, body)
+func (c *Client) ResizeVMWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewResizeVMRequestWithBody(c.Server, vmId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -935,8 +940,8 @@ func (c *Client) PostInstanceResizeWithBody(ctx context.Context, vmId int, conte
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostInstanceResize(ctx context.Context, vmId int, body PostInstanceResizeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostInstanceResizeRequest(c.Server, vmId, body)
+func (c *Client) ResizeVM(ctx context.Context, vmId int, body ResizeVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewResizeVMRequest(c.Server, vmId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -947,8 +952,8 @@ func (c *Client) PostInstanceResize(ctx context.Context, vmId int, body PostInst
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostSecurityRuleWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostSecurityRuleRequestWithBody(c.Server, vmId, contentType, body)
+func (c *Client) CreateFirewallRuleForVMWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateFirewallRuleForVMRequestWithBody(c.Server, vmId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -959,8 +964,8 @@ func (c *Client) PostSecurityRuleWithBody(ctx context.Context, vmId int, content
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostSecurityRule(ctx context.Context, vmId int, body PostSecurityRuleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostSecurityRuleRequest(c.Server, vmId, body)
+func (c *Client) CreateFirewallRuleForVM(ctx context.Context, vmId int, body CreateFirewallRuleForVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateFirewallRuleForVMRequest(c.Server, vmId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -971,8 +976,8 @@ func (c *Client) PostSecurityRule(ctx context.Context, vmId int, body PostSecuri
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteSecurityRule(ctx context.Context, vmId int, sgRuleId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteSecurityRuleRequest(c.Server, vmId, sgRuleId)
+func (c *Client) DeleteFirewallRuleForVM(ctx context.Context, vmId int, sgRuleId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteFirewallRuleForVMRequest(c.Server, vmId, sgRuleId)
 	if err != nil {
 		return nil, err
 	}
@@ -983,8 +988,8 @@ func (c *Client) DeleteSecurityRule(ctx context.Context, vmId int, sgRuleId int,
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostSnapshotsWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostSnapshotsRequestWithBody(c.Server, vmId, contentType, body)
+func (c *Client) CreateSnapshotForVMWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSnapshotForVMRequestWithBody(c.Server, vmId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -995,8 +1000,8 @@ func (c *Client) PostSnapshotsWithBody(ctx context.Context, vmId int, contentTyp
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostSnapshots(ctx context.Context, vmId int, body PostSnapshotsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostSnapshotsRequest(c.Server, vmId, body)
+func (c *Client) CreateSnapshotForVM(ctx context.Context, vmId int, body CreateSnapshotForVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSnapshotForVMRequest(c.Server, vmId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1007,8 +1012,8 @@ func (c *Client) PostSnapshots(ctx context.Context, vmId int, body PostSnapshots
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetInstanceStart(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetInstanceStartRequest(c.Server, vmId)
+func (c *Client) StartVM(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStartVMRequest(c.Server, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -1019,8 +1024,8 @@ func (c *Client) GetInstanceStart(ctx context.Context, vmId int, reqEditors ...R
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetInstanceStop(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetInstanceStopRequest(c.Server, vmId)
+func (c *Client) StopVM(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStopVMRequest(c.Server, vmId)
 	if err != nil {
 		return nil, err
 	}
@@ -1031,8 +1036,8 @@ func (c *Client) GetInstanceStop(ctx context.Context, vmId int, reqEditors ...Re
 	return c.Client.Do(req)
 }
 
-// NewListVirtualMachinesRequest generates requests for ListVirtualMachines
-func NewListVirtualMachinesRequest(server string, params *ListVirtualMachinesParams) (*http.Request, error) {
+// NewListVMsRequest generates requests for ListVMs
+func NewListVMsRequest(server string, params *ListVMsParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -1144,19 +1149,19 @@ func NewListVirtualMachinesRequest(server string, params *ListVirtualMachinesPar
 	return req, nil
 }
 
-// NewCreateOneOrMoreVirtualMachinesRequest calls the generic CreateOneOrMoreVirtualMachines builder with application/json body
-func NewCreateOneOrMoreVirtualMachinesRequest(server string, body CreateOneOrMoreVirtualMachinesJSONRequestBody) (*http.Request, error) {
+// NewCreateVMsRequest calls the generic CreateVMs builder with application/json body
+func NewCreateVMsRequest(server string, body CreateVMsJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewCreateOneOrMoreVirtualMachinesRequestWithBody(server, "application/json", bodyReader)
+	return NewCreateVMsRequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewCreateOneOrMoreVirtualMachinesRequestWithBody generates requests for CreateOneOrMoreVirtualMachines with any type of body
-func NewCreateOneOrMoreVirtualMachinesRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewCreateVMsRequestWithBody generates requests for CreateVMs with any type of body
+func NewCreateVMsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -1184,8 +1189,8 @@ func NewCreateOneOrMoreVirtualMachinesRequestWithBody(server string, contentType
 	return req, nil
 }
 
-// NewRetrieveVirtualMachinesAssociatedWithAContractRequest generates requests for RetrieveVirtualMachinesAssociatedWithAContract
-func NewRetrieveVirtualMachinesAssociatedWithAContractRequest(server string, contractId int, params *RetrieveVirtualMachinesAssociatedWithAContractParams) (*http.Request, error) {
+// NewGetContractVMsRequest generates requests for GetContractVMs
+func NewGetContractVMsRequest(server string, contractId int, params *GetContractVMsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1272,8 +1277,8 @@ func NewRetrieveVirtualMachinesAssociatedWithAContractRequest(server string, con
 	return req, nil
 }
 
-// NewFetchVirtualMachineNameAvailabilityRequest generates requests for FetchVirtualMachineNameAvailability
-func NewFetchVirtualMachineNameAvailabilityRequest(server string, name string) (*http.Request, error) {
+// NewCheckVMNameAvailabilityRequest generates requests for CheckVMNameAvailability
+func NewCheckVMNameAvailabilityRequest(server string, name string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1306,8 +1311,8 @@ func NewFetchVirtualMachineNameAvailabilityRequest(server string, name string) (
 	return req, nil
 }
 
-// NewDeleteVirtualMachineRequest generates requests for DeleteVirtualMachine
-func NewDeleteVirtualMachineRequest(server string, vmId int) (*http.Request, error) {
+// NewDeleteVMRequest generates requests for DeleteVM
+func NewDeleteVMRequest(server string, vmId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1340,8 +1345,8 @@ func NewDeleteVirtualMachineRequest(server string, vmId int) (*http.Request, err
 	return req, nil
 }
 
-// NewRetrieveVirtualMachineDetailsRequest generates requests for RetrieveVirtualMachineDetails
-func NewRetrieveVirtualMachineDetailsRequest(server string, vmId int) (*http.Request, error) {
+// NewGetVMRequest generates requests for GetVM
+func NewGetVMRequest(server string, vmId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1374,19 +1379,19 @@ func NewRetrieveVirtualMachineDetailsRequest(server string, vmId int) (*http.Req
 	return req, nil
 }
 
-// NewAttachFirewallsToAVirtualMachineRequest calls the generic AttachFirewallsToAVirtualMachine builder with application/json body
-func NewAttachFirewallsToAVirtualMachineRequest(server string, vmId int, body AttachFirewallsToAVirtualMachineJSONRequestBody) (*http.Request, error) {
+// NewAttachFirewallsToVMRequest calls the generic AttachFirewallsToVM builder with application/json body
+func NewAttachFirewallsToVMRequest(server string, vmId int, body AttachFirewallsToVMJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewAttachFirewallsToAVirtualMachineRequestWithBody(server, vmId, "application/json", bodyReader)
+	return NewAttachFirewallsToVMRequestWithBody(server, vmId, "application/json", bodyReader)
 }
 
-// NewAttachFirewallsToAVirtualMachineRequestWithBody generates requests for AttachFirewallsToAVirtualMachine with any type of body
-func NewAttachFirewallsToAVirtualMachineRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
+// NewAttachFirewallsToVMRequestWithBody generates requests for AttachFirewallsToVM with any type of body
+func NewAttachFirewallsToVMRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1421,8 +1426,8 @@ func NewAttachFirewallsToAVirtualMachineRequestWithBody(server string, vmId int,
 	return req, nil
 }
 
-// NewGetInstanceHardRebootRequest generates requests for GetInstanceHardReboot
-func NewGetInstanceHardRebootRequest(server string, vmId int) (*http.Request, error) {
+// NewHardRebootVMRequest generates requests for HardRebootVM
+func NewHardRebootVMRequest(server string, vmId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1455,8 +1460,8 @@ func NewGetInstanceHardRebootRequest(server string, vmId int) (*http.Request, er
 	return req, nil
 }
 
-// NewGetInstanceHibernateRequest generates requests for GetInstanceHibernate
-func NewGetInstanceHibernateRequest(server string, vmId int) (*http.Request, error) {
+// NewHibernateVMRequest generates requests for HibernateVM
+func NewHibernateVMRequest(server string, vmId int, params *HibernateVMParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1481,6 +1486,28 @@ func NewGetInstanceHibernateRequest(server string, vmId int) (*http.Request, err
 		return nil, err
 	}
 
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.RetainIp != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "retain_ip", runtime.ParamLocationQuery, *params.RetainIp); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
@@ -1489,8 +1516,8 @@ func NewGetInstanceHibernateRequest(server string, vmId int) (*http.Request, err
 	return req, nil
 }
 
-// NewGetInstanceHibernateRestoreRequest generates requests for GetInstanceHibernateRestore
-func NewGetInstanceHibernateRestoreRequest(server string, vmId int) (*http.Request, error) {
+// NewRestoreVMFromHibernationRequest generates requests for RestoreVMFromHibernation
+func NewRestoreVMFromHibernationRequest(server string, vmId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1523,19 +1550,19 @@ func NewGetInstanceHibernateRestoreRequest(server string, vmId int) (*http.Reque
 	return req, nil
 }
 
-// NewPutLabelsRequest calls the generic PutLabels builder with application/json body
-func NewPutLabelsRequest(server string, vmId int, body PutLabelsJSONRequestBody) (*http.Request, error) {
+// NewAddVMLabelRequest calls the generic AddVMLabel builder with application/json body
+func NewAddVMLabelRequest(server string, vmId int, body AddVMLabelJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPutLabelsRequestWithBody(server, vmId, "application/json", bodyReader)
+	return NewAddVMLabelRequestWithBody(server, vmId, "application/json", bodyReader)
 }
 
-// NewPutLabelsRequestWithBody generates requests for PutLabels with any type of body
-func NewPutLabelsRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
+// NewAddVMLabelRequestWithBody generates requests for AddVMLabel with any type of body
+func NewAddVMLabelRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1570,8 +1597,8 @@ func NewPutLabelsRequestWithBody(server string, vmId int, contentType string, bo
 	return req, nil
 }
 
-// NewGetInstanceLogsRequest generates requests for GetInstanceLogs
-func NewGetInstanceLogsRequest(server string, vmId int, params *GetInstanceLogsParams) (*http.Request, error) {
+// NewGetVMLogsRequest generates requests for GetVMLogs
+func NewGetVMLogsRequest(server string, vmId int, params *GetVMLogsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1622,19 +1649,19 @@ func NewGetInstanceLogsRequest(server string, vmId int, params *GetInstanceLogsP
 	return req, nil
 }
 
-// NewPostInstanceLogsRequest calls the generic PostInstanceLogs builder with application/json body
-func NewPostInstanceLogsRequest(server string, vmId int, body PostInstanceLogsJSONRequestBody) (*http.Request, error) {
+// NewRequestVMLogsRequest calls the generic RequestVMLogs builder with application/json body
+func NewRequestVMLogsRequest(server string, vmId int, body RequestVMLogsJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPostInstanceLogsRequestWithBody(server, vmId, "application/json", bodyReader)
+	return NewRequestVMLogsRequestWithBody(server, vmId, "application/json", bodyReader)
 }
 
-// NewPostInstanceLogsRequestWithBody generates requests for PostInstanceLogs with any type of body
-func NewPostInstanceLogsRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
+// NewRequestVMLogsRequestWithBody generates requests for RequestVMLogs with any type of body
+func NewRequestVMLogsRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1669,8 +1696,8 @@ func NewPostInstanceLogsRequestWithBody(server string, vmId int, contentType str
 	return req, nil
 }
 
-// NewGetInstanceMetricsRequest generates requests for GetInstanceMetrics
-func NewGetInstanceMetricsRequest(server string, vmId int, params *GetInstanceMetricsParams) (*http.Request, error) {
+// NewGetVMMetricsRequest generates requests for GetVMMetrics
+func NewGetVMMetricsRequest(server string, vmId int, params *GetVMMetricsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1725,19 +1752,19 @@ func NewGetInstanceMetricsRequest(server string, vmId int, params *GetInstanceMe
 	return req, nil
 }
 
-// NewPostInstanceResizeRequest calls the generic PostInstanceResize builder with application/json body
-func NewPostInstanceResizeRequest(server string, vmId int, body PostInstanceResizeJSONRequestBody) (*http.Request, error) {
+// NewResizeVMRequest calls the generic ResizeVM builder with application/json body
+func NewResizeVMRequest(server string, vmId int, body ResizeVMJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPostInstanceResizeRequestWithBody(server, vmId, "application/json", bodyReader)
+	return NewResizeVMRequestWithBody(server, vmId, "application/json", bodyReader)
 }
 
-// NewPostInstanceResizeRequestWithBody generates requests for PostInstanceResize with any type of body
-func NewPostInstanceResizeRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
+// NewResizeVMRequestWithBody generates requests for ResizeVM with any type of body
+func NewResizeVMRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1772,19 +1799,19 @@ func NewPostInstanceResizeRequestWithBody(server string, vmId int, contentType s
 	return req, nil
 }
 
-// NewPostSecurityRuleRequest calls the generic PostSecurityRule builder with application/json body
-func NewPostSecurityRuleRequest(server string, vmId int, body PostSecurityRuleJSONRequestBody) (*http.Request, error) {
+// NewCreateFirewallRuleForVMRequest calls the generic CreateFirewallRuleForVM builder with application/json body
+func NewCreateFirewallRuleForVMRequest(server string, vmId int, body CreateFirewallRuleForVMJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPostSecurityRuleRequestWithBody(server, vmId, "application/json", bodyReader)
+	return NewCreateFirewallRuleForVMRequestWithBody(server, vmId, "application/json", bodyReader)
 }
 
-// NewPostSecurityRuleRequestWithBody generates requests for PostSecurityRule with any type of body
-func NewPostSecurityRuleRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
+// NewCreateFirewallRuleForVMRequestWithBody generates requests for CreateFirewallRuleForVM with any type of body
+func NewCreateFirewallRuleForVMRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1819,8 +1846,8 @@ func NewPostSecurityRuleRequestWithBody(server string, vmId int, contentType str
 	return req, nil
 }
 
-// NewDeleteSecurityRuleRequest generates requests for DeleteSecurityRule
-func NewDeleteSecurityRuleRequest(server string, vmId int, sgRuleId int) (*http.Request, error) {
+// NewDeleteFirewallRuleForVMRequest generates requests for DeleteFirewallRuleForVM
+func NewDeleteFirewallRuleForVMRequest(server string, vmId int, sgRuleId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1860,19 +1887,19 @@ func NewDeleteSecurityRuleRequest(server string, vmId int, sgRuleId int) (*http.
 	return req, nil
 }
 
-// NewPostSnapshotsRequest calls the generic PostSnapshots builder with application/json body
-func NewPostSnapshotsRequest(server string, vmId int, body PostSnapshotsJSONRequestBody) (*http.Request, error) {
+// NewCreateSnapshotForVMRequest calls the generic CreateSnapshotForVM builder with application/json body
+func NewCreateSnapshotForVMRequest(server string, vmId int, body CreateSnapshotForVMJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPostSnapshotsRequestWithBody(server, vmId, "application/json", bodyReader)
+	return NewCreateSnapshotForVMRequestWithBody(server, vmId, "application/json", bodyReader)
 }
 
-// NewPostSnapshotsRequestWithBody generates requests for PostSnapshots with any type of body
-func NewPostSnapshotsRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
+// NewCreateSnapshotForVMRequestWithBody generates requests for CreateSnapshotForVM with any type of body
+func NewCreateSnapshotForVMRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1907,8 +1934,8 @@ func NewPostSnapshotsRequestWithBody(server string, vmId int, contentType string
 	return req, nil
 }
 
-// NewGetInstanceStartRequest generates requests for GetInstanceStart
-func NewGetInstanceStartRequest(server string, vmId int) (*http.Request, error) {
+// NewStartVMRequest generates requests for StartVM
+func NewStartVMRequest(server string, vmId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1941,8 +1968,8 @@ func NewGetInstanceStartRequest(server string, vmId int) (*http.Request, error) 
 	return req, nil
 }
 
-// NewGetInstanceStopRequest generates requests for GetInstanceStop
-func NewGetInstanceStopRequest(server string, vmId int) (*http.Request, error) {
+// NewStopVMRequest generates requests for StopVM
+func NewStopVMRequest(server string, vmId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -2018,82 +2045,82 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// ListVirtualMachinesWithResponse request
-	ListVirtualMachinesWithResponse(ctx context.Context, params *ListVirtualMachinesParams, reqEditors ...RequestEditorFn) (*ListVirtualMachinesResponse, error)
+	// ListVMsWithResponse request
+	ListVMsWithResponse(ctx context.Context, params *ListVMsParams, reqEditors ...RequestEditorFn) (*ListVMsResponse, error)
 
-	// CreateOneOrMoreVirtualMachinesWithBodyWithResponse request with any body
-	CreateOneOrMoreVirtualMachinesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateOneOrMoreVirtualMachinesResponse, error)
+	// CreateVMsWithBodyWithResponse request with any body
+	CreateVMsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVMsResponse, error)
 
-	CreateOneOrMoreVirtualMachinesWithResponse(ctx context.Context, body CreateOneOrMoreVirtualMachinesJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateOneOrMoreVirtualMachinesResponse, error)
+	CreateVMsWithResponse(ctx context.Context, body CreateVMsJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVMsResponse, error)
 
-	// RetrieveVirtualMachinesAssociatedWithAContractWithResponse request
-	RetrieveVirtualMachinesAssociatedWithAContractWithResponse(ctx context.Context, contractId int, params *RetrieveVirtualMachinesAssociatedWithAContractParams, reqEditors ...RequestEditorFn) (*RetrieveVirtualMachinesAssociatedWithAContractResponse, error)
+	// GetContractVMsWithResponse request
+	GetContractVMsWithResponse(ctx context.Context, contractId int, params *GetContractVMsParams, reqEditors ...RequestEditorFn) (*GetContractVMsResponse, error)
 
-	// FetchVirtualMachineNameAvailabilityWithResponse request
-	FetchVirtualMachineNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*FetchVirtualMachineNameAvailabilityResponse, error)
+	// CheckVMNameAvailabilityWithResponse request
+	CheckVMNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*CheckVMNameAvailabilityResponse, error)
 
-	// DeleteVirtualMachineWithResponse request
-	DeleteVirtualMachineWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*DeleteVirtualMachineResponse, error)
+	// DeleteVMWithResponse request
+	DeleteVMWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*DeleteVMResponse, error)
 
-	// RetrieveVirtualMachineDetailsWithResponse request
-	RetrieveVirtualMachineDetailsWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*RetrieveVirtualMachineDetailsResponse, error)
+	// GetVMWithResponse request
+	GetVMWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetVMResponse, error)
 
-	// AttachFirewallsToAVirtualMachineWithBodyWithResponse request with any body
-	AttachFirewallsToAVirtualMachineWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachFirewallsToAVirtualMachineResponse, error)
+	// AttachFirewallsToVMWithBodyWithResponse request with any body
+	AttachFirewallsToVMWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachFirewallsToVMResponse, error)
 
-	AttachFirewallsToAVirtualMachineWithResponse(ctx context.Context, vmId int, body AttachFirewallsToAVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachFirewallsToAVirtualMachineResponse, error)
+	AttachFirewallsToVMWithResponse(ctx context.Context, vmId int, body AttachFirewallsToVMJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachFirewallsToVMResponse, error)
 
-	// GetInstanceHardRebootWithResponse request
-	GetInstanceHardRebootWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetInstanceHardRebootResponse, error)
+	// HardRebootVMWithResponse request
+	HardRebootVMWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*HardRebootVMResponse, error)
 
-	// GetInstanceHibernateWithResponse request
-	GetInstanceHibernateWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetInstanceHibernateResponse, error)
+	// HibernateVMWithResponse request
+	HibernateVMWithResponse(ctx context.Context, vmId int, params *HibernateVMParams, reqEditors ...RequestEditorFn) (*HibernateVMResponse, error)
 
-	// GetInstanceHibernateRestoreWithResponse request
-	GetInstanceHibernateRestoreWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetInstanceHibernateRestoreResponse, error)
+	// RestoreVMFromHibernationWithResponse request
+	RestoreVMFromHibernationWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*RestoreVMFromHibernationResponse, error)
 
-	// PutLabelsWithBodyWithResponse request with any body
-	PutLabelsWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutLabelsResponse, error)
+	// AddVMLabelWithBodyWithResponse request with any body
+	AddVMLabelWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddVMLabelResponse, error)
 
-	PutLabelsWithResponse(ctx context.Context, vmId int, body PutLabelsJSONRequestBody, reqEditors ...RequestEditorFn) (*PutLabelsResponse, error)
+	AddVMLabelWithResponse(ctx context.Context, vmId int, body AddVMLabelJSONRequestBody, reqEditors ...RequestEditorFn) (*AddVMLabelResponse, error)
 
-	// GetInstanceLogsWithResponse request
-	GetInstanceLogsWithResponse(ctx context.Context, vmId int, params *GetInstanceLogsParams, reqEditors ...RequestEditorFn) (*GetInstanceLogsResponse, error)
+	// GetVMLogsWithResponse request
+	GetVMLogsWithResponse(ctx context.Context, vmId int, params *GetVMLogsParams, reqEditors ...RequestEditorFn) (*GetVMLogsResponse, error)
 
-	// PostInstanceLogsWithBodyWithResponse request with any body
-	PostInstanceLogsWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostInstanceLogsResponse, error)
+	// RequestVMLogsWithBodyWithResponse request with any body
+	RequestVMLogsWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RequestVMLogsResponse, error)
 
-	PostInstanceLogsWithResponse(ctx context.Context, vmId int, body PostInstanceLogsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostInstanceLogsResponse, error)
+	RequestVMLogsWithResponse(ctx context.Context, vmId int, body RequestVMLogsJSONRequestBody, reqEditors ...RequestEditorFn) (*RequestVMLogsResponse, error)
 
-	// GetInstanceMetricsWithResponse request
-	GetInstanceMetricsWithResponse(ctx context.Context, vmId int, params *GetInstanceMetricsParams, reqEditors ...RequestEditorFn) (*GetInstanceMetricsResponse, error)
+	// GetVMMetricsWithResponse request
+	GetVMMetricsWithResponse(ctx context.Context, vmId int, params *GetVMMetricsParams, reqEditors ...RequestEditorFn) (*GetVMMetricsResponse, error)
 
-	// PostInstanceResizeWithBodyWithResponse request with any body
-	PostInstanceResizeWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostInstanceResizeResponse, error)
+	// ResizeVMWithBodyWithResponse request with any body
+	ResizeVMWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ResizeVMResponse, error)
 
-	PostInstanceResizeWithResponse(ctx context.Context, vmId int, body PostInstanceResizeJSONRequestBody, reqEditors ...RequestEditorFn) (*PostInstanceResizeResponse, error)
+	ResizeVMWithResponse(ctx context.Context, vmId int, body ResizeVMJSONRequestBody, reqEditors ...RequestEditorFn) (*ResizeVMResponse, error)
 
-	// PostSecurityRuleWithBodyWithResponse request with any body
-	PostSecurityRuleWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostSecurityRuleResponse, error)
+	// CreateFirewallRuleForVMWithBodyWithResponse request with any body
+	CreateFirewallRuleForVMWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateFirewallRuleForVMResponse, error)
 
-	PostSecurityRuleWithResponse(ctx context.Context, vmId int, body PostSecurityRuleJSONRequestBody, reqEditors ...RequestEditorFn) (*PostSecurityRuleResponse, error)
+	CreateFirewallRuleForVMWithResponse(ctx context.Context, vmId int, body CreateFirewallRuleForVMJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateFirewallRuleForVMResponse, error)
 
-	// DeleteSecurityRuleWithResponse request
-	DeleteSecurityRuleWithResponse(ctx context.Context, vmId int, sgRuleId int, reqEditors ...RequestEditorFn) (*DeleteSecurityRuleResponse, error)
+	// DeleteFirewallRuleForVMWithResponse request
+	DeleteFirewallRuleForVMWithResponse(ctx context.Context, vmId int, sgRuleId int, reqEditors ...RequestEditorFn) (*DeleteFirewallRuleForVMResponse, error)
 
-	// PostSnapshotsWithBodyWithResponse request with any body
-	PostSnapshotsWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostSnapshotsResponse, error)
+	// CreateSnapshotForVMWithBodyWithResponse request with any body
+	CreateSnapshotForVMWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSnapshotForVMResponse, error)
 
-	PostSnapshotsWithResponse(ctx context.Context, vmId int, body PostSnapshotsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostSnapshotsResponse, error)
+	CreateSnapshotForVMWithResponse(ctx context.Context, vmId int, body CreateSnapshotForVMJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSnapshotForVMResponse, error)
 
-	// GetInstanceStartWithResponse request
-	GetInstanceStartWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetInstanceStartResponse, error)
+	// StartVMWithResponse request
+	StartVMWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*StartVMResponse, error)
 
-	// GetInstanceStopWithResponse request
-	GetInstanceStopWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetInstanceStopResponse, error)
+	// StopVMWithResponse request
+	StopVMWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*StopVMResponse, error)
 }
 
-type ListVirtualMachinesResponse struct {
+type ListVMsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Instances
@@ -2102,7 +2129,7 @@ type ListVirtualMachinesResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ListVirtualMachinesResponse) Status() string {
+func (r ListVMsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2110,14 +2137,14 @@ func (r ListVirtualMachinesResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ListVirtualMachinesResponse) StatusCode() int {
+func (r ListVMsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type CreateOneOrMoreVirtualMachinesResponse struct {
+type CreateVMsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *CreateInstancesResponse
@@ -2129,7 +2156,7 @@ type CreateOneOrMoreVirtualMachinesResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r CreateOneOrMoreVirtualMachinesResponse) Status() string {
+func (r CreateVMsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2137,14 +2164,14 @@ func (r CreateOneOrMoreVirtualMachinesResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CreateOneOrMoreVirtualMachinesResponse) StatusCode() int {
+func (r CreateVMsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type RetrieveVirtualMachinesAssociatedWithAContractResponse struct {
+type GetContractVMsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ContractInstancesResponse
@@ -2153,7 +2180,7 @@ type RetrieveVirtualMachinesAssociatedWithAContractResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrieveVirtualMachinesAssociatedWithAContractResponse) Status() string {
+func (r GetContractVMsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2161,14 +2188,14 @@ func (r RetrieveVirtualMachinesAssociatedWithAContractResponse) Status() string 
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrieveVirtualMachinesAssociatedWithAContractResponse) StatusCode() int {
+func (r GetContractVMsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type FetchVirtualMachineNameAvailabilityResponse struct {
+type CheckVMNameAvailabilityResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *NameAvailableModel
@@ -2178,7 +2205,7 @@ type FetchVirtualMachineNameAvailabilityResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r FetchVirtualMachineNameAvailabilityResponse) Status() string {
+func (r CheckVMNameAvailabilityResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2186,14 +2213,14 @@ func (r FetchVirtualMachineNameAvailabilityResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r FetchVirtualMachineNameAvailabilityResponse) StatusCode() int {
+func (r CheckVMNameAvailabilityResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type DeleteVirtualMachineResponse struct {
+type DeleteVMResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -2204,7 +2231,7 @@ type DeleteVirtualMachineResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteVirtualMachineResponse) Status() string {
+func (r DeleteVMResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2212,14 +2239,14 @@ func (r DeleteVirtualMachineResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteVirtualMachineResponse) StatusCode() int {
+func (r DeleteVMResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type RetrieveVirtualMachineDetailsResponse struct {
+type GetVMResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Instance
@@ -2229,7 +2256,7 @@ type RetrieveVirtualMachineDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrieveVirtualMachineDetailsResponse) Status() string {
+func (r GetVMResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2237,14 +2264,14 @@ func (r RetrieveVirtualMachineDetailsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrieveVirtualMachineDetailsResponse) StatusCode() int {
+func (r GetVMResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type AttachFirewallsToAVirtualMachineResponse struct {
+type AttachFirewallsToVMResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -2254,7 +2281,7 @@ type AttachFirewallsToAVirtualMachineResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r AttachFirewallsToAVirtualMachineResponse) Status() string {
+func (r AttachFirewallsToVMResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2262,14 +2289,14 @@ func (r AttachFirewallsToAVirtualMachineResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r AttachFirewallsToAVirtualMachineResponse) StatusCode() int {
+func (r AttachFirewallsToVMResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetInstanceHardRebootResponse struct {
+type HardRebootVMResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -2279,7 +2306,7 @@ type GetInstanceHardRebootResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetInstanceHardRebootResponse) Status() string {
+func (r HardRebootVMResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2287,14 +2314,14 @@ func (r GetInstanceHardRebootResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetInstanceHardRebootResponse) StatusCode() int {
+func (r HardRebootVMResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetInstanceHibernateResponse struct {
+type HibernateVMResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -2304,7 +2331,7 @@ type GetInstanceHibernateResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetInstanceHibernateResponse) Status() string {
+func (r HibernateVMResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2312,14 +2339,14 @@ func (r GetInstanceHibernateResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetInstanceHibernateResponse) StatusCode() int {
+func (r HibernateVMResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetInstanceHibernateRestoreResponse struct {
+type RestoreVMFromHibernationResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -2329,7 +2356,7 @@ type GetInstanceHibernateRestoreResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetInstanceHibernateRestoreResponse) Status() string {
+func (r RestoreVMFromHibernationResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2337,14 +2364,14 @@ func (r GetInstanceHibernateRestoreResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetInstanceHibernateRestoreResponse) StatusCode() int {
+func (r RestoreVMFromHibernationResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PutLabelsResponse struct {
+type AddVMLabelResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -2355,7 +2382,7 @@ type PutLabelsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PutLabelsResponse) Status() string {
+func (r AddVMLabelResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2363,14 +2390,14 @@ func (r PutLabelsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PutLabelsResponse) StatusCode() int {
+func (r AddVMLabelResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetInstanceLogsResponse struct {
+type GetVMLogsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *GetInstanceLogsData
@@ -2381,7 +2408,7 @@ type GetInstanceLogsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetInstanceLogsResponse) Status() string {
+func (r GetVMLogsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2389,14 +2416,14 @@ func (r GetInstanceLogsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetInstanceLogsResponse) StatusCode() int {
+func (r GetVMLogsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PostInstanceLogsResponse struct {
+type RequestVMLogsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *RequestInstanceLogsResponse
@@ -2407,7 +2434,7 @@ type PostInstanceLogsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostInstanceLogsResponse) Status() string {
+func (r RequestVMLogsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2415,14 +2442,14 @@ func (r PostInstanceLogsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostInstanceLogsResponse) StatusCode() int {
+func (r RequestVMLogsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetInstanceMetricsResponse struct {
+type GetVMMetricsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *MetricsFields
@@ -2433,7 +2460,7 @@ type GetInstanceMetricsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetInstanceMetricsResponse) Status() string {
+func (r GetVMMetricsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2441,14 +2468,14 @@ func (r GetInstanceMetricsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetInstanceMetricsResponse) StatusCode() int {
+func (r GetVMMetricsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PostInstanceResizeResponse struct {
+type ResizeVMResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -2459,7 +2486,7 @@ type PostInstanceResizeResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostInstanceResizeResponse) Status() string {
+func (r ResizeVMResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2467,14 +2494,14 @@ func (r PostInstanceResizeResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostInstanceResizeResponse) StatusCode() int {
+func (r ResizeVMResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PostSecurityRuleResponse struct {
+type CreateFirewallRuleForVMResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SecurityGroupRule
@@ -2485,7 +2512,7 @@ type PostSecurityRuleResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostSecurityRuleResponse) Status() string {
+func (r CreateFirewallRuleForVMResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2493,14 +2520,14 @@ func (r PostSecurityRuleResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostSecurityRuleResponse) StatusCode() int {
+func (r CreateFirewallRuleForVMResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type DeleteSecurityRuleResponse struct {
+type DeleteFirewallRuleForVMResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -2510,7 +2537,7 @@ type DeleteSecurityRuleResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteSecurityRuleResponse) Status() string {
+func (r DeleteFirewallRuleForVMResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2518,14 +2545,14 @@ func (r DeleteSecurityRuleResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteSecurityRuleResponse) StatusCode() int {
+func (r DeleteFirewallRuleForVMResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PostSnapshotsResponse struct {
+type CreateSnapshotForVMResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *CreateSnapshotResponse
@@ -2535,7 +2562,7 @@ type PostSnapshotsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostSnapshotsResponse) Status() string {
+func (r CreateSnapshotForVMResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2543,14 +2570,14 @@ func (r PostSnapshotsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostSnapshotsResponse) StatusCode() int {
+func (r CreateSnapshotForVMResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetInstanceStartResponse struct {
+type StartVMResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -2560,7 +2587,7 @@ type GetInstanceStartResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetInstanceStartResponse) Status() string {
+func (r StartVMResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2568,14 +2595,14 @@ func (r GetInstanceStartResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetInstanceStartResponse) StatusCode() int {
+func (r StartVMResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetInstanceStopResponse struct {
+type StopVMResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -2585,7 +2612,7 @@ type GetInstanceStopResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetInstanceStopResponse) Status() string {
+func (r StopVMResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2593,258 +2620,258 @@ func (r GetInstanceStopResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetInstanceStopResponse) StatusCode() int {
+func (r StopVMResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// ListVirtualMachinesWithResponse request returning *ListVirtualMachinesResponse
-func (c *ClientWithResponses) ListVirtualMachinesWithResponse(ctx context.Context, params *ListVirtualMachinesParams, reqEditors ...RequestEditorFn) (*ListVirtualMachinesResponse, error) {
-	rsp, err := c.ListVirtualMachines(ctx, params, reqEditors...)
+// ListVMsWithResponse request returning *ListVMsResponse
+func (c *ClientWithResponses) ListVMsWithResponse(ctx context.Context, params *ListVMsParams, reqEditors ...RequestEditorFn) (*ListVMsResponse, error) {
+	rsp, err := c.ListVMs(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseListVirtualMachinesResponse(rsp)
+	return ParseListVMsResponse(rsp)
 }
 
-// CreateOneOrMoreVirtualMachinesWithBodyWithResponse request with arbitrary body returning *CreateOneOrMoreVirtualMachinesResponse
-func (c *ClientWithResponses) CreateOneOrMoreVirtualMachinesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateOneOrMoreVirtualMachinesResponse, error) {
-	rsp, err := c.CreateOneOrMoreVirtualMachinesWithBody(ctx, contentType, body, reqEditors...)
+// CreateVMsWithBodyWithResponse request with arbitrary body returning *CreateVMsResponse
+func (c *ClientWithResponses) CreateVMsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVMsResponse, error) {
+	rsp, err := c.CreateVMsWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreateOneOrMoreVirtualMachinesResponse(rsp)
+	return ParseCreateVMsResponse(rsp)
 }
 
-func (c *ClientWithResponses) CreateOneOrMoreVirtualMachinesWithResponse(ctx context.Context, body CreateOneOrMoreVirtualMachinesJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateOneOrMoreVirtualMachinesResponse, error) {
-	rsp, err := c.CreateOneOrMoreVirtualMachines(ctx, body, reqEditors...)
+func (c *ClientWithResponses) CreateVMsWithResponse(ctx context.Context, body CreateVMsJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVMsResponse, error) {
+	rsp, err := c.CreateVMs(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreateOneOrMoreVirtualMachinesResponse(rsp)
+	return ParseCreateVMsResponse(rsp)
 }
 
-// RetrieveVirtualMachinesAssociatedWithAContractWithResponse request returning *RetrieveVirtualMachinesAssociatedWithAContractResponse
-func (c *ClientWithResponses) RetrieveVirtualMachinesAssociatedWithAContractWithResponse(ctx context.Context, contractId int, params *RetrieveVirtualMachinesAssociatedWithAContractParams, reqEditors ...RequestEditorFn) (*RetrieveVirtualMachinesAssociatedWithAContractResponse, error) {
-	rsp, err := c.RetrieveVirtualMachinesAssociatedWithAContract(ctx, contractId, params, reqEditors...)
+// GetContractVMsWithResponse request returning *GetContractVMsResponse
+func (c *ClientWithResponses) GetContractVMsWithResponse(ctx context.Context, contractId int, params *GetContractVMsParams, reqEditors ...RequestEditorFn) (*GetContractVMsResponse, error) {
+	rsp, err := c.GetContractVMs(ctx, contractId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveVirtualMachinesAssociatedWithAContractResponse(rsp)
+	return ParseGetContractVMsResponse(rsp)
 }
 
-// FetchVirtualMachineNameAvailabilityWithResponse request returning *FetchVirtualMachineNameAvailabilityResponse
-func (c *ClientWithResponses) FetchVirtualMachineNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*FetchVirtualMachineNameAvailabilityResponse, error) {
-	rsp, err := c.FetchVirtualMachineNameAvailability(ctx, name, reqEditors...)
+// CheckVMNameAvailabilityWithResponse request returning *CheckVMNameAvailabilityResponse
+func (c *ClientWithResponses) CheckVMNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*CheckVMNameAvailabilityResponse, error) {
+	rsp, err := c.CheckVMNameAvailability(ctx, name, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseFetchVirtualMachineNameAvailabilityResponse(rsp)
+	return ParseCheckVMNameAvailabilityResponse(rsp)
 }
 
-// DeleteVirtualMachineWithResponse request returning *DeleteVirtualMachineResponse
-func (c *ClientWithResponses) DeleteVirtualMachineWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*DeleteVirtualMachineResponse, error) {
-	rsp, err := c.DeleteVirtualMachine(ctx, vmId, reqEditors...)
+// DeleteVMWithResponse request returning *DeleteVMResponse
+func (c *ClientWithResponses) DeleteVMWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*DeleteVMResponse, error) {
+	rsp, err := c.DeleteVM(ctx, vmId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteVirtualMachineResponse(rsp)
+	return ParseDeleteVMResponse(rsp)
 }
 
-// RetrieveVirtualMachineDetailsWithResponse request returning *RetrieveVirtualMachineDetailsResponse
-func (c *ClientWithResponses) RetrieveVirtualMachineDetailsWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*RetrieveVirtualMachineDetailsResponse, error) {
-	rsp, err := c.RetrieveVirtualMachineDetails(ctx, vmId, reqEditors...)
+// GetVMWithResponse request returning *GetVMResponse
+func (c *ClientWithResponses) GetVMWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetVMResponse, error) {
+	rsp, err := c.GetVM(ctx, vmId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveVirtualMachineDetailsResponse(rsp)
+	return ParseGetVMResponse(rsp)
 }
 
-// AttachFirewallsToAVirtualMachineWithBodyWithResponse request with arbitrary body returning *AttachFirewallsToAVirtualMachineResponse
-func (c *ClientWithResponses) AttachFirewallsToAVirtualMachineWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachFirewallsToAVirtualMachineResponse, error) {
-	rsp, err := c.AttachFirewallsToAVirtualMachineWithBody(ctx, vmId, contentType, body, reqEditors...)
+// AttachFirewallsToVMWithBodyWithResponse request with arbitrary body returning *AttachFirewallsToVMResponse
+func (c *ClientWithResponses) AttachFirewallsToVMWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachFirewallsToVMResponse, error) {
+	rsp, err := c.AttachFirewallsToVMWithBody(ctx, vmId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseAttachFirewallsToAVirtualMachineResponse(rsp)
+	return ParseAttachFirewallsToVMResponse(rsp)
 }
 
-func (c *ClientWithResponses) AttachFirewallsToAVirtualMachineWithResponse(ctx context.Context, vmId int, body AttachFirewallsToAVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachFirewallsToAVirtualMachineResponse, error) {
-	rsp, err := c.AttachFirewallsToAVirtualMachine(ctx, vmId, body, reqEditors...)
+func (c *ClientWithResponses) AttachFirewallsToVMWithResponse(ctx context.Context, vmId int, body AttachFirewallsToVMJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachFirewallsToVMResponse, error) {
+	rsp, err := c.AttachFirewallsToVM(ctx, vmId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseAttachFirewallsToAVirtualMachineResponse(rsp)
+	return ParseAttachFirewallsToVMResponse(rsp)
 }
 
-// GetInstanceHardRebootWithResponse request returning *GetInstanceHardRebootResponse
-func (c *ClientWithResponses) GetInstanceHardRebootWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetInstanceHardRebootResponse, error) {
-	rsp, err := c.GetInstanceHardReboot(ctx, vmId, reqEditors...)
+// HardRebootVMWithResponse request returning *HardRebootVMResponse
+func (c *ClientWithResponses) HardRebootVMWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*HardRebootVMResponse, error) {
+	rsp, err := c.HardRebootVM(ctx, vmId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetInstanceHardRebootResponse(rsp)
+	return ParseHardRebootVMResponse(rsp)
 }
 
-// GetInstanceHibernateWithResponse request returning *GetInstanceHibernateResponse
-func (c *ClientWithResponses) GetInstanceHibernateWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetInstanceHibernateResponse, error) {
-	rsp, err := c.GetInstanceHibernate(ctx, vmId, reqEditors...)
+// HibernateVMWithResponse request returning *HibernateVMResponse
+func (c *ClientWithResponses) HibernateVMWithResponse(ctx context.Context, vmId int, params *HibernateVMParams, reqEditors ...RequestEditorFn) (*HibernateVMResponse, error) {
+	rsp, err := c.HibernateVM(ctx, vmId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetInstanceHibernateResponse(rsp)
+	return ParseHibernateVMResponse(rsp)
 }
 
-// GetInstanceHibernateRestoreWithResponse request returning *GetInstanceHibernateRestoreResponse
-func (c *ClientWithResponses) GetInstanceHibernateRestoreWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetInstanceHibernateRestoreResponse, error) {
-	rsp, err := c.GetInstanceHibernateRestore(ctx, vmId, reqEditors...)
+// RestoreVMFromHibernationWithResponse request returning *RestoreVMFromHibernationResponse
+func (c *ClientWithResponses) RestoreVMFromHibernationWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*RestoreVMFromHibernationResponse, error) {
+	rsp, err := c.RestoreVMFromHibernation(ctx, vmId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetInstanceHibernateRestoreResponse(rsp)
+	return ParseRestoreVMFromHibernationResponse(rsp)
 }
 
-// PutLabelsWithBodyWithResponse request with arbitrary body returning *PutLabelsResponse
-func (c *ClientWithResponses) PutLabelsWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutLabelsResponse, error) {
-	rsp, err := c.PutLabelsWithBody(ctx, vmId, contentType, body, reqEditors...)
+// AddVMLabelWithBodyWithResponse request with arbitrary body returning *AddVMLabelResponse
+func (c *ClientWithResponses) AddVMLabelWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddVMLabelResponse, error) {
+	rsp, err := c.AddVMLabelWithBody(ctx, vmId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutLabelsResponse(rsp)
+	return ParseAddVMLabelResponse(rsp)
 }
 
-func (c *ClientWithResponses) PutLabelsWithResponse(ctx context.Context, vmId int, body PutLabelsJSONRequestBody, reqEditors ...RequestEditorFn) (*PutLabelsResponse, error) {
-	rsp, err := c.PutLabels(ctx, vmId, body, reqEditors...)
+func (c *ClientWithResponses) AddVMLabelWithResponse(ctx context.Context, vmId int, body AddVMLabelJSONRequestBody, reqEditors ...RequestEditorFn) (*AddVMLabelResponse, error) {
+	rsp, err := c.AddVMLabel(ctx, vmId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutLabelsResponse(rsp)
+	return ParseAddVMLabelResponse(rsp)
 }
 
-// GetInstanceLogsWithResponse request returning *GetInstanceLogsResponse
-func (c *ClientWithResponses) GetInstanceLogsWithResponse(ctx context.Context, vmId int, params *GetInstanceLogsParams, reqEditors ...RequestEditorFn) (*GetInstanceLogsResponse, error) {
-	rsp, err := c.GetInstanceLogs(ctx, vmId, params, reqEditors...)
+// GetVMLogsWithResponse request returning *GetVMLogsResponse
+func (c *ClientWithResponses) GetVMLogsWithResponse(ctx context.Context, vmId int, params *GetVMLogsParams, reqEditors ...RequestEditorFn) (*GetVMLogsResponse, error) {
+	rsp, err := c.GetVMLogs(ctx, vmId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetInstanceLogsResponse(rsp)
+	return ParseGetVMLogsResponse(rsp)
 }
 
-// PostInstanceLogsWithBodyWithResponse request with arbitrary body returning *PostInstanceLogsResponse
-func (c *ClientWithResponses) PostInstanceLogsWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostInstanceLogsResponse, error) {
-	rsp, err := c.PostInstanceLogsWithBody(ctx, vmId, contentType, body, reqEditors...)
+// RequestVMLogsWithBodyWithResponse request with arbitrary body returning *RequestVMLogsResponse
+func (c *ClientWithResponses) RequestVMLogsWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RequestVMLogsResponse, error) {
+	rsp, err := c.RequestVMLogsWithBody(ctx, vmId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostInstanceLogsResponse(rsp)
+	return ParseRequestVMLogsResponse(rsp)
 }
 
-func (c *ClientWithResponses) PostInstanceLogsWithResponse(ctx context.Context, vmId int, body PostInstanceLogsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostInstanceLogsResponse, error) {
-	rsp, err := c.PostInstanceLogs(ctx, vmId, body, reqEditors...)
+func (c *ClientWithResponses) RequestVMLogsWithResponse(ctx context.Context, vmId int, body RequestVMLogsJSONRequestBody, reqEditors ...RequestEditorFn) (*RequestVMLogsResponse, error) {
+	rsp, err := c.RequestVMLogs(ctx, vmId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostInstanceLogsResponse(rsp)
+	return ParseRequestVMLogsResponse(rsp)
 }
 
-// GetInstanceMetricsWithResponse request returning *GetInstanceMetricsResponse
-func (c *ClientWithResponses) GetInstanceMetricsWithResponse(ctx context.Context, vmId int, params *GetInstanceMetricsParams, reqEditors ...RequestEditorFn) (*GetInstanceMetricsResponse, error) {
-	rsp, err := c.GetInstanceMetrics(ctx, vmId, params, reqEditors...)
+// GetVMMetricsWithResponse request returning *GetVMMetricsResponse
+func (c *ClientWithResponses) GetVMMetricsWithResponse(ctx context.Context, vmId int, params *GetVMMetricsParams, reqEditors ...RequestEditorFn) (*GetVMMetricsResponse, error) {
+	rsp, err := c.GetVMMetrics(ctx, vmId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetInstanceMetricsResponse(rsp)
+	return ParseGetVMMetricsResponse(rsp)
 }
 
-// PostInstanceResizeWithBodyWithResponse request with arbitrary body returning *PostInstanceResizeResponse
-func (c *ClientWithResponses) PostInstanceResizeWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostInstanceResizeResponse, error) {
-	rsp, err := c.PostInstanceResizeWithBody(ctx, vmId, contentType, body, reqEditors...)
+// ResizeVMWithBodyWithResponse request with arbitrary body returning *ResizeVMResponse
+func (c *ClientWithResponses) ResizeVMWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ResizeVMResponse, error) {
+	rsp, err := c.ResizeVMWithBody(ctx, vmId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostInstanceResizeResponse(rsp)
+	return ParseResizeVMResponse(rsp)
 }
 
-func (c *ClientWithResponses) PostInstanceResizeWithResponse(ctx context.Context, vmId int, body PostInstanceResizeJSONRequestBody, reqEditors ...RequestEditorFn) (*PostInstanceResizeResponse, error) {
-	rsp, err := c.PostInstanceResize(ctx, vmId, body, reqEditors...)
+func (c *ClientWithResponses) ResizeVMWithResponse(ctx context.Context, vmId int, body ResizeVMJSONRequestBody, reqEditors ...RequestEditorFn) (*ResizeVMResponse, error) {
+	rsp, err := c.ResizeVM(ctx, vmId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostInstanceResizeResponse(rsp)
+	return ParseResizeVMResponse(rsp)
 }
 
-// PostSecurityRuleWithBodyWithResponse request with arbitrary body returning *PostSecurityRuleResponse
-func (c *ClientWithResponses) PostSecurityRuleWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostSecurityRuleResponse, error) {
-	rsp, err := c.PostSecurityRuleWithBody(ctx, vmId, contentType, body, reqEditors...)
+// CreateFirewallRuleForVMWithBodyWithResponse request with arbitrary body returning *CreateFirewallRuleForVMResponse
+func (c *ClientWithResponses) CreateFirewallRuleForVMWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateFirewallRuleForVMResponse, error) {
+	rsp, err := c.CreateFirewallRuleForVMWithBody(ctx, vmId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostSecurityRuleResponse(rsp)
+	return ParseCreateFirewallRuleForVMResponse(rsp)
 }
 
-func (c *ClientWithResponses) PostSecurityRuleWithResponse(ctx context.Context, vmId int, body PostSecurityRuleJSONRequestBody, reqEditors ...RequestEditorFn) (*PostSecurityRuleResponse, error) {
-	rsp, err := c.PostSecurityRule(ctx, vmId, body, reqEditors...)
+func (c *ClientWithResponses) CreateFirewallRuleForVMWithResponse(ctx context.Context, vmId int, body CreateFirewallRuleForVMJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateFirewallRuleForVMResponse, error) {
+	rsp, err := c.CreateFirewallRuleForVM(ctx, vmId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostSecurityRuleResponse(rsp)
+	return ParseCreateFirewallRuleForVMResponse(rsp)
 }
 
-// DeleteSecurityRuleWithResponse request returning *DeleteSecurityRuleResponse
-func (c *ClientWithResponses) DeleteSecurityRuleWithResponse(ctx context.Context, vmId int, sgRuleId int, reqEditors ...RequestEditorFn) (*DeleteSecurityRuleResponse, error) {
-	rsp, err := c.DeleteSecurityRule(ctx, vmId, sgRuleId, reqEditors...)
+// DeleteFirewallRuleForVMWithResponse request returning *DeleteFirewallRuleForVMResponse
+func (c *ClientWithResponses) DeleteFirewallRuleForVMWithResponse(ctx context.Context, vmId int, sgRuleId int, reqEditors ...RequestEditorFn) (*DeleteFirewallRuleForVMResponse, error) {
+	rsp, err := c.DeleteFirewallRuleForVM(ctx, vmId, sgRuleId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteSecurityRuleResponse(rsp)
+	return ParseDeleteFirewallRuleForVMResponse(rsp)
 }
 
-// PostSnapshotsWithBodyWithResponse request with arbitrary body returning *PostSnapshotsResponse
-func (c *ClientWithResponses) PostSnapshotsWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostSnapshotsResponse, error) {
-	rsp, err := c.PostSnapshotsWithBody(ctx, vmId, contentType, body, reqEditors...)
+// CreateSnapshotForVMWithBodyWithResponse request with arbitrary body returning *CreateSnapshotForVMResponse
+func (c *ClientWithResponses) CreateSnapshotForVMWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSnapshotForVMResponse, error) {
+	rsp, err := c.CreateSnapshotForVMWithBody(ctx, vmId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostSnapshotsResponse(rsp)
+	return ParseCreateSnapshotForVMResponse(rsp)
 }
 
-func (c *ClientWithResponses) PostSnapshotsWithResponse(ctx context.Context, vmId int, body PostSnapshotsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostSnapshotsResponse, error) {
-	rsp, err := c.PostSnapshots(ctx, vmId, body, reqEditors...)
+func (c *ClientWithResponses) CreateSnapshotForVMWithResponse(ctx context.Context, vmId int, body CreateSnapshotForVMJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSnapshotForVMResponse, error) {
+	rsp, err := c.CreateSnapshotForVM(ctx, vmId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostSnapshotsResponse(rsp)
+	return ParseCreateSnapshotForVMResponse(rsp)
 }
 
-// GetInstanceStartWithResponse request returning *GetInstanceStartResponse
-func (c *ClientWithResponses) GetInstanceStartWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetInstanceStartResponse, error) {
-	rsp, err := c.GetInstanceStart(ctx, vmId, reqEditors...)
+// StartVMWithResponse request returning *StartVMResponse
+func (c *ClientWithResponses) StartVMWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*StartVMResponse, error) {
+	rsp, err := c.StartVM(ctx, vmId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetInstanceStartResponse(rsp)
+	return ParseStartVMResponse(rsp)
 }
 
-// GetInstanceStopWithResponse request returning *GetInstanceStopResponse
-func (c *ClientWithResponses) GetInstanceStopWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*GetInstanceStopResponse, error) {
-	rsp, err := c.GetInstanceStop(ctx, vmId, reqEditors...)
+// StopVMWithResponse request returning *StopVMResponse
+func (c *ClientWithResponses) StopVMWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*StopVMResponse, error) {
+	rsp, err := c.StopVM(ctx, vmId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetInstanceStopResponse(rsp)
+	return ParseStopVMResponse(rsp)
 }
 
-// ParseListVirtualMachinesResponse parses an HTTP response from a ListVirtualMachinesWithResponse call
-func ParseListVirtualMachinesResponse(rsp *http.Response) (*ListVirtualMachinesResponse, error) {
+// ParseListVMsResponse parses an HTTP response from a ListVMsWithResponse call
+func ParseListVMsResponse(rsp *http.Response) (*ListVMsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ListVirtualMachinesResponse{
+	response := &ListVMsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2876,15 +2903,15 @@ func ParseListVirtualMachinesResponse(rsp *http.Response) (*ListVirtualMachinesR
 	return response, nil
 }
 
-// ParseCreateOneOrMoreVirtualMachinesResponse parses an HTTP response from a CreateOneOrMoreVirtualMachinesWithResponse call
-func ParseCreateOneOrMoreVirtualMachinesResponse(rsp *http.Response) (*CreateOneOrMoreVirtualMachinesResponse, error) {
+// ParseCreateVMsResponse parses an HTTP response from a CreateVMsWithResponse call
+func ParseCreateVMsResponse(rsp *http.Response) (*CreateVMsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CreateOneOrMoreVirtualMachinesResponse{
+	response := &CreateVMsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2937,15 +2964,15 @@ func ParseCreateOneOrMoreVirtualMachinesResponse(rsp *http.Response) (*CreateOne
 	return response, nil
 }
 
-// ParseRetrieveVirtualMachinesAssociatedWithAContractResponse parses an HTTP response from a RetrieveVirtualMachinesAssociatedWithAContractWithResponse call
-func ParseRetrieveVirtualMachinesAssociatedWithAContractResponse(rsp *http.Response) (*RetrieveVirtualMachinesAssociatedWithAContractResponse, error) {
+// ParseGetContractVMsResponse parses an HTTP response from a GetContractVMsWithResponse call
+func ParseGetContractVMsResponse(rsp *http.Response) (*GetContractVMsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrieveVirtualMachinesAssociatedWithAContractResponse{
+	response := &GetContractVMsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2977,15 +3004,15 @@ func ParseRetrieveVirtualMachinesAssociatedWithAContractResponse(rsp *http.Respo
 	return response, nil
 }
 
-// ParseFetchVirtualMachineNameAvailabilityResponse parses an HTTP response from a FetchVirtualMachineNameAvailabilityWithResponse call
-func ParseFetchVirtualMachineNameAvailabilityResponse(rsp *http.Response) (*FetchVirtualMachineNameAvailabilityResponse, error) {
+// ParseCheckVMNameAvailabilityResponse parses an HTTP response from a CheckVMNameAvailabilityWithResponse call
+func ParseCheckVMNameAvailabilityResponse(rsp *http.Response) (*CheckVMNameAvailabilityResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &FetchVirtualMachineNameAvailabilityResponse{
+	response := &CheckVMNameAvailabilityResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3024,15 +3051,15 @@ func ParseFetchVirtualMachineNameAvailabilityResponse(rsp *http.Response) (*Fetc
 	return response, nil
 }
 
-// ParseDeleteVirtualMachineResponse parses an HTTP response from a DeleteVirtualMachineWithResponse call
-func ParseDeleteVirtualMachineResponse(rsp *http.Response) (*DeleteVirtualMachineResponse, error) {
+// ParseDeleteVMResponse parses an HTTP response from a DeleteVMWithResponse call
+func ParseDeleteVMResponse(rsp *http.Response) (*DeleteVMResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteVirtualMachineResponse{
+	response := &DeleteVMResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3078,15 +3105,15 @@ func ParseDeleteVirtualMachineResponse(rsp *http.Response) (*DeleteVirtualMachin
 	return response, nil
 }
 
-// ParseRetrieveVirtualMachineDetailsResponse parses an HTTP response from a RetrieveVirtualMachineDetailsWithResponse call
-func ParseRetrieveVirtualMachineDetailsResponse(rsp *http.Response) (*RetrieveVirtualMachineDetailsResponse, error) {
+// ParseGetVMResponse parses an HTTP response from a GetVMWithResponse call
+func ParseGetVMResponse(rsp *http.Response) (*GetVMResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrieveVirtualMachineDetailsResponse{
+	response := &GetVMResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3125,15 +3152,15 @@ func ParseRetrieveVirtualMachineDetailsResponse(rsp *http.Response) (*RetrieveVi
 	return response, nil
 }
 
-// ParseAttachFirewallsToAVirtualMachineResponse parses an HTTP response from a AttachFirewallsToAVirtualMachineWithResponse call
-func ParseAttachFirewallsToAVirtualMachineResponse(rsp *http.Response) (*AttachFirewallsToAVirtualMachineResponse, error) {
+// ParseAttachFirewallsToVMResponse parses an HTTP response from a AttachFirewallsToVMWithResponse call
+func ParseAttachFirewallsToVMResponse(rsp *http.Response) (*AttachFirewallsToVMResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &AttachFirewallsToAVirtualMachineResponse{
+	response := &AttachFirewallsToVMResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3172,15 +3199,15 @@ func ParseAttachFirewallsToAVirtualMachineResponse(rsp *http.Response) (*AttachF
 	return response, nil
 }
 
-// ParseGetInstanceHardRebootResponse parses an HTTP response from a GetInstanceHardRebootWithResponse call
-func ParseGetInstanceHardRebootResponse(rsp *http.Response) (*GetInstanceHardRebootResponse, error) {
+// ParseHardRebootVMResponse parses an HTTP response from a HardRebootVMWithResponse call
+func ParseHardRebootVMResponse(rsp *http.Response) (*HardRebootVMResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetInstanceHardRebootResponse{
+	response := &HardRebootVMResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3219,15 +3246,15 @@ func ParseGetInstanceHardRebootResponse(rsp *http.Response) (*GetInstanceHardReb
 	return response, nil
 }
 
-// ParseGetInstanceHibernateResponse parses an HTTP response from a GetInstanceHibernateWithResponse call
-func ParseGetInstanceHibernateResponse(rsp *http.Response) (*GetInstanceHibernateResponse, error) {
+// ParseHibernateVMResponse parses an HTTP response from a HibernateVMWithResponse call
+func ParseHibernateVMResponse(rsp *http.Response) (*HibernateVMResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetInstanceHibernateResponse{
+	response := &HibernateVMResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3266,15 +3293,15 @@ func ParseGetInstanceHibernateResponse(rsp *http.Response) (*GetInstanceHibernat
 	return response, nil
 }
 
-// ParseGetInstanceHibernateRestoreResponse parses an HTTP response from a GetInstanceHibernateRestoreWithResponse call
-func ParseGetInstanceHibernateRestoreResponse(rsp *http.Response) (*GetInstanceHibernateRestoreResponse, error) {
+// ParseRestoreVMFromHibernationResponse parses an HTTP response from a RestoreVMFromHibernationWithResponse call
+func ParseRestoreVMFromHibernationResponse(rsp *http.Response) (*RestoreVMFromHibernationResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetInstanceHibernateRestoreResponse{
+	response := &RestoreVMFromHibernationResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3313,15 +3340,15 @@ func ParseGetInstanceHibernateRestoreResponse(rsp *http.Response) (*GetInstanceH
 	return response, nil
 }
 
-// ParsePutLabelsResponse parses an HTTP response from a PutLabelsWithResponse call
-func ParsePutLabelsResponse(rsp *http.Response) (*PutLabelsResponse, error) {
+// ParseAddVMLabelResponse parses an HTTP response from a AddVMLabelWithResponse call
+func ParseAddVMLabelResponse(rsp *http.Response) (*AddVMLabelResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PutLabelsResponse{
+	response := &AddVMLabelResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3367,15 +3394,15 @@ func ParsePutLabelsResponse(rsp *http.Response) (*PutLabelsResponse, error) {
 	return response, nil
 }
 
-// ParseGetInstanceLogsResponse parses an HTTP response from a GetInstanceLogsWithResponse call
-func ParseGetInstanceLogsResponse(rsp *http.Response) (*GetInstanceLogsResponse, error) {
+// ParseGetVMLogsResponse parses an HTTP response from a GetVMLogsWithResponse call
+func ParseGetVMLogsResponse(rsp *http.Response) (*GetVMLogsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetInstanceLogsResponse{
+	response := &GetVMLogsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3421,15 +3448,15 @@ func ParseGetInstanceLogsResponse(rsp *http.Response) (*GetInstanceLogsResponse,
 	return response, nil
 }
 
-// ParsePostInstanceLogsResponse parses an HTTP response from a PostInstanceLogsWithResponse call
-func ParsePostInstanceLogsResponse(rsp *http.Response) (*PostInstanceLogsResponse, error) {
+// ParseRequestVMLogsResponse parses an HTTP response from a RequestVMLogsWithResponse call
+func ParseRequestVMLogsResponse(rsp *http.Response) (*RequestVMLogsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostInstanceLogsResponse{
+	response := &RequestVMLogsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3475,15 +3502,15 @@ func ParsePostInstanceLogsResponse(rsp *http.Response) (*PostInstanceLogsRespons
 	return response, nil
 }
 
-// ParseGetInstanceMetricsResponse parses an HTTP response from a GetInstanceMetricsWithResponse call
-func ParseGetInstanceMetricsResponse(rsp *http.Response) (*GetInstanceMetricsResponse, error) {
+// ParseGetVMMetricsResponse parses an HTTP response from a GetVMMetricsWithResponse call
+func ParseGetVMMetricsResponse(rsp *http.Response) (*GetVMMetricsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetInstanceMetricsResponse{
+	response := &GetVMMetricsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3529,15 +3556,15 @@ func ParseGetInstanceMetricsResponse(rsp *http.Response) (*GetInstanceMetricsRes
 	return response, nil
 }
 
-// ParsePostInstanceResizeResponse parses an HTTP response from a PostInstanceResizeWithResponse call
-func ParsePostInstanceResizeResponse(rsp *http.Response) (*PostInstanceResizeResponse, error) {
+// ParseResizeVMResponse parses an HTTP response from a ResizeVMWithResponse call
+func ParseResizeVMResponse(rsp *http.Response) (*ResizeVMResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostInstanceResizeResponse{
+	response := &ResizeVMResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3583,15 +3610,15 @@ func ParsePostInstanceResizeResponse(rsp *http.Response) (*PostInstanceResizeRes
 	return response, nil
 }
 
-// ParsePostSecurityRuleResponse parses an HTTP response from a PostSecurityRuleWithResponse call
-func ParsePostSecurityRuleResponse(rsp *http.Response) (*PostSecurityRuleResponse, error) {
+// ParseCreateFirewallRuleForVMResponse parses an HTTP response from a CreateFirewallRuleForVMWithResponse call
+func ParseCreateFirewallRuleForVMResponse(rsp *http.Response) (*CreateFirewallRuleForVMResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostSecurityRuleResponse{
+	response := &CreateFirewallRuleForVMResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3637,15 +3664,15 @@ func ParsePostSecurityRuleResponse(rsp *http.Response) (*PostSecurityRuleRespons
 	return response, nil
 }
 
-// ParseDeleteSecurityRuleResponse parses an HTTP response from a DeleteSecurityRuleWithResponse call
-func ParseDeleteSecurityRuleResponse(rsp *http.Response) (*DeleteSecurityRuleResponse, error) {
+// ParseDeleteFirewallRuleForVMResponse parses an HTTP response from a DeleteFirewallRuleForVMWithResponse call
+func ParseDeleteFirewallRuleForVMResponse(rsp *http.Response) (*DeleteFirewallRuleForVMResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteSecurityRuleResponse{
+	response := &DeleteFirewallRuleForVMResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3684,15 +3711,15 @@ func ParseDeleteSecurityRuleResponse(rsp *http.Response) (*DeleteSecurityRuleRes
 	return response, nil
 }
 
-// ParsePostSnapshotsResponse parses an HTTP response from a PostSnapshotsWithResponse call
-func ParsePostSnapshotsResponse(rsp *http.Response) (*PostSnapshotsResponse, error) {
+// ParseCreateSnapshotForVMResponse parses an HTTP response from a CreateSnapshotForVMWithResponse call
+func ParseCreateSnapshotForVMResponse(rsp *http.Response) (*CreateSnapshotForVMResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostSnapshotsResponse{
+	response := &CreateSnapshotForVMResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3731,15 +3758,15 @@ func ParsePostSnapshotsResponse(rsp *http.Response) (*PostSnapshotsResponse, err
 	return response, nil
 }
 
-// ParseGetInstanceStartResponse parses an HTTP response from a GetInstanceStartWithResponse call
-func ParseGetInstanceStartResponse(rsp *http.Response) (*GetInstanceStartResponse, error) {
+// ParseStartVMResponse parses an HTTP response from a StartVMWithResponse call
+func ParseStartVMResponse(rsp *http.Response) (*StartVMResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetInstanceStartResponse{
+	response := &StartVMResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3778,15 +3805,15 @@ func ParseGetInstanceStartResponse(rsp *http.Response) (*GetInstanceStartRespons
 	return response, nil
 }
 
-// ParseGetInstanceStopResponse parses an HTTP response from a GetInstanceStopWithResponse call
-func ParseGetInstanceStopResponse(rsp *http.Response) (*GetInstanceStopResponse, error) {
+// ParseStopVMResponse parses an HTTP response from a StopVMWithResponse call
+func ParseStopVMResponse(rsp *http.Response) (*StopVMResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetInstanceStopResponse{
+	response := &StopVMResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

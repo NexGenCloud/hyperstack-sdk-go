@@ -35,13 +35,13 @@ func Test_hyperstack_ComplianceAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test ComplianceAPIService DeleteACompliance", func(t *testing.T) {
+	t.Run("Test ComplianceAPIService DeleteCompliance", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var gpuModel string
 
-		resp, httpRes, err := apiClient.ComplianceAPI.DeleteACompliance(context.Background(), gpuModel).Execute()
+		resp, httpRes, err := apiClient.ComplianceAPI.DeleteCompliance(context.Background(), gpuModel).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -49,11 +49,11 @@ func Test_hyperstack_ComplianceAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test ComplianceAPIService RetrieveCompliance", func(t *testing.T) {
+	t.Run("Test ComplianceAPIService GetCompliance", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.ComplianceAPI.RetrieveCompliance(context.Background()).Execute()
+		resp, httpRes, err := apiClient.ComplianceAPI.GetCompliance(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -61,11 +61,11 @@ func Test_hyperstack_ComplianceAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test ComplianceAPIService UpdateACompliance", func(t *testing.T) {
+	t.Run("Test ComplianceAPIService UpdateCompliance", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.ComplianceAPI.UpdateACompliance(context.Background()).Execute()
+		resp, httpRes, err := apiClient.ComplianceAPI.UpdateCompliance(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

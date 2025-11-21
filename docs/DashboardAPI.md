@@ -4,13 +4,13 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**RetrieveDashboard**](DashboardAPI.md#RetrieveDashboard) | **Get** /core/dashboard | Retrieve Dashboard
+[**GetDashboard**](DashboardAPI.md#GetDashboard) | **Get** /core/dashboard | Retrieve Dashboard
 
 
 
-## RetrieveDashboard
+## GetDashboard
 
-> DashboardInfoResponse RetrieveDashboard(ctx).Execute()
+> DashboardInfoResponse GetDashboard(ctx).Execute()
 
 Retrieve Dashboard
 
@@ -32,13 +32,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.DashboardAPI.RetrieveDashboard(context.Background()).Execute()
+	resp, r, err := apiClient.DashboardAPI.GetDashboard(context.Background()).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `DashboardAPI.RetrieveDashboard``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `DashboardAPI.GetDashboard``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `RetrieveDashboard`: DashboardInfoResponse
-	fmt.Fprintf(os.Stdout, "Response from `DashboardAPI.RetrieveDashboard`: %v\n", resp)
+	// response from `GetDashboard`: DashboardInfoResponse
+	fmt.Fprintf(os.Stdout, "Response from `DashboardAPI.GetDashboard`: %v\n", resp)
 }
 ```
 
@@ -48,7 +48,7 @@ This endpoint does not need any parameter.
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiRetrieveDashboardRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetDashboardRequest struct via the builder pattern
 
 
 ### Return type

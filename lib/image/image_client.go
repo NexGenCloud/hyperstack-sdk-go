@@ -75,8 +75,8 @@ type ResponseModel struct {
 	Status  *bool   `json:"status,omitempty"`
 }
 
-// ListImages2Params defines parameters for ListImages2.
-type ListImages2Params struct {
+// ListImagesParams defines parameters for ListImages.
+type ListImagesParams struct {
 	Region        *string `form:"region,omitempty" json:"region,omitempty"`
 	IncludePublic *bool   `form:"include_public,omitempty" json:"include_public,omitempty"`
 	Search        *string `form:"search,omitempty" json:"search,omitempty"`
@@ -84,8 +84,8 @@ type ListImages2Params struct {
 	PerPage       *int    `form:"per_page,omitempty" json:"per_page,omitempty"`
 }
 
-// GetImageDetailsParams defines parameters for GetImageDetails.
-type GetImageDetailsParams struct {
+// GetImageParams defines parameters for GetImage.
+type GetImageParams struct {
 	IncludeRelatedVms *bool `form:"include_related_vms,omitempty" json:"include_related_vms,omitempty"`
 }
 
@@ -165,14 +165,14 @@ type ClientInterface interface {
 	// FetchImageNameAvailability request
 	FetchImageNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListImages2 request
-	ListImages2(ctx context.Context, params *ListImages2Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListImages request
+	ListImages(ctx context.Context, params *ListImagesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteImage request
 	DeleteImage(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetImageDetails request
-	GetImageDetails(ctx context.Context, id int, params *GetImageDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetImage request
+	GetImage(ctx context.Context, id int, params *GetImageParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) FetchImageNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -187,8 +187,8 @@ func (c *Client) FetchImageNameAvailability(ctx context.Context, name string, re
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListImages2(ctx context.Context, params *ListImages2Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListImages2Request(c.Server, params)
+func (c *Client) ListImages(ctx context.Context, params *ListImagesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListImagesRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -211,8 +211,8 @@ func (c *Client) DeleteImage(ctx context.Context, id int, reqEditors ...RequestE
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetImageDetails(ctx context.Context, id int, params *GetImageDetailsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetImageDetailsRequest(c.Server, id, params)
+func (c *Client) GetImage(ctx context.Context, id int, params *GetImageParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetImageRequest(c.Server, id, params)
 	if err != nil {
 		return nil, err
 	}
@@ -257,8 +257,8 @@ func NewFetchImageNameAvailabilityRequest(server string, name string) (*http.Req
 	return req, nil
 }
 
-// NewListImages2Request generates requests for ListImages2
-func NewListImages2Request(server string, params *ListImages2Params) (*http.Request, error) {
+// NewListImagesRequest generates requests for ListImages
+func NewListImagesRequest(server string, params *ListImagesParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -404,8 +404,8 @@ func NewDeleteImageRequest(server string, id int) (*http.Request, error) {
 	return req, nil
 }
 
-// NewGetImageDetailsRequest generates requests for GetImageDetails
-func NewGetImageDetailsRequest(server string, id int, params *GetImageDetailsParams) (*http.Request, error) {
+// NewGetImageRequest generates requests for GetImage
+func NewGetImageRequest(server string, id int, params *GetImageParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -506,14 +506,14 @@ type ClientWithResponsesInterface interface {
 	// FetchImageNameAvailabilityWithResponse request
 	FetchImageNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*FetchImageNameAvailabilityResponse, error)
 
-	// ListImages2WithResponse request
-	ListImages2WithResponse(ctx context.Context, params *ListImages2Params, reqEditors ...RequestEditorFn) (*ListImages2Response, error)
+	// ListImagesWithResponse request
+	ListImagesWithResponse(ctx context.Context, params *ListImagesParams, reqEditors ...RequestEditorFn) (*ListImagesResponse, error)
 
 	// DeleteImageWithResponse request
 	DeleteImageWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteImageResponse, error)
 
-	// GetImageDetailsWithResponse request
-	GetImageDetailsWithResponse(ctx context.Context, id int, params *GetImageDetailsParams, reqEditors ...RequestEditorFn) (*GetImageDetailsResponse, error)
+	// GetImageWithResponse request
+	GetImageWithResponse(ctx context.Context, id int, params *GetImageParams, reqEditors ...RequestEditorFn) (*GetImageResponse, error)
 }
 
 type FetchImageNameAvailabilityResponse struct {
@@ -541,7 +541,7 @@ func (r FetchImageNameAvailabilityResponse) StatusCode() int {
 	return 0
 }
 
-type ListImages2Response struct {
+type ListImagesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Images
@@ -552,7 +552,7 @@ type ListImages2Response struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ListImages2Response) Status() string {
+func (r ListImagesResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -560,7 +560,7 @@ func (r ListImages2Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ListImages2Response) StatusCode() int {
+func (r ListImagesResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -592,7 +592,7 @@ func (r DeleteImageResponse) StatusCode() int {
 	return 0
 }
 
-type GetImageDetailsResponse struct {
+type GetImageResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Image
@@ -602,7 +602,7 @@ type GetImageDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetImageDetailsResponse) Status() string {
+func (r GetImageResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -610,7 +610,7 @@ func (r GetImageDetailsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetImageDetailsResponse) StatusCode() int {
+func (r GetImageResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -626,13 +626,13 @@ func (c *ClientWithResponses) FetchImageNameAvailabilityWithResponse(ctx context
 	return ParseFetchImageNameAvailabilityResponse(rsp)
 }
 
-// ListImages2WithResponse request returning *ListImages2Response
-func (c *ClientWithResponses) ListImages2WithResponse(ctx context.Context, params *ListImages2Params, reqEditors ...RequestEditorFn) (*ListImages2Response, error) {
-	rsp, err := c.ListImages2(ctx, params, reqEditors...)
+// ListImagesWithResponse request returning *ListImagesResponse
+func (c *ClientWithResponses) ListImagesWithResponse(ctx context.Context, params *ListImagesParams, reqEditors ...RequestEditorFn) (*ListImagesResponse, error) {
+	rsp, err := c.ListImages(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseListImages2Response(rsp)
+	return ParseListImagesResponse(rsp)
 }
 
 // DeleteImageWithResponse request returning *DeleteImageResponse
@@ -644,13 +644,13 @@ func (c *ClientWithResponses) DeleteImageWithResponse(ctx context.Context, id in
 	return ParseDeleteImageResponse(rsp)
 }
 
-// GetImageDetailsWithResponse request returning *GetImageDetailsResponse
-func (c *ClientWithResponses) GetImageDetailsWithResponse(ctx context.Context, id int, params *GetImageDetailsParams, reqEditors ...RequestEditorFn) (*GetImageDetailsResponse, error) {
-	rsp, err := c.GetImageDetails(ctx, id, params, reqEditors...)
+// GetImageWithResponse request returning *GetImageResponse
+func (c *ClientWithResponses) GetImageWithResponse(ctx context.Context, id int, params *GetImageParams, reqEditors ...RequestEditorFn) (*GetImageResponse, error) {
+	rsp, err := c.GetImage(ctx, id, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetImageDetailsResponse(rsp)
+	return ParseGetImageResponse(rsp)
 }
 
 // ParseFetchImageNameAvailabilityResponse parses an HTTP response from a FetchImageNameAvailabilityWithResponse call
@@ -700,15 +700,15 @@ func ParseFetchImageNameAvailabilityResponse(rsp *http.Response) (*FetchImageNam
 	return response, nil
 }
 
-// ParseListImages2Response parses an HTTP response from a ListImages2WithResponse call
-func ParseListImages2Response(rsp *http.Response) (*ListImages2Response, error) {
+// ParseListImagesResponse parses an HTTP response from a ListImagesWithResponse call
+func ParseListImagesResponse(rsp *http.Response) (*ListImagesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ListImages2Response{
+	response := &ListImagesResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -801,15 +801,15 @@ func ParseDeleteImageResponse(rsp *http.Response) (*DeleteImageResponse, error) 
 	return response, nil
 }
 
-// ParseGetImageDetailsResponse parses an HTTP response from a GetImageDetailsWithResponse call
-func ParseGetImageDetailsResponse(rsp *http.Response) (*GetImageDetailsResponse, error) {
+// ParseGetImageResponse parses an HTTP response from a GetImageWithResponse call
+func ParseGetImageResponse(rsp *http.Response) (*GetImageResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetImageDetailsResponse{
+	response := &GetImageResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

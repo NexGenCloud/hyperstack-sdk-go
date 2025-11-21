@@ -23,11 +23,13 @@ func Test_hyperstack_CustomerContractAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test CustomerContractAPIService GetCustomerContract", func(t *testing.T) {
+	t.Run("Test CustomerContractAPIService GetContractGPUAllocationGraph", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.CustomerContractAPI.GetCustomerContract(context.Background()).Execute()
+		var contractId int32
+
+		resp, httpRes, err := apiClient.CustomerContractAPI.GetContractGPUAllocationGraph(context.Background(), contractId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -35,13 +37,11 @@ func Test_hyperstack_CustomerContractAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test CustomerContractAPIService GetCustomerContractDetails", func(t *testing.T) {
+	t.Run("Test CustomerContractAPIService ListCustomerContracts", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var contractId int32
-
-		resp, httpRes, err := apiClient.CustomerContractAPI.GetCustomerContractDetails(context.Background(), contractId).Execute()
+		resp, httpRes, err := apiClient.CustomerContractAPI.ListCustomerContracts(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -49,13 +49,13 @@ func Test_hyperstack_CustomerContractAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test CustomerContractAPIService GetCustomerContractGpuAllocationGraph", func(t *testing.T) {
+	t.Run("Test CustomerContractAPIService RetrieveContract", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var contractId int32
 
-		resp, httpRes, err := apiClient.CustomerContractAPI.GetCustomerContractGpuAllocationGraph(context.Background(), contractId).Execute()
+		resp, httpRes, err := apiClient.CustomerContractAPI.RetrieveContract(context.Background(), contractId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

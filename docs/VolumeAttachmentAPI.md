@@ -4,15 +4,15 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**AttachVolumesToVirtualMachine**](VolumeAttachmentAPI.md#AttachVolumesToVirtualMachine) | **Post** /core/virtual-machines/{vm_id}/attach-volumes | Attach volumes to virtual machine
-[**DetachVolumesFromVirtualMachine**](VolumeAttachmentAPI.md#DetachVolumesFromVirtualMachine) | **Post** /core/virtual-machines/{vm_id}/detach-volumes | Detach volumes from virtual machine
-[**UpdateAVolumeAttachment**](VolumeAttachmentAPI.md#UpdateAVolumeAttachment) | **Patch** /core/volume-attachments/{volume_attachment_id} | Update a volume attachment
+[**AttachVolumesToVM**](VolumeAttachmentAPI.md#AttachVolumesToVM) | **Post** /core/virtual-machines/{vm_id}/attach-volumes | Attach volumes to virtual machine
+[**DetachVolumesFromVM**](VolumeAttachmentAPI.md#DetachVolumesFromVM) | **Post** /core/virtual-machines/{vm_id}/detach-volumes | Detach volumes from virtual machine
+[**UpdateVolumeAttachment**](VolumeAttachmentAPI.md#UpdateVolumeAttachment) | **Patch** /core/volume-attachments/{volume_attachment_id} | Update a volume attachment
 
 
 
-## AttachVolumesToVirtualMachine
+## AttachVolumesToVM
 
-> AttachVolumes AttachVolumesToVirtualMachine(ctx, vmId).Payload(payload).Execute()
+> AttachVolumes AttachVolumesToVM(ctx, vmId).Payload(payload).Execute()
 
 Attach volumes to virtual machine
 
@@ -36,13 +36,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VolumeAttachmentAPI.AttachVolumesToVirtualMachine(context.Background(), vmId).Payload(payload).Execute()
+	resp, r, err := apiClient.VolumeAttachmentAPI.AttachVolumesToVM(context.Background(), vmId).Payload(payload).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VolumeAttachmentAPI.AttachVolumesToVirtualMachine``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `VolumeAttachmentAPI.AttachVolumesToVM``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `AttachVolumesToVirtualMachine`: AttachVolumes
-	fmt.Fprintf(os.Stdout, "Response from `VolumeAttachmentAPI.AttachVolumesToVirtualMachine`: %v\n", resp)
+	// response from `AttachVolumesToVM`: AttachVolumes
+	fmt.Fprintf(os.Stdout, "Response from `VolumeAttachmentAPI.AttachVolumesToVM`: %v\n", resp)
 }
 ```
 
@@ -56,7 +56,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiAttachVolumesToVirtualMachineRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiAttachVolumesToVMRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -82,9 +82,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## DetachVolumesFromVirtualMachine
+## DetachVolumesFromVM
 
-> DetachVolumes DetachVolumesFromVirtualMachine(ctx, vmId).Payload(payload).Execute()
+> DetachVolumes DetachVolumesFromVM(ctx, vmId).Payload(payload).Execute()
 
 Detach volumes from virtual machine
 
@@ -108,13 +108,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VolumeAttachmentAPI.DetachVolumesFromVirtualMachine(context.Background(), vmId).Payload(payload).Execute()
+	resp, r, err := apiClient.VolumeAttachmentAPI.DetachVolumesFromVM(context.Background(), vmId).Payload(payload).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VolumeAttachmentAPI.DetachVolumesFromVirtualMachine``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `VolumeAttachmentAPI.DetachVolumesFromVM``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `DetachVolumesFromVirtualMachine`: DetachVolumes
-	fmt.Fprintf(os.Stdout, "Response from `VolumeAttachmentAPI.DetachVolumesFromVirtualMachine`: %v\n", resp)
+	// response from `DetachVolumesFromVM`: DetachVolumes
+	fmt.Fprintf(os.Stdout, "Response from `VolumeAttachmentAPI.DetachVolumesFromVM`: %v\n", resp)
 }
 ```
 
@@ -128,7 +128,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiDetachVolumesFromVirtualMachineRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiDetachVolumesFromVMRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -154,9 +154,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UpdateAVolumeAttachment
+## UpdateVolumeAttachment
 
-> AttachVolumes UpdateAVolumeAttachment(ctx, volumeAttachmentId).Payload(payload).Execute()
+> AttachVolumes UpdateVolumeAttachment(ctx, volumeAttachmentId).Payload(payload).Execute()
 
 Update a volume attachment
 
@@ -178,13 +178,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VolumeAttachmentAPI.UpdateAVolumeAttachment(context.Background(), volumeAttachmentId).Payload(payload).Execute()
+	resp, r, err := apiClient.VolumeAttachmentAPI.UpdateVolumeAttachment(context.Background(), volumeAttachmentId).Payload(payload).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `VolumeAttachmentAPI.UpdateAVolumeAttachment``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `VolumeAttachmentAPI.UpdateVolumeAttachment``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `UpdateAVolumeAttachment`: AttachVolumes
-	fmt.Fprintf(os.Stdout, "Response from `VolumeAttachmentAPI.UpdateAVolumeAttachment`: %v\n", resp)
+	// response from `UpdateVolumeAttachment`: AttachVolumes
+	fmt.Fprintf(os.Stdout, "Response from `VolumeAttachmentAPI.UpdateVolumeAttachment`: %v\n", resp)
 }
 ```
 
@@ -198,7 +198,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiUpdateAVolumeAttachmentRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiUpdateVolumeAttachmentRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes

@@ -288,18 +288,18 @@ type VolumeFieldsForInstance struct {
 	VolumeType  *string `json:"volume_type,omitempty"`
 }
 
-// RetrievesAListOfSnapshotsParams defines parameters for RetrievesAListOfSnapshots.
-type RetrievesAListOfSnapshotsParams struct {
+// ListSnapshotsParams defines parameters for ListSnapshots.
+type ListSnapshotsParams struct {
 	Page     *string `form:"page,omitempty" json:"page,omitempty"`
 	PageSize *string `form:"pageSize,omitempty" json:"pageSize,omitempty"`
 	Search   *string `form:"search,omitempty" json:"search,omitempty"`
 }
 
-// RestoreASnapshotJSONRequestBody defines body for RestoreASnapshot for application/json ContentType.
-type RestoreASnapshotJSONRequestBody = SnapshotRestoreRequest
+// RestoreSnapshotJSONRequestBody defines body for RestoreSnapshot for application/json ContentType.
+type RestoreSnapshotJSONRequestBody = SnapshotRestoreRequest
 
-// CreateANewCustomImageJSONRequestBody defines body for CreateANewCustomImage for application/json ContentType.
-type CreateANewCustomImageJSONRequestBody = CreateImagePayload
+// CreateCustomImageJSONRequestBody defines body for CreateCustomImage for application/json ContentType.
+type CreateCustomImageJSONRequestBody = CreateImagePayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -374,31 +374,31 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// RetrievesAListOfSnapshots request
-	RetrievesAListOfSnapshots(ctx context.Context, params *RetrievesAListOfSnapshotsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListSnapshots request
+	ListSnapshots(ctx context.Context, params *ListSnapshotsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// FetchSnapshotNameAvailability request
 	FetchSnapshotNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteAnExistingSnapshot request
-	DeleteAnExistingSnapshot(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteSnapshot request
+	DeleteSnapshot(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RetrieveAnExistingSnapshot request
-	RetrieveAnExistingSnapshot(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetSnapshot request
+	GetSnapshot(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RestoreASnapshotWithBody request with any body
-	RestoreASnapshotWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RestoreSnapshotWithBody request with any body
+	RestoreSnapshotWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	RestoreASnapshot(ctx context.Context, id int, body RestoreASnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	RestoreSnapshot(ctx context.Context, id int, body RestoreSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateANewCustomImageWithBody request with any body
-	CreateANewCustomImageWithBody(ctx context.Context, snapshotId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateCustomImageWithBody request with any body
+	CreateCustomImageWithBody(ctx context.Context, snapshotId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	CreateANewCustomImage(ctx context.Context, snapshotId int, body CreateANewCustomImageJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateCustomImage(ctx context.Context, snapshotId int, body CreateCustomImageJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) RetrievesAListOfSnapshots(ctx context.Context, params *RetrievesAListOfSnapshotsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrievesAListOfSnapshotsRequest(c.Server, params)
+func (c *Client) ListSnapshots(ctx context.Context, params *ListSnapshotsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListSnapshotsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -421,8 +421,8 @@ func (c *Client) FetchSnapshotNameAvailability(ctx context.Context, name string,
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteAnExistingSnapshot(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteAnExistingSnapshotRequest(c.Server, id)
+func (c *Client) DeleteSnapshot(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteSnapshotRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -433,8 +433,8 @@ func (c *Client) DeleteAnExistingSnapshot(ctx context.Context, id int, reqEditor
 	return c.Client.Do(req)
 }
 
-func (c *Client) RetrieveAnExistingSnapshot(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveAnExistingSnapshotRequest(c.Server, id)
+func (c *Client) GetSnapshot(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSnapshotRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -445,8 +445,8 @@ func (c *Client) RetrieveAnExistingSnapshot(ctx context.Context, id int, reqEdit
 	return c.Client.Do(req)
 }
 
-func (c *Client) RestoreASnapshotWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRestoreASnapshotRequestWithBody(c.Server, id, contentType, body)
+func (c *Client) RestoreSnapshotWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRestoreSnapshotRequestWithBody(c.Server, id, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -457,8 +457,8 @@ func (c *Client) RestoreASnapshotWithBody(ctx context.Context, id int, contentTy
 	return c.Client.Do(req)
 }
 
-func (c *Client) RestoreASnapshot(ctx context.Context, id int, body RestoreASnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRestoreASnapshotRequest(c.Server, id, body)
+func (c *Client) RestoreSnapshot(ctx context.Context, id int, body RestoreSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRestoreSnapshotRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -469,8 +469,8 @@ func (c *Client) RestoreASnapshot(ctx context.Context, id int, body RestoreASnap
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateANewCustomImageWithBody(ctx context.Context, snapshotId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateANewCustomImageRequestWithBody(c.Server, snapshotId, contentType, body)
+func (c *Client) CreateCustomImageWithBody(ctx context.Context, snapshotId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateCustomImageRequestWithBody(c.Server, snapshotId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -481,8 +481,8 @@ func (c *Client) CreateANewCustomImageWithBody(ctx context.Context, snapshotId i
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateANewCustomImage(ctx context.Context, snapshotId int, body CreateANewCustomImageJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateANewCustomImageRequest(c.Server, snapshotId, body)
+func (c *Client) CreateCustomImage(ctx context.Context, snapshotId int, body CreateCustomImageJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateCustomImageRequest(c.Server, snapshotId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -493,8 +493,8 @@ func (c *Client) CreateANewCustomImage(ctx context.Context, snapshotId int, body
 	return c.Client.Do(req)
 }
 
-// NewRetrievesAListOfSnapshotsRequest generates requests for RetrievesAListOfSnapshots
-func NewRetrievesAListOfSnapshotsRequest(server string, params *RetrievesAListOfSnapshotsParams) (*http.Request, error) {
+// NewListSnapshotsRequest generates requests for ListSnapshots
+func NewListSnapshotsRequest(server string, params *ListSnapshotsParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -608,8 +608,8 @@ func NewFetchSnapshotNameAvailabilityRequest(server string, name string) (*http.
 	return req, nil
 }
 
-// NewDeleteAnExistingSnapshotRequest generates requests for DeleteAnExistingSnapshot
-func NewDeleteAnExistingSnapshotRequest(server string, id int) (*http.Request, error) {
+// NewDeleteSnapshotRequest generates requests for DeleteSnapshot
+func NewDeleteSnapshotRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -642,8 +642,8 @@ func NewDeleteAnExistingSnapshotRequest(server string, id int) (*http.Request, e
 	return req, nil
 }
 
-// NewRetrieveAnExistingSnapshotRequest generates requests for RetrieveAnExistingSnapshot
-func NewRetrieveAnExistingSnapshotRequest(server string, id int) (*http.Request, error) {
+// NewGetSnapshotRequest generates requests for GetSnapshot
+func NewGetSnapshotRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -676,19 +676,19 @@ func NewRetrieveAnExistingSnapshotRequest(server string, id int) (*http.Request,
 	return req, nil
 }
 
-// NewRestoreASnapshotRequest calls the generic RestoreASnapshot builder with application/json body
-func NewRestoreASnapshotRequest(server string, id int, body RestoreASnapshotJSONRequestBody) (*http.Request, error) {
+// NewRestoreSnapshotRequest calls the generic RestoreSnapshot builder with application/json body
+func NewRestoreSnapshotRequest(server string, id int, body RestoreSnapshotJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewRestoreASnapshotRequestWithBody(server, id, "application/json", bodyReader)
+	return NewRestoreSnapshotRequestWithBody(server, id, "application/json", bodyReader)
 }
 
-// NewRestoreASnapshotRequestWithBody generates requests for RestoreASnapshot with any type of body
-func NewRestoreASnapshotRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
+// NewRestoreSnapshotRequestWithBody generates requests for RestoreSnapshot with any type of body
+func NewRestoreSnapshotRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -723,19 +723,19 @@ func NewRestoreASnapshotRequestWithBody(server string, id int, contentType strin
 	return req, nil
 }
 
-// NewCreateANewCustomImageRequest calls the generic CreateANewCustomImage builder with application/json body
-func NewCreateANewCustomImageRequest(server string, snapshotId int, body CreateANewCustomImageJSONRequestBody) (*http.Request, error) {
+// NewCreateCustomImageRequest calls the generic CreateCustomImage builder with application/json body
+func NewCreateCustomImageRequest(server string, snapshotId int, body CreateCustomImageJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewCreateANewCustomImageRequestWithBody(server, snapshotId, "application/json", bodyReader)
+	return NewCreateCustomImageRequestWithBody(server, snapshotId, "application/json", bodyReader)
 }
 
-// NewCreateANewCustomImageRequestWithBody generates requests for CreateANewCustomImage with any type of body
-func NewCreateANewCustomImageRequestWithBody(server string, snapshotId int, contentType string, body io.Reader) (*http.Request, error) {
+// NewCreateCustomImageRequestWithBody generates requests for CreateCustomImage with any type of body
+func NewCreateCustomImageRequestWithBody(server string, snapshotId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -813,30 +813,30 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// RetrievesAListOfSnapshotsWithResponse request
-	RetrievesAListOfSnapshotsWithResponse(ctx context.Context, params *RetrievesAListOfSnapshotsParams, reqEditors ...RequestEditorFn) (*RetrievesAListOfSnapshotsResponse, error)
+	// ListSnapshotsWithResponse request
+	ListSnapshotsWithResponse(ctx context.Context, params *ListSnapshotsParams, reqEditors ...RequestEditorFn) (*ListSnapshotsResponse, error)
 
 	// FetchSnapshotNameAvailabilityWithResponse request
 	FetchSnapshotNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*FetchSnapshotNameAvailabilityResponse, error)
 
-	// DeleteAnExistingSnapshotWithResponse request
-	DeleteAnExistingSnapshotWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteAnExistingSnapshotResponse, error)
+	// DeleteSnapshotWithResponse request
+	DeleteSnapshotWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteSnapshotResponse, error)
 
-	// RetrieveAnExistingSnapshotWithResponse request
-	RetrieveAnExistingSnapshotWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveAnExistingSnapshotResponse, error)
+	// GetSnapshotWithResponse request
+	GetSnapshotWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*GetSnapshotResponse, error)
 
-	// RestoreASnapshotWithBodyWithResponse request with any body
-	RestoreASnapshotWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RestoreASnapshotResponse, error)
+	// RestoreSnapshotWithBodyWithResponse request with any body
+	RestoreSnapshotWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RestoreSnapshotResponse, error)
 
-	RestoreASnapshotWithResponse(ctx context.Context, id int, body RestoreASnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*RestoreASnapshotResponse, error)
+	RestoreSnapshotWithResponse(ctx context.Context, id int, body RestoreSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*RestoreSnapshotResponse, error)
 
-	// CreateANewCustomImageWithBodyWithResponse request with any body
-	CreateANewCustomImageWithBodyWithResponse(ctx context.Context, snapshotId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateANewCustomImageResponse, error)
+	// CreateCustomImageWithBodyWithResponse request with any body
+	CreateCustomImageWithBodyWithResponse(ctx context.Context, snapshotId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCustomImageResponse, error)
 
-	CreateANewCustomImageWithResponse(ctx context.Context, snapshotId int, body CreateANewCustomImageJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateANewCustomImageResponse, error)
+	CreateCustomImageWithResponse(ctx context.Context, snapshotId int, body CreateCustomImageJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCustomImageResponse, error)
 }
 
-type RetrievesAListOfSnapshotsResponse struct {
+type ListSnapshotsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Snapshots
@@ -845,7 +845,7 @@ type RetrievesAListOfSnapshotsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrievesAListOfSnapshotsResponse) Status() string {
+func (r ListSnapshotsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -853,7 +853,7 @@ func (r RetrievesAListOfSnapshotsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrievesAListOfSnapshotsResponse) StatusCode() int {
+func (r ListSnapshotsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -885,7 +885,7 @@ func (r FetchSnapshotNameAvailabilityResponse) StatusCode() int {
 	return 0
 }
 
-type DeleteAnExistingSnapshotResponse struct {
+type DeleteSnapshotResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -896,7 +896,7 @@ type DeleteAnExistingSnapshotResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteAnExistingSnapshotResponse) Status() string {
+func (r DeleteSnapshotResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -904,14 +904,14 @@ func (r DeleteAnExistingSnapshotResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteAnExistingSnapshotResponse) StatusCode() int {
+func (r DeleteSnapshotResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type RetrieveAnExistingSnapshotResponse struct {
+type GetSnapshotResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SnapshotRetrieve
@@ -920,7 +920,7 @@ type RetrieveAnExistingSnapshotResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrieveAnExistingSnapshotResponse) Status() string {
+func (r GetSnapshotResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -928,14 +928,14 @@ func (r RetrieveAnExistingSnapshotResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrieveAnExistingSnapshotResponse) StatusCode() int {
+func (r GetSnapshotResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type RestoreASnapshotResponse struct {
+type RestoreSnapshotResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Instance
@@ -944,7 +944,7 @@ type RestoreASnapshotResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RestoreASnapshotResponse) Status() string {
+func (r RestoreSnapshotResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -952,14 +952,14 @@ func (r RestoreASnapshotResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RestoreASnapshotResponse) StatusCode() int {
+func (r RestoreSnapshotResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type CreateANewCustomImageResponse struct {
+type CreateCustomImageResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *CreateImage
@@ -970,7 +970,7 @@ type CreateANewCustomImageResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r CreateANewCustomImageResponse) Status() string {
+func (r CreateCustomImageResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -978,20 +978,20 @@ func (r CreateANewCustomImageResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CreateANewCustomImageResponse) StatusCode() int {
+func (r CreateCustomImageResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// RetrievesAListOfSnapshotsWithResponse request returning *RetrievesAListOfSnapshotsResponse
-func (c *ClientWithResponses) RetrievesAListOfSnapshotsWithResponse(ctx context.Context, params *RetrievesAListOfSnapshotsParams, reqEditors ...RequestEditorFn) (*RetrievesAListOfSnapshotsResponse, error) {
-	rsp, err := c.RetrievesAListOfSnapshots(ctx, params, reqEditors...)
+// ListSnapshotsWithResponse request returning *ListSnapshotsResponse
+func (c *ClientWithResponses) ListSnapshotsWithResponse(ctx context.Context, params *ListSnapshotsParams, reqEditors ...RequestEditorFn) (*ListSnapshotsResponse, error) {
+	rsp, err := c.ListSnapshots(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrievesAListOfSnapshotsResponse(rsp)
+	return ParseListSnapshotsResponse(rsp)
 }
 
 // FetchSnapshotNameAvailabilityWithResponse request returning *FetchSnapshotNameAvailabilityResponse
@@ -1003,67 +1003,67 @@ func (c *ClientWithResponses) FetchSnapshotNameAvailabilityWithResponse(ctx cont
 	return ParseFetchSnapshotNameAvailabilityResponse(rsp)
 }
 
-// DeleteAnExistingSnapshotWithResponse request returning *DeleteAnExistingSnapshotResponse
-func (c *ClientWithResponses) DeleteAnExistingSnapshotWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteAnExistingSnapshotResponse, error) {
-	rsp, err := c.DeleteAnExistingSnapshot(ctx, id, reqEditors...)
+// DeleteSnapshotWithResponse request returning *DeleteSnapshotResponse
+func (c *ClientWithResponses) DeleteSnapshotWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteSnapshotResponse, error) {
+	rsp, err := c.DeleteSnapshot(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteAnExistingSnapshotResponse(rsp)
+	return ParseDeleteSnapshotResponse(rsp)
 }
 
-// RetrieveAnExistingSnapshotWithResponse request returning *RetrieveAnExistingSnapshotResponse
-func (c *ClientWithResponses) RetrieveAnExistingSnapshotWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveAnExistingSnapshotResponse, error) {
-	rsp, err := c.RetrieveAnExistingSnapshot(ctx, id, reqEditors...)
+// GetSnapshotWithResponse request returning *GetSnapshotResponse
+func (c *ClientWithResponses) GetSnapshotWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*GetSnapshotResponse, error) {
+	rsp, err := c.GetSnapshot(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveAnExistingSnapshotResponse(rsp)
+	return ParseGetSnapshotResponse(rsp)
 }
 
-// RestoreASnapshotWithBodyWithResponse request with arbitrary body returning *RestoreASnapshotResponse
-func (c *ClientWithResponses) RestoreASnapshotWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RestoreASnapshotResponse, error) {
-	rsp, err := c.RestoreASnapshotWithBody(ctx, id, contentType, body, reqEditors...)
+// RestoreSnapshotWithBodyWithResponse request with arbitrary body returning *RestoreSnapshotResponse
+func (c *ClientWithResponses) RestoreSnapshotWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RestoreSnapshotResponse, error) {
+	rsp, err := c.RestoreSnapshotWithBody(ctx, id, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRestoreASnapshotResponse(rsp)
+	return ParseRestoreSnapshotResponse(rsp)
 }
 
-func (c *ClientWithResponses) RestoreASnapshotWithResponse(ctx context.Context, id int, body RestoreASnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*RestoreASnapshotResponse, error) {
-	rsp, err := c.RestoreASnapshot(ctx, id, body, reqEditors...)
+func (c *ClientWithResponses) RestoreSnapshotWithResponse(ctx context.Context, id int, body RestoreSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*RestoreSnapshotResponse, error) {
+	rsp, err := c.RestoreSnapshot(ctx, id, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRestoreASnapshotResponse(rsp)
+	return ParseRestoreSnapshotResponse(rsp)
 }
 
-// CreateANewCustomImageWithBodyWithResponse request with arbitrary body returning *CreateANewCustomImageResponse
-func (c *ClientWithResponses) CreateANewCustomImageWithBodyWithResponse(ctx context.Context, snapshotId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateANewCustomImageResponse, error) {
-	rsp, err := c.CreateANewCustomImageWithBody(ctx, snapshotId, contentType, body, reqEditors...)
+// CreateCustomImageWithBodyWithResponse request with arbitrary body returning *CreateCustomImageResponse
+func (c *ClientWithResponses) CreateCustomImageWithBodyWithResponse(ctx context.Context, snapshotId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCustomImageResponse, error) {
+	rsp, err := c.CreateCustomImageWithBody(ctx, snapshotId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreateANewCustomImageResponse(rsp)
+	return ParseCreateCustomImageResponse(rsp)
 }
 
-func (c *ClientWithResponses) CreateANewCustomImageWithResponse(ctx context.Context, snapshotId int, body CreateANewCustomImageJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateANewCustomImageResponse, error) {
-	rsp, err := c.CreateANewCustomImage(ctx, snapshotId, body, reqEditors...)
+func (c *ClientWithResponses) CreateCustomImageWithResponse(ctx context.Context, snapshotId int, body CreateCustomImageJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCustomImageResponse, error) {
+	rsp, err := c.CreateCustomImage(ctx, snapshotId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreateANewCustomImageResponse(rsp)
+	return ParseCreateCustomImageResponse(rsp)
 }
 
-// ParseRetrievesAListOfSnapshotsResponse parses an HTTP response from a RetrievesAListOfSnapshotsWithResponse call
-func ParseRetrievesAListOfSnapshotsResponse(rsp *http.Response) (*RetrievesAListOfSnapshotsResponse, error) {
+// ParseListSnapshotsResponse parses an HTTP response from a ListSnapshotsWithResponse call
+func ParseListSnapshotsResponse(rsp *http.Response) (*ListSnapshotsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrievesAListOfSnapshotsResponse{
+	response := &ListSnapshotsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1142,15 +1142,15 @@ func ParseFetchSnapshotNameAvailabilityResponse(rsp *http.Response) (*FetchSnaps
 	return response, nil
 }
 
-// ParseDeleteAnExistingSnapshotResponse parses an HTTP response from a DeleteAnExistingSnapshotWithResponse call
-func ParseDeleteAnExistingSnapshotResponse(rsp *http.Response) (*DeleteAnExistingSnapshotResponse, error) {
+// ParseDeleteSnapshotResponse parses an HTTP response from a DeleteSnapshotWithResponse call
+func ParseDeleteSnapshotResponse(rsp *http.Response) (*DeleteSnapshotResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteAnExistingSnapshotResponse{
+	response := &DeleteSnapshotResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1196,15 +1196,15 @@ func ParseDeleteAnExistingSnapshotResponse(rsp *http.Response) (*DeleteAnExistin
 	return response, nil
 }
 
-// ParseRetrieveAnExistingSnapshotResponse parses an HTTP response from a RetrieveAnExistingSnapshotWithResponse call
-func ParseRetrieveAnExistingSnapshotResponse(rsp *http.Response) (*RetrieveAnExistingSnapshotResponse, error) {
+// ParseGetSnapshotResponse parses an HTTP response from a GetSnapshotWithResponse call
+func ParseGetSnapshotResponse(rsp *http.Response) (*GetSnapshotResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrieveAnExistingSnapshotResponse{
+	response := &GetSnapshotResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1236,15 +1236,15 @@ func ParseRetrieveAnExistingSnapshotResponse(rsp *http.Response) (*RetrieveAnExi
 	return response, nil
 }
 
-// ParseRestoreASnapshotResponse parses an HTTP response from a RestoreASnapshotWithResponse call
-func ParseRestoreASnapshotResponse(rsp *http.Response) (*RestoreASnapshotResponse, error) {
+// ParseRestoreSnapshotResponse parses an HTTP response from a RestoreSnapshotWithResponse call
+func ParseRestoreSnapshotResponse(rsp *http.Response) (*RestoreSnapshotResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RestoreASnapshotResponse{
+	response := &RestoreSnapshotResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -1276,15 +1276,15 @@ func ParseRestoreASnapshotResponse(rsp *http.Response) (*RestoreASnapshotRespons
 	return response, nil
 }
 
-// ParseCreateANewCustomImageResponse parses an HTTP response from a CreateANewCustomImageWithResponse call
-func ParseCreateANewCustomImageResponse(rsp *http.Response) (*CreateANewCustomImageResponse, error) {
+// ParseCreateCustomImageResponse parses an HTTP response from a CreateCustomImageWithResponse call
+func ParseCreateCustomImageResponse(rsp *http.Response) (*CreateCustomImageResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CreateANewCustomImageResponse{
+	response := &CreateCustomImageResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

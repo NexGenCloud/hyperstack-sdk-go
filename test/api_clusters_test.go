@@ -23,20 +23,6 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test ClustersAPIService AttemptToManuallyReconcileACluster", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var clusterId int32
-
-		resp, httpRes, err := apiClient.ClustersAPI.AttemptToManuallyReconcileACluster(context.Background(), clusterId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
 	t.Run("Test ClustersAPIService CreateCluster", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -77,28 +63,13 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test ClustersAPIService DeleteACluster", func(t *testing.T) {
+	t.Run("Test ClustersAPIService DeleteCluster", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var id int32
 
-		resp, httpRes, err := apiClient.ClustersAPI.DeleteACluster(context.Background(), id).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test ClustersAPIService DeleteANodeGroup", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var clusterId int32
-		var nodeGroupId int32
-
-		resp, httpRes, err := apiClient.ClustersAPI.DeleteANodeGroup(context.Background(), clusterId, nodeGroupId).Execute()
+		resp, httpRes, err := apiClient.ClustersAPI.DeleteCluster(context.Background(), id).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -128,6 +99,21 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 		var clusterId int32
 
 		resp, httpRes, err := apiClient.ClustersAPI.DeleteClusterNodes(context.Background(), clusterId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test ClustersAPIService DeleteNodeGroup", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var clusterId int32
+		var nodeGroupId int32
+
+		resp, httpRes, err := apiClient.ClustersAPI.DeleteNodeGroup(context.Background(), clusterId, nodeGroupId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -187,6 +173,21 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ClustersAPIService GetNodeGroup", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var clusterId int32
+		var nodeGroupId int32
+
+		resp, httpRes, err := apiClient.ClustersAPI.GetNodeGroup(context.Background(), clusterId, nodeGroupId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ClustersAPIService GettingClusterDetail", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
@@ -227,14 +228,13 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test ClustersAPIService RetrieveANodeGroup", func(t *testing.T) {
+	t.Run("Test ClustersAPIService ReconcileCluster", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var clusterId int32
-		var nodeGroupId int32
 
-		resp, httpRes, err := apiClient.ClustersAPI.RetrieveANodeGroup(context.Background(), clusterId, nodeGroupId).Execute()
+		resp, httpRes, err := apiClient.ClustersAPI.ReconcileCluster(context.Background(), clusterId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -242,14 +242,14 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test ClustersAPIService UpdateANodeGroup", func(t *testing.T) {
+	t.Run("Test ClustersAPIService UpdateNodeGroup", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var clusterId int32
 		var nodeGroupId int32
 
-		resp, httpRes, err := apiClient.ClustersAPI.UpdateANodeGroup(context.Background(), clusterId, nodeGroupId).Execute()
+		resp, httpRes, err := apiClient.ClustersAPI.UpdateNodeGroup(context.Background(), clusterId, nodeGroupId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

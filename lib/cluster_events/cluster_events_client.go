@@ -116,12 +116,12 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// FetchAllOfAClusterEvents request
-	FetchAllOfAClusterEvents(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListClusterEvents request
+	ListClusterEvents(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) FetchAllOfAClusterEvents(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFetchAllOfAClusterEventsRequest(c.Server, clusterId)
+func (c *Client) ListClusterEvents(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListClusterEventsRequest(c.Server, clusterId)
 	if err != nil {
 		return nil, err
 	}
@@ -132,8 +132,8 @@ func (c *Client) FetchAllOfAClusterEvents(ctx context.Context, clusterId string,
 	return c.Client.Do(req)
 }
 
-// NewFetchAllOfAClusterEventsRequest generates requests for FetchAllOfAClusterEvents
-func NewFetchAllOfAClusterEventsRequest(server string, clusterId string) (*http.Request, error) {
+// NewListClusterEventsRequest generates requests for ListClusterEvents
+func NewListClusterEventsRequest(server string, clusterId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -209,11 +209,11 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// FetchAllOfAClusterEventsWithResponse request
-	FetchAllOfAClusterEventsWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*FetchAllOfAClusterEventsResponse, error)
+	// ListClusterEventsWithResponse request
+	ListClusterEventsWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*ListClusterEventsResponse, error)
 }
 
-type FetchAllOfAClusterEventsResponse struct {
+type ListClusterEventsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ClusterEvents
@@ -223,7 +223,7 @@ type FetchAllOfAClusterEventsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r FetchAllOfAClusterEventsResponse) Status() string {
+func (r ListClusterEventsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -231,31 +231,31 @@ func (r FetchAllOfAClusterEventsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r FetchAllOfAClusterEventsResponse) StatusCode() int {
+func (r ListClusterEventsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// FetchAllOfAClusterEventsWithResponse request returning *FetchAllOfAClusterEventsResponse
-func (c *ClientWithResponses) FetchAllOfAClusterEventsWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*FetchAllOfAClusterEventsResponse, error) {
-	rsp, err := c.FetchAllOfAClusterEvents(ctx, clusterId, reqEditors...)
+// ListClusterEventsWithResponse request returning *ListClusterEventsResponse
+func (c *ClientWithResponses) ListClusterEventsWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*ListClusterEventsResponse, error) {
+	rsp, err := c.ListClusterEvents(ctx, clusterId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseFetchAllOfAClusterEventsResponse(rsp)
+	return ParseListClusterEventsResponse(rsp)
 }
 
-// ParseFetchAllOfAClusterEventsResponse parses an HTTP response from a FetchAllOfAClusterEventsWithResponse call
-func ParseFetchAllOfAClusterEventsResponse(rsp *http.Response) (*FetchAllOfAClusterEventsResponse, error) {
+// ParseListClusterEventsResponse parses an HTTP response from a ListClusterEventsWithResponse call
+func ParseListClusterEventsResponse(rsp *http.Response) (*ListClusterEventsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &FetchAllOfAClusterEventsResponse{
+	response := &ListClusterEventsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

@@ -23,11 +23,11 @@ func Test_hyperstack_UserAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test UserAPIService GetUser", func(t *testing.T) {
+	t.Run("Test UserAPIService AddUserBillingInfo", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.UserAPI.GetUser(context.Background()).Execute()
+		resp, httpRes, err := apiClient.UserAPI.AddUserBillingInfo(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -35,11 +35,11 @@ func Test_hyperstack_UserAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test UserAPIService PostUser", func(t *testing.T) {
+	t.Run("Test UserAPIService GetUserBillingInfo", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.UserAPI.PostUser(context.Background()).Execute()
+		resp, httpRes, err := apiClient.UserAPI.GetUserBillingInfo(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -47,11 +47,11 @@ func Test_hyperstack_UserAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test UserAPIService PutUser", func(t *testing.T) {
+	t.Run("Test UserAPIService UpdateUserBillingInfo", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.UserAPI.PutUser(context.Background()).Execute()
+		resp, httpRes, err := apiClient.UserAPI.UpdateUserBillingInfo(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

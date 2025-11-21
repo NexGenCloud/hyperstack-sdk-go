@@ -6,7 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**DeleteAPIKey**](ApiKeyAPI.md#DeleteAPIKey) | **Delete** /api-key/{api_key_id} | Delete API Key
 [**GenerateAPIKey**](ApiKeyAPI.md#GenerateAPIKey) | **Post** /api-key/generate | Generate API Key
-[**RetrieveAPIKey**](ApiKeyAPI.md#RetrieveAPIKey) | **Get** /api-key | Retrieve API Keys
+[**GetAPIKey**](ApiKeyAPI.md#GetAPIKey) | **Get** /api-key | Retrieve API Keys
 [**UpdateAPIKey**](ApiKeyAPI.md#UpdateAPIKey) | **Put** /api-key/{api_key_id} | Update API Key
 
 
@@ -147,9 +147,9 @@ No authorization required
 [[Back to README]](../README.md)
 
 
-## RetrieveAPIKey
+## GetAPIKey
 
-> GetApiKeysResponseModel RetrieveAPIKey(ctx).Execute()
+> GetApiKeysResponseModel GetAPIKey(ctx).Execute()
 
 Retrieve API Keys
 
@@ -171,13 +171,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ApiKeyAPI.RetrieveAPIKey(context.Background()).Execute()
+	resp, r, err := apiClient.ApiKeyAPI.GetAPIKey(context.Background()).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ApiKeyAPI.RetrieveAPIKey``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ApiKeyAPI.GetAPIKey``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `RetrieveAPIKey`: GetApiKeysResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `ApiKeyAPI.RetrieveAPIKey`: %v\n", resp)
+	// response from `GetAPIKey`: GetApiKeysResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `ApiKeyAPI.GetAPIKey`: %v\n", resp)
 }
 ```
 
@@ -187,7 +187,7 @@ This endpoint does not need any parameter.
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiRetrieveAPIKeyRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetAPIKeyRequest struct via the builder pattern
 
 
 ### Return type

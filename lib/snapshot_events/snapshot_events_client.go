@@ -87,12 +87,12 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// FetchAllEventsForASnapshot request
-	FetchAllEventsForASnapshot(ctx context.Context, snapshotId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListSnapshotEvents request
+	ListSnapshotEvents(ctx context.Context, snapshotId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) FetchAllEventsForASnapshot(ctx context.Context, snapshotId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFetchAllEventsForASnapshotRequest(c.Server, snapshotId)
+func (c *Client) ListSnapshotEvents(ctx context.Context, snapshotId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListSnapshotEventsRequest(c.Server, snapshotId)
 	if err != nil {
 		return nil, err
 	}
@@ -103,8 +103,8 @@ func (c *Client) FetchAllEventsForASnapshot(ctx context.Context, snapshotId int,
 	return c.Client.Do(req)
 }
 
-// NewFetchAllEventsForASnapshotRequest generates requests for FetchAllEventsForASnapshot
-func NewFetchAllEventsForASnapshotRequest(server string, snapshotId int) (*http.Request, error) {
+// NewListSnapshotEventsRequest generates requests for ListSnapshotEvents
+func NewListSnapshotEventsRequest(server string, snapshotId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -180,17 +180,17 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// FetchAllEventsForASnapshotWithResponse request
-	FetchAllEventsForASnapshotWithResponse(ctx context.Context, snapshotId int, reqEditors ...RequestEditorFn) (*FetchAllEventsForASnapshotResponse, error)
+	// ListSnapshotEventsWithResponse request
+	ListSnapshotEventsWithResponse(ctx context.Context, snapshotId int, reqEditors ...RequestEditorFn) (*ListSnapshotEventsResponse, error)
 }
 
-type FetchAllEventsForASnapshotResponse struct {
+type ListSnapshotEventsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 }
 
 // Status returns HTTPResponse.Status
-func (r FetchAllEventsForASnapshotResponse) Status() string {
+func (r ListSnapshotEventsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -198,31 +198,31 @@ func (r FetchAllEventsForASnapshotResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r FetchAllEventsForASnapshotResponse) StatusCode() int {
+func (r ListSnapshotEventsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// FetchAllEventsForASnapshotWithResponse request returning *FetchAllEventsForASnapshotResponse
-func (c *ClientWithResponses) FetchAllEventsForASnapshotWithResponse(ctx context.Context, snapshotId int, reqEditors ...RequestEditorFn) (*FetchAllEventsForASnapshotResponse, error) {
-	rsp, err := c.FetchAllEventsForASnapshot(ctx, snapshotId, reqEditors...)
+// ListSnapshotEventsWithResponse request returning *ListSnapshotEventsResponse
+func (c *ClientWithResponses) ListSnapshotEventsWithResponse(ctx context.Context, snapshotId int, reqEditors ...RequestEditorFn) (*ListSnapshotEventsResponse, error) {
+	rsp, err := c.ListSnapshotEvents(ctx, snapshotId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseFetchAllEventsForASnapshotResponse(rsp)
+	return ParseListSnapshotEventsResponse(rsp)
 }
 
-// ParseFetchAllEventsForASnapshotResponse parses an HTTP response from a FetchAllEventsForASnapshotWithResponse call
-func ParseFetchAllEventsForASnapshotResponse(rsp *http.Response) (*FetchAllEventsForASnapshotResponse, error) {
+// ParseListSnapshotEventsResponse parses an HTTP response from a ListSnapshotEventsWithResponse call
+func ParseListSnapshotEventsResponse(rsp *http.Response) (*ListSnapshotEventsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &FetchAllEventsForASnapshotResponse{
+	response := &ListSnapshotEventsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

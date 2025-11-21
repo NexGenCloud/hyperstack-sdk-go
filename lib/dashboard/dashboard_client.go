@@ -132,12 +132,12 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// RetrieveDashboard request
-	RetrieveDashboard(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetDashboard request
+	GetDashboard(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) RetrieveDashboard(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveDashboardRequest(c.Server)
+func (c *Client) GetDashboard(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetDashboardRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -148,8 +148,8 @@ func (c *Client) RetrieveDashboard(ctx context.Context, reqEditors ...RequestEdi
 	return c.Client.Do(req)
 }
 
-// NewRetrieveDashboardRequest generates requests for RetrieveDashboard
-func NewRetrieveDashboardRequest(server string) (*http.Request, error) {
+// NewGetDashboardRequest generates requests for GetDashboard
+func NewGetDashboardRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -218,11 +218,11 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// RetrieveDashboardWithResponse request
-	RetrieveDashboardWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveDashboardResponse, error)
+	// GetDashboardWithResponse request
+	GetDashboardWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetDashboardResponse, error)
 }
 
-type RetrieveDashboardResponse struct {
+type GetDashboardResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *DashboardInfoResponse
@@ -231,7 +231,7 @@ type RetrieveDashboardResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrieveDashboardResponse) Status() string {
+func (r GetDashboardResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -239,31 +239,31 @@ func (r RetrieveDashboardResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrieveDashboardResponse) StatusCode() int {
+func (r GetDashboardResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// RetrieveDashboardWithResponse request returning *RetrieveDashboardResponse
-func (c *ClientWithResponses) RetrieveDashboardWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveDashboardResponse, error) {
-	rsp, err := c.RetrieveDashboard(ctx, reqEditors...)
+// GetDashboardWithResponse request returning *GetDashboardResponse
+func (c *ClientWithResponses) GetDashboardWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetDashboardResponse, error) {
+	rsp, err := c.GetDashboard(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveDashboardResponse(rsp)
+	return ParseGetDashboardResponse(rsp)
 }
 
-// ParseRetrieveDashboardResponse parses an HTTP response from a RetrieveDashboardWithResponse call
-func ParseRetrieveDashboardResponse(rsp *http.Response) (*RetrieveDashboardResponse, error) {
+// ParseGetDashboardResponse parses an HTTP response from a GetDashboardWithResponse call
+func ParseGetDashboardResponse(rsp *http.Response) (*GetDashboardResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrieveDashboardResponse{
+	response := &GetDashboardResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

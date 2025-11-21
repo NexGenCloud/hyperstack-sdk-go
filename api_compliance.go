@@ -200,25 +200,25 @@ func (a *ComplianceAPIService) CreateComplianceExecute(r ApiCreateComplianceRequ
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiDeleteAComplianceRequest struct {
+type ApiDeleteComplianceRequest struct {
 	ctx        context.Context
 	ApiService *ComplianceAPIService
 	gpuModel   string
 }
 
-func (r ApiDeleteAComplianceRequest) Execute() (*ResponseModel, *http.Response, error) {
-	return r.ApiService.DeleteAComplianceExecute(r)
+func (r ApiDeleteComplianceRequest) Execute() (*ResponseModel, *http.Response, error) {
+	return r.ApiService.DeleteComplianceExecute(r)
 }
 
 /*
-DeleteACompliance Delete a compliance
+DeleteCompliance Delete a compliance
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param gpuModel
-	@return ApiDeleteAComplianceRequest
+	@return ApiDeleteComplianceRequest
 */
-func (a *ComplianceAPIService) DeleteACompliance(ctx context.Context, gpuModel string) ApiDeleteAComplianceRequest {
-	return ApiDeleteAComplianceRequest{
+func (a *ComplianceAPIService) DeleteCompliance(ctx context.Context, gpuModel string) ApiDeleteComplianceRequest {
+	return ApiDeleteComplianceRequest{
 		ApiService: a,
 		ctx:        ctx,
 		gpuModel:   gpuModel,
@@ -228,7 +228,7 @@ func (a *ComplianceAPIService) DeleteACompliance(ctx context.Context, gpuModel s
 // Execute executes the request
 //
 //	@return ResponseModel
-func (a *ComplianceAPIService) DeleteAComplianceExecute(r ApiDeleteAComplianceRequest) (*ResponseModel, *http.Response, error) {
+func (a *ComplianceAPIService) DeleteComplianceExecute(r ApiDeleteComplianceRequest) (*ResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
@@ -236,7 +236,7 @@ func (a *ComplianceAPIService) DeleteAComplianceExecute(r ApiDeleteAComplianceRe
 		localVarReturnValue *ResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComplianceAPIService.DeleteACompliance")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComplianceAPIService.DeleteCompliance")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -349,32 +349,32 @@ func (a *ComplianceAPIService) DeleteAComplianceExecute(r ApiDeleteAComplianceRe
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiRetrieveComplianceRequest struct {
+type ApiGetComplianceRequest struct {
 	ctx        context.Context
 	ApiService *ComplianceAPIService
 	gpu        *string
 }
 
 // This is for gpu model
-func (r ApiRetrieveComplianceRequest) Gpu(gpu string) ApiRetrieveComplianceRequest {
+func (r ApiGetComplianceRequest) Gpu(gpu string) ApiGetComplianceRequest {
 	r.gpu = &gpu
 	return r
 }
 
-func (r ApiRetrieveComplianceRequest) Execute() (*ComplianceResponse, *http.Response, error) {
-	return r.ApiService.RetrieveComplianceExecute(r)
+func (r ApiGetComplianceRequest) Execute() (*ComplianceResponse, *http.Response, error) {
+	return r.ApiService.GetComplianceExecute(r)
 }
 
 /*
-RetrieveCompliance Retrieve GPU compliance
+GetCompliance Retrieve GPU compliance
 
 Returns a list of compliance objects each corresponding to available GPU models. These compliance objects contain minimum and maximum values for RAM in GB, number of vCPUs, and system disk capacity in GB. Use the optional `gpu` model parameter in the query string to filter responses by GPU model. For additional details on GPU compliance, [**click here**](https://docs.hyperstack.cloud/docs/hardware/flavors#adhering-to-gpu-compliance).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiRetrieveComplianceRequest
+	@return ApiGetComplianceRequest
 */
-func (a *ComplianceAPIService) RetrieveCompliance(ctx context.Context) ApiRetrieveComplianceRequest {
-	return ApiRetrieveComplianceRequest{
+func (a *ComplianceAPIService) GetCompliance(ctx context.Context) ApiGetComplianceRequest {
+	return ApiGetComplianceRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -383,7 +383,7 @@ func (a *ComplianceAPIService) RetrieveCompliance(ctx context.Context) ApiRetrie
 // Execute executes the request
 //
 //	@return ComplianceResponse
-func (a *ComplianceAPIService) RetrieveComplianceExecute(r ApiRetrieveComplianceRequest) (*ComplianceResponse, *http.Response, error) {
+func (a *ComplianceAPIService) GetComplianceExecute(r ApiGetComplianceRequest) (*ComplianceResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -391,7 +391,7 @@ func (a *ComplianceAPIService) RetrieveComplianceExecute(r ApiRetrieveCompliance
 		localVarReturnValue *ComplianceResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComplianceAPIService.RetrieveCompliance")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComplianceAPIService.GetCompliance")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -517,29 +517,29 @@ func (a *ComplianceAPIService) RetrieveComplianceExecute(r ApiRetrieveCompliance
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiUpdateAComplianceRequest struct {
+type ApiUpdateComplianceRequest struct {
 	ctx        context.Context
 	ApiService *ComplianceAPIService
 	payload    *CompliancePayload
 }
 
-func (r ApiUpdateAComplianceRequest) Payload(payload CompliancePayload) ApiUpdateAComplianceRequest {
+func (r ApiUpdateComplianceRequest) Payload(payload CompliancePayload) ApiUpdateComplianceRequest {
 	r.payload = &payload
 	return r
 }
 
-func (r ApiUpdateAComplianceRequest) Execute() (*CreateUpdateComplianceResponse, *http.Response, error) {
-	return r.ApiService.UpdateAComplianceExecute(r)
+func (r ApiUpdateComplianceRequest) Execute() (*CreateUpdateComplianceResponse, *http.Response, error) {
+	return r.ApiService.UpdateComplianceExecute(r)
 }
 
 /*
-UpdateACompliance Update a compliance
+UpdateCompliance Update a compliance
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiUpdateAComplianceRequest
+	@return ApiUpdateComplianceRequest
 */
-func (a *ComplianceAPIService) UpdateACompliance(ctx context.Context) ApiUpdateAComplianceRequest {
-	return ApiUpdateAComplianceRequest{
+func (a *ComplianceAPIService) UpdateCompliance(ctx context.Context) ApiUpdateComplianceRequest {
+	return ApiUpdateComplianceRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -548,7 +548,7 @@ func (a *ComplianceAPIService) UpdateACompliance(ctx context.Context) ApiUpdateA
 // Execute executes the request
 //
 //	@return CreateUpdateComplianceResponse
-func (a *ComplianceAPIService) UpdateAComplianceExecute(r ApiUpdateAComplianceRequest) (*CreateUpdateComplianceResponse, *http.Response, error) {
+func (a *ComplianceAPIService) UpdateComplianceExecute(r ApiUpdateComplianceRequest) (*CreateUpdateComplianceResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
@@ -556,7 +556,7 @@ func (a *ComplianceAPIService) UpdateAComplianceExecute(r ApiUpdateAComplianceRe
 		localVarReturnValue *CreateUpdateComplianceResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComplianceAPIService.UpdateACompliance")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComplianceAPIService.UpdateCompliance")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

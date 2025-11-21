@@ -152,8 +152,8 @@ type ClientInterface interface {
 	// DeleteProfile request
 	DeleteProfile(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RetrieveProfileDetails request
-	RetrieveProfileDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetProfile request
+	GetProfile(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) ListProfiles(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -204,8 +204,8 @@ func (c *Client) DeleteProfile(ctx context.Context, id int, reqEditors ...Reques
 	return c.Client.Do(req)
 }
 
-func (c *Client) RetrieveProfileDetails(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveProfileDetailsRequest(c.Server, id)
+func (c *Client) GetProfile(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetProfileRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -317,8 +317,8 @@ func NewDeleteProfileRequest(server string, id int) (*http.Request, error) {
 	return req, nil
 }
 
-// NewRetrieveProfileDetailsRequest generates requests for RetrieveProfileDetails
-func NewRetrieveProfileDetailsRequest(server string, id int) (*http.Request, error) {
+// NewGetProfileRequest generates requests for GetProfile
+func NewGetProfileRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -405,8 +405,8 @@ type ClientWithResponsesInterface interface {
 	// DeleteProfileWithResponse request
 	DeleteProfileWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteProfileResponse, error)
 
-	// RetrieveProfileDetailsWithResponse request
-	RetrieveProfileDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveProfileDetailsResponse, error)
+	// GetProfileWithResponse request
+	GetProfileWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*GetProfileResponse, error)
 }
 
 type ListProfilesResponse struct {
@@ -483,7 +483,7 @@ func (r DeleteProfileResponse) StatusCode() int {
 	return 0
 }
 
-type RetrieveProfileDetailsResponse struct {
+type GetProfileResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *CreateProfileData
@@ -493,7 +493,7 @@ type RetrieveProfileDetailsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrieveProfileDetailsResponse) Status() string {
+func (r GetProfileResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -501,7 +501,7 @@ func (r RetrieveProfileDetailsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrieveProfileDetailsResponse) StatusCode() int {
+func (r GetProfileResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -543,13 +543,13 @@ func (c *ClientWithResponses) DeleteProfileWithResponse(ctx context.Context, id 
 	return ParseDeleteProfileResponse(rsp)
 }
 
-// RetrieveProfileDetailsWithResponse request returning *RetrieveProfileDetailsResponse
-func (c *ClientWithResponses) RetrieveProfileDetailsWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*RetrieveProfileDetailsResponse, error) {
-	rsp, err := c.RetrieveProfileDetails(ctx, id, reqEditors...)
+// GetProfileWithResponse request returning *GetProfileResponse
+func (c *ClientWithResponses) GetProfileWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*GetProfileResponse, error) {
+	rsp, err := c.GetProfile(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveProfileDetailsResponse(rsp)
+	return ParseGetProfileResponse(rsp)
 }
 
 // ParseListProfilesResponse parses an HTTP response from a ListProfilesWithResponse call
@@ -686,15 +686,15 @@ func ParseDeleteProfileResponse(rsp *http.Response) (*DeleteProfileResponse, err
 	return response, nil
 }
 
-// ParseRetrieveProfileDetailsResponse parses an HTTP response from a RetrieveProfileDetailsWithResponse call
-func ParseRetrieveProfileDetailsResponse(rsp *http.Response) (*RetrieveProfileDetailsResponse, error) {
+// ParseGetProfileResponse parses an HTTP response from a GetProfileWithResponse call
+func ParseGetProfileResponse(rsp *http.Response) (*GetProfileResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrieveProfileDetailsResponse{
+	response := &GetProfileResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

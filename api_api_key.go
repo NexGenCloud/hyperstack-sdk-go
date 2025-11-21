@@ -328,25 +328,25 @@ func (a *ApiKeyAPIService) GenerateAPIKeyExecute(r ApiGenerateAPIKeyRequest) (*G
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiRetrieveAPIKeyRequest struct {
+type ApiGetAPIKeyRequest struct {
 	ctx        context.Context
 	ApiService *ApiKeyAPIService
 }
 
-func (r ApiRetrieveAPIKeyRequest) Execute() (*GetApiKeysResponseModel, *http.Response, error) {
-	return r.ApiService.RetrieveAPIKeyExecute(r)
+func (r ApiGetAPIKeyRequest) Execute() (*GetApiKeysResponseModel, *http.Response, error) {
+	return r.ApiService.GetAPIKeyExecute(r)
 }
 
 /*
-RetrieveAPIKey Retrieve API Keys
+GetAPIKey Retrieve API Keys
 
 Retrieves your API keys, granting access to the Infrahub APIs. For further details on API keys, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/auth-resources/api-key/retrieve-api-key).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiRetrieveAPIKeyRequest
+	@return ApiGetAPIKeyRequest
 */
-func (a *ApiKeyAPIService) RetrieveAPIKey(ctx context.Context) ApiRetrieveAPIKeyRequest {
-	return ApiRetrieveAPIKeyRequest{
+func (a *ApiKeyAPIService) GetAPIKey(ctx context.Context) ApiGetAPIKeyRequest {
+	return ApiGetAPIKeyRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -355,7 +355,7 @@ func (a *ApiKeyAPIService) RetrieveAPIKey(ctx context.Context) ApiRetrieveAPIKey
 // Execute executes the request
 //
 //	@return GetApiKeysResponseModel
-func (a *ApiKeyAPIService) RetrieveAPIKeyExecute(r ApiRetrieveAPIKeyRequest) (*GetApiKeysResponseModel, *http.Response, error) {
+func (a *ApiKeyAPIService) GetAPIKeyExecute(r ApiGetAPIKeyRequest) (*GetApiKeysResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -363,7 +363,7 @@ func (a *ApiKeyAPIService) RetrieveAPIKeyExecute(r ApiRetrieveAPIKeyRequest) (*G
 		localVarReturnValue *GetApiKeysResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ApiKeyAPIService.RetrieveAPIKey")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ApiKeyAPIService.GetAPIKey")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

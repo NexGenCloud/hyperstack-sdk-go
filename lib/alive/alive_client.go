@@ -88,8 +88,8 @@ type ClientInterface interface {
 	// GetAlive request
 	GetAlive(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetDoc request
-	GetDoc(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetAliveDoc request
+	GetAliveDoc(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) GetAlive(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -104,8 +104,8 @@ func (c *Client) GetAlive(ctx context.Context, reqEditors ...RequestEditorFn) (*
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetDoc(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetDocRequest(c.Server)
+func (c *Client) GetAliveDoc(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAliveDocRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -143,8 +143,8 @@ func NewGetAliveRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewGetDocRequest generates requests for GetDoc
-func NewGetDocRequest(server string) (*http.Request, error) {
+// NewGetAliveDocRequest generates requests for GetAliveDoc
+func NewGetAliveDocRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -216,8 +216,8 @@ type ClientWithResponsesInterface interface {
 	// GetAliveWithResponse request
 	GetAliveWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAliveResponse, error)
 
-	// GetDocWithResponse request
-	GetDocWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetDocResponse, error)
+	// GetAliveDocWithResponse request
+	GetAliveDocWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAliveDocResponse, error)
 }
 
 type GetAliveResponse struct {
@@ -241,13 +241,13 @@ func (r GetAliveResponse) StatusCode() int {
 	return 0
 }
 
-type GetDocResponse struct {
+type GetAliveDocResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 }
 
 // Status returns HTTPResponse.Status
-func (r GetDocResponse) Status() string {
+func (r GetAliveDocResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -255,7 +255,7 @@ func (r GetDocResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetDocResponse) StatusCode() int {
+func (r GetAliveDocResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -271,13 +271,13 @@ func (c *ClientWithResponses) GetAliveWithResponse(ctx context.Context, reqEdito
 	return ParseGetAliveResponse(rsp)
 }
 
-// GetDocWithResponse request returning *GetDocResponse
-func (c *ClientWithResponses) GetDocWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetDocResponse, error) {
-	rsp, err := c.GetDoc(ctx, reqEditors...)
+// GetAliveDocWithResponse request returning *GetAliveDocResponse
+func (c *ClientWithResponses) GetAliveDocWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAliveDocResponse, error) {
+	rsp, err := c.GetAliveDoc(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetDocResponse(rsp)
+	return ParseGetAliveDocResponse(rsp)
 }
 
 // ParseGetAliveResponse parses an HTTP response from a GetAliveWithResponse call
@@ -296,15 +296,15 @@ func ParseGetAliveResponse(rsp *http.Response) (*GetAliveResponse, error) {
 	return response, nil
 }
 
-// ParseGetDocResponse parses an HTTP response from a GetDocWithResponse call
-func ParseGetDocResponse(rsp *http.Response) (*GetDocResponse, error) {
+// ParseGetAliveDocResponse parses an HTTP response from a GetAliveDocWithResponse call
+func ParseGetAliveDocResponse(rsp *http.Response) (*GetAliveDocResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetDocResponse{
+	response := &GetAliveDocResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

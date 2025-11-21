@@ -63,11 +63,13 @@ func Test_hyperstack_EnvironmentAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test EnvironmentAPIService ListEnvironments", func(t *testing.T) {
+	t.Run("Test EnvironmentAPIService GetEnvironment", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.EnvironmentAPI.ListEnvironments(context.Background()).Execute()
+		var id int32
+
+		resp, httpRes, err := apiClient.EnvironmentAPI.GetEnvironment(context.Background(), id).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -75,13 +77,11 @@ func Test_hyperstack_EnvironmentAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test EnvironmentAPIService RetrieveEnvironment", func(t *testing.T) {
+	t.Run("Test EnvironmentAPIService ListEnvironments", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var id int32
-
-		resp, httpRes, err := apiClient.EnvironmentAPI.RetrieveEnvironment(context.Background(), id).Execute()
+		resp, httpRes, err := apiClient.EnvironmentAPI.ListEnvironments(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

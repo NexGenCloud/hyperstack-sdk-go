@@ -107,12 +107,12 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// RetrieveDefaultFlavorsAndImages request
-	RetrieveDefaultFlavorsAndImages(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListDefaultFlavorsAndImages request
+	ListDefaultFlavorsAndImages(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) RetrieveDefaultFlavorsAndImages(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveDefaultFlavorsAndImagesRequest(c.Server)
+func (c *Client) ListDefaultFlavorsAndImages(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListDefaultFlavorsAndImagesRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -123,8 +123,8 @@ func (c *Client) RetrieveDefaultFlavorsAndImages(ctx context.Context, reqEditors
 	return c.Client.Do(req)
 }
 
-// NewRetrieveDefaultFlavorsAndImagesRequest generates requests for RetrieveDefaultFlavorsAndImages
-func NewRetrieveDefaultFlavorsAndImagesRequest(server string) (*http.Request, error) {
+// NewListDefaultFlavorsAndImagesRequest generates requests for ListDefaultFlavorsAndImages
+func NewListDefaultFlavorsAndImagesRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -193,11 +193,11 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// RetrieveDefaultFlavorsAndImagesWithResponse request
-	RetrieveDefaultFlavorsAndImagesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveDefaultFlavorsAndImagesResponse, error)
+	// ListDefaultFlavorsAndImagesWithResponse request
+	ListDefaultFlavorsAndImagesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListDefaultFlavorsAndImagesResponse, error)
 }
 
-type RetrieveDefaultFlavorsAndImagesResponse struct {
+type ListDefaultFlavorsAndImagesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *UserDefaultChoicesForUserResponse
@@ -207,7 +207,7 @@ type RetrieveDefaultFlavorsAndImagesResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrieveDefaultFlavorsAndImagesResponse) Status() string {
+func (r ListDefaultFlavorsAndImagesResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -215,31 +215,31 @@ func (r RetrieveDefaultFlavorsAndImagesResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrieveDefaultFlavorsAndImagesResponse) StatusCode() int {
+func (r ListDefaultFlavorsAndImagesResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// RetrieveDefaultFlavorsAndImagesWithResponse request returning *RetrieveDefaultFlavorsAndImagesResponse
-func (c *ClientWithResponses) RetrieveDefaultFlavorsAndImagesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveDefaultFlavorsAndImagesResponse, error) {
-	rsp, err := c.RetrieveDefaultFlavorsAndImages(ctx, reqEditors...)
+// ListDefaultFlavorsAndImagesWithResponse request returning *ListDefaultFlavorsAndImagesResponse
+func (c *ClientWithResponses) ListDefaultFlavorsAndImagesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListDefaultFlavorsAndImagesResponse, error) {
+	rsp, err := c.ListDefaultFlavorsAndImages(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveDefaultFlavorsAndImagesResponse(rsp)
+	return ParseListDefaultFlavorsAndImagesResponse(rsp)
 }
 
-// ParseRetrieveDefaultFlavorsAndImagesResponse parses an HTTP response from a RetrieveDefaultFlavorsAndImagesWithResponse call
-func ParseRetrieveDefaultFlavorsAndImagesResponse(rsp *http.Response) (*RetrieveDefaultFlavorsAndImagesResponse, error) {
+// ParseListDefaultFlavorsAndImagesResponse parses an HTTP response from a ListDefaultFlavorsAndImagesWithResponse call
+func ParseListDefaultFlavorsAndImagesResponse(rsp *http.Response) (*ListDefaultFlavorsAndImagesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrieveDefaultFlavorsAndImagesResponse{
+	response := &ListDefaultFlavorsAndImagesResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

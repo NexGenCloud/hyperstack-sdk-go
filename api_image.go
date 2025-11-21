@@ -324,33 +324,33 @@ func (a *ImageAPIService) FetchImageNameAvailabilityExecute(r ApiFetchImageNameA
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetImageDetailsRequest struct {
+type ApiGetImageRequest struct {
 	ctx               context.Context
 	ApiService        *ImageAPIService
 	id                int32
 	includeRelatedVms *bool
 }
 
-func (r ApiGetImageDetailsRequest) IncludeRelatedVms(includeRelatedVms bool) ApiGetImageDetailsRequest {
+func (r ApiGetImageRequest) IncludeRelatedVms(includeRelatedVms bool) ApiGetImageRequest {
 	r.includeRelatedVms = &includeRelatedVms
 	return r
 }
 
-func (r ApiGetImageDetailsRequest) Execute() (*Image, *http.Response, error) {
-	return r.ApiService.GetImageDetailsExecute(r)
+func (r ApiGetImageRequest) Execute() (*Image, *http.Response, error) {
+	return r.ApiService.GetImageExecute(r)
 }
 
 /*
-GetImageDetails Get Private Image Details
+GetImage Get Private Image Details
 
 Retrieve details of a specific image by providing the image ID.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param id
-	@return ApiGetImageDetailsRequest
+	@return ApiGetImageRequest
 */
-func (a *ImageAPIService) GetImageDetails(ctx context.Context, id int32) ApiGetImageDetailsRequest {
-	return ApiGetImageDetailsRequest{
+func (a *ImageAPIService) GetImage(ctx context.Context, id int32) ApiGetImageRequest {
+	return ApiGetImageRequest{
 		ApiService: a,
 		ctx:        ctx,
 		id:         id,
@@ -360,7 +360,7 @@ func (a *ImageAPIService) GetImageDetails(ctx context.Context, id int32) ApiGetI
 // Execute executes the request
 //
 //	@return Image
-func (a *ImageAPIService) GetImageDetailsExecute(r ApiGetImageDetailsRequest) (*Image, *http.Response, error) {
+func (a *ImageAPIService) GetImageExecute(r ApiGetImageRequest) (*Image, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -368,7 +368,7 @@ func (a *ImageAPIService) GetImageDetailsExecute(r ApiGetImageDetailsRequest) (*
 		localVarReturnValue *Image
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ImageAPIService.GetImageDetails")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ImageAPIService.GetImage")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -484,7 +484,7 @@ func (a *ImageAPIService) GetImageDetailsExecute(r ApiGetImageDetailsRequest) (*
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiListImages2Request struct {
+type ApiListImagesRequest struct {
 	ctx           context.Context
 	ApiService    *ImageAPIService
 	region        *string
@@ -495,49 +495,49 @@ type ApiListImages2Request struct {
 }
 
 // Region Name
-func (r ApiListImages2Request) Region(region string) ApiListImages2Request {
+func (r ApiListImagesRequest) Region(region string) ApiListImagesRequest {
 	r.region = &region
 	return r
 }
 
 // Flag to include public images in the response (true/false). Default is true.
-func (r ApiListImages2Request) IncludePublic(includePublic bool) ApiListImages2Request {
+func (r ApiListImagesRequest) IncludePublic(includePublic bool) ApiListImagesRequest {
 	r.includePublic = &includePublic
 	return r
 }
 
 // Search query to filter images by name
-func (r ApiListImages2Request) Search(search string) ApiListImages2Request {
+func (r ApiListImagesRequest) Search(search string) ApiListImagesRequest {
 	r.search = &search
 	return r
 }
 
 // Page number for pagination
-func (r ApiListImages2Request) Page(page int32) ApiListImages2Request {
+func (r ApiListImagesRequest) Page(page int32) ApiListImagesRequest {
 	r.page = &page
 	return r
 }
 
 // Number of Images per page
-func (r ApiListImages2Request) PerPage(perPage int32) ApiListImages2Request {
+func (r ApiListImagesRequest) PerPage(perPage int32) ApiListImagesRequest {
 	r.perPage = &perPage
 	return r
 }
 
-func (r ApiListImages2Request) Execute() (*Images, *http.Response, error) {
-	return r.ApiService.ListImages2Execute(r)
+func (r ApiListImagesRequest) Execute() (*Images, *http.Response, error) {
+	return r.ApiService.ListImagesExecute(r)
 }
 
 /*
-ListImages2 List Images
+ListImages List Images
 
 Returns a list of all available operating system (OS) images, providing details about each image's corresponding virtual machine operating system. You can include the optional `region` parameter in the query string of the request to specifically return OS images from the designated region. Additionally, use the `include_public` parameter to specify whether to include public images in the response. For more information onOS images, [**click here**](https://docs.hyperstack.cloud/docs/virtual-machines/images).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiListImages2Request
+	@return ApiListImagesRequest
 */
-func (a *ImageAPIService) ListImages2(ctx context.Context) ApiListImages2Request {
-	return ApiListImages2Request{
+func (a *ImageAPIService) ListImages(ctx context.Context) ApiListImagesRequest {
+	return ApiListImagesRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -546,7 +546,7 @@ func (a *ImageAPIService) ListImages2(ctx context.Context) ApiListImages2Request
 // Execute executes the request
 //
 //	@return Images
-func (a *ImageAPIService) ListImages2Execute(r ApiListImages2Request) (*Images, *http.Response, error) {
+func (a *ImageAPIService) ListImagesExecute(r ApiListImagesRequest) (*Images, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -554,7 +554,7 @@ func (a *ImageAPIService) ListImages2Execute(r ApiListImages2Request) (*Images, 
 		localVarReturnValue *Images
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ImageAPIService.ListImages2")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ImageAPIService.ListImages")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

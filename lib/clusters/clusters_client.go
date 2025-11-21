@@ -282,8 +282,8 @@ type CreateClusterJSONRequestBody = CreateClusterPayload
 // CreateNodeGroupJSONRequestBody defines body for CreateNodeGroup for application/json ContentType.
 type CreateNodeGroupJSONRequestBody = CreateClusterNodeGroupPayload
 
-// UpdateANodeGroupJSONRequestBody defines body for UpdateANodeGroup for application/json ContentType.
-type UpdateANodeGroupJSONRequestBody = UpdateClusterNodeGroupPayload
+// UpdateNodeGroupJSONRequestBody defines body for UpdateNodeGroup for application/json ContentType.
+type UpdateNodeGroupJSONRequestBody = UpdateClusterNodeGroupPayload
 
 // CreateNodeJSONRequestBody defines body for CreateNode for application/json ContentType.
 type CreateNodeJSONRequestBody = CreateClusterNodeFields
@@ -389,16 +389,16 @@ type ClientInterface interface {
 
 	CreateNodeGroup(ctx context.Context, clusterId int, body CreateNodeGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteANodeGroup request
-	DeleteANodeGroup(ctx context.Context, clusterId int, nodeGroupId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteNodeGroup request
+	DeleteNodeGroup(ctx context.Context, clusterId int, nodeGroupId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RetrieveANodeGroup request
-	RetrieveANodeGroup(ctx context.Context, clusterId int, nodeGroupId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetNodeGroup request
+	GetNodeGroup(ctx context.Context, clusterId int, nodeGroupId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateANodeGroupWithBody request with any body
-	UpdateANodeGroupWithBody(ctx context.Context, clusterId int, nodeGroupId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdateNodeGroupWithBody request with any body
+	UpdateNodeGroupWithBody(ctx context.Context, clusterId int, nodeGroupId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateANodeGroup(ctx context.Context, clusterId int, nodeGroupId int, body UpdateANodeGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateNodeGroup(ctx context.Context, clusterId int, nodeGroupId int, body UpdateNodeGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetClusterNodes request
 	GetClusterNodes(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -416,11 +416,11 @@ type ClientInterface interface {
 	// DeleteClusterNode request
 	DeleteClusterNode(ctx context.Context, clusterId int, nodeId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// AttemptToManuallyReconcileACluster request
-	AttemptToManuallyReconcileACluster(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ReconcileCluster request
+	ReconcileCluster(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteACluster request
-	DeleteACluster(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteCluster request
+	DeleteCluster(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GettingClusterDetail request
 	GettingClusterDetail(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -534,8 +534,8 @@ func (c *Client) CreateNodeGroup(ctx context.Context, clusterId int, body Create
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteANodeGroup(ctx context.Context, clusterId int, nodeGroupId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteANodeGroupRequest(c.Server, clusterId, nodeGroupId)
+func (c *Client) DeleteNodeGroup(ctx context.Context, clusterId int, nodeGroupId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteNodeGroupRequest(c.Server, clusterId, nodeGroupId)
 	if err != nil {
 		return nil, err
 	}
@@ -546,8 +546,8 @@ func (c *Client) DeleteANodeGroup(ctx context.Context, clusterId int, nodeGroupI
 	return c.Client.Do(req)
 }
 
-func (c *Client) RetrieveANodeGroup(ctx context.Context, clusterId int, nodeGroupId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveANodeGroupRequest(c.Server, clusterId, nodeGroupId)
+func (c *Client) GetNodeGroup(ctx context.Context, clusterId int, nodeGroupId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetNodeGroupRequest(c.Server, clusterId, nodeGroupId)
 	if err != nil {
 		return nil, err
 	}
@@ -558,8 +558,8 @@ func (c *Client) RetrieveANodeGroup(ctx context.Context, clusterId int, nodeGrou
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateANodeGroupWithBody(ctx context.Context, clusterId int, nodeGroupId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateANodeGroupRequestWithBody(c.Server, clusterId, nodeGroupId, contentType, body)
+func (c *Client) UpdateNodeGroupWithBody(ctx context.Context, clusterId int, nodeGroupId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateNodeGroupRequestWithBody(c.Server, clusterId, nodeGroupId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -570,8 +570,8 @@ func (c *Client) UpdateANodeGroupWithBody(ctx context.Context, clusterId int, no
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateANodeGroup(ctx context.Context, clusterId int, nodeGroupId int, body UpdateANodeGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateANodeGroupRequest(c.Server, clusterId, nodeGroupId, body)
+func (c *Client) UpdateNodeGroup(ctx context.Context, clusterId int, nodeGroupId int, body UpdateNodeGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateNodeGroupRequest(c.Server, clusterId, nodeGroupId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -654,8 +654,8 @@ func (c *Client) DeleteClusterNode(ctx context.Context, clusterId int, nodeId in
 	return c.Client.Do(req)
 }
 
-func (c *Client) AttemptToManuallyReconcileACluster(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewAttemptToManuallyReconcileAClusterRequest(c.Server, clusterId)
+func (c *Client) ReconcileCluster(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReconcileClusterRequest(c.Server, clusterId)
 	if err != nil {
 		return nil, err
 	}
@@ -666,8 +666,8 @@ func (c *Client) AttemptToManuallyReconcileACluster(ctx context.Context, cluster
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteACluster(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteAClusterRequest(c.Server, id)
+func (c *Client) DeleteCluster(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteClusterRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -1018,8 +1018,8 @@ func NewCreateNodeGroupRequestWithBody(server string, clusterId int, contentType
 	return req, nil
 }
 
-// NewDeleteANodeGroupRequest generates requests for DeleteANodeGroup
-func NewDeleteANodeGroupRequest(server string, clusterId int, nodeGroupId int) (*http.Request, error) {
+// NewDeleteNodeGroupRequest generates requests for DeleteNodeGroup
+func NewDeleteNodeGroupRequest(server string, clusterId int, nodeGroupId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1059,8 +1059,8 @@ func NewDeleteANodeGroupRequest(server string, clusterId int, nodeGroupId int) (
 	return req, nil
 }
 
-// NewRetrieveANodeGroupRequest generates requests for RetrieveANodeGroup
-func NewRetrieveANodeGroupRequest(server string, clusterId int, nodeGroupId int) (*http.Request, error) {
+// NewGetNodeGroupRequest generates requests for GetNodeGroup
+func NewGetNodeGroupRequest(server string, clusterId int, nodeGroupId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1100,19 +1100,19 @@ func NewRetrieveANodeGroupRequest(server string, clusterId int, nodeGroupId int)
 	return req, nil
 }
 
-// NewUpdateANodeGroupRequest calls the generic UpdateANodeGroup builder with application/json body
-func NewUpdateANodeGroupRequest(server string, clusterId int, nodeGroupId int, body UpdateANodeGroupJSONRequestBody) (*http.Request, error) {
+// NewUpdateNodeGroupRequest calls the generic UpdateNodeGroup builder with application/json body
+func NewUpdateNodeGroupRequest(server string, clusterId int, nodeGroupId int, body UpdateNodeGroupJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUpdateANodeGroupRequestWithBody(server, clusterId, nodeGroupId, "application/json", bodyReader)
+	return NewUpdateNodeGroupRequestWithBody(server, clusterId, nodeGroupId, "application/json", bodyReader)
 }
 
-// NewUpdateANodeGroupRequestWithBody generates requests for UpdateANodeGroup with any type of body
-func NewUpdateANodeGroupRequestWithBody(server string, clusterId int, nodeGroupId int, contentType string, body io.Reader) (*http.Request, error) {
+// NewUpdateNodeGroupRequestWithBody generates requests for UpdateNodeGroup with any type of body
+func NewUpdateNodeGroupRequestWithBody(server string, clusterId int, nodeGroupId int, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1323,8 +1323,8 @@ func NewDeleteClusterNodeRequest(server string, clusterId int, nodeId int) (*htt
 	return req, nil
 }
 
-// NewAttemptToManuallyReconcileAClusterRequest generates requests for AttemptToManuallyReconcileACluster
-func NewAttemptToManuallyReconcileAClusterRequest(server string, clusterId int) (*http.Request, error) {
+// NewReconcileClusterRequest generates requests for ReconcileCluster
+func NewReconcileClusterRequest(server string, clusterId int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1357,8 +1357,8 @@ func NewAttemptToManuallyReconcileAClusterRequest(server string, clusterId int) 
 	return req, nil
 }
 
-// NewDeleteAClusterRequest generates requests for DeleteACluster
-func NewDeleteAClusterRequest(server string, id int) (*http.Request, error) {
+// NewDeleteClusterRequest generates requests for DeleteCluster
+func NewDeleteClusterRequest(server string, id int) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1493,16 +1493,16 @@ type ClientWithResponsesInterface interface {
 
 	CreateNodeGroupWithResponse(ctx context.Context, clusterId int, body CreateNodeGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateNodeGroupResponse, error)
 
-	// DeleteANodeGroupWithResponse request
-	DeleteANodeGroupWithResponse(ctx context.Context, clusterId int, nodeGroupId int, reqEditors ...RequestEditorFn) (*DeleteANodeGroupResponse, error)
+	// DeleteNodeGroupWithResponse request
+	DeleteNodeGroupWithResponse(ctx context.Context, clusterId int, nodeGroupId int, reqEditors ...RequestEditorFn) (*DeleteNodeGroupResponse, error)
 
-	// RetrieveANodeGroupWithResponse request
-	RetrieveANodeGroupWithResponse(ctx context.Context, clusterId int, nodeGroupId int, reqEditors ...RequestEditorFn) (*RetrieveANodeGroupResponse, error)
+	// GetNodeGroupWithResponse request
+	GetNodeGroupWithResponse(ctx context.Context, clusterId int, nodeGroupId int, reqEditors ...RequestEditorFn) (*GetNodeGroupResponse, error)
 
-	// UpdateANodeGroupWithBodyWithResponse request with any body
-	UpdateANodeGroupWithBodyWithResponse(ctx context.Context, clusterId int, nodeGroupId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateANodeGroupResponse, error)
+	// UpdateNodeGroupWithBodyWithResponse request with any body
+	UpdateNodeGroupWithBodyWithResponse(ctx context.Context, clusterId int, nodeGroupId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateNodeGroupResponse, error)
 
-	UpdateANodeGroupWithResponse(ctx context.Context, clusterId int, nodeGroupId int, body UpdateANodeGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateANodeGroupResponse, error)
+	UpdateNodeGroupWithResponse(ctx context.Context, clusterId int, nodeGroupId int, body UpdateNodeGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateNodeGroupResponse, error)
 
 	// GetClusterNodesWithResponse request
 	GetClusterNodesWithResponse(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*GetClusterNodesResponse, error)
@@ -1520,11 +1520,11 @@ type ClientWithResponsesInterface interface {
 	// DeleteClusterNodeWithResponse request
 	DeleteClusterNodeWithResponse(ctx context.Context, clusterId int, nodeId int, reqEditors ...RequestEditorFn) (*DeleteClusterNodeResponse, error)
 
-	// AttemptToManuallyReconcileAClusterWithResponse request
-	AttemptToManuallyReconcileAClusterWithResponse(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*AttemptToManuallyReconcileAClusterResponse, error)
+	// ReconcileClusterWithResponse request
+	ReconcileClusterWithResponse(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*ReconcileClusterResponse, error)
 
-	// DeleteAClusterWithResponse request
-	DeleteAClusterWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteAClusterResponse, error)
+	// DeleteClusterWithResponse request
+	DeleteClusterWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteClusterResponse, error)
 
 	// GettingClusterDetailWithResponse request
 	GettingClusterDetailWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*GettingClusterDetailResponse, error)
@@ -1705,7 +1705,7 @@ func (r CreateNodeGroupResponse) StatusCode() int {
 	return 0
 }
 
-type DeleteANodeGroupResponse struct {
+type DeleteNodeGroupResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -1716,7 +1716,7 @@ type DeleteANodeGroupResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteANodeGroupResponse) Status() string {
+func (r DeleteNodeGroupResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1724,14 +1724,14 @@ func (r DeleteANodeGroupResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteANodeGroupResponse) StatusCode() int {
+func (r DeleteNodeGroupResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type RetrieveANodeGroupResponse struct {
+type GetNodeGroupResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ClusterNodeGroupsGetResponse
@@ -1741,7 +1741,7 @@ type RetrieveANodeGroupResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrieveANodeGroupResponse) Status() string {
+func (r GetNodeGroupResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1749,14 +1749,14 @@ func (r RetrieveANodeGroupResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrieveANodeGroupResponse) StatusCode() int {
+func (r GetNodeGroupResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type UpdateANodeGroupResponse struct {
+type UpdateNodeGroupResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ClusterNodeGroupsCreateResponse
@@ -1767,7 +1767,7 @@ type UpdateANodeGroupResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r UpdateANodeGroupResponse) Status() string {
+func (r UpdateNodeGroupResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1775,7 +1775,7 @@ func (r UpdateANodeGroupResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r UpdateANodeGroupResponse) StatusCode() int {
+func (r UpdateNodeGroupResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1883,7 +1883,7 @@ func (r DeleteClusterNodeResponse) StatusCode() int {
 	return 0
 }
 
-type AttemptToManuallyReconcileAClusterResponse struct {
+type ReconcileClusterResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ManualReconciliationModel
@@ -1893,7 +1893,7 @@ type AttemptToManuallyReconcileAClusterResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r AttemptToManuallyReconcileAClusterResponse) Status() string {
+func (r ReconcileClusterResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1901,14 +1901,14 @@ func (r AttemptToManuallyReconcileAClusterResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r AttemptToManuallyReconcileAClusterResponse) StatusCode() int {
+func (r ReconcileClusterResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type DeleteAClusterResponse struct {
+type DeleteClusterResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -1918,7 +1918,7 @@ type DeleteAClusterResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteAClusterResponse) Status() string {
+func (r DeleteClusterResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1926,7 +1926,7 @@ func (r DeleteAClusterResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteAClusterResponse) StatusCode() int {
+func (r DeleteClusterResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2037,39 +2037,39 @@ func (c *ClientWithResponses) CreateNodeGroupWithResponse(ctx context.Context, c
 	return ParseCreateNodeGroupResponse(rsp)
 }
 
-// DeleteANodeGroupWithResponse request returning *DeleteANodeGroupResponse
-func (c *ClientWithResponses) DeleteANodeGroupWithResponse(ctx context.Context, clusterId int, nodeGroupId int, reqEditors ...RequestEditorFn) (*DeleteANodeGroupResponse, error) {
-	rsp, err := c.DeleteANodeGroup(ctx, clusterId, nodeGroupId, reqEditors...)
+// DeleteNodeGroupWithResponse request returning *DeleteNodeGroupResponse
+func (c *ClientWithResponses) DeleteNodeGroupWithResponse(ctx context.Context, clusterId int, nodeGroupId int, reqEditors ...RequestEditorFn) (*DeleteNodeGroupResponse, error) {
+	rsp, err := c.DeleteNodeGroup(ctx, clusterId, nodeGroupId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteANodeGroupResponse(rsp)
+	return ParseDeleteNodeGroupResponse(rsp)
 }
 
-// RetrieveANodeGroupWithResponse request returning *RetrieveANodeGroupResponse
-func (c *ClientWithResponses) RetrieveANodeGroupWithResponse(ctx context.Context, clusterId int, nodeGroupId int, reqEditors ...RequestEditorFn) (*RetrieveANodeGroupResponse, error) {
-	rsp, err := c.RetrieveANodeGroup(ctx, clusterId, nodeGroupId, reqEditors...)
+// GetNodeGroupWithResponse request returning *GetNodeGroupResponse
+func (c *ClientWithResponses) GetNodeGroupWithResponse(ctx context.Context, clusterId int, nodeGroupId int, reqEditors ...RequestEditorFn) (*GetNodeGroupResponse, error) {
+	rsp, err := c.GetNodeGroup(ctx, clusterId, nodeGroupId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveANodeGroupResponse(rsp)
+	return ParseGetNodeGroupResponse(rsp)
 }
 
-// UpdateANodeGroupWithBodyWithResponse request with arbitrary body returning *UpdateANodeGroupResponse
-func (c *ClientWithResponses) UpdateANodeGroupWithBodyWithResponse(ctx context.Context, clusterId int, nodeGroupId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateANodeGroupResponse, error) {
-	rsp, err := c.UpdateANodeGroupWithBody(ctx, clusterId, nodeGroupId, contentType, body, reqEditors...)
+// UpdateNodeGroupWithBodyWithResponse request with arbitrary body returning *UpdateNodeGroupResponse
+func (c *ClientWithResponses) UpdateNodeGroupWithBodyWithResponse(ctx context.Context, clusterId int, nodeGroupId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateNodeGroupResponse, error) {
+	rsp, err := c.UpdateNodeGroupWithBody(ctx, clusterId, nodeGroupId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUpdateANodeGroupResponse(rsp)
+	return ParseUpdateNodeGroupResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateANodeGroupWithResponse(ctx context.Context, clusterId int, nodeGroupId int, body UpdateANodeGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateANodeGroupResponse, error) {
-	rsp, err := c.UpdateANodeGroup(ctx, clusterId, nodeGroupId, body, reqEditors...)
+func (c *ClientWithResponses) UpdateNodeGroupWithResponse(ctx context.Context, clusterId int, nodeGroupId int, body UpdateNodeGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateNodeGroupResponse, error) {
+	rsp, err := c.UpdateNodeGroup(ctx, clusterId, nodeGroupId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUpdateANodeGroupResponse(rsp)
+	return ParseUpdateNodeGroupResponse(rsp)
 }
 
 // GetClusterNodesWithResponse request returning *GetClusterNodesResponse
@@ -2124,22 +2124,22 @@ func (c *ClientWithResponses) DeleteClusterNodeWithResponse(ctx context.Context,
 	return ParseDeleteClusterNodeResponse(rsp)
 }
 
-// AttemptToManuallyReconcileAClusterWithResponse request returning *AttemptToManuallyReconcileAClusterResponse
-func (c *ClientWithResponses) AttemptToManuallyReconcileAClusterWithResponse(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*AttemptToManuallyReconcileAClusterResponse, error) {
-	rsp, err := c.AttemptToManuallyReconcileACluster(ctx, clusterId, reqEditors...)
+// ReconcileClusterWithResponse request returning *ReconcileClusterResponse
+func (c *ClientWithResponses) ReconcileClusterWithResponse(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*ReconcileClusterResponse, error) {
+	rsp, err := c.ReconcileCluster(ctx, clusterId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseAttemptToManuallyReconcileAClusterResponse(rsp)
+	return ParseReconcileClusterResponse(rsp)
 }
 
-// DeleteAClusterWithResponse request returning *DeleteAClusterResponse
-func (c *ClientWithResponses) DeleteAClusterWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteAClusterResponse, error) {
-	rsp, err := c.DeleteACluster(ctx, id, reqEditors...)
+// DeleteClusterWithResponse request returning *DeleteClusterResponse
+func (c *ClientWithResponses) DeleteClusterWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteClusterResponse, error) {
+	rsp, err := c.DeleteCluster(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteAClusterResponse(rsp)
+	return ParseDeleteClusterResponse(rsp)
 }
 
 // GettingClusterDetailWithResponse request returning *GettingClusterDetailResponse
@@ -2480,15 +2480,15 @@ func ParseCreateNodeGroupResponse(rsp *http.Response) (*CreateNodeGroupResponse,
 	return response, nil
 }
 
-// ParseDeleteANodeGroupResponse parses an HTTP response from a DeleteANodeGroupWithResponse call
-func ParseDeleteANodeGroupResponse(rsp *http.Response) (*DeleteANodeGroupResponse, error) {
+// ParseDeleteNodeGroupResponse parses an HTTP response from a DeleteNodeGroupWithResponse call
+func ParseDeleteNodeGroupResponse(rsp *http.Response) (*DeleteNodeGroupResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteANodeGroupResponse{
+	response := &DeleteNodeGroupResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2534,15 +2534,15 @@ func ParseDeleteANodeGroupResponse(rsp *http.Response) (*DeleteANodeGroupRespons
 	return response, nil
 }
 
-// ParseRetrieveANodeGroupResponse parses an HTTP response from a RetrieveANodeGroupWithResponse call
-func ParseRetrieveANodeGroupResponse(rsp *http.Response) (*RetrieveANodeGroupResponse, error) {
+// ParseGetNodeGroupResponse parses an HTTP response from a GetNodeGroupWithResponse call
+func ParseGetNodeGroupResponse(rsp *http.Response) (*GetNodeGroupResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrieveANodeGroupResponse{
+	response := &GetNodeGroupResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2581,15 +2581,15 @@ func ParseRetrieveANodeGroupResponse(rsp *http.Response) (*RetrieveANodeGroupRes
 	return response, nil
 }
 
-// ParseUpdateANodeGroupResponse parses an HTTP response from a UpdateANodeGroupWithResponse call
-func ParseUpdateANodeGroupResponse(rsp *http.Response) (*UpdateANodeGroupResponse, error) {
+// ParseUpdateNodeGroupResponse parses an HTTP response from a UpdateNodeGroupWithResponse call
+func ParseUpdateNodeGroupResponse(rsp *http.Response) (*UpdateNodeGroupResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &UpdateANodeGroupResponse{
+	response := &UpdateNodeGroupResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2830,15 +2830,15 @@ func ParseDeleteClusterNodeResponse(rsp *http.Response) (*DeleteClusterNodeRespo
 	return response, nil
 }
 
-// ParseAttemptToManuallyReconcileAClusterResponse parses an HTTP response from a AttemptToManuallyReconcileAClusterWithResponse call
-func ParseAttemptToManuallyReconcileAClusterResponse(rsp *http.Response) (*AttemptToManuallyReconcileAClusterResponse, error) {
+// ParseReconcileClusterResponse parses an HTTP response from a ReconcileClusterWithResponse call
+func ParseReconcileClusterResponse(rsp *http.Response) (*ReconcileClusterResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &AttemptToManuallyReconcileAClusterResponse{
+	response := &ReconcileClusterResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2877,15 +2877,15 @@ func ParseAttemptToManuallyReconcileAClusterResponse(rsp *http.Response) (*Attem
 	return response, nil
 }
 
-// ParseDeleteAClusterResponse parses an HTTP response from a DeleteAClusterWithResponse call
-func ParseDeleteAClusterResponse(rsp *http.Response) (*DeleteAClusterResponse, error) {
+// ParseDeleteClusterResponse parses an HTTP response from a DeleteClusterWithResponse call
+func ParseDeleteClusterResponse(rsp *http.Response) (*DeleteClusterResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteAClusterResponse{
+	response := &DeleteClusterResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

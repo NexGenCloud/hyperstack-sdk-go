@@ -72,16 +72,16 @@ type ResponseModel struct {
 	Status  *bool   `json:"status,omitempty"`
 }
 
-// RetrieveComplianceParams defines parameters for RetrieveCompliance.
-type RetrieveComplianceParams struct {
+// GetComplianceParams defines parameters for GetCompliance.
+type GetComplianceParams struct {
 	Gpu *string `form:"gpu,omitempty" json:"gpu,omitempty"`
 }
 
 // CreateComplianceJSONRequestBody defines body for CreateCompliance for application/json ContentType.
 type CreateComplianceJSONRequestBody = CompliancePayload
 
-// UpdateAComplianceJSONRequestBody defines body for UpdateACompliance for application/json ContentType.
-type UpdateAComplianceJSONRequestBody = CompliancePayload
+// UpdateComplianceJSONRequestBody defines body for UpdateCompliance for application/json ContentType.
+type UpdateComplianceJSONRequestBody = CompliancePayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -156,25 +156,25 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// RetrieveCompliance request
-	RetrieveCompliance(ctx context.Context, params *RetrieveComplianceParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetCompliance request
+	GetCompliance(ctx context.Context, params *GetComplianceParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateComplianceWithBody request with any body
 	CreateComplianceWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateCompliance(ctx context.Context, body CreateComplianceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateAComplianceWithBody request with any body
-	UpdateAComplianceWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdateComplianceWithBody request with any body
+	UpdateComplianceWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateACompliance(ctx context.Context, body UpdateAComplianceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateCompliance(ctx context.Context, body UpdateComplianceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteACompliance request
-	DeleteACompliance(ctx context.Context, gpuModel string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteCompliance request
+	DeleteCompliance(ctx context.Context, gpuModel string, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) RetrieveCompliance(ctx context.Context, params *RetrieveComplianceParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRetrieveComplianceRequest(c.Server, params)
+func (c *Client) GetCompliance(ctx context.Context, params *GetComplianceParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetComplianceRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -209,8 +209,8 @@ func (c *Client) CreateCompliance(ctx context.Context, body CreateComplianceJSON
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateAComplianceWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateAComplianceRequestWithBody(c.Server, contentType, body)
+func (c *Client) UpdateComplianceWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateComplianceRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -221,8 +221,8 @@ func (c *Client) UpdateAComplianceWithBody(ctx context.Context, contentType stri
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateACompliance(ctx context.Context, body UpdateAComplianceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateAComplianceRequest(c.Server, body)
+func (c *Client) UpdateCompliance(ctx context.Context, body UpdateComplianceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateComplianceRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -233,8 +233,8 @@ func (c *Client) UpdateACompliance(ctx context.Context, body UpdateAComplianceJS
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteACompliance(ctx context.Context, gpuModel string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteAComplianceRequest(c.Server, gpuModel)
+func (c *Client) DeleteCompliance(ctx context.Context, gpuModel string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteComplianceRequest(c.Server, gpuModel)
 	if err != nil {
 		return nil, err
 	}
@@ -245,8 +245,8 @@ func (c *Client) DeleteACompliance(ctx context.Context, gpuModel string, reqEdit
 	return c.Client.Do(req)
 }
 
-// NewRetrieveComplianceRequest generates requests for RetrieveCompliance
-func NewRetrieveComplianceRequest(server string, params *RetrieveComplianceParams) (*http.Request, error) {
+// NewGetComplianceRequest generates requests for GetCompliance
+func NewGetComplianceRequest(server string, params *GetComplianceParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -334,19 +334,19 @@ func NewCreateComplianceRequestWithBody(server string, contentType string, body 
 	return req, nil
 }
 
-// NewUpdateAComplianceRequest calls the generic UpdateACompliance builder with application/json body
-func NewUpdateAComplianceRequest(server string, body UpdateAComplianceJSONRequestBody) (*http.Request, error) {
+// NewUpdateComplianceRequest calls the generic UpdateCompliance builder with application/json body
+func NewUpdateComplianceRequest(server string, body UpdateComplianceJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUpdateAComplianceRequestWithBody(server, "application/json", bodyReader)
+	return NewUpdateComplianceRequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewUpdateAComplianceRequestWithBody generates requests for UpdateACompliance with any type of body
-func NewUpdateAComplianceRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewUpdateComplianceRequestWithBody generates requests for UpdateCompliance with any type of body
+func NewUpdateComplianceRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -374,8 +374,8 @@ func NewUpdateAComplianceRequestWithBody(server string, contentType string, body
 	return req, nil
 }
 
-// NewDeleteAComplianceRequest generates requests for DeleteACompliance
-func NewDeleteAComplianceRequest(server string, gpuModel string) (*http.Request, error) {
+// NewDeleteComplianceRequest generates requests for DeleteCompliance
+func NewDeleteComplianceRequest(server string, gpuModel string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -451,24 +451,24 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// RetrieveComplianceWithResponse request
-	RetrieveComplianceWithResponse(ctx context.Context, params *RetrieveComplianceParams, reqEditors ...RequestEditorFn) (*RetrieveComplianceResponse, error)
+	// GetComplianceWithResponse request
+	GetComplianceWithResponse(ctx context.Context, params *GetComplianceParams, reqEditors ...RequestEditorFn) (*GetComplianceResponse, error)
 
 	// CreateComplianceWithBodyWithResponse request with any body
 	CreateComplianceWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateComplianceResponse, error)
 
 	CreateComplianceWithResponse(ctx context.Context, body CreateComplianceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateComplianceResponse, error)
 
-	// UpdateAComplianceWithBodyWithResponse request with any body
-	UpdateAComplianceWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAComplianceResponse, error)
+	// UpdateComplianceWithBodyWithResponse request with any body
+	UpdateComplianceWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateComplianceResponse, error)
 
-	UpdateAComplianceWithResponse(ctx context.Context, body UpdateAComplianceJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAComplianceResponse, error)
+	UpdateComplianceWithResponse(ctx context.Context, body UpdateComplianceJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateComplianceResponse, error)
 
-	// DeleteAComplianceWithResponse request
-	DeleteAComplianceWithResponse(ctx context.Context, gpuModel string, reqEditors ...RequestEditorFn) (*DeleteAComplianceResponse, error)
+	// DeleteComplianceWithResponse request
+	DeleteComplianceWithResponse(ctx context.Context, gpuModel string, reqEditors ...RequestEditorFn) (*DeleteComplianceResponse, error)
 }
 
-type RetrieveComplianceResponse struct {
+type GetComplianceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ComplianceResponse
@@ -479,7 +479,7 @@ type RetrieveComplianceResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RetrieveComplianceResponse) Status() string {
+func (r GetComplianceResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -487,7 +487,7 @@ func (r RetrieveComplianceResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RetrieveComplianceResponse) StatusCode() int {
+func (r GetComplianceResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -521,7 +521,7 @@ func (r CreateComplianceResponse) StatusCode() int {
 	return 0
 }
 
-type UpdateAComplianceResponse struct {
+type UpdateComplianceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *CreateUpdateComplianceResponse
@@ -532,7 +532,7 @@ type UpdateAComplianceResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r UpdateAComplianceResponse) Status() string {
+func (r UpdateComplianceResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -540,14 +540,14 @@ func (r UpdateAComplianceResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r UpdateAComplianceResponse) StatusCode() int {
+func (r UpdateComplianceResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type DeleteAComplianceResponse struct {
+type DeleteComplianceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResponseModel
@@ -557,7 +557,7 @@ type DeleteAComplianceResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteAComplianceResponse) Status() string {
+func (r DeleteComplianceResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -565,20 +565,20 @@ func (r DeleteAComplianceResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteAComplianceResponse) StatusCode() int {
+func (r DeleteComplianceResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// RetrieveComplianceWithResponse request returning *RetrieveComplianceResponse
-func (c *ClientWithResponses) RetrieveComplianceWithResponse(ctx context.Context, params *RetrieveComplianceParams, reqEditors ...RequestEditorFn) (*RetrieveComplianceResponse, error) {
-	rsp, err := c.RetrieveCompliance(ctx, params, reqEditors...)
+// GetComplianceWithResponse request returning *GetComplianceResponse
+func (c *ClientWithResponses) GetComplianceWithResponse(ctx context.Context, params *GetComplianceParams, reqEditors ...RequestEditorFn) (*GetComplianceResponse, error) {
+	rsp, err := c.GetCompliance(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveComplianceResponse(rsp)
+	return ParseGetComplianceResponse(rsp)
 }
 
 // CreateComplianceWithBodyWithResponse request with arbitrary body returning *CreateComplianceResponse
@@ -598,41 +598,41 @@ func (c *ClientWithResponses) CreateComplianceWithResponse(ctx context.Context, 
 	return ParseCreateComplianceResponse(rsp)
 }
 
-// UpdateAComplianceWithBodyWithResponse request with arbitrary body returning *UpdateAComplianceResponse
-func (c *ClientWithResponses) UpdateAComplianceWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAComplianceResponse, error) {
-	rsp, err := c.UpdateAComplianceWithBody(ctx, contentType, body, reqEditors...)
+// UpdateComplianceWithBodyWithResponse request with arbitrary body returning *UpdateComplianceResponse
+func (c *ClientWithResponses) UpdateComplianceWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateComplianceResponse, error) {
+	rsp, err := c.UpdateComplianceWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUpdateAComplianceResponse(rsp)
+	return ParseUpdateComplianceResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateAComplianceWithResponse(ctx context.Context, body UpdateAComplianceJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAComplianceResponse, error) {
-	rsp, err := c.UpdateACompliance(ctx, body, reqEditors...)
+func (c *ClientWithResponses) UpdateComplianceWithResponse(ctx context.Context, body UpdateComplianceJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateComplianceResponse, error) {
+	rsp, err := c.UpdateCompliance(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUpdateAComplianceResponse(rsp)
+	return ParseUpdateComplianceResponse(rsp)
 }
 
-// DeleteAComplianceWithResponse request returning *DeleteAComplianceResponse
-func (c *ClientWithResponses) DeleteAComplianceWithResponse(ctx context.Context, gpuModel string, reqEditors ...RequestEditorFn) (*DeleteAComplianceResponse, error) {
-	rsp, err := c.DeleteACompliance(ctx, gpuModel, reqEditors...)
+// DeleteComplianceWithResponse request returning *DeleteComplianceResponse
+func (c *ClientWithResponses) DeleteComplianceWithResponse(ctx context.Context, gpuModel string, reqEditors ...RequestEditorFn) (*DeleteComplianceResponse, error) {
+	rsp, err := c.DeleteCompliance(ctx, gpuModel, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteAComplianceResponse(rsp)
+	return ParseDeleteComplianceResponse(rsp)
 }
 
-// ParseRetrieveComplianceResponse parses an HTTP response from a RetrieveComplianceWithResponse call
-func ParseRetrieveComplianceResponse(rsp *http.Response) (*RetrieveComplianceResponse, error) {
+// ParseGetComplianceResponse parses an HTTP response from a GetComplianceWithResponse call
+func ParseGetComplianceResponse(rsp *http.Response) (*GetComplianceResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RetrieveComplianceResponse{
+	response := &GetComplianceResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -739,15 +739,15 @@ func ParseCreateComplianceResponse(rsp *http.Response) (*CreateComplianceRespons
 	return response, nil
 }
 
-// ParseUpdateAComplianceResponse parses an HTTP response from a UpdateAComplianceWithResponse call
-func ParseUpdateAComplianceResponse(rsp *http.Response) (*UpdateAComplianceResponse, error) {
+// ParseUpdateComplianceResponse parses an HTTP response from a UpdateComplianceWithResponse call
+func ParseUpdateComplianceResponse(rsp *http.Response) (*UpdateComplianceResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &UpdateAComplianceResponse{
+	response := &UpdateComplianceResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -793,15 +793,15 @@ func ParseUpdateAComplianceResponse(rsp *http.Response) (*UpdateAComplianceRespo
 	return response, nil
 }
 
-// ParseDeleteAComplianceResponse parses an HTTP response from a DeleteAComplianceWithResponse call
-func ParseDeleteAComplianceResponse(rsp *http.Response) (*DeleteAComplianceResponse, error) {
+// ParseDeleteComplianceResponse parses an HTTP response from a DeleteComplianceWithResponse call
+func ParseDeleteComplianceResponse(rsp *http.Response) (*DeleteComplianceResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteAComplianceResponse{
+	response := &DeleteComplianceResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

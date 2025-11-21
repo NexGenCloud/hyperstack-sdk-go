@@ -1,7 +1,7 @@
 /*
 Infrahub-API
 
-Testing VirtualMachineEventsAPIService
+Testing FIPExclusionsAPIService
 
 */
 
@@ -18,18 +18,18 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test_hyperstack_VirtualMachineEventsAPIService(t *testing.T) {
+func Test_hyperstack_FIPExclusionsAPIService(t *testing.T) {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test VirtualMachineEventsAPIService ListVMEvents", func(t *testing.T) {
+	t.Run("Test FIPExclusionsAPIService CheckIfOrgIsExcludedFromFloatingIPDetachment", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var vmId int32
+		var orgId int32
 
-		resp, httpRes, err := apiClient.VirtualMachineEventsAPI.ListVMEvents(context.Background(), vmId).Execute()
+		resp, httpRes, err := apiClient.FIPExclusionsAPI.CheckIfOrgIsExcludedFromFloatingIPDetachment(context.Background(), orgId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

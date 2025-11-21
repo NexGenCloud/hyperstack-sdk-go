@@ -21,189 +21,31 @@ import (
 // UserAPIService UserAPI service
 type UserAPIService service
 
-type ApiGetUserRequest struct {
-	ctx        context.Context
-	ApiService *UserAPIService
-}
-
-func (r ApiGetUserRequest) Execute() (*UsersInfoListResponse, *http.Response, error) {
-	return r.ApiService.GetUserExecute(r)
-}
-
-/*
-GetUser GET: Retrieve billing info
-
-Retrieve the billing details associated with your organization.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUserRequest
-*/
-func (a *UserAPIService) GetUser(ctx context.Context) ApiGetUserRequest {
-	return ApiGetUserRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return UsersInfoListResponse
-func (a *UserAPIService) GetUserExecute(r ApiGetUserRequest) (*UsersInfoListResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *UsersInfoListResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.GetUser")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/billing/user/info"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["apiKey"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["api_key"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ErrorResponseModel
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiPostUserRequest struct {
+type ApiAddUserBillingInfoRequest struct {
 	ctx        context.Context
 	ApiService *UserAPIService
 	payload    *UserInfoPostPayload
 }
 
-func (r ApiPostUserRequest) Payload(payload UserInfoPostPayload) ApiPostUserRequest {
+func (r ApiAddUserBillingInfoRequest) Payload(payload UserInfoPostPayload) ApiAddUserBillingInfoRequest {
 	r.payload = &payload
 	return r
 }
 
-func (r ApiPostUserRequest) Execute() (*AddUserInfoSuccessResponseModel, *http.Response, error) {
-	return r.ApiService.PostUserExecute(r)
+func (r ApiAddUserBillingInfoRequest) Execute() (*AddUserInfoSuccessResponseModel, *http.Response, error) {
+	return r.ApiService.AddUserBillingInfoExecute(r)
 }
 
 /*
-PostUser POST: Insert billing info
+AddUserBillingInfo POST: Insert billing info
 
-Add billing details associated with your organization in the request body.
+Add billing details associated with your user in the request body.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiPostUserRequest
+	@return ApiAddUserBillingInfoRequest
 */
-func (a *UserAPIService) PostUser(ctx context.Context) ApiPostUserRequest {
-	return ApiPostUserRequest{
+func (a *UserAPIService) AddUserBillingInfo(ctx context.Context) ApiAddUserBillingInfoRequest {
+	return ApiAddUserBillingInfoRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -212,7 +54,7 @@ func (a *UserAPIService) PostUser(ctx context.Context) ApiPostUserRequest {
 // Execute executes the request
 //
 //	@return AddUserInfoSuccessResponseModel
-func (a *UserAPIService) PostUserExecute(r ApiPostUserRequest) (*AddUserInfoSuccessResponseModel, *http.Response, error) {
+func (a *UserAPIService) AddUserBillingInfoExecute(r ApiAddUserBillingInfoRequest) (*AddUserInfoSuccessResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -220,7 +62,7 @@ func (a *UserAPIService) PostUserExecute(r ApiPostUserRequest) (*AddUserInfoSucc
 		localVarReturnValue *AddUserInfoSuccessResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.PostUser")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.AddUserBillingInfo")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -348,31 +190,189 @@ func (a *UserAPIService) PostUserExecute(r ApiPostUserRequest) (*AddUserInfoSucc
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiPutUserRequest struct {
+type ApiGetUserBillingInfoRequest struct {
+	ctx        context.Context
+	ApiService *UserAPIService
+}
+
+func (r ApiGetUserBillingInfoRequest) Execute() (*UsersInfoListResponse, *http.Response, error) {
+	return r.ApiService.GetUserBillingInfoExecute(r)
+}
+
+/*
+GetUserBillingInfo GET: Retrieve billing info
+
+Retrieve the billing details associated with your user.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetUserBillingInfoRequest
+*/
+func (a *UserAPIService) GetUserBillingInfo(ctx context.Context) ApiGetUserBillingInfoRequest {
+	return ApiGetUserBillingInfoRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return UsersInfoListResponse
+func (a *UserAPIService) GetUserBillingInfoExecute(r ApiGetUserBillingInfoRequest) (*UsersInfoListResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *UsersInfoListResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.GetUserBillingInfo")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/billing/user/info"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["apiKey"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseModel
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiUpdateUserBillingInfoRequest struct {
 	ctx        context.Context
 	ApiService *UserAPIService
 	payload    *UserInfoPostPayload
 }
 
-func (r ApiPutUserRequest) Payload(payload UserInfoPostPayload) ApiPutUserRequest {
+func (r ApiUpdateUserBillingInfoRequest) Payload(payload UserInfoPostPayload) ApiUpdateUserBillingInfoRequest {
 	r.payload = &payload
 	return r
 }
 
-func (r ApiPutUserRequest) Execute() (*AddUserInfoSuccessResponseModel, *http.Response, error) {
-	return r.ApiService.PutUserExecute(r)
+func (r ApiUpdateUserBillingInfoRequest) Execute() (*AddUserInfoSuccessResponseModel, *http.Response, error) {
+	return r.ApiService.UpdateUserBillingInfoExecute(r)
 }
 
 /*
-PutUser PUT: Update billing info
+UpdateUserBillingInfo PUT: Update billing info
 
-Update the billing information for your organization in the request body.
+Update the billing information for your user in the request body.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiPutUserRequest
+	@return ApiUpdateUserBillingInfoRequest
 */
-func (a *UserAPIService) PutUser(ctx context.Context) ApiPutUserRequest {
-	return ApiPutUserRequest{
+func (a *UserAPIService) UpdateUserBillingInfo(ctx context.Context) ApiUpdateUserBillingInfoRequest {
+	return ApiUpdateUserBillingInfoRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -381,7 +381,7 @@ func (a *UserAPIService) PutUser(ctx context.Context) ApiPutUserRequest {
 // Execute executes the request
 //
 //	@return AddUserInfoSuccessResponseModel
-func (a *UserAPIService) PutUserExecute(r ApiPutUserRequest) (*AddUserInfoSuccessResponseModel, *http.Response, error) {
+func (a *UserAPIService) UpdateUserBillingInfoExecute(r ApiUpdateUserBillingInfoRequest) (*AddUserInfoSuccessResponseModel, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
@@ -389,7 +389,7 @@ func (a *UserAPIService) PutUserExecute(r ApiPutUserRequest) (*AddUserInfoSucces
 		localVarReturnValue *AddUserInfoSuccessResponseModel
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.PutUser")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.UpdateUserBillingInfo")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
