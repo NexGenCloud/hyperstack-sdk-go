@@ -6,9 +6,9 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**ChangeOrganizationForToken**](AuthAPI.md#ChangeOrganizationForToken) | **Get** /auth/token/change-org/{org_id} | 
 [**DisableMFA**](AuthAPI.md#DisableMFA) | **Get** /auth/me/mfa/disable | 
-[**GetAuthenticatedUser**](AuthAPI.md#GetAuthenticatedUser) | **Get** /auth/me | Retrieve Authenticated User Details
 [**GetUserMFAStatus**](AuthAPI.md#GetUserMFAStatus) | **Get** /auth/me/mfa | Get MFA status for authenticated user
 [**GetUserOrganizations**](AuthAPI.md#GetUserOrganizations) | **Get** /auth/me/organizations | Get User Organizations
+[**RetrieveAuthenticatedUserDetails**](AuthAPI.md#RetrieveAuthenticatedUserDetails) | **Get** /auth/me | Retrieve Authenticated User Details
 
 
 
@@ -143,67 +143,6 @@ Other parameters are passed through a pointer to a apiDisableMFARequest struct v
 [[Back to README]](../README.md)
 
 
-## GetAuthenticatedUser
-
-> AuthUserInfoResponseModel GetAuthenticatedUser(ctx).Execute()
-
-Retrieve Authenticated User Details
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.AuthAPI.GetAuthenticatedUser(context.Background()).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `AuthAPI.GetAuthenticatedUser``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `GetAuthenticatedUser`: AuthUserInfoResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `AuthAPI.GetAuthenticatedUser`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-This endpoint does not need any parameter.
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetAuthenticatedUserRequest struct via the builder pattern
-
-
-### Return type
-
-[**AuthUserInfoResponseModel**](AuthUserInfoResponseModel.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
 ## GetUserMFAStatus
 
 > MFAStatusResponse GetUserMFAStatus(ctx).Execute()
@@ -311,6 +250,67 @@ Other parameters are passed through a pointer to a apiGetUserOrganizationsReques
 ### Return type
 
 [**UserOrganizationsResponse**](UserOrganizationsResponse.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## RetrieveAuthenticatedUserDetails
+
+> AuthUserInfoResponseModel RetrieveAuthenticatedUserDetails(ctx).Execute()
+
+Retrieve Authenticated User Details
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.AuthAPI.RetrieveAuthenticatedUserDetails(context.Background()).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `AuthAPI.RetrieveAuthenticatedUserDetails``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `RetrieveAuthenticatedUserDetails`: AuthUserInfoResponseModel
+	fmt.Fprintf(os.Stdout, "Response from `AuthAPI.RetrieveAuthenticatedUserDetails`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRetrieveAuthenticatedUserDetailsRequest struct via the builder pattern
+
+
+### Return type
+
+[**AuthUserInfoResponseModel**](AuthUserInfoResponseModel.md)
 
 ### Authorization
 

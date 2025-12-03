@@ -589,7 +589,7 @@ paths:
     get:
       description: "Retrieves detailed information about the currently authenticated\
         \ user. For additional information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/auth-resources/auth)."
-      operationId: Get_Authenticated_User
+      operationId: RetrieveAuthenticatedUserDetails
       responses:
         "200":
           content:
@@ -14525,6 +14525,8 @@ components:
         description:
           type: string
         name:
+          maxLength: 200
+          minLength: 1
           type: string
       required:
       - name
