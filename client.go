@@ -48,6 +48,8 @@ type APIClient struct {
 
 	// API Services
 
+	AccessKeysAPI *AccessKeysAPIService
+
 	AliveAPI *AliveAPIService
 
 	ApiKeyAPI *ApiKeyAPIService
@@ -59,6 +61,8 @@ type APIClient struct {
 	BetaAccessAPI *BetaAccessAPIService
 
 	BillingAPI *BillingAPIService
+
+	BucketsAPI *BucketsAPIService
 
 	CalculateAPI *CalculateAPIService
 
@@ -92,6 +96,8 @@ type APIClient struct {
 
 	GpuAPI *GpuAPIService
 
+	HealthAPI *HealthAPIService
+
 	ImageAPI *ImageAPIService
 
 	InviteAPI *InviteAPIService
@@ -115,6 +121,8 @@ type APIClient struct {
 	RbacRoleAPI *RbacRoleAPIService
 
 	RegionAPI *RegionAPIService
+
+	RegionsAPI *RegionsAPIService
 
 	SecurityRulesAPI *SecurityRulesAPIService
 
@@ -161,12 +169,14 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
+	c.AccessKeysAPI = (*AccessKeysAPIService)(&c.common)
 	c.AliveAPI = (*AliveAPIService)(&c.common)
 	c.ApiKeyAPI = (*ApiKeyAPIService)(&c.common)
 	c.AssigningMemberRoleAPI = (*AssigningMemberRoleAPIService)(&c.common)
 	c.AuthAPI = (*AuthAPIService)(&c.common)
 	c.BetaAccessAPI = (*BetaAccessAPIService)(&c.common)
 	c.BillingAPI = (*BillingAPIService)(&c.common)
+	c.BucketsAPI = (*BucketsAPIService)(&c.common)
 	c.CalculateAPI = (*CalculateAPIService)(&c.common)
 	c.CallbacksAPI = (*CallbacksAPIService)(&c.common)
 	c.ClusterEventsAPI = (*ClusterEventsAPIService)(&c.common)
@@ -183,6 +193,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.FlavorAPI = (*FlavorAPIService)(&c.common)
 	c.FloatingIpAPI = (*FloatingIpAPIService)(&c.common)
 	c.GpuAPI = (*GpuAPIService)(&c.common)
+	c.HealthAPI = (*HealthAPIService)(&c.common)
 	c.ImageAPI = (*ImageAPIService)(&c.common)
 	c.InviteAPI = (*InviteAPIService)(&c.common)
 	c.KeypairAPI = (*KeypairAPIService)(&c.common)
@@ -195,6 +206,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.ProfileAPI = (*ProfileAPIService)(&c.common)
 	c.RbacRoleAPI = (*RbacRoleAPIService)(&c.common)
 	c.RegionAPI = (*RegionAPIService)(&c.common)
+	c.RegionsAPI = (*RegionsAPIService)(&c.common)
 	c.SecurityRulesAPI = (*SecurityRulesAPIService)(&c.common)
 	c.SnapshotEventsAPI = (*SnapshotEventsAPIService)(&c.common)
 	c.SnapshotsAPI = (*SnapshotsAPIService)(&c.common)

@@ -9,6 +9,9 @@ info:
   version: "1.0"
 servers:
 - url: https://infrahub-api.nexgencloud.com/v1
+security:
+- accessToken: []
+- apiKey: []
 tags:
 - description: Authentication APIs using authentik
   name: auth
@@ -100,6 +103,10 @@ tags:
 - name: credit
 - name: payment
 - name: user
+- name: Access Keys
+- name: Buckets
+- name: Health
+- name: Regions
 paths:
   /api-key:
     get:
@@ -10306,6 +10313,243 @@ paths:
       tags:
       - callbacks
       x-codegen-request-body-name: payload
+  /object-storage/access-keys:
+    get:
+      operationId: listAccessKeysEndpoint
+      parameters:
+      - explode: true
+        in: query
+        name: search
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/object_storage__AccessKeyListResponse'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/object_storage__ErrorResponse'
+          description: Bad Request
+        "422":
+          content: {}
+          description: Validation Error
+      summary: List access keys
+      tags:
+      - Access Keys
+    post:
+      operationId: createAccessKeyEndpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/object_storage__AccessKeyCreateRequest'
+        required: false
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/object_storage__AccessKeyCreateResponse'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/object_storage__ErrorResponse'
+          description: Bad Request
+        "422":
+          content: {}
+          description: Validation Error
+      summary: Generate a new access key
+      tags:
+      - Access Keys
+      x-codegen-request-body-name: body
+  /object-storage/access-keys/{access_key_id}:
+    delete:
+      operationId: deleteAccessKeyEndpoint
+      parameters:
+      - explode: false
+        in: path
+        name: access_key_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/object_storage__DeleteResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/object_storage__ErrorResponse'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/object_storage__ErrorResponse'
+          description: Not Found
+        "422":
+          content: {}
+          description: Validation Error
+      summary: Remove an existing access key
+      tags:
+      - Access Keys
+  /object-storage/buckets:
+    get:
+      operationId: listBucketsEndpoint
+      parameters:
+      - explode: true
+        in: query
+        name: search
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/object_storage__BucketListResponse'
+          description: OK
+        "422":
+          content: {}
+          description: Validation Error
+      summary: List buckets
+      tags:
+      - Buckets
+  /object-storage/buckets/{bucket_name}:
+    delete:
+      operationId: deleteBucketEndpoint
+      parameters:
+      - explode: false
+        in: path
+        name: bucket_name
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: region
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/object_storage__DeleteResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/object_storage__ErrorResponse'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/object_storage__ErrorResponse'
+          description: Not Found
+        "422":
+          content: {}
+          description: Validation Error
+      summary: Delete a bucket
+      tags:
+      - Buckets
+    get:
+      operationId: retrieveBucketEndpoint
+      parameters:
+      - explode: false
+        in: path
+        name: bucket_name
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: region
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/object_storage__BucketResponse'
+          description: OK
+        "422":
+          content: {}
+          description: Validation Error
+      summary: Retrieve a bucket
+      tags:
+      - Buckets
+  /object-storage/healthz:
+    get:
+      operationId: healthzEndpoint
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/object_storage__HealthResponse'
+          description: OK
+        "422":
+          content: {}
+          description: Validation Error
+      summary: Healthcheck
+      tags:
+      - Health
+  /object-storage/regions:
+    get:
+      operationId: listRegionsEndpoint
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/object_storage__RegionListResponse'
+          description: OK
+        "422":
+          content: {}
+          description: Validation Error
+      summary: Get a list of supported regions
+      tags:
+      - Regions
   /pricebook:
     get:
       description: "Retrieves the Infrahub Pricebook, detailing hourly running costs\
@@ -20467,6 +20711,290 @@ components:
       type: object
     metrics:
       type: object
+    object_storage__AccessKeyCreateRequest:
+      properties:
+        description:
+          title: Description
+          type: object
+        region:
+          $ref: '#/components/schemas/object_storage__RegionsEnum'
+      required:
+      - region
+      title: AccessKeyCreateRequest
+      type: object
+    object_storage__AccessKeyCreateResponse:
+      example:
+        secret_key: secret_key
+        user_id: 6
+        access_key: access_key
+        created_at: 2000-01-23T04:56:07.000+00:00
+        description: "{}"
+        id: 0
+        region: CANADA-1
+      properties:
+        access_key:
+          title: Access Key
+          type: string
+        created_at:
+          format: date-time
+          title: Created At
+          type: string
+        description:
+          title: Description
+          type: object
+        id:
+          title: Id
+          type: integer
+        region:
+          $ref: '#/components/schemas/object_storage__RegionsEnum'
+        secret_key:
+          title: Secret Key
+          type: string
+        user_id:
+          title: User Id
+          type: integer
+      required:
+      - access_key
+      - created_at
+      - id
+      - region
+      - secret_key
+      - user_id
+      title: AccessKeyCreateResponse
+      type: object
+    object_storage__AccessKeyListResponse:
+      example:
+        meta:
+          count: 1
+          total_pages: 5
+          current_page: 5
+        access_keys:
+        - user_id: 6
+          access_key: access_key
+          created_at: 2000-01-23T04:56:07.000+00:00
+          description: "{}"
+          id: 0
+          region: CANADA-1
+        - user_id: 6
+          access_key: access_key
+          created_at: 2000-01-23T04:56:07.000+00:00
+          description: "{}"
+          id: 0
+          region: CANADA-1
+      properties:
+        access_keys:
+          items:
+            $ref: '#/components/schemas/object_storage__AccessKeyResponse'
+          title: Access Keys
+          type: array
+        meta:
+          $ref: '#/components/schemas/object_storage__PaginationMeta'
+      required:
+      - access_keys
+      - meta
+      title: AccessKeyListResponse
+      type: object
+    object_storage__AccessKeyResponse:
+      example:
+        user_id: 6
+        access_key: access_key
+        created_at: 2000-01-23T04:56:07.000+00:00
+        description: "{}"
+        id: 0
+        region: CANADA-1
+      properties:
+        access_key:
+          title: Access Key
+          type: string
+        created_at:
+          format: date-time
+          title: Created At
+          type: string
+        description:
+          title: Description
+          type: object
+        id:
+          title: Id
+          type: integer
+        region:
+          $ref: '#/components/schemas/object_storage__RegionsEnum'
+        user_id:
+          title: User Id
+          type: integer
+      required:
+      - access_key
+      - created_at
+      - id
+      - region
+      - user_id
+      title: AccessKeyResponse
+      type: object
+    object_storage__BucketListResponse:
+      example:
+        buckets:
+        - endpoint: endpoint
+          size_bytes: 6
+          num_objects: 0
+          name: name
+          created_at: 2000-01-23T04:56:07.000+00:00
+          size_bytes_actual: 1
+          region: CANADA-1
+        - endpoint: endpoint
+          size_bytes: 6
+          num_objects: 0
+          name: name
+          created_at: 2000-01-23T04:56:07.000+00:00
+          size_bytes_actual: 1
+          region: CANADA-1
+      properties:
+        buckets:
+          items:
+            $ref: '#/components/schemas/object_storage__BucketResponse'
+          title: Buckets
+          type: array
+      required:
+      - buckets
+      title: BucketListResponse
+      type: object
+    object_storage__BucketResponse:
+      example:
+        endpoint: endpoint
+        size_bytes: 6
+        num_objects: 0
+        name: name
+        created_at: 2000-01-23T04:56:07.000+00:00
+        size_bytes_actual: 1
+        region: CANADA-1
+      properties:
+        created_at:
+          format: date-time
+          title: Created At
+          type: string
+        endpoint:
+          title: Endpoint
+          type: string
+        name:
+          title: Name
+          type: string
+        num_objects:
+          description: Number of objects
+          title: Num Objects
+          type: integer
+        region:
+          $ref: '#/components/schemas/object_storage__RegionsEnum'
+        size_bytes:
+          description: Accumulated size in bytes
+          title: Size Bytes
+          type: integer
+        size_bytes_actual:
+          description: Size utilized in bytes
+          title: Size Bytes Actual
+          type: integer
+      required:
+      - created_at
+      - endpoint
+      - name
+      - num_objects
+      - region
+      - size_bytes
+      - size_bytes_actual
+      title: BucketResponse
+      type: object
+    object_storage__DeleteResponse:
+      example:
+        message: message
+      properties:
+        message:
+          title: Message
+          type: string
+      required:
+      - message
+      title: DeleteResponse
+      type: object
+    object_storage__ErrorResponse:
+      example:
+        error_reason: error_reason
+        message: message
+        status: false
+      properties:
+        error_reason:
+          title: Error Reason
+          type: string
+        message:
+          title: Message
+          type: string
+        status:
+          default: false
+          title: Status
+          type: boolean
+      required:
+      - error_reason
+      - message
+      title: ErrorResponse
+      type: object
+    object_storage__HealthResponse:
+      example:
+        status: status
+      properties:
+        status:
+          title: Status
+          type: string
+      required:
+      - status
+      title: HealthResponse
+      type: object
+    object_storage__PaginationMeta:
+      example:
+        count: 1
+        total_pages: 5
+        current_page: 5
+      properties:
+        count:
+          title: Count
+          type: integer
+        current_page:
+          title: Current Page
+          type: integer
+        total_pages:
+          title: Total Pages
+          type: integer
+      required:
+      - count
+      - current_page
+      - total_pages
+      title: PaginationMeta
+      type: object
+    object_storage__RegionListResponse:
+      example:
+        regions:
+        - name: name
+        - name: name
+      properties:
+        regions:
+          items:
+            $ref: '#/components/schemas/object_storage__RegionResponse'
+          title: Regions
+          type: array
+      required:
+      - regions
+      title: RegionListResponse
+      type: object
+    object_storage__RegionResponse:
+      example:
+        name: name
+      properties:
+        name:
+          title: Name
+          type: string
+      required:
+      - name
+      title: RegionResponse
+      type: object
+    object_storage__RegionsEnum:
+      enum:
+      - CANADA-1
+      title: RegionsEnum
+      type: string
     pagination:
       example:
         per_page: 5
