@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Buckets** | [**[]ObjectStorageBucketResponse**](ObjectStorageBucketResponse.md) |  | 
+**FailedRegions** | Pointer to **[]string** |  | [optional] 
 
 ## Methods
 
@@ -44,6 +45,31 @@ and a boolean to check if the value has been set.
 
 SetBuckets sets Buckets field to given value.
 
+
+### GetFailedRegions
+
+`func (o *ObjectStorageBucketListResponse) GetFailedRegions() []string`
+
+GetFailedRegions returns the FailedRegions field if non-nil, zero value otherwise.
+
+### GetFailedRegionsOk
+
+`func (o *ObjectStorageBucketListResponse) GetFailedRegionsOk() (*[]string, bool)`
+
+GetFailedRegionsOk returns a tuple with the FailedRegions field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFailedRegions
+
+`func (o *ObjectStorageBucketListResponse) SetFailedRegions(v []string)`
+
+SetFailedRegions sets FailedRegions field to given value.
+
+### HasFailedRegions
+
+`func (o *ObjectStorageBucketListResponse) HasFailedRegions() bool`
+
+HasFailedRegions returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

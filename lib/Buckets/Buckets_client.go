@@ -23,7 +23,8 @@ const (
 
 // ObjectStorageBucketListResponse defines model for object_storage__BucketListResponse.
 type ObjectStorageBucketListResponse struct {
-	Buckets []ObjectStorageBucketResponse `json:"buckets"`
+	Buckets       []ObjectStorageBucketResponse `json:"buckets"`
+	FailedRegions *[]string                     `json:"failed_regions,omitempty"`
 }
 
 // ObjectStorageBucketResponse defines model for object_storage__BucketResponse.

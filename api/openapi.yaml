@@ -20831,6 +20831,9 @@ components:
       type: object
     object_storage__BucketListResponse:
       example:
+        failed_regions:
+        - failed_regions
+        - failed_regions
         buckets:
         - endpoint: endpoint
           size_bytes: 6
@@ -20851,6 +20854,11 @@ components:
           items:
             $ref: '#/components/schemas/object_storage__BucketResponse'
           title: Buckets
+          type: array
+        failed_regions:
+          items:
+            type: string
+          title: Failed Regions
           type: array
       required:
       - buckets
