@@ -27,7 +27,7 @@ jobs:
       run: task init
       
     - name: Pull latest spec
-      run: task pull-api
+      run: task build-api-spec
 
     - name: Generate SDK
       run: task build
