@@ -514,11 +514,12 @@ type VolumeFieldsForInstance struct {
 
 // ListVMsParams defines parameters for ListVMs.
 type ListVMsParams struct {
-	Page             *int           `form:"page,omitempty" json:"page,omitempty"`
-	PageSize         *int           `form:"pageSize,omitempty" json:"pageSize,omitempty"`
-	Search           *string        `form:"search,omitempty" json:"search,omitempty"`
-	Environment      *string        `form:"environment,omitempty" json:"environment,omitempty"`
-	ExcludeFirewalls *[]interface{} `form:"exclude_firewalls,omitempty" json:"exclude_firewalls,omitempty"`
+	Page                  *int           `form:"page,omitempty" json:"page,omitempty"`
+	PageSize              *int           `form:"pageSize,omitempty" json:"pageSize,omitempty"`
+	Search                *string        `form:"search,omitempty" json:"search,omitempty"`
+	Environment           *string        `form:"environment,omitempty" json:"environment,omitempty"`
+	ExcludeFirewalls      *[]interface{} `form:"exclude_firewalls,omitempty" json:"exclude_firewalls,omitempty"`
+	ExactEnvironmentMatch *bool          `form:"exact_environment_match,omitempty" json:"exact_environment_match,omitempty"`
 }
 
 // GetContractVMsParams defines parameters for GetContractVMs.
@@ -1125,6 +1126,22 @@ func NewListVMsRequest(server string, params *ListVMsParams) (*http.Request, err
 		if params.ExcludeFirewalls != nil {
 
 			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "exclude_firewalls", runtime.ParamLocationQuery, *params.ExcludeFirewalls); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ExactEnvironmentMatch != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "exact_environment_match", runtime.ParamLocationQuery, *params.ExactEnvironmentMatch); err != nil {
 				return nil, err
 			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
 				return nil, err

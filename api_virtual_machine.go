@@ -2318,13 +2318,14 @@ func (a *VirtualMachineAPIService) HibernateVMExecute(r ApiHibernateVMRequest) (
 }
 
 type ApiListVMsRequest struct {
-	ctx              context.Context
-	ApiService       *VirtualMachineAPIService
-	page             *int32
-	pageSize         *int32
-	search           *string
-	environment      *string
-	excludeFirewalls *[]int32
+	ctx                   context.Context
+	ApiService            *VirtualMachineAPIService
+	page                  *int32
+	pageSize              *int32
+	search                *string
+	environment           *string
+	excludeFirewalls      *[]int32
+	exactEnvironmentMatch *bool
 }
 
 func (r ApiListVMsRequest) Page(page int32) ApiListVMsRequest {
@@ -2350,6 +2351,12 @@ func (r ApiListVMsRequest) Environment(environment string) ApiListVMsRequest {
 // Comma-separated list of Security Group IDs to ignore instances attached
 func (r ApiListVMsRequest) ExcludeFirewalls(excludeFirewalls []int32) ApiListVMsRequest {
 	r.excludeFirewalls = &excludeFirewalls
+	return r
+}
+
+// Flag to filter environment by exact match instead of partial match
+func (r ApiListVMsRequest) ExactEnvironmentMatch(exactEnvironmentMatch bool) ApiListVMsRequest {
+	r.exactEnvironmentMatch = &exactEnvironmentMatch
 	return r
 }
 
@@ -2416,6 +2423,12 @@ func (a *VirtualMachineAPIService) ListVMsExecute(r ApiListVMsRequest) (*Instanc
 		} else {
 			parameterAddToHeaderOrQuery(localVarQueryParams, "exclude_firewalls", t, "form", "multi")
 		}
+	}
+	if r.exactEnvironmentMatch != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "exact_environment_match", r.exactEnvironmentMatch, "form", "")
+	} else {
+		var defaultValue bool = false
+		r.exactEnvironmentMatch = &defaultValue
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

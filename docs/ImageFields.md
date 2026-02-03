@@ -6,6 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Description** | Pointer to **string** |  | [optional] 
 **DisplaySize** | Pointer to **string** |  | [optional] 
+**FlavorRestrictions** | Pointer to [**FlavorRestrictions**](FlavorRestrictions.md) | Flavor compatibility restrictions for this image | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
 **IsPublic** | Pointer to **bool** |  | [optional] 
 **Labels** | Pointer to [**[]LableResonse**](LableResonse.md) |  | [optional] 
@@ -83,6 +84,31 @@ SetDisplaySize sets DisplaySize field to given value.
 `func (o *ImageFields) HasDisplaySize() bool`
 
 HasDisplaySize returns a boolean if a field has been set.
+
+### GetFlavorRestrictions
+
+`func (o *ImageFields) GetFlavorRestrictions() FlavorRestrictions`
+
+GetFlavorRestrictions returns the FlavorRestrictions field if non-nil, zero value otherwise.
+
+### GetFlavorRestrictionsOk
+
+`func (o *ImageFields) GetFlavorRestrictionsOk() (*FlavorRestrictions, bool)`
+
+GetFlavorRestrictionsOk returns a tuple with the FlavorRestrictions field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFlavorRestrictions
+
+`func (o *ImageFields) SetFlavorRestrictions(v FlavorRestrictions)`
+
+SetFlavorRestrictions sets FlavorRestrictions field to given value.
+
+### HasFlavorRestrictions
+
+`func (o *ImageFields) HasFlavorRestrictions() bool`
+
+HasFlavorRestrictions returns a boolean if a field has been set.
 
 ### GetId
 

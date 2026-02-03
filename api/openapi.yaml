@@ -8095,6 +8095,16 @@ paths:
             type: integer
           type: array
         style: form
+      - description: Flag to filter environment by exact match instead of partial
+          match
+        explode: true
+        in: query
+        name: exact_environment_match
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
       responses:
         "200":
           content:
@@ -12323,6 +12333,22 @@ components:
         status:
           type: boolean
       type: object
+    CompatibleFlavor:
+      properties:
+        constraints:
+          description: JSON constraints object
+          properties: {}
+          type: object
+        flavor_id:
+          type: integer
+        flavor_name:
+          type: string
+        link_type:
+          description: Either 'hard' or 'soft'
+          type: string
+        reason:
+          type: string
+      type: object
     ComplianceFields:
       example:
         gpu_model: gpu_model
@@ -14469,6 +14495,20 @@ components:
           description: ""
           type: string
       type: object
+    FlavorRestrictions:
+      properties:
+        compatible_flavors:
+          description: List of compatible flavors with their link metadata
+          items:
+            $ref: '#/components/schemas/CompatibleFlavor'
+          type: array
+        has_flavor_restrictions:
+          description: Whether the image has any flavor restrictions
+          type: boolean
+        restriction_type:
+          description: "Either 'hard', 'soft', or null if no restrictions"
+          type: string
+      type: object
     Flavor_Fields:
       example:
         cpu: 0
@@ -15147,6 +15187,7 @@ components:
     Image:
       example:
         image:
+          flavor_restrictions: "{}"
           size: 6
           display_size: display_size
           is_public: true
@@ -15167,6 +15208,7 @@ components:
       type: object
     Image_Fields:
       example:
+        flavor_restrictions: "{}"
         size: 6
         display_size: display_size
         is_public: true
@@ -15186,6 +15228,11 @@ components:
           type: string
         display_size:
           type: string
+        flavor_restrictions:
+          allOf:
+          - $ref: '#/components/schemas/FlavorRestrictions'
+          description: Flavor compatibility restrictions for this image
+          type: object
         id:
           type: integer
         is_public:
@@ -15208,7 +15255,8 @@ components:
     Image_Get_Response:
       example:
         images:
-        - size: 6
+        - flavor_restrictions: "{}"
+          size: 6
           display_size: display_size
           is_public: true
           name: name
@@ -15222,7 +15270,8 @@ components:
             label: label
           - id: 7
             label: label
-        - size: 6
+        - flavor_restrictions: "{}"
+          size: 6
           display_size: display_size
           is_public: true
           name: name
@@ -15255,7 +15304,8 @@ components:
       example:
         images:
         - images:
-          - size: 6
+          - flavor_restrictions: "{}"
+            size: 6
             display_size: display_size
             is_public: true
             name: name
@@ -15269,7 +15319,8 @@ components:
               label: label
             - id: 7
               label: label
-          - size: 6
+          - flavor_restrictions: "{}"
+            size: 6
             display_size: display_size
             is_public: true
             name: name
@@ -15287,7 +15338,8 @@ components:
           region_name: region_name
           type: type
         - images:
-          - size: 6
+          - flavor_restrictions: "{}"
+            size: 6
             display_size: display_size
             is_public: true
             name: name
@@ -15301,7 +15353,8 @@ components:
               label: label
             - id: 7
               label: label
-          - size: 6
+          - flavor_restrictions: "{}"
+            size: 6
             display_size: display_size
             is_public: true
             name: name

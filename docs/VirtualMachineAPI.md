@@ -1028,7 +1028,7 @@ Name | Type | Description  | Notes
 
 ## ListVMs
 
-> Instances ListVMs(ctx).Page(page).PageSize(pageSize).Search(search).Environment(environment).ExcludeFirewalls(excludeFirewalls).Execute()
+> Instances ListVMs(ctx).Page(page).PageSize(pageSize).Search(search).Environment(environment).ExcludeFirewalls(excludeFirewalls).ExactEnvironmentMatch(exactEnvironmentMatch).Execute()
 
 List virtual machines
 
@@ -1052,10 +1052,11 @@ func main() {
 	search := "search_example" // string |  (optional)
 	environment := "environment_example" // string |  (optional)
 	excludeFirewalls := []int32{int32(123)} // []int32 | Comma-separated list of Security Group IDs to ignore instances attached (optional)
+	exactEnvironmentMatch := true // bool | Flag to filter environment by exact match instead of partial match (optional) (default to false)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VirtualMachineAPI.ListVMs(context.Background()).Page(page).PageSize(pageSize).Search(search).Environment(environment).ExcludeFirewalls(excludeFirewalls).Execute()
+	resp, r, err := apiClient.VirtualMachineAPI.ListVMs(context.Background()).Page(page).PageSize(pageSize).Search(search).Environment(environment).ExcludeFirewalls(excludeFirewalls).ExactEnvironmentMatch(exactEnvironmentMatch).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.ListVMs``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -1081,6 +1082,7 @@ Name | Type | Description  | Notes
  **search** | **string** |  | 
  **environment** | **string** |  | 
  **excludeFirewalls** | **[]int32** | Comma-separated list of Security Group IDs to ignore instances attached | 
+ **exactEnvironmentMatch** | **bool** | Flag to filter environment by exact match instead of partial match | [default to false]
 
 ### Return type
 

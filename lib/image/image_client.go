@@ -15,11 +15,35 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// CompatibleFlavor defines model for CompatibleFlavor.
+type CompatibleFlavor struct {
+	// Constraints JSON constraints object
+	Constraints *map[string]interface{} `json:"constraints,omitempty"`
+	FlavorId    *int                    `json:"flavor_id,omitempty"`
+	FlavorName  *string                 `json:"flavor_name,omitempty"`
+
+	// LinkType Either 'hard' or 'soft'
+	LinkType *string `json:"link_type,omitempty"`
+	Reason   *string `json:"reason,omitempty"`
+}
+
 // ErrorResponseModel defines model for ErrorResponseModel.
 type ErrorResponseModel struct {
 	ErrorReason *string `json:"error_reason,omitempty"`
 	Message     *string `json:"message,omitempty"`
 	Status      *bool   `json:"status,omitempty"`
+}
+
+// FlavorRestrictions defines model for FlavorRestrictions.
+type FlavorRestrictions struct {
+	// CompatibleFlavors List of compatible flavors with their link metadata
+	CompatibleFlavors *[]CompatibleFlavor `json:"compatible_flavors,omitempty"`
+
+	// HasFlavorRestrictions Whether the image has any flavor restrictions
+	HasFlavorRestrictions *bool `json:"has_flavor_restrictions,omitempty"`
+
+	// RestrictionType Either 'hard', 'soft', or null if no restrictions
+	RestrictionType *string `json:"restriction_type,omitempty"`
 }
 
 // Image defines model for Image.
@@ -29,16 +53,19 @@ type Image struct {
 
 // ImageFields defines model for Image_Fields.
 type ImageFields struct {
-	Description *string         `json:"description,omitempty"`
-	DisplaySize *string         `json:"display_size,omitempty"`
-	Id          *int            `json:"id,omitempty"`
-	IsPublic    *bool           `json:"is_public,omitempty"`
-	Labels      *[]LableResonse `json:"labels,omitempty"`
-	Name        *string         `json:"name,omitempty"`
-	RegionName  *string         `json:"region_name,omitempty"`
-	Size        *int            `json:"size,omitempty"`
-	Type        *string         `json:"type,omitempty"`
-	Version     *string         `json:"version,omitempty"`
+	Description *string `json:"description,omitempty"`
+	DisplaySize *string `json:"display_size,omitempty"`
+
+	// FlavorRestrictions Flavor compatibility restrictions for this image
+	FlavorRestrictions *FlavorRestrictions `json:"flavor_restrictions,omitempty"`
+	Id                 *int                `json:"id,omitempty"`
+	IsPublic           *bool               `json:"is_public,omitempty"`
+	Labels             *[]LableResonse     `json:"labels,omitempty"`
+	Name               *string             `json:"name,omitempty"`
+	RegionName         *string             `json:"region_name,omitempty"`
+	Size               *int                `json:"size,omitempty"`
+	Type               *string             `json:"type,omitempty"`
+	Version            *string             `json:"version,omitempty"`
 }
 
 // ImageGetResponse defines model for Image_Get_Response.
