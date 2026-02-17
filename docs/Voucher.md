@@ -6,6 +6,9 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Code** | **string** | Voucher code | 
 **Id** | **int32** | Voucher ID | 
+**MaxRedemptionCount** | Pointer to **int32** | Max redemption count for a General Voucher | [optional] 
+**RedemptionCount** | Pointer to **int32** | Current redemption count for a General Voucher | [optional] 
+**RemainingRedemptions** | Pointer to **int32** | Remaining redemptions | [optional] 
 **Status** | **string** | Voucher status | 
 
 ## Methods
@@ -66,6 +69,81 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+
+### GetMaxRedemptionCount
+
+`func (o *Voucher) GetMaxRedemptionCount() int32`
+
+GetMaxRedemptionCount returns the MaxRedemptionCount field if non-nil, zero value otherwise.
+
+### GetMaxRedemptionCountOk
+
+`func (o *Voucher) GetMaxRedemptionCountOk() (*int32, bool)`
+
+GetMaxRedemptionCountOk returns a tuple with the MaxRedemptionCount field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMaxRedemptionCount
+
+`func (o *Voucher) SetMaxRedemptionCount(v int32)`
+
+SetMaxRedemptionCount sets MaxRedemptionCount field to given value.
+
+### HasMaxRedemptionCount
+
+`func (o *Voucher) HasMaxRedemptionCount() bool`
+
+HasMaxRedemptionCount returns a boolean if a field has been set.
+
+### GetRedemptionCount
+
+`func (o *Voucher) GetRedemptionCount() int32`
+
+GetRedemptionCount returns the RedemptionCount field if non-nil, zero value otherwise.
+
+### GetRedemptionCountOk
+
+`func (o *Voucher) GetRedemptionCountOk() (*int32, bool)`
+
+GetRedemptionCountOk returns a tuple with the RedemptionCount field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRedemptionCount
+
+`func (o *Voucher) SetRedemptionCount(v int32)`
+
+SetRedemptionCount sets RedemptionCount field to given value.
+
+### HasRedemptionCount
+
+`func (o *Voucher) HasRedemptionCount() bool`
+
+HasRedemptionCount returns a boolean if a field has been set.
+
+### GetRemainingRedemptions
+
+`func (o *Voucher) GetRemainingRedemptions() int32`
+
+GetRemainingRedemptions returns the RemainingRedemptions field if non-nil, zero value otherwise.
+
+### GetRemainingRedemptionsOk
+
+`func (o *Voucher) GetRemainingRedemptionsOk() (*int32, bool)`
+
+GetRemainingRedemptionsOk returns a tuple with the RemainingRedemptions field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRemainingRedemptions
+
+`func (o *Voucher) SetRemainingRedemptions(v int32)`
+
+SetRemainingRedemptions sets RemainingRedemptions field to given value.
+
+### HasRemainingRedemptions
+
+`func (o *Voucher) HasRemainingRedemptions() bool`
+
+HasRemainingRedemptions returns a boolean if a field has been set.
 
 ### GetStatus
 

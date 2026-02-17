@@ -5988,6 +5988,54 @@ paths:
       tags:
       - environment
       x-codegen-request-body-name: payload
+  /core/environments/{id}/vm-quota:
+    get:
+      description: "Retrieves VM quota information for a specific environment, including\
+        \ current VM count, maximum VMs allowed, available VMs, and percentage used\
+        \ in an environment before reaching the subnet IP limit."
+      operationId: Get_environment_VM_quota
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VM_Quota'
+          description: VM quota information retrieved successfully.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Not Found
+        "500":
+          content: {}
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      - apiKey: []
+      summary: Get environment VM quota
+      tags:
+      - environment
   /core/fip-detachment-exclusions/org/{org_id}:
     get:
       description: is org excluded from floating ip detachment
@@ -8270,6 +8318,14 @@ paths:
         schema:
           type: string
         style: simple
+      - description: "Nr of instances to handle (optional, default: 1)"
+        explode: true
+        in: query
+        name: count
+        required: false
+        schema:
+          type: string
+        style: form
       responses:
         "200":
           content:
@@ -20112,6 +20168,31 @@ components:
         users_info:
           $ref: '#/components/schemas/UsersInfoFields'
       type: object
+    VM_Quota:
+      example:
+        max_vms: 1
+        percentage_used: 5.962133916683182
+        cidr: cidr
+        message: message
+        current_vms: 6
+        available_vms: 0
+        status: true
+      properties:
+        available_vms:
+          type: integer
+        cidr:
+          type: string
+        current_vms:
+          type: integer
+        max_vms:
+          type: integer
+        message:
+          type: string
+        percentage_used:
+          type: number
+        status:
+          type: boolean
+      type: object
     VNC_URL:
       example:
         message: message
@@ -21081,6 +21162,15 @@ components:
           type: string
         id:
           description: Voucher ID
+          type: integer
+        max_redemption_count:
+          description: Max redemption count for a General Voucher
+          type: integer
+        redemption_count:
+          description: Current redemption count for a General Voucher
+          type: integer
+        remaining_redemptions:
+          description: Remaining redemptions
           type: integer
         status:
           description: Voucher status

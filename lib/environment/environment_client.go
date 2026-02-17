@@ -94,6 +94,17 @@ type UpdateEnvironment struct {
 	Name string `json:"name"`
 }
 
+// VMQuota defines model for VM_Quota.
+type VMQuota struct {
+	AvailableVms   *int     `json:"available_vms,omitempty"`
+	Cidr           *string  `json:"cidr,omitempty"`
+	CurrentVms     *int     `json:"current_vms,omitempty"`
+	MaxVms         *int     `json:"max_vms,omitempty"`
+	Message        *string  `json:"message,omitempty"`
+	PercentageUsed *float32 `json:"percentage_used,omitempty"`
+	Status         *bool    `json:"status,omitempty"`
+}
+
 // ListEnvironmentsParams defines parameters for ListEnvironments.
 type ListEnvironmentsParams struct {
 	Page     *string `form:"page,omitempty" json:"page,omitempty"`
@@ -201,6 +212,9 @@ type ClientInterface interface {
 	UpdateEnvironmentWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateEnvironment(ctx context.Context, id int, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetEnvironmentVMQuota request
+	GetEnvironmentVMQuota(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) ListEnvironments(ctx context.Context, params *ListEnvironmentsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -289,6 +303,18 @@ func (c *Client) UpdateEnvironmentWithBody(ctx context.Context, id int, contentT
 
 func (c *Client) UpdateEnvironment(ctx context.Context, id int, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateEnvironmentRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetEnvironmentVMQuota(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetEnvironmentVMQuotaRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -569,6 +595,40 @@ func NewUpdateEnvironmentRequestWithBody(server string, id int, contentType stri
 	return req, nil
 }
 
+// NewGetEnvironmentVMQuotaRequest generates requests for GetEnvironmentVMQuota
+func NewGetEnvironmentVMQuotaRequest(server string, id int) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/environments/%s/vm-quota", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -633,6 +693,9 @@ type ClientWithResponsesInterface interface {
 	UpdateEnvironmentWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error)
 
 	UpdateEnvironmentWithResponse(ctx context.Context, id int, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error)
+
+	// GetEnvironmentVMQuotaWithResponse request
+	GetEnvironmentVMQuotaWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*GetEnvironmentVMQuotaResponse, error)
 }
 
 type ListEnvironmentsResponse struct {
@@ -785,6 +848,31 @@ func (r UpdateEnvironmentResponse) StatusCode() int {
 	return 0
 }
 
+type GetEnvironmentVMQuotaResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *VMQuota
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r GetEnvironmentVMQuotaResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetEnvironmentVMQuotaResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 // ListEnvironmentsWithResponse request returning *ListEnvironmentsResponse
 func (c *ClientWithResponses) ListEnvironmentsWithResponse(ctx context.Context, params *ListEnvironmentsParams, reqEditors ...RequestEditorFn) (*ListEnvironmentsResponse, error) {
 	rsp, err := c.ListEnvironments(ctx, params, reqEditors...)
@@ -853,6 +941,15 @@ func (c *ClientWithResponses) UpdateEnvironmentWithResponse(ctx context.Context,
 		return nil, err
 	}
 	return ParseUpdateEnvironmentResponse(rsp)
+}
+
+// GetEnvironmentVMQuotaWithResponse request returning *GetEnvironmentVMQuotaResponse
+func (c *ClientWithResponses) GetEnvironmentVMQuotaWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*GetEnvironmentVMQuotaResponse, error) {
+	rsp, err := c.GetEnvironmentVMQuota(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetEnvironmentVMQuotaResponse(rsp)
 }
 
 // ParseListEnvironmentsResponse parses an HTTP response from a ListEnvironmentsWithResponse call
@@ -1106,6 +1203,53 @@ func ParseUpdateEnvironmentResponse(rsp *http.Response) (*UpdateEnvironmentRespo
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest Environment
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetEnvironmentVMQuotaResponse parses an HTTP response from a GetEnvironmentVMQuotaWithResponse call
+func ParseGetEnvironmentVMQuotaResponse(rsp *http.Response) (*GetEnvironmentVMQuotaResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetEnvironmentVMQuotaResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest VMQuota
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

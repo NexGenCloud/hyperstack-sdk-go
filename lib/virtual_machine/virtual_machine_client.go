@@ -529,6 +529,11 @@ type GetContractVMsParams struct {
 	Search   *string `form:"search,omitempty" json:"search,omitempty"`
 }
 
+// CheckVMNameAvailabilityParams defines parameters for CheckVMNameAvailability.
+type CheckVMNameAvailabilityParams struct {
+	Count *string `form:"count,omitempty" json:"count,omitempty"`
+}
+
 // HibernateVMParams defines parameters for HibernateVM.
 type HibernateVMParams struct {
 	RetainIp *string `form:"retain_ip,omitempty" json:"retain_ip,omitempty"`
@@ -650,7 +655,7 @@ type ClientInterface interface {
 	GetContractVMs(ctx context.Context, contractId int, params *GetContractVMsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CheckVMNameAvailability request
-	CheckVMNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CheckVMNameAvailability(ctx context.Context, name string, params *CheckVMNameAvailabilityParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteVM request
 	DeleteVM(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -761,8 +766,8 @@ func (c *Client) GetContractVMs(ctx context.Context, contractId int, params *Get
 	return c.Client.Do(req)
 }
 
-func (c *Client) CheckVMNameAvailability(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCheckVMNameAvailabilityRequest(c.Server, name)
+func (c *Client) CheckVMNameAvailability(ctx context.Context, name string, params *CheckVMNameAvailabilityParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCheckVMNameAvailabilityRequest(c.Server, name, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1295,7 +1300,7 @@ func NewGetContractVMsRequest(server string, contractId int, params *GetContract
 }
 
 // NewCheckVMNameAvailabilityRequest generates requests for CheckVMNameAvailability
-func NewCheckVMNameAvailabilityRequest(server string, name string) (*http.Request, error) {
+func NewCheckVMNameAvailabilityRequest(server string, name string, params *CheckVMNameAvailabilityParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1318,6 +1323,28 @@ func NewCheckVMNameAvailabilityRequest(server string, name string) (*http.Reques
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Count != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "count", runtime.ParamLocationQuery, *params.Count); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -2074,7 +2101,7 @@ type ClientWithResponsesInterface interface {
 	GetContractVMsWithResponse(ctx context.Context, contractId int, params *GetContractVMsParams, reqEditors ...RequestEditorFn) (*GetContractVMsResponse, error)
 
 	// CheckVMNameAvailabilityWithResponse request
-	CheckVMNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*CheckVMNameAvailabilityResponse, error)
+	CheckVMNameAvailabilityWithResponse(ctx context.Context, name string, params *CheckVMNameAvailabilityParams, reqEditors ...RequestEditorFn) (*CheckVMNameAvailabilityResponse, error)
 
 	// DeleteVMWithResponse request
 	DeleteVMWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*DeleteVMResponse, error)
@@ -2680,8 +2707,8 @@ func (c *ClientWithResponses) GetContractVMsWithResponse(ctx context.Context, co
 }
 
 // CheckVMNameAvailabilityWithResponse request returning *CheckVMNameAvailabilityResponse
-func (c *ClientWithResponses) CheckVMNameAvailabilityWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*CheckVMNameAvailabilityResponse, error) {
-	rsp, err := c.CheckVMNameAvailability(ctx, name, reqEditors...)
+func (c *ClientWithResponses) CheckVMNameAvailabilityWithResponse(ctx context.Context, name string, params *CheckVMNameAvailabilityParams, reqEditors ...RequestEditorFn) (*CheckVMNameAvailabilityResponse, error) {
+	rsp, err := c.CheckVMNameAvailability(ctx, name, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}

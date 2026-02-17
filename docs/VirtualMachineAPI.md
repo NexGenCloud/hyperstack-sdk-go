@@ -173,7 +173,7 @@ Name | Type | Description  | Notes
 
 ## CheckVMNameAvailability
 
-> NameAvailableModel CheckVMNameAvailability(ctx, name).Execute()
+> NameAvailableModel CheckVMNameAvailability(ctx, name).Count(count).Execute()
 
 Fetch virtual machine name availability
 
@@ -193,10 +193,11 @@ import (
 
 func main() {
 	name := "name_example" // string | 
+	count := "count_example" // string | Nr of instances to handle (optional, default: 1) (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.VirtualMachineAPI.CheckVMNameAvailability(context.Background(), name).Execute()
+	resp, r, err := apiClient.VirtualMachineAPI.CheckVMNameAvailability(context.Background(), name).Count(count).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.CheckVMNameAvailability``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -222,6 +223,7 @@ Other parameters are passed through a pointer to a apiCheckVMNameAvailabilityReq
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
+ **count** | **string** | Nr of instances to handle (optional, default: 1) | 
 
 ### Return type
 

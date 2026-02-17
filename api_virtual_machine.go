@@ -362,6 +362,13 @@ type ApiCheckVMNameAvailabilityRequest struct {
 	ctx        context.Context
 	ApiService *VirtualMachineAPIService
 	name       string
+	count      *string
+}
+
+// Nr of instances to handle (optional, default: 1)
+func (r ApiCheckVMNameAvailabilityRequest) Count(count string) ApiCheckVMNameAvailabilityRequest {
+	r.count = &count
+	return r
 }
 
 func (r ApiCheckVMNameAvailabilityRequest) Execute() (*NameAvailableModel, *http.Response, error) {
@@ -408,6 +415,9 @@ func (a *VirtualMachineAPIService) CheckVMNameAvailabilityExecute(r ApiCheckVMNa
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	if r.count != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "count", r.count, "form", "")
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 

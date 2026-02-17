@@ -47,6 +47,15 @@ type Voucher struct {
 	// Id Voucher ID
 	Id int `json:"id"`
 
+	// MaxRedemptionCount Max redemption count for a General Voucher
+	MaxRedemptionCount *int `json:"max_redemption_count,omitempty"`
+
+	// RedemptionCount Current redemption count for a General Voucher
+	RedemptionCount *int `json:"redemption_count,omitempty"`
+
+	// RemainingRedemptions Remaining redemptions
+	RemainingRedemptions *int `json:"remaining_redemptions,omitempty"`
+
 	// Status Voucher status
 	Status string `json:"status"`
 }
