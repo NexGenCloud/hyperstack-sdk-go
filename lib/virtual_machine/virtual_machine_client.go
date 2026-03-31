@@ -95,15 +95,24 @@ type ClusterNodeFields struct {
 
 // ClusterNodeGroupFields defines model for ClusterNodeGroupFields.
 type ClusterNodeGroupFields struct {
-	Count     *int                 `json:"count,omitempty"`
-	CreatedAt *time.CustomTime           `json:"created_at,omitempty"`
-	Flavor    *ClusterFlavorFields `json:"flavor,omitempty"`
-	Id        *int                 `json:"id,omitempty"`
-	MaxCount  *int                 `json:"max_count,omitempty"`
-	MinCount  *int                 `json:"min_count,omitempty"`
-	Name      *string              `json:"name,omitempty"`
-	Role      *string              `json:"role,omitempty"`
-	UpdatedAt *time.CustomTime           `json:"updated_at,omitempty"`
+	Count       *int                              `json:"count,omitempty"`
+	CreatedAt   *time.CustomTime                        `json:"created_at,omitempty"`
+	FirewallIds *[]int                            `json:"firewall_ids,omitempty"`
+	Firewalls   *[]ClusterNodeGroupFirewallFields `json:"firewalls,omitempty"`
+	Flavor      *ClusterFlavorFields              `json:"flavor,omitempty"`
+	Id          *int                              `json:"id,omitempty"`
+	MaxCount    *int                              `json:"max_count,omitempty"`
+	MinCount    *int                              `json:"min_count,omitempty"`
+	Name        *string                           `json:"name,omitempty"`
+	Role        *string                           `json:"role,omitempty"`
+	UpdatedAt   *time.CustomTime                        `json:"updated_at,omitempty"`
+}
+
+// ClusterNodeGroupFirewallFields defines model for ClusterNodeGroupFirewallFields.
+type ClusterNodeGroupFirewallFields struct {
+	Id     *int    `json:"id,omitempty"`
+	Name   *string `json:"name,omitempty"`
+	Status *string `json:"status,omitempty"`
 }
 
 // ClusterNodeInstanceFields defines model for ClusterNodeInstanceFields.

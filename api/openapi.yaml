@@ -662,7 +662,7 @@ paths:
       tags:
       - auth
   /auth/me/mfa/disable:
-    get:
+    post:
       description: Disable Multi-Factor Authentication (MFA) for the currently authenticated
         user. This endpoint is used to turn off MFA.
       operationId: Disable_MFA
@@ -679,6 +679,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponseModel'
           description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Forbidden - CSRF validation failed
         "404":
           content:
             application/json:
@@ -11426,14 +11432,24 @@ components:
             - id: 7
               label: label
             ram: 9.301444243932576
-          max_count: 4
+          max_count: 1
+          firewall_ids:
+          - 2
+          - 2
           role: role
           updated_at: 2000-01-23T04:56:07.000+00:00
           count: 3
           name: name
           created_at: 2000-01-23T04:56:07.000+00:00
-          id: 2
-          min_count: 7
+          firewalls:
+          - name: name
+            id: 4
+            status: status
+          - name: name
+            id: 4
+            status: status
+          id: 7
+          min_count: 1
         - flavor:
             features: "{}"
             disk: 1
@@ -11449,23 +11465,33 @@ components:
             - id: 7
               label: label
             ram: 9.301444243932576
-          max_count: 4
+          max_count: 1
+          firewall_ids:
+          - 2
+          - 2
           role: role
           updated_at: 2000-01-23T04:56:07.000+00:00
           count: 3
           name: name
           created_at: 2000-01-23T04:56:07.000+00:00
-          id: 2
-          min_count: 7
+          firewalls:
+          - name: name
+            id: 4
+            status: status
+          - name: name
+            id: 4
+            status: status
+          id: 7
+          min_count: 1
         nodes:
         - instance:
-            contract_id: 1
+            contract_id: 6
             floating_ip: floating_ip
             floating_ip_status: floating_ip_status
             name: name
             fixed_ip: fixed_ip
-            id: 1
-            image_id: 6
+            id: 7
+            image_id: 1
             status: status
           is_bastion: true
           role: role
@@ -11475,16 +11501,16 @@ components:
           id: 1
           node_group_name: node_group_name
           status_reason: status_reason
-          node_group_id: 7
+          node_group_id: 4
           status: status
         - instance:
-            contract_id: 1
+            contract_id: 6
             floating_ip: floating_ip
             floating_ip_status: floating_ip_status
             name: name
             fixed_ip: fixed_ip
-            id: 1
-            image_id: 6
+            id: 7
+            image_id: 1
             status: status
           is_bastion: true
           role: role
@@ -11494,7 +11520,7 @@ components:
           id: 1
           node_group_name: node_group_name
           status_reason: status_reason
-          node_group_id: 7
+          node_group_id: 4
           status: status
         is_reconciling: true
         kube_config: kube_config
@@ -11577,14 +11603,24 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
-            max_count: 4
+            max_count: 1
+            firewall_ids:
+            - 2
+            - 2
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 2
-            min_count: 7
+            firewalls:
+            - name: name
+              id: 4
+              status: status
+            - name: name
+              id: 4
+              status: status
+            id: 7
+            min_count: 1
           - flavor:
               features: "{}"
               disk: 1
@@ -11600,23 +11636,33 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
-            max_count: 4
+            max_count: 1
+            firewall_ids:
+            - 2
+            - 2
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 2
-            min_count: 7
+            firewalls:
+            - name: name
+              id: 4
+              status: status
+            - name: name
+              id: 4
+              status: status
+            id: 7
+            min_count: 1
           nodes:
           - instance:
-              contract_id: 1
+              contract_id: 6
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
-              id: 1
-              image_id: 6
+              id: 7
+              image_id: 1
               status: status
             is_bastion: true
             role: role
@@ -11626,16 +11672,16 @@ components:
             id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 7
+            node_group_id: 4
             status: status
           - instance:
-              contract_id: 1
+              contract_id: 6
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
-              id: 1
-              image_id: 6
+              id: 7
+              image_id: 1
               status: status
             is_bastion: true
             role: role
@@ -11645,7 +11691,7 @@ components:
             id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 7
+            node_group_id: 4
             status: status
           is_reconciling: true
           kube_config: kube_config
@@ -11689,14 +11735,24 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
-            max_count: 4
+            max_count: 1
+            firewall_ids:
+            - 2
+            - 2
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 2
-            min_count: 7
+            firewalls:
+            - name: name
+              id: 4
+              status: status
+            - name: name
+              id: 4
+              status: status
+            id: 7
+            min_count: 1
           - flavor:
               features: "{}"
               disk: 1
@@ -11712,23 +11768,33 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
-            max_count: 4
+            max_count: 1
+            firewall_ids:
+            - 2
+            - 2
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 2
-            min_count: 7
+            firewalls:
+            - name: name
+              id: 4
+              status: status
+            - name: name
+              id: 4
+              status: status
+            id: 7
+            min_count: 1
           nodes:
           - instance:
-              contract_id: 1
+              contract_id: 6
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
-              id: 1
-              image_id: 6
+              id: 7
+              image_id: 1
               status: status
             is_bastion: true
             role: role
@@ -11738,16 +11804,16 @@ components:
             id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 7
+            node_group_id: 4
             status: status
           - instance:
-              contract_id: 1
+              contract_id: 6
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
-              id: 1
-              image_id: 6
+              id: 7
+              image_id: 1
               status: status
             is_bastion: true
             role: role
@@ -11757,7 +11823,7 @@ components:
             id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 7
+            node_group_id: 4
             status: status
           is_reconciling: true
           kube_config: kube_config
@@ -11796,13 +11862,13 @@ components:
     ClusterNodeFields:
       example:
         instance:
-          contract_id: 1
+          contract_id: 6
           floating_ip: floating_ip
           floating_ip_status: floating_ip_status
           name: name
           fixed_ip: fixed_ip
-          id: 1
-          image_id: 6
+          id: 7
+          image_id: 1
           status: status
         is_bastion: true
         role: role
@@ -11812,7 +11878,7 @@ components:
         id: 1
         node_group_name: node_group_name
         status_reason: status_reason
-        node_group_id: 7
+        node_group_id: 4
         status: status
       properties:
         created_at:
@@ -11857,20 +11923,38 @@ components:
           - id: 7
             label: label
           ram: 9.301444243932576
-        max_count: 4
+        max_count: 1
+        firewall_ids:
+        - 2
+        - 2
         role: role
         updated_at: 2000-01-23T04:56:07.000+00:00
         count: 3
         name: name
         created_at: 2000-01-23T04:56:07.000+00:00
-        id: 2
-        min_count: 7
+        firewalls:
+        - name: name
+          id: 4
+          status: status
+        - name: name
+          id: 4
+          status: status
+        id: 7
+        min_count: 1
       properties:
         count:
           type: integer
         created_at:
           format: date-time
           type: string
+        firewall_ids:
+          items:
+            type: integer
+          type: array
+        firewalls:
+          items:
+            $ref: '#/components/schemas/ClusterNodeGroupFirewallFields'
+          type: array
         flavor:
           $ref: '#/components/schemas/Cluster_Flavor_Fields'
         id:
@@ -11885,6 +11969,19 @@ components:
           type: string
         updated_at:
           format: date-time
+          type: string
+      type: object
+    ClusterNodeGroupFirewallFields:
+      example:
+        name: name
+        id: 4
+        status: status
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        status:
           type: string
       type: object
     ClusterNodeGroupsCreateResponse:
@@ -11905,23 +12002,33 @@ components:
             - id: 7
               label: label
             ram: 9.301444243932576
-          max_count: 4
+          max_count: 1
+          firewall_ids:
+          - 2
+          - 2
           role: role
           updated_at: 2000-01-23T04:56:07.000+00:00
           count: 3
           name: name
           created_at: 2000-01-23T04:56:07.000+00:00
-          id: 2
-          min_count: 7
+          firewalls:
+          - name: name
+            id: 4
+            status: status
+          - name: name
+            id: 4
+            status: status
+          id: 7
+          min_count: 1
         nodes:
         - instance:
-            contract_id: 1
+            contract_id: 6
             floating_ip: floating_ip
             floating_ip_status: floating_ip_status
             name: name
             fixed_ip: fixed_ip
-            id: 1
-            image_id: 6
+            id: 7
+            image_id: 1
             status: status
           is_bastion: true
           role: role
@@ -11931,16 +12038,16 @@ components:
           id: 1
           node_group_name: node_group_name
           status_reason: status_reason
-          node_group_id: 7
+          node_group_id: 4
           status: status
         - instance:
-            contract_id: 1
+            contract_id: 6
             floating_ip: floating_ip
             floating_ip_status: floating_ip_status
             name: name
             fixed_ip: fixed_ip
-            id: 1
-            image_id: 6
+            id: 7
+            image_id: 1
             status: status
           is_bastion: true
           role: role
@@ -11950,7 +12057,7 @@ components:
           id: 1
           node_group_name: node_group_name
           status_reason: status_reason
-          node_group_id: 7
+          node_group_id: 4
           status: status
         message: message
         status: true
@@ -11984,14 +12091,24 @@ components:
             - id: 7
               label: label
             ram: 9.301444243932576
-          max_count: 4
+          max_count: 1
+          firewall_ids:
+          - 2
+          - 2
           role: role
           updated_at: 2000-01-23T04:56:07.000+00:00
           count: 3
           name: name
           created_at: 2000-01-23T04:56:07.000+00:00
-          id: 2
-          min_count: 7
+          firewalls:
+          - name: name
+            id: 4
+            status: status
+          - name: name
+            id: 4
+            status: status
+          id: 7
+          min_count: 1
         message: message
         status: true
       properties:
@@ -12021,14 +12138,24 @@ components:
             - id: 7
               label: label
             ram: 9.301444243932576
-          max_count: 4
+          max_count: 1
+          firewall_ids:
+          - 2
+          - 2
           role: role
           updated_at: 2000-01-23T04:56:07.000+00:00
           count: 3
           name: name
           created_at: 2000-01-23T04:56:07.000+00:00
-          id: 2
-          min_count: 7
+          firewalls:
+          - name: name
+            id: 4
+            status: status
+          - name: name
+            id: 4
+            status: status
+          id: 7
+          min_count: 1
         - flavor:
             features: "{}"
             disk: 1
@@ -12044,14 +12171,24 @@ components:
             - id: 7
               label: label
             ram: 9.301444243932576
-          max_count: 4
+          max_count: 1
+          firewall_ids:
+          - 2
+          - 2
           role: role
           updated_at: 2000-01-23T04:56:07.000+00:00
           count: 3
           name: name
           created_at: 2000-01-23T04:56:07.000+00:00
-          id: 2
-          min_count: 7
+          firewalls:
+          - name: name
+            id: 4
+            status: status
+          - name: name
+            id: 4
+            status: status
+          id: 7
+          min_count: 1
         status: true
       properties:
         message:
@@ -12065,13 +12202,13 @@ components:
       type: object
     ClusterNodeInstanceFields:
       example:
-        contract_id: 1
+        contract_id: 6
         floating_ip: floating_ip
         floating_ip_status: floating_ip_status
         name: name
         fixed_ip: fixed_ip
-        id: 1
-        image_id: 6
+        id: 7
+        image_id: 1
         status: status
       properties:
         contract_id:
@@ -12095,13 +12232,13 @@ components:
       example:
         nodes:
         - instance:
-            contract_id: 1
+            contract_id: 6
             floating_ip: floating_ip
             floating_ip_status: floating_ip_status
             name: name
             fixed_ip: fixed_ip
-            id: 1
-            image_id: 6
+            id: 7
+            image_id: 1
             status: status
           is_bastion: true
           role: role
@@ -12111,16 +12248,16 @@ components:
           id: 1
           node_group_name: node_group_name
           status_reason: status_reason
-          node_group_id: 7
+          node_group_id: 4
           status: status
         - instance:
-            contract_id: 1
+            contract_id: 6
             floating_ip: floating_ip
             floating_ip_status: floating_ip_status
             name: name
             fixed_ip: fixed_ip
-            id: 1
-            image_id: 6
+            id: 7
+            image_id: 1
             status: status
           is_bastion: true
           role: role
@@ -12130,7 +12267,7 @@ components:
           id: 1
           node_group_name: node_group_name
           status_reason: status_reason
-          node_group_id: 7
+          node_group_id: 4
           status: status
         message: message
         status: true
@@ -12166,14 +12303,24 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
-            max_count: 4
+            max_count: 1
+            firewall_ids:
+            - 2
+            - 2
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 2
-            min_count: 7
+            firewalls:
+            - name: name
+              id: 4
+              status: status
+            - name: name
+              id: 4
+              status: status
+            id: 7
+            min_count: 1
           - flavor:
               features: "{}"
               disk: 1
@@ -12189,23 +12336,33 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
-            max_count: 4
+            max_count: 1
+            firewall_ids:
+            - 2
+            - 2
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 2
-            min_count: 7
+            firewalls:
+            - name: name
+              id: 4
+              status: status
+            - name: name
+              id: 4
+              status: status
+            id: 7
+            min_count: 1
           nodes:
           - instance:
-              contract_id: 1
+              contract_id: 6
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
-              id: 1
-              image_id: 6
+              id: 7
+              image_id: 1
               status: status
             is_bastion: true
             role: role
@@ -12215,16 +12372,16 @@ components:
             id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 7
+            node_group_id: 4
             status: status
           - instance:
-              contract_id: 1
+              contract_id: 6
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
-              id: 1
-              image_id: 6
+              id: 7
+              image_id: 1
               status: status
             is_bastion: true
             role: role
@@ -12234,7 +12391,7 @@ components:
             id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 7
+            node_group_id: 4
             status: status
           is_reconciling: true
           kube_config: kube_config
@@ -12636,14 +12793,24 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
-            max_count: 4
+            max_count: 1
+            firewall_ids:
+            - 2
+            - 2
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 2
-            min_count: 7
+            firewalls:
+            - name: name
+              id: 4
+              status: status
+            - name: name
+              id: 4
+              status: status
+            id: 7
+            min_count: 1
           - flavor:
               features: "{}"
               disk: 1
@@ -12659,23 +12826,33 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
-            max_count: 4
+            max_count: 1
+            firewall_ids:
+            - 2
+            - 2
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 2
-            min_count: 7
+            firewalls:
+            - name: name
+              id: 4
+              status: status
+            - name: name
+              id: 4
+              status: status
+            id: 7
+            min_count: 1
           nodes:
           - instance:
-              contract_id: 1
+              contract_id: 6
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
-              id: 1
-              image_id: 6
+              id: 7
+              image_id: 1
               status: status
             is_bastion: true
             role: role
@@ -12685,16 +12862,16 @@ components:
             id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 7
+            node_group_id: 4
             status: status
           - instance:
-              contract_id: 1
+              contract_id: 6
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
-              id: 1
-              image_id: 6
+              id: 7
+              image_id: 1
               status: status
             is_bastion: true
             role: role
@@ -12704,7 +12881,7 @@ components:
             id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 7
+            node_group_id: 4
             status: status
           is_reconciling: true
           kube_config: kube_config
@@ -12782,14 +12959,24 @@ components:
                 - id: 7
                   label: label
                 ram: 9.301444243932576
-              max_count: 4
+              max_count: 1
+              firewall_ids:
+              - 2
+              - 2
               role: role
               updated_at: 2000-01-23T04:56:07.000+00:00
               count: 3
               name: name
               created_at: 2000-01-23T04:56:07.000+00:00
-              id: 2
-              min_count: 7
+              firewalls:
+              - name: name
+                id: 4
+                status: status
+              - name: name
+                id: 4
+                status: status
+              id: 7
+              min_count: 1
             - flavor:
                 features: "{}"
                 disk: 1
@@ -12805,23 +12992,33 @@ components:
                 - id: 7
                   label: label
                 ram: 9.301444243932576
-              max_count: 4
+              max_count: 1
+              firewall_ids:
+              - 2
+              - 2
               role: role
               updated_at: 2000-01-23T04:56:07.000+00:00
               count: 3
               name: name
               created_at: 2000-01-23T04:56:07.000+00:00
-              id: 2
-              min_count: 7
+              firewalls:
+              - name: name
+                id: 4
+                status: status
+              - name: name
+                id: 4
+                status: status
+              id: 7
+              min_count: 1
             nodes:
             - instance:
-                contract_id: 1
+                contract_id: 6
                 floating_ip: floating_ip
                 floating_ip_status: floating_ip_status
                 name: name
                 fixed_ip: fixed_ip
-                id: 1
-                image_id: 6
+                id: 7
+                image_id: 1
                 status: status
               is_bastion: true
               role: role
@@ -12831,16 +13028,16 @@ components:
               id: 1
               node_group_name: node_group_name
               status_reason: status_reason
-              node_group_id: 7
+              node_group_id: 4
               status: status
             - instance:
-                contract_id: 1
+                contract_id: 6
                 floating_ip: floating_ip
                 floating_ip_status: floating_ip_status
                 name: name
                 fixed_ip: fixed_ip
-                id: 1
-                image_id: 6
+                id: 7
+                image_id: 1
                 status: status
               is_bastion: true
               role: role
@@ -12850,7 +13047,7 @@ components:
               id: 1
               node_group_name: node_group_name
               status_reason: status_reason
-              node_group_id: 7
+              node_group_id: 4
               status: status
             is_reconciling: true
             kube_config: kube_config
@@ -12903,14 +13100,24 @@ components:
                 - id: 7
                   label: label
                 ram: 9.301444243932576
-              max_count: 4
+              max_count: 1
+              firewall_ids:
+              - 2
+              - 2
               role: role
               updated_at: 2000-01-23T04:56:07.000+00:00
               count: 3
               name: name
               created_at: 2000-01-23T04:56:07.000+00:00
-              id: 2
-              min_count: 7
+              firewalls:
+              - name: name
+                id: 4
+                status: status
+              - name: name
+                id: 4
+                status: status
+              id: 7
+              min_count: 1
             - flavor:
                 features: "{}"
                 disk: 1
@@ -12926,23 +13133,33 @@ components:
                 - id: 7
                   label: label
                 ram: 9.301444243932576
-              max_count: 4
+              max_count: 1
+              firewall_ids:
+              - 2
+              - 2
               role: role
               updated_at: 2000-01-23T04:56:07.000+00:00
               count: 3
               name: name
               created_at: 2000-01-23T04:56:07.000+00:00
-              id: 2
-              min_count: 7
+              firewalls:
+              - name: name
+                id: 4
+                status: status
+              - name: name
+                id: 4
+                status: status
+              id: 7
+              min_count: 1
             nodes:
             - instance:
-                contract_id: 1
+                contract_id: 6
                 floating_ip: floating_ip
                 floating_ip_status: floating_ip_status
                 name: name
                 fixed_ip: fixed_ip
-                id: 1
-                image_id: 6
+                id: 7
+                image_id: 1
                 status: status
               is_bastion: true
               role: role
@@ -12952,16 +13169,16 @@ components:
               id: 1
               node_group_name: node_group_name
               status_reason: status_reason
-              node_group_id: 7
+              node_group_id: 4
               status: status
             - instance:
-                contract_id: 1
+                contract_id: 6
                 floating_ip: floating_ip
                 floating_ip_status: floating_ip_status
                 name: name
                 fixed_ip: fixed_ip
-                id: 1
-                image_id: 6
+                id: 7
+                image_id: 1
                 status: status
               is_bastion: true
               role: role
@@ -12971,7 +13188,7 @@ components:
               id: 1
               node_group_name: node_group_name
               status_reason: status_reason
-              node_group_id: 7
+              node_group_id: 4
               status: status
             is_reconciling: true
             kube_config: kube_config
@@ -13377,6 +13594,11 @@ components:
         count:
           minimum: 1
           type: integer
+        firewall_ids:
+          description: IDs of the firewalls to apply to all nodes in this node group
+          items:
+            type: integer
+          type: array
         flavor_name:
           type: string
         max_count:
@@ -16424,14 +16646,24 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
-            max_count: 4
+            max_count: 1
+            firewall_ids:
+            - 2
+            - 2
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 2
-            min_count: 7
+            firewalls:
+            - name: name
+              id: 4
+              status: status
+            - name: name
+              id: 4
+              status: status
+            id: 7
+            min_count: 1
           - flavor:
               features: "{}"
               disk: 1
@@ -16447,23 +16679,33 @@ components:
               - id: 7
                 label: label
               ram: 9.301444243932576
-            max_count: 4
+            max_count: 1
+            firewall_ids:
+            - 2
+            - 2
             role: role
             updated_at: 2000-01-23T04:56:07.000+00:00
             count: 3
             name: name
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 2
-            min_count: 7
+            firewalls:
+            - name: name
+              id: 4
+              status: status
+            - name: name
+              id: 4
+              status: status
+            id: 7
+            min_count: 1
           nodes:
           - instance:
-              contract_id: 1
+              contract_id: 6
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
-              id: 1
-              image_id: 6
+              id: 7
+              image_id: 1
               status: status
             is_bastion: true
             role: role
@@ -16473,16 +16715,16 @@ components:
             id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 7
+            node_group_id: 4
             status: status
           - instance:
-              contract_id: 1
+              contract_id: 6
               floating_ip: floating_ip
               floating_ip_status: floating_ip_status
               name: name
               fixed_ip: fixed_ip
-              id: 1
-              image_id: 6
+              id: 7
+              image_id: 1
               status: status
             is_bastion: true
             role: role
@@ -16492,7 +16734,7 @@ components:
             id: 1
             node_group_name: node_group_name
             status_reason: status_reason
-            node_group_id: 7
+            node_group_id: 4
             status: status
           is_reconciling: true
           kube_config: kube_config
@@ -19822,6 +20064,11 @@ components:
       type: object
     Update_ClusterNodeGroup_payload:
       properties:
+        firewall_ids:
+          description: IDs of the firewalls to apply to all nodes in this node group
+          items:
+            type: integer
+          type: array
         max_count:
           maximum: 20
           type: integer

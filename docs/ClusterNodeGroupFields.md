@@ -6,6 +6,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Count** | Pointer to **int32** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
+**FirewallIds** | Pointer to **[]int32** |  | [optional] 
+**Firewalls** | Pointer to [**[]ClusterNodeGroupFirewallFields**](ClusterNodeGroupFirewallFields.md) |  | [optional] 
 **Flavor** | Pointer to [**ClusterFlavorFields**](ClusterFlavorFields.md) |  | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
 **MaxCount** | Pointer to **int32** |  | [optional] 
@@ -82,6 +84,56 @@ SetCreatedAt sets CreatedAt field to given value.
 `func (o *ClusterNodeGroupFields) HasCreatedAt() bool`
 
 HasCreatedAt returns a boolean if a field has been set.
+
+### GetFirewallIds
+
+`func (o *ClusterNodeGroupFields) GetFirewallIds() []int32`
+
+GetFirewallIds returns the FirewallIds field if non-nil, zero value otherwise.
+
+### GetFirewallIdsOk
+
+`func (o *ClusterNodeGroupFields) GetFirewallIdsOk() (*[]int32, bool)`
+
+GetFirewallIdsOk returns a tuple with the FirewallIds field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFirewallIds
+
+`func (o *ClusterNodeGroupFields) SetFirewallIds(v []int32)`
+
+SetFirewallIds sets FirewallIds field to given value.
+
+### HasFirewallIds
+
+`func (o *ClusterNodeGroupFields) HasFirewallIds() bool`
+
+HasFirewallIds returns a boolean if a field has been set.
+
+### GetFirewalls
+
+`func (o *ClusterNodeGroupFields) GetFirewalls() []ClusterNodeGroupFirewallFields`
+
+GetFirewalls returns the Firewalls field if non-nil, zero value otherwise.
+
+### GetFirewallsOk
+
+`func (o *ClusterNodeGroupFields) GetFirewallsOk() (*[]ClusterNodeGroupFirewallFields, bool)`
+
+GetFirewallsOk returns a tuple with the Firewalls field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFirewalls
+
+`func (o *ClusterNodeGroupFields) SetFirewalls(v []ClusterNodeGroupFirewallFields)`
+
+SetFirewalls sets Firewalls field to given value.
+
+### HasFirewalls
+
+`func (o *ClusterNodeGroupFields) HasFirewalls() bool`
+
+HasFirewalls returns a boolean if a field has been set.
 
 ### GetFlavor
 

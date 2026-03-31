@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Count** | Pointer to **int32** |  | [optional] 
+**FirewallIds** | Pointer to **[]int32** | IDs of the firewalls to apply to all nodes in this node group | [optional] 
 **FlavorName** | **string** |  | 
 **MaxCount** | Pointer to **int32** |  | [optional] 
 **MinCount** | Pointer to **int32** |  | [optional] 
@@ -54,6 +55,31 @@ SetCount sets Count field to given value.
 `func (o *CreateClusterNodeGroupPayload) HasCount() bool`
 
 HasCount returns a boolean if a field has been set.
+
+### GetFirewallIds
+
+`func (o *CreateClusterNodeGroupPayload) GetFirewallIds() []int32`
+
+GetFirewallIds returns the FirewallIds field if non-nil, zero value otherwise.
+
+### GetFirewallIdsOk
+
+`func (o *CreateClusterNodeGroupPayload) GetFirewallIdsOk() (*[]int32, bool)`
+
+GetFirewallIdsOk returns a tuple with the FirewallIds field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFirewallIds
+
+`func (o *CreateClusterNodeGroupPayload) SetFirewallIds(v []int32)`
+
+SetFirewallIds sets FirewallIds field to given value.
+
+### HasFirewallIds
+
+`func (o *CreateClusterNodeGroupPayload) HasFirewallIds() bool`
+
+HasFirewallIds returns a boolean if a field has been set.
 
 ### GetFlavorName
 

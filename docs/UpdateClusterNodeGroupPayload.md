@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**FirewallIds** | Pointer to **[]int32** | IDs of the firewalls to apply to all nodes in this node group | [optional] 
 **MaxCount** | Pointer to **int32** |  | [optional] 
 **MinCount** | Pointer to **int32** |  | [optional] 
 
@@ -25,6 +26,31 @@ will change when the set of required properties is changed
 NewUpdateClusterNodeGroupPayloadWithDefaults instantiates a new UpdateClusterNodeGroupPayload object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetFirewallIds
+
+`func (o *UpdateClusterNodeGroupPayload) GetFirewallIds() []int32`
+
+GetFirewallIds returns the FirewallIds field if non-nil, zero value otherwise.
+
+### GetFirewallIdsOk
+
+`func (o *UpdateClusterNodeGroupPayload) GetFirewallIdsOk() (*[]int32, bool)`
+
+GetFirewallIdsOk returns a tuple with the FirewallIds field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFirewallIds
+
+`func (o *UpdateClusterNodeGroupPayload) SetFirewallIds(v []int32)`
+
+SetFirewallIds sets FirewallIds field to given value.
+
+### HasFirewallIds
+
+`func (o *UpdateClusterNodeGroupPayload) HasFirewallIds() bool`
+
+HasFirewallIds returns a boolean if a field has been set.
 
 ### GetMaxCount
 
