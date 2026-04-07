@@ -29,8 +29,9 @@ type ErrorResponseModel struct {
 
 // RegionFields defines model for Region_Fields.
 type RegionFields struct {
-	Country     *string `json:"country,omitempty"`
-	Description *string `json:"description,omitempty"`
+	Country     *string                 `json:"country,omitempty"`
+	Description *string                 `json:"description,omitempty"`
+	Features    *map[string]interface{} `json:"features,omitempty"`
 
 	// GreenStatus Green status
 	GreenStatus *RegionFieldsGreenStatus `json:"green_status,omitempty"`

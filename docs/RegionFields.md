@@ -6,6 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Country** | Pointer to **string** |  | [optional] 
 **Description** | Pointer to **string** |  | [optional] 
+**Features** | Pointer to **map[string]interface{}** |  | [optional] 
 **GreenStatus** | Pointer to **string** | Green status | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
 **Name** | Pointer to **string** |  | [optional] 
@@ -78,6 +79,31 @@ SetDescription sets Description field to given value.
 `func (o *RegionFields) HasDescription() bool`
 
 HasDescription returns a boolean if a field has been set.
+
+### GetFeatures
+
+`func (o *RegionFields) GetFeatures() map[string]interface{}`
+
+GetFeatures returns the Features field if non-nil, zero value otherwise.
+
+### GetFeaturesOk
+
+`func (o *RegionFields) GetFeaturesOk() (*map[string]interface{}, bool)`
+
+GetFeaturesOk returns a tuple with the Features field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFeatures
+
+`func (o *RegionFields) SetFeatures(v map[string]interface{})`
+
+SetFeatures sets Features field to given value.
+
+### HasFeatures
+
+`func (o *RegionFields) HasFeatures() bool`
+
+HasFeatures returns a boolean if a field has been set.
 
 ### GetGreenStatus
 

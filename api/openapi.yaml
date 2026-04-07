@@ -17858,6 +17858,7 @@ components:
     Region_Fields:
       example:
         country: country
+        features: "{}"
         green_status: GREEN
         name: name
         description: description
@@ -17867,6 +17868,9 @@ components:
           type: string
         description:
           type: string
+        features:
+          properties: {}
+          type: object
         green_status:
           description: Green status
           enum:
@@ -17884,11 +17888,13 @@ components:
       example:
         regions:
         - country: country
+          features: "{}"
           green_status: GREEN
           name: name
           description: description
           id: 0
         - country: country
+          features: "{}"
           green_status: GREEN
           name: name
           description: description
