@@ -35,6 +35,10 @@ tags:
   name: beta access
 - description: Partner config fetch endpoint
   name: partner-config
+- description: User Consent stores all consents from a User
+  name: user-consent
+- description: User Consent management
+  name: user-consent-events
 - description: Dashboard APIs
   name: dashboard
 - description: Stock APIs
@@ -1264,6 +1268,223 @@ paths:
       - apiKey: []
       tags:
       - auth
+  /auth/user-consent:
+    get:
+      description: Fetch all the recorded consents given from a User
+      operationId: Get_All_Consents_for_a_User
+      parameters:
+      - description: Filter by consent type
+        explode: true
+        in: query
+        name: consent_type
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserConsentsResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Not Found
+        "500":
+          content: {}
+          description: Internal Server Error
+      summary: Get Consents for a User
+      tags:
+      - user-consent
+    post:
+      description: Add a new consent given by the User
+      operationId: Add_a_new_consent_for_a_User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordConsentRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentActionResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Not Found
+        "500":
+          content: {}
+          description: Internal Server Error
+      summary: Add a new User consent
+      tags:
+      - user-consent
+      x-codegen-request-body-name: payload
+  /auth/user-consent-events/{consent_type}/events:
+    get:
+      description: Get all consent audit events
+      operationId: Get_consent_audit_events
+      parameters:
+      - explode: false
+        in: path
+        name: consent_type
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentEventsResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Not Found
+      summary: Get audit trail for a consent
+      tags:
+      - user-consent-events
+  /auth/user-consent/templates:
+    get:
+      description: Returns current consent templates for all consent types
+      operationId: Get_all_consent_templates
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentTemplatesResponse'
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+      summary: Get all consent templates
+      tags:
+      - user-consent
+  /auth/user-consent/templates/{consent_type}:
+    get:
+      description: Returns the current consent template for a specific consent type
+      operationId: Get_consent_template_by_type
+      parameters:
+      - explode: false
+        in: path
+        name: consent_type
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentTemplate'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Not Found
+      summary: Get consent template for a specific type
+      tags:
+      - user-consent
+  /auth/user-consent/{consent_type}:
+    patch:
+      description: Revoke or grant a consent to the User
+      operationId: Update_a_consent_action_by_type
+      parameters:
+      - explode: false
+        in: path
+        name: consent_type
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateConsentRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentActionResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Not Found
+        "500":
+          content: {}
+          description: Internal Server Error
+      summary: Grant or revoke an existing consent
+      tags:
+      - user-consent
+      x-codegen-request-body-name: payload
   /auth/users/me/permissions:
     get:
       description: "Retrieves a list of permissions granted to your account. For additional\
@@ -12667,6 +12888,105 @@ components:
         status:
           type: boolean
       type: object
+    ConsentActionResponse:
+      example:
+        consent:
+          consent_method: consent_method
+          updated_at: updated_at
+          user_id: 1
+          org_id: 6
+          action: action
+          created_at: created_at
+          id: 0
+          ip_address: ip_address
+          consent_type: consent_type
+        message: message
+      properties:
+        consent:
+          $ref: '#/components/schemas/UserConsent'
+        message:
+          type: string
+      type: object
+    ConsentBlock:
+      example:
+        text: text
+        type: text
+      properties:
+        text:
+          description: "Block text, may contain ${variable} placeholders"
+          type: string
+        type:
+          description: Block display type
+          enum:
+          - text
+          - warning
+          - info
+          - success
+          - failure
+          example: text
+          type: string
+      type: object
+    ConsentEventsResponse:
+      example:
+        consent:
+          consent_method: consent_method
+          updated_at: updated_at
+          user_id: 1
+          org_id: 6
+          action: action
+          created_at: created_at
+          id: 0
+          ip_address: ip_address
+          consent_type: consent_type
+        events:
+        - consent_method: consent_method
+          user_id: 1
+          action: action
+          created_at: created_at
+          id: 6
+          ip_address: ip_address
+          consent_id: 0
+        - consent_method: consent_method
+          user_id: 1
+          action: action
+          created_at: created_at
+          id: 6
+          ip_address: ip_address
+          consent_id: 0
+      properties:
+        consent:
+          $ref: '#/components/schemas/UserConsent'
+        events:
+          items:
+            $ref: '#/components/schemas/UserConsentEvent'
+          type: array
+      type: object
+    ConsentTemplate:
+      example:
+        blocks:
+        - text: text
+          type: text
+        - text: text
+          type: text
+        version: version
+      properties:
+        blocks:
+          items:
+            $ref: '#/components/schemas/ConsentBlock'
+          type: array
+        version:
+          description: Template version identifier
+          type: string
+      type: object
+    ConsentTemplatesResponse:
+      example:
+        templates: "{}"
+      properties:
+        templates:
+          description: Templates keyed by consent type
+          properties: {}
+          type: object
+      type: object
     Container_Overview_Fields:
       example:
         cost_per_hour: 0.8008281904610115
@@ -16402,7 +16722,10 @@ components:
       properties:
         email:
           description: The email for sending invitation.
-          maxLength: 100
+          maxLength: 254
+          minLength: 6
+          pattern: "^[A-Za-z0-9](?:[A-Za-z0-9._+-]{0,62}[A-Za-z0-9])?@(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\\\
+            .)+[A-Za-z]{2,}$"
           type: string
       required:
       - email
@@ -17846,6 +18169,45 @@ components:
           items:
             $ref: '#/components/schemas/RolePolicyFields'
           type: array
+      type: object
+    RecordConsentRequest:
+      example:
+        metadata: "{}"
+        consent_method: web_checkbox
+        action: granted
+        consent_version: consent_version
+        consent_type: auto_top_up
+      properties:
+        action:
+          enum:
+          - granted
+          - revoked
+          example: granted
+          type: string
+        consent_method:
+          default: web_checkbox
+          enum:
+          - web_checkbox
+          - api
+          - admin_override
+          example: web_checkbox
+          type: string
+        consent_type:
+          enum:
+          - auto_top_up
+          example: auto_top_up
+          type: string
+        consent_version:
+          description: Version identifier. Defaults to the current version for the
+            consent type
+          type: string
+        metadata:
+          description: Consent-type-specific metadata
+          properties: {}
+          type: object
+      required:
+      - action
+      - consent_type
       type: object
     Redeem_voucher_payload:
       properties:
@@ -20046,6 +20408,38 @@ components:
         landing_page:
           type: string
       type: object
+    UpdateConsentRequest:
+      example:
+        metadata: "{}"
+        consent_method: web_checkbox
+        action: granted
+        consent_version: consent_version
+      properties:
+        action:
+          enum:
+          - granted
+          - revoked
+          example: granted
+          type: string
+        consent_method:
+          default: web_checkbox
+          enum:
+          - web_checkbox
+          - api
+          - admin_override
+          example: web_checkbox
+          type: string
+        consent_version:
+          description: Version identifier. Defaults to the current version for the
+            consent type
+          type: string
+        metadata:
+          description: Consent-type-specific metadata
+          properties: {}
+          type: object
+      required:
+      - action
+      type: object
     UpdateOrganizationPayload:
       example:
         name: name
@@ -20193,6 +20587,89 @@ components:
           type: object
         volume:
           $ref: '#/components/schemas/Volume_Fields'
+      type: object
+    UserConsent:
+      example:
+        consent_method: consent_method
+        updated_at: updated_at
+        user_id: 1
+        org_id: 6
+        action: action
+        created_at: created_at
+        id: 0
+        ip_address: ip_address
+        consent_type: consent_type
+      properties:
+        action:
+          type: string
+        consent_method:
+          type: string
+        consent_type:
+          type: string
+        created_at:
+          type: string
+        id:
+          type: integer
+        ip_address:
+          type: string
+        org_id:
+          type: integer
+        updated_at:
+          type: string
+        user_id:
+          type: integer
+      type: object
+    UserConsentEvent:
+      example:
+        consent_method: consent_method
+        user_id: 1
+        action: action
+        created_at: created_at
+        id: 6
+        ip_address: ip_address
+        consent_id: 0
+      properties:
+        action:
+          type: string
+        consent_id:
+          type: integer
+        consent_method:
+          type: string
+        created_at:
+          type: string
+        id:
+          type: integer
+        ip_address:
+          type: string
+        user_id:
+          type: integer
+      type: object
+    UserConsentsResponse:
+      example:
+        consents:
+        - consent_method: consent_method
+          updated_at: updated_at
+          user_id: 1
+          org_id: 6
+          action: action
+          created_at: created_at
+          id: 0
+          ip_address: ip_address
+          consent_type: consent_type
+        - consent_method: consent_method
+          updated_at: updated_at
+          user_id: 1
+          org_id: 6
+          action: action
+          created_at: created_at
+          id: 0
+          ip_address: ip_address
+          consent_type: consent_type
+      properties:
+        consents:
+          items:
+            $ref: '#/components/schemas/UserConsent'
+          type: array
       type: object
     UserDefaultChoiceForUserFields:
       example:

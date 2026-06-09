@@ -136,6 +136,10 @@ type APIClient struct {
 
 	UserAPI *UserAPIService
 
+	UserConsentAPI *UserConsentAPIService
+
+	UserConsentEventsAPI *UserConsentEventsAPIService
+
 	UserDetailChoiceAPI *UserDetailChoiceAPIService
 
 	UserPermissionAPI *UserPermissionAPIService
@@ -213,6 +217,8 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.StockAPI = (*StockAPIService)(&c.common)
 	c.TemplateAPI = (*TemplateAPIService)(&c.common)
 	c.UserAPI = (*UserAPIService)(&c.common)
+	c.UserConsentAPI = (*UserConsentAPIService)(&c.common)
+	c.UserConsentEventsAPI = (*UserConsentEventsAPIService)(&c.common)
 	c.UserDetailChoiceAPI = (*UserDetailChoiceAPIService)(&c.common)
 	c.UserPermissionAPI = (*UserPermissionAPIService)(&c.common)
 	c.VirtualMachineAPI = (*VirtualMachineAPIService)(&c.common)
