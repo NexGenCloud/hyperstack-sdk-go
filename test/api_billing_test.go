@@ -145,6 +145,46 @@ func Test_hyperstack_BillingAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test BillingAPIService GetImageGenerationBillingHistory", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		resp, httpRes, err := apiClient.BillingAPI.GetImageGenerationBillingHistory(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetImageGenerationBillingHistoryGraph", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var resourceId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetImageGenerationBillingHistoryGraph(context.Background(), resourceId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test BillingAPIService GetImageGenerationHistoryForResource", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var resourceId int32
+
+		resp, httpRes, err := apiClient.BillingAPI.GetImageGenerationHistoryForResource(context.Background(), resourceId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test BillingAPIService GetLastDayCost", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test

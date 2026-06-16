@@ -1,104 +1,104 @@
-# PaymentDetailsResponse
+# UpdateAutoTopupResponse
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Data** | Pointer to [**[]PaymentDetailsFields**](PaymentDetailsFields.md) |  | [optional] 
+**AutoTopup** | Pointer to [**AutoTopup**](AutoTopup.md) |  | [optional] 
 **Message** | Pointer to **string** |  | [optional] 
 **Status** | Pointer to **bool** |  | [optional] 
 
 ## Methods
 
-### NewPaymentDetailsResponse
+### NewUpdateAutoTopupResponse
 
-`func NewPaymentDetailsResponse() *PaymentDetailsResponse`
+`func NewUpdateAutoTopupResponse() *UpdateAutoTopupResponse`
 
-NewPaymentDetailsResponse instantiates a new PaymentDetailsResponse object
+NewUpdateAutoTopupResponse instantiates a new UpdateAutoTopupResponse object
 This constructor will assign default values to properties that have it defined,
 and makes sure properties required by API are set, but the set of arguments
 will change when the set of required properties is changed
 
-### NewPaymentDetailsResponseWithDefaults
+### NewUpdateAutoTopupResponseWithDefaults
 
-`func NewPaymentDetailsResponseWithDefaults() *PaymentDetailsResponse`
+`func NewUpdateAutoTopupResponseWithDefaults() *UpdateAutoTopupResponse`
 
-NewPaymentDetailsResponseWithDefaults instantiates a new PaymentDetailsResponse object
+NewUpdateAutoTopupResponseWithDefaults instantiates a new UpdateAutoTopupResponse object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetData
+### GetAutoTopup
 
-`func (o *PaymentDetailsResponse) GetData() []PaymentDetailsFields`
+`func (o *UpdateAutoTopupResponse) GetAutoTopup() AutoTopup`
 
-GetData returns the Data field if non-nil, zero value otherwise.
+GetAutoTopup returns the AutoTopup field if non-nil, zero value otherwise.
 
-### GetDataOk
+### GetAutoTopupOk
 
-`func (o *PaymentDetailsResponse) GetDataOk() (*[]PaymentDetailsFields, bool)`
+`func (o *UpdateAutoTopupResponse) GetAutoTopupOk() (*AutoTopup, bool)`
 
-GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
+GetAutoTopupOk returns a tuple with the AutoTopup field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetData
+### SetAutoTopup
 
-`func (o *PaymentDetailsResponse) SetData(v []PaymentDetailsFields)`
+`func (o *UpdateAutoTopupResponse) SetAutoTopup(v AutoTopup)`
 
-SetData sets Data field to given value.
+SetAutoTopup sets AutoTopup field to given value.
 
-### HasData
+### HasAutoTopup
 
-`func (o *PaymentDetailsResponse) HasData() bool`
+`func (o *UpdateAutoTopupResponse) HasAutoTopup() bool`
 
-HasData returns a boolean if a field has been set.
+HasAutoTopup returns a boolean if a field has been set.
 
 ### GetMessage
 
-`func (o *PaymentDetailsResponse) GetMessage() string`
+`func (o *UpdateAutoTopupResponse) GetMessage() string`
 
 GetMessage returns the Message field if non-nil, zero value otherwise.
 
 ### GetMessageOk
 
-`func (o *PaymentDetailsResponse) GetMessageOk() (*string, bool)`
+`func (o *UpdateAutoTopupResponse) GetMessageOk() (*string, bool)`
 
 GetMessageOk returns a tuple with the Message field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetMessage
 
-`func (o *PaymentDetailsResponse) SetMessage(v string)`
+`func (o *UpdateAutoTopupResponse) SetMessage(v string)`
 
 SetMessage sets Message field to given value.
 
 ### HasMessage
 
-`func (o *PaymentDetailsResponse) HasMessage() bool`
+`func (o *UpdateAutoTopupResponse) HasMessage() bool`
 
 HasMessage returns a boolean if a field has been set.
 
 ### GetStatus
 
-`func (o *PaymentDetailsResponse) GetStatus() bool`
+`func (o *UpdateAutoTopupResponse) GetStatus() bool`
 
 GetStatus returns the Status field if non-nil, zero value otherwise.
 
 ### GetStatusOk
 
-`func (o *PaymentDetailsResponse) GetStatusOk() (*bool, bool)`
+`func (o *UpdateAutoTopupResponse) GetStatusOk() (*bool, bool)`
 
 GetStatusOk returns a tuple with the Status field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetStatus
 
-`func (o *PaymentDetailsResponse) SetStatus(v bool)`
+`func (o *UpdateAutoTopupResponse) SetStatus(v bool)`
 
 SetStatus sets Status field to given value.
 
 ### HasStatus
 
-`func (o *PaymentDetailsResponse) HasStatus() bool`
+`func (o *UpdateAutoTopupResponse) HasStatus() bool`
 
 HasStatus returns a boolean if a field has been set.
 

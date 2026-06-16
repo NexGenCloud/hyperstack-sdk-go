@@ -58,6 +58,8 @@ type APIClient struct {
 
 	AuthAPI *AuthAPIService
 
+	AutoTopupAPI *AutoTopupAPIService
+
 	BetaAccessAPI *BetaAccessAPIService
 
 	BillingAPI *BillingAPIService
@@ -178,6 +180,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.ApiKeyAPI = (*ApiKeyAPIService)(&c.common)
 	c.AssigningMemberRoleAPI = (*AssigningMemberRoleAPIService)(&c.common)
 	c.AuthAPI = (*AuthAPIService)(&c.common)
+	c.AutoTopupAPI = (*AutoTopupAPIService)(&c.common)
 	c.BetaAccessAPI = (*BetaAccessAPIService)(&c.common)
 	c.BillingAPI = (*BillingAPIService)(&c.common)
 	c.BucketsAPI = (*BucketsAPIService)(&c.common)

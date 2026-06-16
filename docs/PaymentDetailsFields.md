@@ -5,13 +5,17 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Amount** | Pointer to **float32** |  | [optional] 
+**AttemptNumber** | Pointer to **int32** |  | [optional] 
+**AutoTopupId** | Pointer to **int32** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **Currency** | Pointer to **string** |  | [optional] 
 **Description** | Pointer to **string** |  | [optional] 
 **GatewayResponse** | Pointer to **string** |  | [optional] 
 **Invoice** | Pointer to **string** |  | [optional] 
+**MaxAttempts** | Pointer to **int32** |  | [optional] 
 **PaidFrom** | Pointer to **string** |  | [optional] 
 **PaymentId** | Pointer to **string** |  | [optional] 
+**PaymentType** | Pointer to **string** |  | [optional] 
 **Status** | Pointer to **string** |  | [optional] 
 **TaxAmount** | Pointer to **float32** |  | [optional] 
 **TransactionId** | Pointer to **string** |  | [optional] 
@@ -60,6 +64,56 @@ SetAmount sets Amount field to given value.
 `func (o *PaymentDetailsFields) HasAmount() bool`
 
 HasAmount returns a boolean if a field has been set.
+
+### GetAttemptNumber
+
+`func (o *PaymentDetailsFields) GetAttemptNumber() int32`
+
+GetAttemptNumber returns the AttemptNumber field if non-nil, zero value otherwise.
+
+### GetAttemptNumberOk
+
+`func (o *PaymentDetailsFields) GetAttemptNumberOk() (*int32, bool)`
+
+GetAttemptNumberOk returns a tuple with the AttemptNumber field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAttemptNumber
+
+`func (o *PaymentDetailsFields) SetAttemptNumber(v int32)`
+
+SetAttemptNumber sets AttemptNumber field to given value.
+
+### HasAttemptNumber
+
+`func (o *PaymentDetailsFields) HasAttemptNumber() bool`
+
+HasAttemptNumber returns a boolean if a field has been set.
+
+### GetAutoTopupId
+
+`func (o *PaymentDetailsFields) GetAutoTopupId() int32`
+
+GetAutoTopupId returns the AutoTopupId field if non-nil, zero value otherwise.
+
+### GetAutoTopupIdOk
+
+`func (o *PaymentDetailsFields) GetAutoTopupIdOk() (*int32, bool)`
+
+GetAutoTopupIdOk returns a tuple with the AutoTopupId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAutoTopupId
+
+`func (o *PaymentDetailsFields) SetAutoTopupId(v int32)`
+
+SetAutoTopupId sets AutoTopupId field to given value.
+
+### HasAutoTopupId
+
+`func (o *PaymentDetailsFields) HasAutoTopupId() bool`
+
+HasAutoTopupId returns a boolean if a field has been set.
 
 ### GetCreatedAt
 
@@ -186,6 +240,31 @@ SetInvoice sets Invoice field to given value.
 
 HasInvoice returns a boolean if a field has been set.
 
+### GetMaxAttempts
+
+`func (o *PaymentDetailsFields) GetMaxAttempts() int32`
+
+GetMaxAttempts returns the MaxAttempts field if non-nil, zero value otherwise.
+
+### GetMaxAttemptsOk
+
+`func (o *PaymentDetailsFields) GetMaxAttemptsOk() (*int32, bool)`
+
+GetMaxAttemptsOk returns a tuple with the MaxAttempts field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMaxAttempts
+
+`func (o *PaymentDetailsFields) SetMaxAttempts(v int32)`
+
+SetMaxAttempts sets MaxAttempts field to given value.
+
+### HasMaxAttempts
+
+`func (o *PaymentDetailsFields) HasMaxAttempts() bool`
+
+HasMaxAttempts returns a boolean if a field has been set.
+
 ### GetPaidFrom
 
 `func (o *PaymentDetailsFields) GetPaidFrom() string`
@@ -235,6 +314,31 @@ SetPaymentId sets PaymentId field to given value.
 `func (o *PaymentDetailsFields) HasPaymentId() bool`
 
 HasPaymentId returns a boolean if a field has been set.
+
+### GetPaymentType
+
+`func (o *PaymentDetailsFields) GetPaymentType() string`
+
+GetPaymentType returns the PaymentType field if non-nil, zero value otherwise.
+
+### GetPaymentTypeOk
+
+`func (o *PaymentDetailsFields) GetPaymentTypeOk() (*string, bool)`
+
+GetPaymentTypeOk returns a tuple with the PaymentType field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPaymentType
+
+`func (o *PaymentDetailsFields) SetPaymentType(v string)`
+
+SetPaymentType sets PaymentType field to given value.
+
+### HasPaymentType
+
+`func (o *PaymentDetailsFields) HasPaymentType() bool`
+
+HasPaymentType returns a boolean if a field has been set.
 
 ### GetStatus
 

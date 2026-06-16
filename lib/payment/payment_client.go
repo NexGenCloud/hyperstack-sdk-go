@@ -27,13 +27,17 @@ type ErrorResponseModel struct {
 // PaymentDetailsFields defines model for Payment_Details_Fields.
 type PaymentDetailsFields struct {
 	Amount          *float32   `json:"amount,omitempty"`
+	AttemptNumber   *int       `json:"attempt_number,omitempty"`
+	AutoTopupId     *int       `json:"auto_topup_id,omitempty"`
 	CreatedAt       *time.CustomTime `json:"created_at,omitempty"`
 	Currency        *string    `json:"currency,omitempty"`
 	Description     *string    `json:"description,omitempty"`
 	GatewayResponse *string    `json:"gateway_response,omitempty"`
 	Invoice         *string    `json:"invoice,omitempty"`
+	MaxAttempts     *int       `json:"max_attempts,omitempty"`
 	PaidFrom        *string    `json:"paid_from,omitempty"`
 	PaymentId       *string    `json:"payment_id,omitempty"`
+	PaymentType     *string    `json:"payment_type,omitempty"`
 	Status          *string    `json:"status,omitempty"`
 	TaxAmount       *float32   `json:"tax_amount,omitempty"`
 	TransactionId   *string    `json:"transaction_id,omitempty"`
@@ -42,9 +46,9 @@ type PaymentDetailsFields struct {
 
 // PaymentDetailsResponse defines model for Payment_Details_Response.
 type PaymentDetailsResponse struct {
-	Data    *PaymentDetailsFields `json:"data,omitempty"`
-	Message *string               `json:"message,omitempty"`
-	Status  *bool                 `json:"status,omitempty"`
+	Data    *[]PaymentDetailsFields `json:"data,omitempty"`
+	Message *string                 `json:"message,omitempty"`
+	Status  *bool                   `json:"status,omitempty"`
 }
 
 // PaymentInitiateFields defines model for Payment_Initiate_Fields.

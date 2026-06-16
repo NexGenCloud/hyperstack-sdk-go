@@ -13,6 +13,9 @@ Method | HTTP request | Description
 [**GetDataSynthesisHistoryForResource**](BillingAPI.md#GetDataSynthesisHistoryForResource) | **Get** /billing/billing/history/data_synthesis/{resource_id} | 
 [**GetFineTuningBillingHistory**](BillingAPI.md#GetFineTuningBillingHistory) | **Get** /billing/billing/history/fine_tuning | Retrieve Billing History of model evaluation for a specific Billing Cycle
 [**GetFineTuningBillingHistoryGraph**](BillingAPI.md#GetFineTuningBillingHistoryGraph) | **Get** /billing/billing/history/fine_tuning/{resource_id}/graph | Retrieve hourly cost datapoints of a Specific Fine Tuning for a specific billing cycle
+[**GetImageGenerationBillingHistory**](BillingAPI.md#GetImageGenerationBillingHistory) | **Get** /billing/billing/history/image_generation | Retrieve Billing History of image generation for a specific Billing Cycle
+[**GetImageGenerationBillingHistoryGraph**](BillingAPI.md#GetImageGenerationBillingHistoryGraph) | **Get** /billing/billing/history/image_generation/{resource_id}/graph | Retrieve hourly cost datapoints of a Specific Image Generation for a specific
+[**GetImageGenerationHistoryForResource**](BillingAPI.md#GetImageGenerationHistoryForResource) | **Get** /billing/billing/history/image_generation/{resource_id} | 
 [**GetLastDayCost**](BillingAPI.md#GetLastDayCost) | **Get** /billing/billing/last-day-cost | GET: Last Day Cost
 [**GetModelEvaluationBillingHistory**](BillingAPI.md#GetModelEvaluationBillingHistory) | **Get** /billing/billing/history/model_evaluation | Retrieve Billing History of model evaluation for a specific Billing Cycle
 [**GetModelEvaluationBillingHistoryGraph**](BillingAPI.md#GetModelEvaluationBillingHistoryGraph) | **Get** /billing/billing/history/model_evaluation/{resource_id}/graph | Retrieve hourly cost datapoints of a Specific Model Evaluation for a specific
@@ -695,6 +698,228 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**ResourceLevelVolumeGraphBillingDetailsResponseModel**](ResourceLevelVolumeGraphBillingDetailsResponseModel.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetImageGenerationBillingHistory
+
+> TokenBasedBillingHistoryResponse GetImageGenerationBillingHistory(ctx).StartDate(startDate).EndDate(endDate).Search(search).PerPage(perPage).Page(page).Execute()
+
+Retrieve Billing History of image generation for a specific Billing Cycle
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	startDate := "startDate_example" // string | Date should be formatted in YYYY-MM-DDTHH:MM:SS (optional)
+	endDate := "endDate_example" // string | Date should be formatted in YYYY-MM-DDTHH:MM:SS (optional)
+	search := "search_example" // string | Search by resource \"Name\" or \"ID\" (optional)
+	perPage := int32(56) // int32 | Number of items to return per page (optional)
+	page := int32(56) // int32 | Page number (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.BillingAPI.GetImageGenerationBillingHistory(context.Background()).StartDate(startDate).EndDate(endDate).Search(search).PerPage(perPage).Page(page).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `BillingAPI.GetImageGenerationBillingHistory``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetImageGenerationBillingHistory`: TokenBasedBillingHistoryResponse
+	fmt.Fprintf(os.Stdout, "Response from `BillingAPI.GetImageGenerationBillingHistory`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetImageGenerationBillingHistoryRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **startDate** | **string** | Date should be formatted in YYYY-MM-DDTHH:MM:SS | 
+ **endDate** | **string** | Date should be formatted in YYYY-MM-DDTHH:MM:SS | 
+ **search** | **string** | Search by resource \&quot;Name\&quot; or \&quot;ID\&quot; | 
+ **perPage** | **int32** | Number of items to return per page | 
+ **page** | **int32** | Page number | 
+
+### Return type
+
+[**TokenBasedBillingHistoryResponse**](TokenBasedBillingHistoryResponse.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetImageGenerationBillingHistoryGraph
+
+> ImageGenerationBillingHistoryDetailsResponseSchema GetImageGenerationBillingHistoryGraph(ctx, resourceId).StartDate(startDate).EndDate(endDate).Execute()
+
+Retrieve hourly cost datapoints of a Specific Image Generation for a specific
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	resourceId := int32(56) // int32 | 
+	startDate := "startDate_example" // string | Date should be formatted in YYYY-MM-DDTHH:MM:SS (optional)
+	endDate := "endDate_example" // string | Date should be formatted in YYYY-MM-DDTHH:MM:SS (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.BillingAPI.GetImageGenerationBillingHistoryGraph(context.Background(), resourceId).StartDate(startDate).EndDate(endDate).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `BillingAPI.GetImageGenerationBillingHistoryGraph``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetImageGenerationBillingHistoryGraph`: ImageGenerationBillingHistoryDetailsResponseSchema
+	fmt.Fprintf(os.Stdout, "Response from `BillingAPI.GetImageGenerationBillingHistoryGraph`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**resourceId** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetImageGenerationBillingHistoryGraphRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **startDate** | **string** | Date should be formatted in YYYY-MM-DDTHH:MM:SS | 
+ **endDate** | **string** | Date should be formatted in YYYY-MM-DDTHH:MM:SS | 
+
+### Return type
+
+[**ImageGenerationBillingHistoryDetailsResponseSchema**](ImageGenerationBillingHistoryDetailsResponseSchema.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetImageGenerationHistoryForResource
+
+> ImageGenerationBillingHistoryDetailsResponseSchema GetImageGenerationHistoryForResource(ctx, resourceId).StartDate(startDate).EndDate(endDate).Execute()
+
+
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	resourceId := int32(56) // int32 | 
+	startDate := "startDate_example" // string | YYYY-MM-DDTHH:MM:SS (optional)
+	endDate := "endDate_example" // string | YYYY-MM-DDTHH:MM:SS (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.BillingAPI.GetImageGenerationHistoryForResource(context.Background(), resourceId).StartDate(startDate).EndDate(endDate).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `BillingAPI.GetImageGenerationHistoryForResource``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetImageGenerationHistoryForResource`: ImageGenerationBillingHistoryDetailsResponseSchema
+	fmt.Fprintf(os.Stdout, "Response from `BillingAPI.GetImageGenerationHistoryForResource`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**resourceId** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetImageGenerationHistoryForResourceRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **startDate** | **string** | YYYY-MM-DDTHH:MM:SS | 
+ **endDate** | **string** | YYYY-MM-DDTHH:MM:SS | 
+
+### Return type
+
+[**ImageGenerationBillingHistoryDetailsResponseSchema**](ImageGenerationBillingHistoryDetailsResponseSchema.md)
 
 ### Authorization
 

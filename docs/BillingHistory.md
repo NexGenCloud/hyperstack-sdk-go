@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Attributes** | Pointer to [**Attributes**](Attributes.md) |  | [optional] 
-**Metrics** | Pointer to **map[string]interface{}** |  | [optional] 
+**Metrics** | Pointer to [**Metrics**](Metrics.md) |  | [optional] 
 
 ## Methods
 
@@ -53,20 +53,20 @@ HasAttributes returns a boolean if a field has been set.
 
 ### GetMetrics
 
-`func (o *BillingHistory) GetMetrics() map[string]interface{}`
+`func (o *BillingHistory) GetMetrics() Metrics`
 
 GetMetrics returns the Metrics field if non-nil, zero value otherwise.
 
 ### GetMetricsOk
 
-`func (o *BillingHistory) GetMetricsOk() (*map[string]interface{}, bool)`
+`func (o *BillingHistory) GetMetricsOk() (*Metrics, bool)`
 
 GetMetricsOk returns a tuple with the Metrics field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetMetrics
 
-`func (o *BillingHistory) SetMetrics(v map[string]interface{})`
+`func (o *BillingHistory) SetMetrics(v Metrics)`
 
 SetMetrics sets Metrics field to given value.
 

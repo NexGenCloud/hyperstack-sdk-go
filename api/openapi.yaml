@@ -102,6 +102,7 @@ tags:
 - description: Customer Contract APIs
   name: Customer Contract
 - name: alive
+- name: auto-topup
 - name: billing
 - name: vouchers
 - name: credit
@@ -1698,6 +1699,206 @@ paths:
       - apiKey: []
       tags:
       - alive
+  /billing/auto-topup:
+    delete:
+      operationId: Disable_Auto_Top_Up
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisableAutoTopupResponse'
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoTopupErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoTopupErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoTopupErrorResponse'
+          description: Not Found
+        "500":
+          content: {}
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      - apiKey: []
+      summary: "Disable auto top up, preventing any future automatic charges"
+      tags:
+      - auto-topup
+    get:
+      operationId: Get_Auto_Top_Up
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAutoTopupResponse'
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoTopupErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoTopupErrorResponse'
+          description: Forbidden
+        "500":
+          content: {}
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      - apiKey: []
+      summary: Retrieve the current auto top up configuration and transaction history
+      tags:
+      - auto-topup
+    post:
+      operationId: Create_Auto_Top_Up
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAutoTopupPayload'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAutoTopupResponse'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoTopupErrorResponse'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoTopupErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoTopupErrorResponse'
+          description: Forbidden
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoTopupErrorResponse'
+          description: Conflict
+        "500":
+          content: {}
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      - apiKey: []
+      summary: Create an auto top up configuration and initiate Stripe setup
+      tags:
+      - auto-topup
+      x-codegen-request-body-name: payload
+    put:
+      operationId: Update_Auto_Top_Up
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAutoTopupPayload'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateAutoTopupResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoTopupErrorResponse'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoTopupErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoTopupErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoTopupErrorResponse'
+          description: Not Found
+        "500":
+          content: {}
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      - apiKey: []
+      summary: Update an existing active auto top up configuration
+      tags:
+      - auto-topup
+      x-codegen-request-body-name: payload
+  /billing/auto-topup/status:
+    get:
+      description: "Retrieves the current auto top-up configuration and status for\
+        \ your organization. Returns the status (active, disabled, pending_setup,\
+        \ or null if never configured), along with the threshold and top-up amounts.\
+        \ For additional information, [**click here**](None/docs/api-reference/billing-resources/)."
+      operationId: Get_auto_top-up_status
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoTopupStatusSchema'
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoTopupErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoTopupErrorResponse'
+          description: Forbidden
+        "500":
+          content: {}
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      - apiKey: []
+      summary: Get auto top-up status and configuration
+      tags:
+      - auto-topup
   /billing/billing/history:
     get:
       description: "User will receive billing history for the specified billing cycle.\
@@ -2745,6 +2946,235 @@ paths:
       - apiKey: []
       summary: Retrieve hourly cost datapoints of a Specific Fine Tuning for a specific
         billing cycle
+      tags:
+      - billing
+  /billing/billing/history/image_generation:
+    get:
+      description: User will receive billing history of image_generation for the specified
+        billing cycle.
+      operationId: Get_image_generation_billing_history
+      parameters:
+      - description: Date should be formatted in YYYY-MM-DDTHH:MM:SS
+        explode: true
+        in: query
+        name: start_date
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Date should be formatted in YYYY-MM-DDTHH:MM:SS
+        explode: true
+        in: query
+        name: end_date
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Search by resource "Name" or "ID"
+        explode: true
+        in: query
+        name: search
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Number of items to return per page
+        explode: true
+        in: query
+        name: per_page
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Page number
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenBasedBillingHistoryResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Not Found
+        "500":
+          content: {}
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      - apiKey: []
+      summary: Retrieve Billing History of image generation for a specific Billing
+        Cycle
+      tags:
+      - billing
+  /billing/billing/history/image_generation/{resource_id}:
+    get:
+      description: "Retrieve billing history for a specific Image Generation resource.\
+        \ Includes: 'resource_name', 'infrahub_id', 'base_model', 'base_model_display_name',\
+        \ 'lora_adapter', 'incurred_bill', 'non_discounted_bill', 'usage_time', 'input_tokens',\
+        \ 'output_tokens', 'input_tokens_incurred_bill', 'input_tokens_non_discounted_bill',\
+        \ 'output_tokens_incurred_bill', 'output_tokens_non_discounted_bill'"
+      operationId: Get_image_generation_history_for_resource
+      parameters:
+      - explode: false
+        in: path
+        name: resource_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: YYYY-MM-DDTHH:MM:SS
+        explode: true
+        in: query
+        name: start_date
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: YYYY-MM-DDTHH:MM:SS
+        explode: true
+        in: query
+        name: end_date
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageGenerationBillingHistoryDetailsResponseSchema'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Not Found
+        "500":
+          content: {}
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      - apiKey: []
+      tags:
+      - billing
+  /billing/billing/history/image_generation/{resource_id}/graph:
+    get:
+      description: |-
+        User will receive hourly cost datapoints for an image generation job for a specified billing cycle. This data will include 'incurred_bill' graph datapoints.
+        billing cycle
+      operationId: Get_image_generation_billing_history_graph
+      parameters:
+      - explode: false
+        in: path
+        name: resource_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: Date should be formatted in YYYY-MM-DDTHH:MM:SS
+        explode: true
+        in: query
+        name: start_date
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Date should be formatted in YYYY-MM-DDTHH:MM:SS
+        explode: true
+        in: query
+        name: end_date
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageGenerationBillingHistoryDetailsResponseSchema'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Not Found
+        "500":
+          content: {}
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      - apiKey: []
+      summary: Retrieve hourly cost datapoints of a Specific Image Generation for
+        a specific
       tags:
       - billing
   /billing/billing/history/model_evaluation:
@@ -11377,6 +11807,39 @@ components:
         user:
           $ref: '#/components/schemas/AuthUserFields'
       type: object
+    AutoTopupErrorResponse:
+      example:
+        error_reason: error_reason
+        message: message
+        status: true
+      properties:
+        error_reason:
+          description: ""
+          type: string
+        message:
+          description: ""
+          type: string
+        status:
+          description: ""
+          type: boolean
+      type: object
+    AutoTopupStatusSchema:
+      example:
+        threshold_amount: 0.8008281904610115
+        topup_amount: 6.027456183070403
+        status: status
+      properties:
+        status:
+          description: "Auto top-up status: active, disabled, pending_setup, cancelled,\
+            \ or null"
+          type: string
+        threshold_amount:
+          description: Balance threshold that triggers auto top-up
+          type: number
+        topup_amount:
+          description: Amount to top up when threshold is reached
+          type: number
+      type: object
     BetaAccessRequestFields:
       example:
         user_id: 1
@@ -13553,6 +14016,41 @@ components:
         status:
           type: boolean
       type: object
+    CreateAutoTopupPayload:
+      example:
+        threshold_amount: 0.8008281904610115
+        topup_amount: 6.027456183070403
+      properties:
+        threshold_amount:
+          description: ""
+          type: number
+        topup_amount:
+          description: ""
+          type: number
+      required:
+      - threshold_amount
+      - topup_amount
+      type: object
+    CreateAutoTopupResponse:
+      example:
+        auto_topup:
+          threshold_amount: 6.027456183070403
+          updated_at: updated_at
+          topup_amount: 1.4658129805029452
+          id: 0
+          status: status
+        message: message
+        status: true
+      properties:
+        auto_topup:
+          $ref: '#/components/schemas/auto_topup'
+        message:
+          description: ""
+          type: string
+        status:
+          description: ""
+          type: boolean
+      type: object
     CreateClusterNodeFields:
       example:
         node_group: node_group
@@ -14413,7 +14911,15 @@ components:
               infrahub_id: 0
               resource_name: resource_name
               status: status
-            metrics: "{}"
+            metrics:
+              incurred_bill: 6.027456183070403
+              output_tokens_non_discounted_bill: 3.616076749251911
+              non_discounted_bill: 2.3021358869347655
+              output_tokens: 7.061401241503109
+              input_tokens_non_discounted_bill: 5.637376656633329
+              input_tokens: 1.4658129805029452
+              output_tokens_incurred_bill: 9.301444243932576
+              input_tokens_incurred_bill: 5.962133916683182
           - attributes:
               base_model: base_model
               base_model_display_name: base_model_display_name
@@ -14421,11 +14927,19 @@ components:
               infrahub_id: 0
               resource_name: resource_name
               status: status
-            metrics: "{}"
+            metrics:
+              incurred_bill: 6.027456183070403
+              output_tokens_non_discounted_bill: 3.616076749251911
+              non_discounted_bill: 2.3021358869347655
+              output_tokens: 7.061401241503109
+              input_tokens_non_discounted_bill: 5.637376656633329
+              input_tokens: 1.4658129805029452
+              output_tokens_incurred_bill: 9.301444243932576
+              input_tokens_incurred_bill: 5.962133916683182
           pagination:
-            per_page: 5
-            pages: 5
-            page: 1
+            per_page: 1
+            pages: 7
+            page: 4
           org_id: 0
           total_count: 6
         message: message
@@ -14562,6 +15076,26 @@ components:
           items:
             type: integer
           type: array
+      type: object
+    DisableAutoTopupResponse:
+      example:
+        auto_topup:
+          threshold_amount: 6.027456183070403
+          updated_at: updated_at
+          topup_amount: 1.4658129805029452
+          id: 0
+          status: status
+        message: message
+        status: true
+      properties:
+        auto_topup:
+          $ref: '#/components/schemas/auto_topup'
+        message:
+          description: ""
+          type: string
+        status:
+          description: ""
+          type: boolean
       type: object
     Edit_label_of_an_existing_VM_Payload:
       properties:
@@ -15456,6 +15990,26 @@ components:
         status:
           type: boolean
       type: object
+    GetAutoTopupResponse:
+      example:
+        auto_topup:
+          threshold_amount: 6.027456183070403
+          updated_at: updated_at
+          topup_amount: 1.4658129805029452
+          id: 0
+          status: status
+        message: message
+        status: true
+      properties:
+        auto_topup:
+          $ref: '#/components/schemas/auto_topup'
+        message:
+          description: ""
+          type: string
+        status:
+          description: ""
+          type: boolean
+      type: object
     GetCustomerContractsListResponseModel:
       example:
         count: 2
@@ -15803,6 +16357,60 @@ components:
       properties:
         image:
           $ref: '#/components/schemas/Image_Fields'
+      type: object
+    ImageGenerationBillingHistoryDetailsResponseSchema:
+      example:
+        billing_history_image_generation_details:
+          billing_history:
+          - attributes:
+              base_model: base_model
+              base_model_display_name: base_model_display_name
+              lora_adapter: lora_adapter
+              infrahub_id: 0
+              resource_name: resource_name
+              status: status
+            metrics:
+              incurred_bill: 6.027456183070403
+              output_tokens_non_discounted_bill: 3.616076749251911
+              non_discounted_bill: 2.3021358869347655
+              output_tokens: 7.061401241503109
+              input_tokens_non_discounted_bill: 5.637376656633329
+              input_tokens: 1.4658129805029452
+              output_tokens_incurred_bill: 9.301444243932576
+              input_tokens_incurred_bill: 5.962133916683182
+          - attributes:
+              base_model: base_model
+              base_model_display_name: base_model_display_name
+              lora_adapter: lora_adapter
+              infrahub_id: 0
+              resource_name: resource_name
+              status: status
+            metrics:
+              incurred_bill: 6.027456183070403
+              output_tokens_non_discounted_bill: 3.616076749251911
+              non_discounted_bill: 2.3021358869347655
+              output_tokens: 7.061401241503109
+              input_tokens_non_discounted_bill: 5.637376656633329
+              input_tokens: 1.4658129805029452
+              output_tokens_incurred_bill: 9.301444243932576
+              input_tokens_incurred_bill: 5.962133916683182
+          pagination:
+            per_page: 1
+            pages: 7
+            page: 4
+          org_id: 0
+          total_count: 6
+        message: message
+        status: true
+      properties:
+        billing_history_image_generation_details:
+          $ref: '#/components/schemas/billing_history_image_generation_details'
+        message:
+          description: ""
+          type: string
+        status:
+          description: ""
+          type: boolean
       type: object
     Image_Fields:
       example:
@@ -17280,7 +17888,15 @@ components:
               infrahub_id: 0
               resource_name: resource_name
               status: status
-            metrics: "{}"
+            metrics:
+              incurred_bill: 6.027456183070403
+              output_tokens_non_discounted_bill: 3.616076749251911
+              non_discounted_bill: 2.3021358869347655
+              output_tokens: 7.061401241503109
+              input_tokens_non_discounted_bill: 5.637376656633329
+              input_tokens: 1.4658129805029452
+              output_tokens_incurred_bill: 9.301444243932576
+              input_tokens_incurred_bill: 5.962133916683182
           - attributes:
               base_model: base_model
               base_model_display_name: base_model_display_name
@@ -17288,11 +17904,19 @@ components:
               infrahub_id: 0
               resource_name: resource_name
               status: status
-            metrics: "{}"
+            metrics:
+              incurred_bill: 6.027456183070403
+              output_tokens_non_discounted_bill: 3.616076749251911
+              non_discounted_bill: 2.3021358869347655
+              output_tokens: 7.061401241503109
+              input_tokens_non_discounted_bill: 5.637376656633329
+              input_tokens: 1.4658129805029452
+              output_tokens_incurred_bill: 9.301444243932576
+              input_tokens_incurred_bill: 5.962133916683182
           pagination:
-            per_page: 5
-            pages: 5
-            page: 1
+            per_page: 1
+            pages: 7
+            page: 4
           org_id: 0
           total_count: 6
         message: message
@@ -17822,21 +18446,29 @@ components:
       type: object
     Payment_Details_Fields:
       example:
-        tax_amount: 6.027456183070403
+        tax_amount: 5.637376656633329
         transaction_id: transaction_id
         amount: 0.8008281904610115
-        updated_at: 2000-01-23T04:56:07.000+00:00
-        payment_id: payment_id
         created_at: 2000-01-23T04:56:07.000+00:00
         description: description
+        auto_topup_id: 1
+        gateway_response: gateway_response
+        payment_type: payment_type
+        attempt_number: 6
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        payment_id: payment_id
+        max_attempts: 5
         currency: currency
         invoice: invoice
         paid_from: paid_from
-        gateway_response: gateway_response
         status: status
       properties:
         amount:
           type: number
+        attempt_number:
+          type: integer
+        auto_topup_id:
+          type: integer
         created_at:
           format: date-time
           type: string
@@ -17848,9 +18480,13 @@ components:
           type: string
         invoice:
           type: string
+        max_attempts:
+          type: integer
         paid_from:
           type: string
         payment_id:
+          type: string
+        payment_type:
           type: string
         status:
           type: string
@@ -17865,23 +18501,45 @@ components:
     Payment_Details_Response:
       example:
         data:
-          tax_amount: 6.027456183070403
+        - tax_amount: 5.637376656633329
           transaction_id: transaction_id
           amount: 0.8008281904610115
-          updated_at: 2000-01-23T04:56:07.000+00:00
-          payment_id: payment_id
           created_at: 2000-01-23T04:56:07.000+00:00
           description: description
+          auto_topup_id: 1
+          gateway_response: gateway_response
+          payment_type: payment_type
+          attempt_number: 6
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          payment_id: payment_id
+          max_attempts: 5
           currency: currency
           invoice: invoice
           paid_from: paid_from
+          status: status
+        - tax_amount: 5.637376656633329
+          transaction_id: transaction_id
+          amount: 0.8008281904610115
+          created_at: 2000-01-23T04:56:07.000+00:00
+          description: description
+          auto_topup_id: 1
           gateway_response: gateway_response
+          payment_type: payment_type
+          attempt_number: 6
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          payment_id: payment_id
+          max_attempts: 5
+          currency: currency
+          invoice: invoice
+          paid_from: paid_from
           status: status
         message: message
         status: true
       properties:
         data:
-          $ref: '#/components/schemas/Payment_Details_Fields'
+          items:
+            $ref: '#/components/schemas/Payment_Details_Fields'
+          type: array
         message:
           type: string
         status:
@@ -19602,7 +20260,15 @@ components:
               infrahub_id: 0
               resource_name: resource_name
               status: status
-            metrics: "{}"
+            metrics:
+              incurred_bill: 6.027456183070403
+              output_tokens_non_discounted_bill: 3.616076749251911
+              non_discounted_bill: 2.3021358869347655
+              output_tokens: 7.061401241503109
+              input_tokens_non_discounted_bill: 5.637376656633329
+              input_tokens: 1.4658129805029452
+              output_tokens_incurred_bill: 9.301444243932576
+              input_tokens_incurred_bill: 5.962133916683182
           - attributes:
               base_model: base_model
               base_model_display_name: base_model_display_name
@@ -19610,11 +20276,19 @@ components:
               infrahub_id: 0
               resource_name: resource_name
               status: status
-            metrics: "{}"
+            metrics:
+              incurred_bill: 6.027456183070403
+              output_tokens_non_discounted_bill: 3.616076749251911
+              non_discounted_bill: 2.3021358869347655
+              output_tokens: 7.061401241503109
+              input_tokens_non_discounted_bill: 5.637376656633329
+              input_tokens: 1.4658129805029452
+              output_tokens_incurred_bill: 9.301444243932576
+              input_tokens_incurred_bill: 5.962133916683182
           pagination:
-            per_page: 5
-            pages: 5
-            page: 1
+            per_page: 1
+            pages: 7
+            page: 4
           org_id: 0
           total_count: 6
         message: message
@@ -20358,7 +21032,15 @@ components:
               infrahub_id: 0
               resource_name: resource_name
               status: status
-            metrics: "{}"
+            metrics:
+              incurred_bill: 6.027456183070403
+              output_tokens_non_discounted_bill: 3.616076749251911
+              non_discounted_bill: 2.3021358869347655
+              output_tokens: 7.061401241503109
+              input_tokens_non_discounted_bill: 5.637376656633329
+              input_tokens: 1.4658129805029452
+              output_tokens_incurred_bill: 9.301444243932576
+              input_tokens_incurred_bill: 5.962133916683182
           - attributes:
               base_model: base_model
               base_model_display_name: base_model_display_name
@@ -20366,13 +21048,21 @@ components:
               infrahub_id: 0
               resource_name: resource_name
               status: status
-            metrics: "{}"
+            metrics:
+              incurred_bill: 6.027456183070403
+              output_tokens_non_discounted_bill: 3.616076749251911
+              non_discounted_bill: 2.3021358869347655
+              output_tokens: 7.061401241503109
+              input_tokens_non_discounted_bill: 5.637376656633329
+              input_tokens: 1.4658129805029452
+              output_tokens_incurred_bill: 9.301444243932576
+              input_tokens_incurred_bill: 5.962133916683182
           pagination:
-            per_page: 5
-            pages: 5
-            page: 1
-          org_id: 6
-          total_count: 2
+            per_page: 1
+            pages: 7
+            page: 4
+          org_id: 2
+          total_count: 1
       properties:
         billing_history_serverless_inference:
           $ref: '#/components/schemas/billing_history_serverless_inference'
@@ -20407,6 +21097,41 @@ components:
           type: string
         landing_page:
           type: string
+      type: object
+    UpdateAutoTopupPayload:
+      example:
+        threshold_amount: 0.8008281904610115
+        topup_amount: 6.027456183070403
+      properties:
+        threshold_amount:
+          description: ""
+          type: number
+        topup_amount:
+          description: ""
+          type: number
+      required:
+      - threshold_amount
+      - topup_amount
+      type: object
+    UpdateAutoTopupResponse:
+      example:
+        auto_topup:
+          threshold_amount: 6.027456183070403
+          updated_at: updated_at
+          topup_amount: 1.4658129805029452
+          id: 0
+          status: status
+        message: message
+        status: true
+      properties:
+        auto_topup:
+          $ref: '#/components/schemas/auto_topup'
+        message:
+          description: ""
+          type: string
+        status:
+          description: ""
+          type: boolean
       type: object
     UpdateConsentRequest:
       example:
@@ -21302,7 +22027,15 @@ components:
               infrahub_id: 0
               resource_name: resource_name
               status: status
-            metrics: "{}"
+            metrics:
+              incurred_bill: 6.027456183070403
+              output_tokens_non_discounted_bill: 3.616076749251911
+              non_discounted_bill: 2.3021358869347655
+              output_tokens: 7.061401241503109
+              input_tokens_non_discounted_bill: 5.637376656633329
+              input_tokens: 1.4658129805029452
+              output_tokens_incurred_bill: 9.301444243932576
+              input_tokens_incurred_bill: 5.962133916683182
           - attributes:
               base_model: base_model
               base_model_display_name: base_model_display_name
@@ -21310,11 +22043,19 @@ components:
               infrahub_id: 0
               resource_name: resource_name
               status: status
-            metrics: "{}"
+            metrics:
+              incurred_bill: 6.027456183070403
+              output_tokens_non_discounted_bill: 3.616076749251911
+              non_discounted_bill: 2.3021358869347655
+              output_tokens: 7.061401241503109
+              input_tokens_non_discounted_bill: 5.637376656633329
+              input_tokens: 1.4658129805029452
+              output_tokens_incurred_bill: 9.301444243932576
+              input_tokens_incurred_bill: 5.962133916683182
           pagination:
-            per_page: 5
-            pages: 5
-            page: 1
+            per_page: 1
+            pages: 7
+            page: 4
           org_id: 0
           total_count: 6
       properties:
@@ -21355,6 +22096,30 @@ components:
           description: ""
           type: string
       type: object
+    auto_topup:
+      example:
+        threshold_amount: 6.027456183070403
+        updated_at: updated_at
+        topup_amount: 1.4658129805029452
+        id: 0
+        status: status
+      properties:
+        id:
+          description: ""
+          type: integer
+        status:
+          description: ""
+          type: string
+        threshold_amount:
+          description: ""
+          type: number
+        topup_amount:
+          description: ""
+          type: number
+        updated_at:
+          description: ""
+          type: string
+      type: object
     billing_history:
       example:
         attributes:
@@ -21364,12 +22129,20 @@ components:
           infrahub_id: 0
           resource_name: resource_name
           status: status
-        metrics: "{}"
+        metrics:
+          incurred_bill: 6.027456183070403
+          output_tokens_non_discounted_bill: 3.616076749251911
+          non_discounted_bill: 2.3021358869347655
+          output_tokens: 7.061401241503109
+          input_tokens_non_discounted_bill: 5.637376656633329
+          input_tokens: 1.4658129805029452
+          output_tokens_incurred_bill: 9.301444243932576
+          input_tokens_incurred_bill: 5.962133916683182
       properties:
         attributes:
           $ref: '#/components/schemas/attributes'
         metrics:
-          type: object
+          $ref: '#/components/schemas/metrics'
       type: object
     billing_history_data_synthesis_details:
       example:
@@ -21381,7 +22154,15 @@ components:
             infrahub_id: 0
             resource_name: resource_name
             status: status
-          metrics: "{}"
+          metrics:
+            incurred_bill: 6.027456183070403
+            output_tokens_non_discounted_bill: 3.616076749251911
+            non_discounted_bill: 2.3021358869347655
+            output_tokens: 7.061401241503109
+            input_tokens_non_discounted_bill: 5.637376656633329
+            input_tokens: 1.4658129805029452
+            output_tokens_incurred_bill: 9.301444243932576
+            input_tokens_incurred_bill: 5.962133916683182
         - attributes:
             base_model: base_model
             base_model_display_name: base_model_display_name
@@ -21389,11 +22170,19 @@ components:
             infrahub_id: 0
             resource_name: resource_name
             status: status
-          metrics: "{}"
+          metrics:
+            incurred_bill: 6.027456183070403
+            output_tokens_non_discounted_bill: 3.616076749251911
+            non_discounted_bill: 2.3021358869347655
+            output_tokens: 7.061401241503109
+            input_tokens_non_discounted_bill: 5.637376656633329
+            input_tokens: 1.4658129805029452
+            output_tokens_incurred_bill: 9.301444243932576
+            input_tokens_incurred_bill: 5.962133916683182
         pagination:
-          per_page: 5
-          pages: 5
-          page: 1
+          per_page: 1
+          pages: 7
+          page: 4
         org_id: 0
         total_count: 6
       properties:
@@ -21421,7 +22210,15 @@ components:
             infrahub_id: 0
             resource_name: resource_name
             status: status
-          metrics: "{}"
+          metrics:
+            incurred_bill: 6.027456183070403
+            output_tokens_non_discounted_bill: 3.616076749251911
+            non_discounted_bill: 2.3021358869347655
+            output_tokens: 7.061401241503109
+            input_tokens_non_discounted_bill: 5.637376656633329
+            input_tokens: 1.4658129805029452
+            output_tokens_incurred_bill: 9.301444243932576
+            input_tokens_incurred_bill: 5.962133916683182
         - attributes:
             base_model: base_model
             base_model_display_name: base_model_display_name
@@ -21429,11 +22226,75 @@ components:
             infrahub_id: 0
             resource_name: resource_name
             status: status
-          metrics: "{}"
+          metrics:
+            incurred_bill: 6.027456183070403
+            output_tokens_non_discounted_bill: 3.616076749251911
+            non_discounted_bill: 2.3021358869347655
+            output_tokens: 7.061401241503109
+            input_tokens_non_discounted_bill: 5.637376656633329
+            input_tokens: 1.4658129805029452
+            output_tokens_incurred_bill: 9.301444243932576
+            input_tokens_incurred_bill: 5.962133916683182
         pagination:
-          per_page: 5
-          pages: 5
-          page: 1
+          per_page: 1
+          pages: 7
+          page: 4
+        org_id: 0
+        total_count: 6
+      properties:
+        billing_history:
+          description: ""
+          items:
+            $ref: '#/components/schemas/billing_history'
+          type: array
+        org_id:
+          description: ""
+          type: integer
+        pagination:
+          $ref: '#/components/schemas/pagination'
+        total_count:
+          description: ""
+          type: integer
+      type: object
+    billing_history_image_generation_details:
+      example:
+        billing_history:
+        - attributes:
+            base_model: base_model
+            base_model_display_name: base_model_display_name
+            lora_adapter: lora_adapter
+            infrahub_id: 0
+            resource_name: resource_name
+            status: status
+          metrics:
+            incurred_bill: 6.027456183070403
+            output_tokens_non_discounted_bill: 3.616076749251911
+            non_discounted_bill: 2.3021358869347655
+            output_tokens: 7.061401241503109
+            input_tokens_non_discounted_bill: 5.637376656633329
+            input_tokens: 1.4658129805029452
+            output_tokens_incurred_bill: 9.301444243932576
+            input_tokens_incurred_bill: 5.962133916683182
+        - attributes:
+            base_model: base_model
+            base_model_display_name: base_model_display_name
+            lora_adapter: lora_adapter
+            infrahub_id: 0
+            resource_name: resource_name
+            status: status
+          metrics:
+            incurred_bill: 6.027456183070403
+            output_tokens_non_discounted_bill: 3.616076749251911
+            non_discounted_bill: 2.3021358869347655
+            output_tokens: 7.061401241503109
+            input_tokens_non_discounted_bill: 5.637376656633329
+            input_tokens: 1.4658129805029452
+            output_tokens_incurred_bill: 9.301444243932576
+            input_tokens_incurred_bill: 5.962133916683182
+        pagination:
+          per_page: 1
+          pages: 7
+          page: 4
         org_id: 0
         total_count: 6
       properties:
@@ -21461,7 +22322,15 @@ components:
             infrahub_id: 0
             resource_name: resource_name
             status: status
-          metrics: "{}"
+          metrics:
+            incurred_bill: 6.027456183070403
+            output_tokens_non_discounted_bill: 3.616076749251911
+            non_discounted_bill: 2.3021358869347655
+            output_tokens: 7.061401241503109
+            input_tokens_non_discounted_bill: 5.637376656633329
+            input_tokens: 1.4658129805029452
+            output_tokens_incurred_bill: 9.301444243932576
+            input_tokens_incurred_bill: 5.962133916683182
         - attributes:
             base_model: base_model
             base_model_display_name: base_model_display_name
@@ -21469,11 +22338,19 @@ components:
             infrahub_id: 0
             resource_name: resource_name
             status: status
-          metrics: "{}"
+          metrics:
+            incurred_bill: 6.027456183070403
+            output_tokens_non_discounted_bill: 3.616076749251911
+            non_discounted_bill: 2.3021358869347655
+            output_tokens: 7.061401241503109
+            input_tokens_non_discounted_bill: 5.637376656633329
+            input_tokens: 1.4658129805029452
+            output_tokens_incurred_bill: 9.301444243932576
+            input_tokens_incurred_bill: 5.962133916683182
         pagination:
-          per_page: 5
-          pages: 5
-          page: 1
+          per_page: 1
+          pages: 7
+          page: 4
         org_id: 0
         total_count: 6
       properties:
@@ -21501,7 +22378,15 @@ components:
             infrahub_id: 0
             resource_name: resource_name
             status: status
-          metrics: "{}"
+          metrics:
+            incurred_bill: 6.027456183070403
+            output_tokens_non_discounted_bill: 3.616076749251911
+            non_discounted_bill: 2.3021358869347655
+            output_tokens: 7.061401241503109
+            input_tokens_non_discounted_bill: 5.637376656633329
+            input_tokens: 1.4658129805029452
+            output_tokens_incurred_bill: 9.301444243932576
+            input_tokens_incurred_bill: 5.962133916683182
         - attributes:
             base_model: base_model
             base_model_display_name: base_model_display_name
@@ -21509,13 +22394,21 @@ components:
             infrahub_id: 0
             resource_name: resource_name
             status: status
-          metrics: "{}"
+          metrics:
+            incurred_bill: 6.027456183070403
+            output_tokens_non_discounted_bill: 3.616076749251911
+            non_discounted_bill: 2.3021358869347655
+            output_tokens: 7.061401241503109
+            input_tokens_non_discounted_bill: 5.637376656633329
+            input_tokens: 1.4658129805029452
+            output_tokens_incurred_bill: 9.301444243932576
+            input_tokens_incurred_bill: 5.962133916683182
         pagination:
-          per_page: 5
-          pages: 5
-          page: 1
-        org_id: 6
-        total_count: 2
+          per_page: 1
+          pages: 7
+          page: 4
+        org_id: 2
+        total_count: 1
       properties:
         billing_history:
           description: ""
@@ -21541,7 +22434,15 @@ components:
             infrahub_id: 0
             resource_name: resource_name
             status: status
-          metrics: "{}"
+          metrics:
+            incurred_bill: 6.027456183070403
+            output_tokens_non_discounted_bill: 3.616076749251911
+            non_discounted_bill: 2.3021358869347655
+            output_tokens: 7.061401241503109
+            input_tokens_non_discounted_bill: 5.637376656633329
+            input_tokens: 1.4658129805029452
+            output_tokens_incurred_bill: 9.301444243932576
+            input_tokens_incurred_bill: 5.962133916683182
         - attributes:
             base_model: base_model
             base_model_display_name: base_model_display_name
@@ -21549,11 +22450,19 @@ components:
             infrahub_id: 0
             resource_name: resource_name
             status: status
-          metrics: "{}"
+          metrics:
+            incurred_bill: 6.027456183070403
+            output_tokens_non_discounted_bill: 3.616076749251911
+            non_discounted_bill: 2.3021358869347655
+            output_tokens: 7.061401241503109
+            input_tokens_non_discounted_bill: 5.637376656633329
+            input_tokens: 1.4658129805029452
+            output_tokens_incurred_bill: 9.301444243932576
+            input_tokens_incurred_bill: 5.962133916683182
         pagination:
-          per_page: 5
-          pages: 5
-          page: 1
+          per_page: 1
+          pages: 7
+          page: 4
         org_id: 0
         total_count: 6
       properties:
@@ -21574,6 +22483,40 @@ components:
     image:
       type: object
     metrics:
+      example:
+        incurred_bill: 6.027456183070403
+        output_tokens_non_discounted_bill: 3.616076749251911
+        non_discounted_bill: 2.3021358869347655
+        output_tokens: 7.061401241503109
+        input_tokens_non_discounted_bill: 5.637376656633329
+        input_tokens: 1.4658129805029452
+        output_tokens_incurred_bill: 9.301444243932576
+        input_tokens_incurred_bill: 5.962133916683182
+      properties:
+        incurred_bill:
+          description: ""
+          type: number
+        input_tokens:
+          description: ""
+          type: number
+        input_tokens_incurred_bill:
+          description: ""
+          type: number
+        input_tokens_non_discounted_bill:
+          description: ""
+          type: number
+        non_discounted_bill:
+          description: ""
+          type: number
+        output_tokens:
+          description: ""
+          type: number
+        output_tokens_incurred_bill:
+          description: ""
+          type: number
+        output_tokens_non_discounted_bill:
+          description: ""
+          type: number
       type: object
     object_storage__AccessKeyCreateRequest:
       properties:
@@ -21869,9 +22812,9 @@ components:
       type: string
     pagination:
       example:
-        per_page: 5
-        pages: 5
-        page: 1
+        per_page: 1
+        pages: 7
+        page: 4
       properties:
         page:
           description: ""

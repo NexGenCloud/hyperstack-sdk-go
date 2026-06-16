@@ -59,6 +59,13 @@ type GraphDatetimeValueModel struct {
 	Value    *float32 `json:"value,omitempty"`
 }
 
+// ImageGenerationBillingHistoryDetailsResponseSchema defines model for ImageGenerationBillingHistoryDetailsResponseSchema.
+type ImageGenerationBillingHistoryDetailsResponseSchema struct {
+	BillingHistoryImageGenerationDetails *BillingHistoryImageGenerationDetails `json:"billing_history_image_generation_details,omitempty"`
+	Message                              *string                               `json:"message,omitempty"`
+	Status                               *bool                                 `json:"status,omitempty"`
+}
+
 // LastDayCostFields defines model for Last_day_cost_fields.
 type LastDayCostFields struct {
 	ClustersCost  *float32 `json:"clusters_cost,omitempty"`
@@ -490,6 +497,14 @@ type BillingHistoryFineTuning struct {
 	TotalCount     *int              `json:"total_count,omitempty"`
 }
 
+// BillingHistoryImageGenerationDetails defines model for billing_history_image_generation_details.
+type BillingHistoryImageGenerationDetails struct {
+	BillingHistory *[]BillingHistory `json:"billing_history,omitempty"`
+	OrgId          *int              `json:"org_id,omitempty"`
+	Pagination     *Pagination       `json:"pagination,omitempty"`
+	TotalCount     *int              `json:"total_count,omitempty"`
+}
+
 // BillingHistoryModelEvalutationDetails defines model for billing_history_model_evalutation_details.
 type BillingHistoryModelEvalutationDetails struct {
 	BillingHistory *[]BillingHistory `json:"billing_history,omitempty"`
@@ -515,7 +530,16 @@ type BillingHistoryServerlessInferenceDetails struct {
 }
 
 // Metrics defines model for metrics.
-type Metrics = map[string]interface{}
+type Metrics struct {
+	IncurredBill                  *float32 `json:"incurred_bill,omitempty"`
+	InputTokens                   *float32 `json:"input_tokens,omitempty"`
+	InputTokensIncurredBill       *float32 `json:"input_tokens_incurred_bill,omitempty"`
+	InputTokensNonDiscountedBill  *float32 `json:"input_tokens_non_discounted_bill,omitempty"`
+	NonDiscountedBill             *float32 `json:"non_discounted_bill,omitempty"`
+	OutputTokens                  *float32 `json:"output_tokens,omitempty"`
+	OutputTokensIncurredBill      *float32 `json:"output_tokens_incurred_bill,omitempty"`
+	OutputTokensNonDiscountedBill *float32 `json:"output_tokens_non_discounted_bill,omitempty"`
+}
 
 // Pagination defines model for pagination.
 type Pagination struct {
@@ -618,6 +642,27 @@ type GetResourceFineTuningBillingHistoryParams struct {
 
 // GetFineTuningBillingHistoryGraphParams defines parameters for GetFineTuningBillingHistoryGraph.
 type GetFineTuningBillingHistoryGraphParams struct {
+	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
+	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
+}
+
+// GetImageGenerationBillingHistoryParams defines parameters for GetImageGenerationBillingHistory.
+type GetImageGenerationBillingHistoryParams struct {
+	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
+	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
+	Search    *string `form:"search,omitempty" json:"search,omitempty"`
+	PerPage   *int    `form:"per_page,omitempty" json:"per_page,omitempty"`
+	Page      *int    `form:"page,omitempty" json:"page,omitempty"`
+}
+
+// GetImageGenerationHistoryForResourceParams defines parameters for GetImageGenerationHistoryForResource.
+type GetImageGenerationHistoryForResourceParams struct {
+	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
+	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
+}
+
+// GetImageGenerationBillingHistoryGraphParams defines parameters for GetImageGenerationBillingHistoryGraph.
+type GetImageGenerationBillingHistoryGraphParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
@@ -875,6 +920,15 @@ type ClientInterface interface {
 	// GetFineTuningBillingHistoryGraph request
 	GetFineTuningBillingHistoryGraph(ctx context.Context, resourceId int, params *GetFineTuningBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetImageGenerationBillingHistory request
+	GetImageGenerationBillingHistory(ctx context.Context, params *GetImageGenerationBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetImageGenerationHistoryForResource request
+	GetImageGenerationHistoryForResource(ctx context.Context, resourceId int, params *GetImageGenerationHistoryForResourceParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetImageGenerationBillingHistoryGraph request
+	GetImageGenerationBillingHistoryGraph(ctx context.Context, resourceId int, params *GetImageGenerationBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetModelEvaluationBillingHistory request
 	GetModelEvaluationBillingHistory(ctx context.Context, params *GetModelEvaluationBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -1105,6 +1159,42 @@ func (c *Client) GetResourceFineTuningBillingHistory(ctx context.Context, resour
 
 func (c *Client) GetFineTuningBillingHistoryGraph(ctx context.Context, resourceId int, params *GetFineTuningBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetFineTuningBillingHistoryGraphRequest(c.Server, resourceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetImageGenerationBillingHistory(ctx context.Context, params *GetImageGenerationBillingHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetImageGenerationBillingHistoryRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetImageGenerationHistoryForResource(ctx context.Context, resourceId int, params *GetImageGenerationHistoryForResourceParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetImageGenerationHistoryForResourceRequest(c.Server, resourceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetImageGenerationBillingHistoryGraph(ctx context.Context, resourceId int, params *GetImageGenerationBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetImageGenerationBillingHistoryGraphRequest(c.Server, resourceId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -2538,6 +2628,263 @@ func NewGetFineTuningBillingHistoryGraphRequest(server string, resourceId int, p
 	}
 
 	operationPath := fmt.Sprintf("/billing/billing/history/fine_tuning/%s/graph", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.StartDate != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "start_date", runtime.ParamLocationQuery, *params.StartDate); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.EndDate != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "end_date", runtime.ParamLocationQuery, *params.EndDate); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetImageGenerationBillingHistoryRequest generates requests for GetImageGenerationBillingHistory
+func NewGetImageGenerationBillingHistoryRequest(server string, params *GetImageGenerationBillingHistoryParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/billing/billing/history/image_generation")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.StartDate != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "start_date", runtime.ParamLocationQuery, *params.StartDate); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.EndDate != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "end_date", runtime.ParamLocationQuery, *params.EndDate); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "search", runtime.ParamLocationQuery, *params.Search); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.PerPage != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "per_page", runtime.ParamLocationQuery, *params.PerPage); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page", runtime.ParamLocationQuery, *params.Page); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetImageGenerationHistoryForResourceRequest generates requests for GetImageGenerationHistoryForResource
+func NewGetImageGenerationHistoryForResourceRequest(server string, resourceId int, params *GetImageGenerationHistoryForResourceParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "resource_id", runtime.ParamLocationPath, resourceId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/billing/billing/history/image_generation/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.StartDate != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "start_date", runtime.ParamLocationQuery, *params.StartDate); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.EndDate != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "end_date", runtime.ParamLocationQuery, *params.EndDate); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetImageGenerationBillingHistoryGraphRequest generates requests for GetImageGenerationBillingHistoryGraph
+func NewGetImageGenerationBillingHistoryGraphRequest(server string, resourceId int, params *GetImageGenerationBillingHistoryGraphParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "resource_id", runtime.ParamLocationPath, resourceId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/billing/billing/history/image_generation/%s/graph", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -4417,6 +4764,15 @@ type ClientWithResponsesInterface interface {
 	// GetFineTuningBillingHistoryGraphWithResponse request
 	GetFineTuningBillingHistoryGraphWithResponse(ctx context.Context, resourceId int, params *GetFineTuningBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*GetFineTuningBillingHistoryGraphResponse, error)
 
+	// GetImageGenerationBillingHistoryWithResponse request
+	GetImageGenerationBillingHistoryWithResponse(ctx context.Context, params *GetImageGenerationBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetImageGenerationBillingHistoryResponse, error)
+
+	// GetImageGenerationHistoryForResourceWithResponse request
+	GetImageGenerationHistoryForResourceWithResponse(ctx context.Context, resourceId int, params *GetImageGenerationHistoryForResourceParams, reqEditors ...RequestEditorFn) (*GetImageGenerationHistoryForResourceResponse, error)
+
+	// GetImageGenerationBillingHistoryGraphWithResponse request
+	GetImageGenerationBillingHistoryGraphWithResponse(ctx context.Context, resourceId int, params *GetImageGenerationBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*GetImageGenerationBillingHistoryGraphResponse, error)
+
 	// GetModelEvaluationBillingHistoryWithResponse request
 	GetModelEvaluationBillingHistoryWithResponse(ctx context.Context, params *GetModelEvaluationBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetModelEvaluationBillingHistoryResponse, error)
 
@@ -4846,6 +5202,84 @@ func (r GetFineTuningBillingHistoryGraphResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetFineTuningBillingHistoryGraphResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetImageGenerationBillingHistoryResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *TokenBasedBillingHistoryResponse
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON403      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r GetImageGenerationBillingHistoryResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetImageGenerationBillingHistoryResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetImageGenerationHistoryForResourceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ImageGenerationBillingHistoryDetailsResponseSchema
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON403      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r GetImageGenerationHistoryForResourceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetImageGenerationHistoryForResourceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetImageGenerationBillingHistoryGraphResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ImageGenerationBillingHistoryDetailsResponseSchema
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON403      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r GetImageGenerationBillingHistoryGraphResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetImageGenerationBillingHistoryGraphResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -5572,6 +6006,33 @@ func (c *ClientWithResponses) GetFineTuningBillingHistoryGraphWithResponse(ctx c
 		return nil, err
 	}
 	return ParseGetFineTuningBillingHistoryGraphResponse(rsp)
+}
+
+// GetImageGenerationBillingHistoryWithResponse request returning *GetImageGenerationBillingHistoryResponse
+func (c *ClientWithResponses) GetImageGenerationBillingHistoryWithResponse(ctx context.Context, params *GetImageGenerationBillingHistoryParams, reqEditors ...RequestEditorFn) (*GetImageGenerationBillingHistoryResponse, error) {
+	rsp, err := c.GetImageGenerationBillingHistory(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetImageGenerationBillingHistoryResponse(rsp)
+}
+
+// GetImageGenerationHistoryForResourceWithResponse request returning *GetImageGenerationHistoryForResourceResponse
+func (c *ClientWithResponses) GetImageGenerationHistoryForResourceWithResponse(ctx context.Context, resourceId int, params *GetImageGenerationHistoryForResourceParams, reqEditors ...RequestEditorFn) (*GetImageGenerationHistoryForResourceResponse, error) {
+	rsp, err := c.GetImageGenerationHistoryForResource(ctx, resourceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetImageGenerationHistoryForResourceResponse(rsp)
+}
+
+// GetImageGenerationBillingHistoryGraphWithResponse request returning *GetImageGenerationBillingHistoryGraphResponse
+func (c *ClientWithResponses) GetImageGenerationBillingHistoryGraphWithResponse(ctx context.Context, resourceId int, params *GetImageGenerationBillingHistoryGraphParams, reqEditors ...RequestEditorFn) (*GetImageGenerationBillingHistoryGraphResponse, error) {
+	rsp, err := c.GetImageGenerationBillingHistoryGraph(ctx, resourceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetImageGenerationBillingHistoryGraphResponse(rsp)
 }
 
 // GetModelEvaluationBillingHistoryWithResponse request returning *GetModelEvaluationBillingHistoryResponse
@@ -6500,6 +6961,168 @@ func ParseGetFineTuningBillingHistoryGraphResponse(rsp *http.Response) (*GetFine
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest ResourceLevelVolumeGraphBillingDetailsResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetImageGenerationBillingHistoryResponse parses an HTTP response from a GetImageGenerationBillingHistoryWithResponse call
+func ParseGetImageGenerationBillingHistoryResponse(rsp *http.Response) (*GetImageGenerationBillingHistoryResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetImageGenerationBillingHistoryResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TokenBasedBillingHistoryResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetImageGenerationHistoryForResourceResponse parses an HTTP response from a GetImageGenerationHistoryForResourceWithResponse call
+func ParseGetImageGenerationHistoryForResourceResponse(rsp *http.Response) (*GetImageGenerationHistoryForResourceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetImageGenerationHistoryForResourceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ImageGenerationBillingHistoryDetailsResponseSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetImageGenerationBillingHistoryGraphResponse parses an HTTP response from a GetImageGenerationBillingHistoryGraphWithResponse call
+func ParseGetImageGenerationBillingHistoryGraphResponse(rsp *http.Response) (*GetImageGenerationBillingHistoryGraphResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetImageGenerationBillingHistoryGraphResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ImageGenerationBillingHistoryDetailsResponseSchema
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
