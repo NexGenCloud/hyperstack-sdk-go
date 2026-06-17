@@ -72,7 +72,8 @@ tasks:
       # language=bash
       - |
         echo -n "Pulling the latest OpenAPI spec... "
-        curl -s "${HYPERSTACK_API_SPEC_ADDRESS}" > "{{.API_SPEC_PATH}}"
+        mkdir -p "{{.DIR_ARTIFACTS}}"
+        curl -fsSL "${HYPERSTACK_API_SPEC_ADDRESS}" -o "{{.API_SPEC_PATH}}"
         echo "done"
         echo -n "Fixing api spec... "
         python3 "{{.SORT_SCHEMAS}}" "{{.API_SPEC_PATH}}"
