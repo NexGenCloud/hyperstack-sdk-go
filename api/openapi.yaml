@@ -5057,6 +5057,33 @@ paths:
       summary: "GET: View credit and threshold"
       tags:
       - credit
+  /billing/user/countries:
+    get:
+      description: Retrieve the list of allowed ISO 3166-1 alpha-2 country codes that
+        can be used for billing information.
+      operationId: Get_allowed_country_codes
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllowedCountriesResponse'
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "500":
+          content: {}
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      - apiKey: []
+      summary: "GET: Retrieve allowed country codes"
+      tags:
+      - user
   /billing/user/info:
     get:
       description: Retrieve the billing details associated with your user.
@@ -11598,6 +11625,20 @@ components:
           type: string
         value:
           type: integer
+      type: object
+    AllowedCountriesResponse:
+      example:
+        countries:
+        - countries
+        - countries
+        status: true
+      properties:
+        countries:
+          items:
+            type: string
+          type: array
+        status:
+          type: boolean
       type: object
     ApiKeyFields:
       example:

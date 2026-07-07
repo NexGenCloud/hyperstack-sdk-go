@@ -22,6 +22,12 @@ type AddUserInfoSuccessResponseModel struct {
 	Status  *bool            `json:"status,omitempty"`
 }
 
+// AllowedCountriesResponse defines model for AllowedCountriesResponse.
+type AllowedCountriesResponse struct {
+	Countries *[]string `json:"countries,omitempty"`
+	Status    *bool     `json:"status,omitempty"`
+}
+
 // ErrorResponseModel defines model for ErrorResponseModel.
 type ErrorResponseModel struct {
 	ErrorReason *string `json:"error_reason,omitempty"`
@@ -149,6 +155,9 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
+	// GetAllowedCountryCodes request
+	GetAllowedCountryCodes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetUserBillingInfo request
 	GetUserBillingInfo(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -161,6 +170,18 @@ type ClientInterface interface {
 	UpdateUserBillingInfoWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateUserBillingInfo(ctx context.Context, body UpdateUserBillingInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+}
+
+func (c *Client) GetAllowedCountryCodes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAllowedCountryCodesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
 }
 
 func (c *Client) GetUserBillingInfo(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -221,6 +242,33 @@ func (c *Client) UpdateUserBillingInfo(ctx context.Context, body UpdateUserBilli
 		return nil, err
 	}
 	return c.Client.Do(req)
+}
+
+// NewGetAllowedCountryCodesRequest generates requests for GetAllowedCountryCodes
+func NewGetAllowedCountryCodesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/billing/user/countries")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
 }
 
 // NewGetUserBillingInfoRequest generates requests for GetUserBillingInfo
@@ -373,6 +421,9 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
+	// GetAllowedCountryCodesWithResponse request
+	GetAllowedCountryCodesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAllowedCountryCodesResponse, error)
+
 	// GetUserBillingInfoWithResponse request
 	GetUserBillingInfoWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetUserBillingInfoResponse, error)
 
@@ -385,6 +436,29 @@ type ClientWithResponsesInterface interface {
 	UpdateUserBillingInfoWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateUserBillingInfoResponse, error)
 
 	UpdateUserBillingInfoWithResponse(ctx context.Context, body UpdateUserBillingInfoJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateUserBillingInfoResponse, error)
+}
+
+type GetAllowedCountryCodesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *AllowedCountriesResponse
+	JSON401      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r GetAllowedCountryCodesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAllowedCountryCodesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
 }
 
 type GetUserBillingInfoResponse struct {
@@ -465,6 +539,15 @@ func (r UpdateUserBillingInfoResponse) StatusCode() int {
 	return 0
 }
 
+// GetAllowedCountryCodesWithResponse request returning *GetAllowedCountryCodesResponse
+func (c *ClientWithResponses) GetAllowedCountryCodesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAllowedCountryCodesResponse, error) {
+	rsp, err := c.GetAllowedCountryCodes(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAllowedCountryCodesResponse(rsp)
+}
+
 // GetUserBillingInfoWithResponse request returning *GetUserBillingInfoResponse
 func (c *ClientWithResponses) GetUserBillingInfoWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetUserBillingInfoResponse, error) {
 	rsp, err := c.GetUserBillingInfo(ctx, reqEditors...)
@@ -506,6 +589,39 @@ func (c *ClientWithResponses) UpdateUserBillingInfoWithResponse(ctx context.Cont
 		return nil, err
 	}
 	return ParseUpdateUserBillingInfoResponse(rsp)
+}
+
+// ParseGetAllowedCountryCodesResponse parses an HTTP response from a GetAllowedCountryCodesWithResponse call
+func ParseGetAllowedCountryCodesResponse(rsp *http.Response) (*GetAllowedCountryCodesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAllowedCountryCodesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AllowedCountriesResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	}
+
+	return response, nil
 }
 
 // ParseGetUserBillingInfoResponse parses an HTTP response from a GetUserBillingInfoWithResponse call
