@@ -2230,6 +2230,7 @@ type GetContractVMsResponse struct {
 	JSON200      *ContractInstancesResponse
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
 }
 
 // Status returns HTTPResponse.Status
@@ -3051,6 +3052,13 @@ func ParseGetContractVMsResponse(rsp *http.Response) (*GetContractVMsResponse, e
 			return nil, err
 		}
 		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	}
 
