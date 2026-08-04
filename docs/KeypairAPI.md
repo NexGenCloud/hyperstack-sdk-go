@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**DeleteKeyPair**](KeypairAPI.md#DeleteKeyPair) | **Delete** /core/keypair/{id} | Delete key pair
 [**ImportKeyPair**](KeypairAPI.md#ImportKeyPair) | **Post** /core/keypairs | Import key pair
 [**ListKeyPairs**](KeypairAPI.md#ListKeyPairs) | **Get** /core/keypairs | List key pairs
+[**ListSupportedKeyPairTypes**](KeypairAPI.md#ListSupportedKeyPairTypes) | **Get** /core/supported-keypairs | List supported key pair types
 [**UpdateKeyPairName**](KeypairAPI.md#UpdateKeyPairName) | **Put** /core/keypair/{id} | Update key pair name
 
 
@@ -202,6 +203,67 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**Keypairs**](Keypairs.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListSupportedKeyPairTypes
+
+> SupportedKeypairPublicKeyTypesResponse ListSupportedKeyPairTypes(ctx).Execute()
+
+List supported key pair types
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.KeypairAPI.ListSupportedKeyPairTypes(context.Background()).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `KeypairAPI.ListSupportedKeyPairTypes``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListSupportedKeyPairTypes`: SupportedKeypairPublicKeyTypesResponse
+	fmt.Fprintf(os.Stdout, "Response from `KeypairAPI.ListSupportedKeyPairTypes`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListSupportedKeyPairTypesRequest struct via the builder pattern
+
+
+### Return type
+
+[**SupportedKeypairPublicKeyTypesResponse**](SupportedKeypairPublicKeyTypesResponse.md)
 
 ### Authorization
 

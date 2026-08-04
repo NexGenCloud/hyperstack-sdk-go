@@ -94,6 +94,13 @@ type ResponseModel struct {
 	Status  *bool   `json:"status,omitempty"`
 }
 
+// SupportedKeypairPublicKeyTypesResponse defines model for Supported_Keypair_Public_Key_Types_Response.
+type SupportedKeypairPublicKeyTypesResponse struct {
+	Message           *string   `json:"message,omitempty"`
+	Status            *bool     `json:"status,omitempty"`
+	SupportedKeyTypes *[]string `json:"supported_key_types,omitempty"`
+}
+
 // UpdateKeypairName defines model for Update_Keypair_Name.
 type UpdateKeypairName struct {
 	// Name The new key pair name.
@@ -208,6 +215,9 @@ type ClientInterface interface {
 	ImportKeyPairWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	ImportKeyPair(ctx context.Context, body ImportKeyPairJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListSupportedKeyPairTypes request
+	ListSupportedKeyPairTypes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) DeleteKeyPair(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -272,6 +282,18 @@ func (c *Client) ImportKeyPairWithBody(ctx context.Context, contentType string, 
 
 func (c *Client) ImportKeyPair(ctx context.Context, body ImportKeyPairJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewImportKeyPairRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListSupportedKeyPairTypes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListSupportedKeyPairTypesRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -484,6 +506,33 @@ func NewImportKeyPairRequestWithBody(server string, contentType string, body io.
 	return req, nil
 }
 
+// NewListSupportedKeyPairTypesRequest generates requests for ListSupportedKeyPairTypes
+func NewListSupportedKeyPairTypesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/supported-keypairs")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -542,6 +591,9 @@ type ClientWithResponsesInterface interface {
 	ImportKeyPairWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ImportKeyPairResponse, error)
 
 	ImportKeyPairWithResponse(ctx context.Context, body ImportKeyPairJSONRequestBody, reqEditors ...RequestEditorFn) (*ImportKeyPairResponse, error)
+
+	// ListSupportedKeyPairTypesWithResponse request
+	ListSupportedKeyPairTypesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListSupportedKeyPairTypesResponse, error)
 }
 
 type DeleteKeyPairResponse struct {
@@ -644,6 +696,28 @@ func (r ImportKeyPairResponse) StatusCode() int {
 	return 0
 }
 
+type ListSupportedKeyPairTypesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SupportedKeypairPublicKeyTypesResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r ListSupportedKeyPairTypesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListSupportedKeyPairTypesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 // DeleteKeyPairWithResponse request returning *DeleteKeyPairResponse
 func (c *ClientWithResponses) DeleteKeyPairWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteKeyPairResponse, error) {
 	rsp, err := c.DeleteKeyPair(ctx, id, reqEditors...)
@@ -694,6 +768,15 @@ func (c *ClientWithResponses) ImportKeyPairWithResponse(ctx context.Context, bod
 		return nil, err
 	}
 	return ParseImportKeyPairResponse(rsp)
+}
+
+// ListSupportedKeyPairTypesWithResponse request returning *ListSupportedKeyPairTypesResponse
+func (c *ClientWithResponses) ListSupportedKeyPairTypesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListSupportedKeyPairTypesResponse, error) {
+	rsp, err := c.ListSupportedKeyPairTypes(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListSupportedKeyPairTypesResponse(rsp)
 }
 
 // ParseDeleteKeyPairResponse parses an HTTP response from a DeleteKeyPairWithResponse call
@@ -878,6 +961,32 @@ func ParseImportKeyPairResponse(rsp *http.Response) (*ImportKeyPairResponse, err
 			return nil, err
 		}
 		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListSupportedKeyPairTypesResponse parses an HTTP response from a ListSupportedKeyPairTypesWithResponse call
+func ParseListSupportedKeyPairTypesResponse(rsp *http.Response) (*ListSupportedKeyPairTypesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListSupportedKeyPairTypesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SupportedKeypairPublicKeyTypesResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
 
 	}
 

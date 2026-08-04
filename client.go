@@ -84,6 +84,8 @@ type APIClient struct {
 
 	DeploymentAPI *DeploymentAPIService
 
+	EmailOptInOutAPI *EmailOptInOutAPIService
+
 	EnvironmentAPI *EnvironmentAPIService
 
 	FIPExclusionsAPI *FIPExclusionsAPIService
@@ -193,6 +195,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.CustomerContractAPI = (*CustomerContractAPIService)(&c.common)
 	c.DashboardAPI = (*DashboardAPIService)(&c.common)
 	c.DeploymentAPI = (*DeploymentAPIService)(&c.common)
+	c.EmailOptInOutAPI = (*EmailOptInOutAPIService)(&c.common)
 	c.EnvironmentAPI = (*EnvironmentAPIService)(&c.common)
 	c.FIPExclusionsAPI = (*FIPExclusionsAPIService)(&c.common)
 	c.FirewallAttachmentAPI = (*FirewallAttachmentAPIService)(&c.common)

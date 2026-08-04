@@ -39,6 +39,8 @@ tags:
   name: user-consent
 - description: User Consent management
   name: user-consent-events
+- description: User email preference management
+  name: email-opt-in-out
 - description: Dashboard APIs
   name: dashboard
 - description: Stock APIs
@@ -426,6 +428,110 @@ paths:
       summary: Check the status of beta access requests
       tags:
       - beta access
+  /auth/email/opt-out:
+    get:
+      description: Returns all email categories with the user's opt-in status. Categories
+        without an explicit preference default to opted_in=true.
+      operationId: Get_email_preferences_for_a_user
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailPreferencesResponse'
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "500":
+          content: {}
+          description: Internal Server Error
+      summary: Get all email preferences for the authenticated user
+      tags:
+      - email-opt-in-out
+    put:
+      description: "Sets opted_in to the given value for every non-required, non-deleted\
+        \ email category. Required categories are not affected."
+      operationId: Toggle_all_optional_email_preferences_for_the_user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEmailPreferenceInput'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateEmailPreferenceResponse'
+          description: Success
+        "400":
+          content: {}
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "500":
+          content: {}
+          description: Internal Server Error
+      summary: Toggle all optional email preferences for the authenticated user
+      tags:
+      - email-opt-in-out
+      x-codegen-request-body-name: payload
+  /auth/email/opt-out/{slug}:
+    put:
+      description: "Updates the opted_in status for the given email category slug.\
+        \ If the slug belongs to a parent category (email_category_id is null), all\
+        \ non-deleted child categories are updated. If the slug belongs to a child\
+        \ category, only that category is updated."
+      operationId: Update_email_preference_for_a_category_by_slug
+      parameters:
+      - explode: false
+        in: path
+        name: slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEmailPreferenceInput'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateEmailPreferenceResponse'
+          description: Success
+        "400":
+          content: {}
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "404":
+          content: {}
+          description: Email category not found
+        "500":
+          content: {}
+          description: Internal Server Error
+      summary: Update email preference opted_in status for a category slug
+      tags:
+      - email-opt-in-out
+      x-codegen-request-body-name: payload
   /auth/invites:
     get:
       description: "Retrieve a list of email invitations from your organization. For\
@@ -8742,6 +8848,23 @@ paths:
       summary: Retrieve GPU stocks
       tags:
       - stock
+  /core/supported-keypairs:
+    get:
+      description: Retrieves the SSH public key types supported for import.
+      operationId: List_supported_key_pair_types
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supported_Keypair_Public_Key_Types_Response'
+          description: Retrieval of supported key pair types successful.
+        "500":
+          content: {}
+          description: Internal Server Error
+      summary: List supported key pair types
+      tags:
+      - keypair
   /core/user/resources/defaults:
     get:
       description: "Retrieves the default options for virtual machine deployment,\
@@ -15152,6 +15275,137 @@ components:
             type: string
           type: array
       type: object
+    EmailCategory:
+      example:
+        icon: icon
+        description: description
+        position: 1
+        display_name: display_name
+        childs:
+        - icon: icon
+          description: description
+          position: 6
+          display_name: display_name
+          opted_in: true
+          required: true
+          slug: slug
+          email_category_id: 0
+        - icon: icon
+          description: description
+          position: 6
+          display_name: display_name
+          opted_in: true
+          required: true
+          slug: slug
+          email_category_id: 0
+        opted_in: true
+        required: true
+        slug: slug
+      properties:
+        childs:
+          items:
+            $ref: '#/components/schemas/EmailCategoryChild'
+          type: array
+        description:
+          type: string
+        display_name:
+          type: string
+        icon:
+          type: string
+        opted_in:
+          type: boolean
+        position:
+          type: integer
+        required:
+          type: boolean
+        slug:
+          type: string
+      type: object
+    EmailCategoryChild:
+      example:
+        icon: icon
+        description: description
+        position: 6
+        display_name: display_name
+        opted_in: true
+        required: true
+        slug: slug
+        email_category_id: 0
+      properties:
+        description:
+          type: string
+        display_name:
+          type: string
+        email_category_id:
+          type: integer
+        icon:
+          type: string
+        opted_in:
+          type: boolean
+        position:
+          type: integer
+        required:
+          type: boolean
+        slug:
+          type: string
+      type: object
+    EmailPreferencesResponse:
+      example:
+        email_categories:
+        - icon: icon
+          description: description
+          position: 1
+          display_name: display_name
+          childs:
+          - icon: icon
+            description: description
+            position: 6
+            display_name: display_name
+            opted_in: true
+            required: true
+            slug: slug
+            email_category_id: 0
+          - icon: icon
+            description: description
+            position: 6
+            display_name: display_name
+            opted_in: true
+            required: true
+            slug: slug
+            email_category_id: 0
+          opted_in: true
+          required: true
+          slug: slug
+        - icon: icon
+          description: description
+          position: 1
+          display_name: display_name
+          childs:
+          - icon: icon
+            description: description
+            position: 6
+            display_name: display_name
+            opted_in: true
+            required: true
+            slug: slug
+            email_category_id: 0
+          - icon: icon
+            description: description
+            position: 6
+            display_name: display_name
+            opted_in: true
+            required: true
+            slug: slug
+            email_category_id: 0
+          opted_in: true
+          required: true
+          slug: slug
+      properties:
+        email_categories:
+          items:
+            $ref: '#/components/schemas/EmailCategory'
+          type: array
+      type: object
     Environment:
       example:
         environment:
@@ -20997,6 +21251,23 @@ components:
       required:
       - subscribe
       type: object
+    Supported_Keypair_Public_Key_Types_Response:
+      example:
+        message: message
+        supported_key_types:
+        - supported_key_types
+        - supported_key_types
+        status: true
+      properties:
+        message:
+          type: string
+        status:
+          type: boolean
+        supported_key_types:
+          items:
+            type: string
+          type: array
+      type: object
     Template:
       example:
         template:
@@ -21211,6 +21482,23 @@ components:
           type: object
       required:
       - action
+      type: object
+    UpdateEmailPreferenceInput:
+      example:
+        opted_in: true
+      properties:
+        opted_in:
+          description: Set opted_in status
+          type: boolean
+      required:
+      - opted_in
+      type: object
+    UpdateEmailPreferenceResponse:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
       type: object
     UpdateOrganizationPayload:
       example:
