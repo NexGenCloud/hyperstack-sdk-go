@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **Count** | **int32** | The number of virtual machines to be created. | 
 **CreateBootableVolume** | Pointer to **bool** | Indicates whether to create a bootable volume for the virtual machine. When set to &#x60;true&#x60;, a bootable volume will be created; the default value is &#x60;false&#x60;. | [optional] 
 **EnablePortRandomization** | Pointer to **bool** | Indicates whether to enable port randomization.This setting is only effective if &#39;assign_floating_ip&#39; is true. Defaults to true. | [optional] [default to true]
+**EnhancedMonitoringEnabled** | Pointer to **bool** | When true, the Hyperstack VM Agent is opted in for this VM and metrics ingestion is allowed by the prom-gateway. The agent must still be installed on the VM (typically via user_data cloud-init). | [optional] [default to false]
 **EnvironmentName** | **string** | The name of the [environment](https://docs.hyperstack.cloud/docs/api-reference/core-resources/environments/) in which the virtual machine is to be created. | 
 **Flavor** | Pointer to [**FlavorObjectFields**](FlavorObjectFields.md) |  | [optional] 
 **FlavorName** | **string** | The name of the GPU hardware configuration ([flavor](https://docs.hyperstack.cloud/docs/hardware/flavors)) for the virtual machines being created. | 
@@ -159,6 +160,31 @@ SetEnablePortRandomization sets EnablePortRandomization field to given value.
 `func (o *CreateInstancesPayload) HasEnablePortRandomization() bool`
 
 HasEnablePortRandomization returns a boolean if a field has been set.
+
+### GetEnhancedMonitoringEnabled
+
+`func (o *CreateInstancesPayload) GetEnhancedMonitoringEnabled() bool`
+
+GetEnhancedMonitoringEnabled returns the EnhancedMonitoringEnabled field if non-nil, zero value otherwise.
+
+### GetEnhancedMonitoringEnabledOk
+
+`func (o *CreateInstancesPayload) GetEnhancedMonitoringEnabledOk() (*bool, bool)`
+
+GetEnhancedMonitoringEnabledOk returns a tuple with the EnhancedMonitoringEnabled field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEnhancedMonitoringEnabled
+
+`func (o *CreateInstancesPayload) SetEnhancedMonitoringEnabled(v bool)`
+
+SetEnhancedMonitoringEnabled sets EnhancedMonitoringEnabled field to given value.
+
+### HasEnhancedMonitoringEnabled
+
+`func (o *CreateInstancesPayload) HasEnhancedMonitoringEnabled() bool`
+
+HasEnhancedMonitoringEnabled returns a boolean if a field has been set.
 
 ### GetEnvironmentName
 

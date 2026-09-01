@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **CallbackUrl** | Pointer to **string** |  | [optional] 
 **ContractId** | Pointer to **int32** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
+**EnhancedMetrics** | Pointer to [**InstanceEnhancedMetricsFields**](InstanceEnhancedMetricsFields.md) |  | [optional] 
 **Environment** | Pointer to [**InstanceEnvironmentFields**](InstanceEnvironmentFields.md) |  | [optional] 
 **Features** | Pointer to **map[string]interface{}** |  | [optional] 
 **FixedIp** | Pointer to **string** |  | [optional] 
@@ -122,6 +123,31 @@ SetCreatedAt sets CreatedAt field to given value.
 `func (o *InstanceFields) HasCreatedAt() bool`
 
 HasCreatedAt returns a boolean if a field has been set.
+
+### GetEnhancedMetrics
+
+`func (o *InstanceFields) GetEnhancedMetrics() InstanceEnhancedMetricsFields`
+
+GetEnhancedMetrics returns the EnhancedMetrics field if non-nil, zero value otherwise.
+
+### GetEnhancedMetricsOk
+
+`func (o *InstanceFields) GetEnhancedMetricsOk() (*InstanceEnhancedMetricsFields, bool)`
+
+GetEnhancedMetricsOk returns a tuple with the EnhancedMetrics field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEnhancedMetrics
+
+`func (o *InstanceFields) SetEnhancedMetrics(v InstanceEnhancedMetricsFields)`
+
+SetEnhancedMetrics sets EnhancedMetrics field to given value.
+
+### HasEnhancedMetrics
+
+`func (o *InstanceFields) HasEnhancedMetrics() bool`
+
+HasEnhancedMetrics returns a boolean if a field has been set.
 
 ### GetEnvironment
 

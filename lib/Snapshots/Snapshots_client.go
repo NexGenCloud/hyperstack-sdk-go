@@ -69,6 +69,11 @@ type Instance struct {
 	Status   *bool           `json:"status,omitempty"`
 }
 
+// InstanceEnhancedMetricsFields defines model for Instance_Enhanced_Metrics_Fields.
+type InstanceEnhancedMetricsFields struct {
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 // InstanceEnvironmentFields defines model for Instance_Environment_Fields.
 type InstanceEnvironmentFields struct {
 	Features *EnvironmentFeatures `json:"features,omitempty"`
@@ -83,6 +88,7 @@ type InstanceFields struct {
 	CallbackUrl             *string                           `json:"callback_url,omitempty"`
 	ContractId              *int                              `json:"contract_id,omitempty"`
 	CreatedAt               *time.CustomTime                        `json:"created_at,omitempty"`
+	EnhancedMetrics         *InstanceEnhancedMetricsFields    `json:"enhanced_metrics,omitempty"`
 	Environment             *InstanceEnvironmentFields        `json:"environment,omitempty"`
 	Features                *map[string]interface{}           `json:"features,omitempty"`
 	FixedIp                 *string                           `json:"fixed_ip,omitempty"`

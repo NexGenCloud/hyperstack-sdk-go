@@ -24,6 +24,7 @@ Method | HTTP request | Description
 [**RestoreVMFromHibernation**](VirtualMachineAPI.md#RestoreVMFromHibernation) | **Get** /core/virtual-machines/{vm_id}/hibernate-restore | Restore virtual machine from hibernation
 [**StartVM**](VirtualMachineAPI.md#StartVM) | **Get** /core/virtual-machines/{vm_id}/start | Start virtual machine
 [**StopVM**](VirtualMachineAPI.md#StopVM) | **Get** /core/virtual-machines/{vm_id}/stop | Stop virtual machine
+[**ToggleEnhancedMetricsForAVM**](VirtualMachineAPI.md#ToggleEnhancedMetricsForAVM) | **Patch** /core/virtual-machines/{vm_id}/enhanced-metrics | Enable or disable Enhanced Metrics for a virtual machine
 
 
 
@@ -1049,8 +1050,8 @@ import (
 )
 
 func main() {
-	page := int32(56) // int32 |  (optional)
-	pageSize := int32(56) // int32 |  (optional)
+	page := int32(56) // int32 |  (optional) (default to 1)
+	pageSize := int32(56) // int32 |  (optional) (default to 10)
 	search := "search_example" // string |  (optional)
 	environment := "environment_example" // string |  (optional)
 	excludeFirewalls := []int32{int32(123)} // []int32 | Comma-separated list of Security Group IDs to ignore instances attached (optional)
@@ -1079,8 +1080,8 @@ Other parameters are passed through a pointer to a apiListVMsRequest struct via 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **page** | **int32** |  | 
- **pageSize** | **int32** |  | 
+ **page** | **int32** |  | [default to 1]
+ **pageSize** | **int32** |  | [default to 10]
  **search** | **string** |  | 
  **environment** | **string** |  | 
  **excludeFirewalls** | **[]int32** | Comma-separated list of Security Group IDs to ignore instances attached | 
@@ -1451,6 +1452,78 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ToggleEnhancedMetricsForAVM
+
+> UserEnhancedMetricsResponse ToggleEnhancedMetricsForAVM(ctx, vmId).Payload(payload).Execute()
+
+Enable or disable Enhanced Metrics for a virtual machine
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	vmId := int32(56) // int32 | 
+	payload := *openapiclient.NewUserEnhancedMetricsPayload(false) // UserEnhancedMetricsPayload | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.VirtualMachineAPI.ToggleEnhancedMetricsForAVM(context.Background(), vmId).Payload(payload).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `VirtualMachineAPI.ToggleEnhancedMetricsForAVM``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ToggleEnhancedMetricsForAVM`: UserEnhancedMetricsResponse
+	fmt.Fprintf(os.Stdout, "Response from `VirtualMachineAPI.ToggleEnhancedMetricsForAVM`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**vmId** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiToggleEnhancedMetricsForAVMRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **payload** | [**UserEnhancedMetricsPayload**](UserEnhancedMetricsPayload.md) |  | 
+
+### Return type
+
+[**UserEnhancedMetricsResponse**](UserEnhancedMetricsResponse.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

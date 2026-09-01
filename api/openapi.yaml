@@ -8916,6 +8916,7 @@ paths:
         name: page
         required: false
         schema:
+          default: 1
           type: integer
         style: form
       - explode: true
@@ -8923,6 +8924,7 @@ paths:
         name: pageSize
         required: false
         schema:
+          default: 10
           type: integer
         style: form
       - explode: true
@@ -9716,6 +9718,61 @@ paths:
       summary: Detach volumes from virtual machine
       tags:
       - volume attachment
+      x-codegen-request-body-name: payload
+  /core/virtual-machines/{vm_id}/enhanced-metrics:
+    patch:
+      description: Enable or disable the Hyperstack VM Agent (Enhanced Metrics) for
+        an existing virtual machine. The agent itself must be installed/removed manually
+        inside the VM — the response includes the install command when enabling.
+      operationId: Toggle_Enhanced_Metrics_for_a_VM
+      parameters:
+      - explode: false
+        in: path
+        name: vm_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserEnhancedMetricsPayload'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserEnhancedMetricsResponse'
+          description: Enhanced metrics updated.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Not Found
+        "500":
+          content: {}
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      - apiKey: []
+      summary: Enable or disable Enhanced Metrics for a virtual machine
+      tags:
+      - virtual machine
       x-codegen-request-body-name: payload
   /core/virtual-machines/{vm_id}/events:
     get:
@@ -14280,20 +14337,27 @@ components:
     CreateInstancesResponse:
       example:
         instances:
-        - image:
-            name: name
-          os: os
-          requires_public_ip: true
-          contract_id: 0
+        - contract_id: 0
           floating_ip_status: floating_ip_status
           keypair:
             name: name
           created_at: 2000-01-23T04:56:07.000+00:00
+          callback_url: callback_url
+          features: "{}"
+          port_randomization_status: port_randomization_status
+          floating_ip: floating_ip
+          id: 4
+          locked: true
+          image:
+            name: name
+          os: os
+          requires_public_ip: true
+          enhanced_metrics:
+            enabled: true
           power_state: power_state
           labels:
           - labels
           - labels
-          callback_url: callback_url
           flavor:
             features: "{}"
             disk: 5
@@ -14310,7 +14374,6 @@ components:
               label: label
             ram: 2.027123023002322
           vm_state: vm_state
-          features: "{}"
           environment:
             features:
               green_status: GREEN
@@ -14319,12 +14382,8 @@ components:
             name: name
             id: 6
             region: region
-          port_randomization_status: port_randomization_status
-          floating_ip: floating_ip
           name: name
           fixed_ip: fixed_ip
-          id: 4
-          locked: true
           volume_attachments:
           - volume:
               volume_type: volume_type
@@ -14371,20 +14430,27 @@ components:
             status: status
           port_randomization: true
           status: status
-        - image:
-            name: name
-          os: os
-          requires_public_ip: true
-          contract_id: 0
+        - contract_id: 0
           floating_ip_status: floating_ip_status
           keypair:
             name: name
           created_at: 2000-01-23T04:56:07.000+00:00
+          callback_url: callback_url
+          features: "{}"
+          port_randomization_status: port_randomization_status
+          floating_ip: floating_ip
+          id: 4
+          locked: true
+          image:
+            name: name
+          os: os
+          requires_public_ip: true
+          enhanced_metrics:
+            enabled: true
           power_state: power_state
           labels:
           - labels
           - labels
-          callback_url: callback_url
           flavor:
             features: "{}"
             disk: 5
@@ -14401,7 +14467,6 @@ components:
               label: label
             ram: 2.027123023002322
           vm_state: vm_state
-          features: "{}"
           environment:
             features:
               green_status: GREEN
@@ -14410,12 +14475,8 @@ components:
             name: name
             id: 6
             region: region
-          port_randomization_status: port_randomization_status
-          floating_ip: floating_ip
           name: name
           fixed_ip: fixed_ip
-          id: 4
-          locked: true
           volume_attachments:
           - volume:
               volume_type: volume_type
@@ -14758,6 +14819,12 @@ components:
           default: true
           description: Indicates whether to enable port randomization.This setting
             is only effective if 'assign_floating_ip' is true. Defaults to true.
+          type: boolean
+        enhanced_monitoring_enabled:
+          default: false
+          description: "When true, the Hyperstack VM Agent is opted in for this VM\
+            \ and metrics ingestion is allowed by the prom-gateway. The agent must\
+            \ still be installed on the VM (typically via user_data cloud-init)."
           type: boolean
         environment_name:
           description: "The name of the [environment](https://docs.hyperstack.cloud/docs/api-reference/core-resources/environments/)\
@@ -16980,20 +17047,27 @@ components:
     Instance:
       example:
         instance:
-          image:
-            name: name
-          os: os
-          requires_public_ip: true
           contract_id: 0
           floating_ip_status: floating_ip_status
           keypair:
             name: name
           created_at: 2000-01-23T04:56:07.000+00:00
+          callback_url: callback_url
+          features: "{}"
+          port_randomization_status: port_randomization_status
+          floating_ip: floating_ip
+          id: 4
+          locked: true
+          image:
+            name: name
+          os: os
+          requires_public_ip: true
+          enhanced_metrics:
+            enabled: true
           power_state: power_state
           labels:
           - labels
           - labels
-          callback_url: callback_url
           flavor:
             features: "{}"
             disk: 5
@@ -17010,7 +17084,6 @@ components:
               label: label
             ram: 2.027123023002322
           vm_state: vm_state
-          features: "{}"
           environment:
             features:
               green_status: GREEN
@@ -17019,12 +17092,8 @@ components:
             name: name
             id: 6
             region: region
-          port_randomization_status: port_randomization_status
-          floating_ip: floating_ip
           name: name
           fixed_ip: fixed_ip
-          id: 4
-          locked: true
           volume_attachments:
           - volume:
               volume_type: volume_type
@@ -17156,6 +17225,13 @@ components:
         flavor_name:
           type: string
       type: object
+    Instance_Enhanced_Metrics_Fields:
+      example:
+        enabled: true
+      properties:
+        enabled:
+          type: boolean
+      type: object
     Instance_Environment_Fields:
       example:
         features:
@@ -17179,20 +17255,27 @@ components:
       type: object
     Instance_Fields:
       example:
-        image:
-          name: name
-        os: os
-        requires_public_ip: true
         contract_id: 0
         floating_ip_status: floating_ip_status
         keypair:
           name: name
         created_at: 2000-01-23T04:56:07.000+00:00
+        callback_url: callback_url
+        features: "{}"
+        port_randomization_status: port_randomization_status
+        floating_ip: floating_ip
+        id: 4
+        locked: true
+        image:
+          name: name
+        os: os
+        requires_public_ip: true
+        enhanced_metrics:
+          enabled: true
         power_state: power_state
         labels:
         - labels
         - labels
-        callback_url: callback_url
         flavor:
           features: "{}"
           disk: 5
@@ -17209,7 +17292,6 @@ components:
             label: label
           ram: 2.027123023002322
         vm_state: vm_state
-        features: "{}"
         environment:
           features:
             green_status: GREEN
@@ -17218,12 +17300,8 @@ components:
           name: name
           id: 6
           region: region
-        port_randomization_status: port_randomization_status
-        floating_ip: floating_ip
         name: name
         fixed_ip: fixed_ip
-        id: 4
-        locked: true
         volume_attachments:
         - volume:
             volume_type: volume_type
@@ -17278,6 +17356,8 @@ components:
         created_at:
           format: date-time
           type: string
+        enhanced_metrics:
+          $ref: '#/components/schemas/Instance_Enhanced_Metrics_Fields'
         environment:
           $ref: '#/components/schemas/Instance_Environment_Fields'
         features:
@@ -17405,20 +17485,27 @@ components:
     Instances:
       example:
         instances:
-        - image:
-            name: name
-          os: os
-          requires_public_ip: true
-          contract_id: 0
+        - contract_id: 0
           floating_ip_status: floating_ip_status
           keypair:
             name: name
           created_at: 2000-01-23T04:56:07.000+00:00
+          callback_url: callback_url
+          features: "{}"
+          port_randomization_status: port_randomization_status
+          floating_ip: floating_ip
+          id: 4
+          locked: true
+          image:
+            name: name
+          os: os
+          requires_public_ip: true
+          enhanced_metrics:
+            enabled: true
           power_state: power_state
           labels:
           - labels
           - labels
-          callback_url: callback_url
           flavor:
             features: "{}"
             disk: 5
@@ -17435,7 +17522,6 @@ components:
               label: label
             ram: 2.027123023002322
           vm_state: vm_state
-          features: "{}"
           environment:
             features:
               green_status: GREEN
@@ -17444,12 +17530,8 @@ components:
             name: name
             id: 6
             region: region
-          port_randomization_status: port_randomization_status
-          floating_ip: floating_ip
           name: name
           fixed_ip: fixed_ip
-          id: 4
-          locked: true
           volume_attachments:
           - volume:
               volume_type: volume_type
@@ -17496,20 +17578,27 @@ components:
             status: status
           port_randomization: true
           status: status
-        - image:
-            name: name
-          os: os
-          requires_public_ip: true
-          contract_id: 0
+        - contract_id: 0
           floating_ip_status: floating_ip_status
           keypair:
             name: name
           created_at: 2000-01-23T04:56:07.000+00:00
+          callback_url: callback_url
+          features: "{}"
+          port_randomization_status: port_randomization_status
+          floating_ip: floating_ip
+          id: 4
+          locked: true
+          image:
+            name: name
+          os: os
+          requires_public_ip: true
+          enhanced_metrics:
+            enabled: true
           power_state: power_state
           labels:
           - labels
           - labels
-          callback_url: callback_url
           flavor:
             features: "{}"
             disk: 5
@@ -17526,7 +17615,6 @@ components:
               label: label
             ram: 2.027123023002322
           vm_state: vm_state
-          features: "{}"
           environment:
             features:
               green_status: GREEN
@@ -17535,12 +17623,8 @@ components:
             name: name
             id: 6
             region: region
-          port_randomization_status: port_randomization_status
-          floating_ip: floating_ip
           name: name
           fixed_ip: fixed_ip
-          id: 4
-          locked: true
           volume_attachments:
           - volume:
               volume_type: volume_type
@@ -21764,6 +21848,43 @@ components:
           items:
             $ref: '#/components/schemas/UserDefaultChoiceForUserFields'
           type: array
+      type: object
+    UserEnhancedMetricsPayload:
+      example:
+        enabled: true
+      properties:
+        enabled:
+          description: "Set to true to opt this VM into Enhanced Metrics, false to\
+            \ opt out."
+          type: boolean
+      required:
+      - enabled
+      type: object
+    UserEnhancedMetricsResponse:
+      example:
+        install_command: install_command
+        metrics:
+          enabled: true
+        message: message
+        status: true
+      properties:
+        install_command:
+          description: One-liner the user can run inside the VM to install the agent
+            when enabling. Omitted when disabling.
+          type: string
+        message:
+          type: string
+        metrics:
+          $ref: '#/components/schemas/UserEnhancedMetricsResponseFields'
+        status:
+          type: boolean
+      type: object
+    UserEnhancedMetricsResponseFields:
+      example:
+        enabled: true
+      properties:
+        enabled:
+          type: boolean
       type: object
     UserOrganizationsResponse:
       example:

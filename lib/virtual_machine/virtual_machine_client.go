@@ -204,6 +204,9 @@ type CreateInstancesPayload struct {
 	// EnablePortRandomization Indicates whether to enable port randomization.This setting is only effective if 'assign_floating_ip' is true. Defaults to true.
 	EnablePortRandomization *bool `json:"enable_port_randomization,omitempty"`
 
+	// EnhancedMonitoringEnabled When true, the Hyperstack VM Agent is opted in for this VM and metrics ingestion is allowed by the prom-gateway. The agent must still be installed on the VM (typically via user_data cloud-init).
+	EnhancedMonitoringEnabled *bool `json:"enhanced_monitoring_enabled,omitempty"`
+
 	// EnvironmentName The name of the [environment](https://docs.hyperstack.cloud/docs/api-reference/core-resources/environments/) in which the virtual machine is to be created.
 	EnvironmentName string              `json:"environment_name"`
 	Flavor          *FlavorObjectFields `json:"flavor,omitempty"`
@@ -305,6 +308,11 @@ type InstanceResizePayload struct {
 	FlavorName *string             `json:"flavor_name,omitempty"`
 }
 
+// InstanceEnhancedMetricsFields defines model for Instance_Enhanced_Metrics_Fields.
+type InstanceEnhancedMetricsFields struct {
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 // InstanceEnvironmentFields defines model for Instance_Environment_Fields.
 type InstanceEnvironmentFields struct {
 	Features *EnvironmentFeatures `json:"features,omitempty"`
@@ -319,6 +327,7 @@ type InstanceFields struct {
 	CallbackUrl             *string                           `json:"callback_url,omitempty"`
 	ContractId              *int                              `json:"contract_id,omitempty"`
 	CreatedAt               *time.CustomTime                        `json:"created_at,omitempty"`
+	EnhancedMetrics         *InstanceEnhancedMetricsFields    `json:"enhanced_metrics,omitempty"`
 	Environment             *InstanceEnvironmentFields        `json:"environment,omitempty"`
 	Features                *map[string]interface{}           `json:"features,omitempty"`
 	FixedIp                 *string                           `json:"fixed_ip,omitempty"`
@@ -501,6 +510,26 @@ type SnapshotFields struct {
 	VmId int `json:"vm_id"`
 }
 
+// UserEnhancedMetricsPayload defines model for UserEnhancedMetricsPayload.
+type UserEnhancedMetricsPayload struct {
+	// Enabled Set to true to opt this VM into Enhanced Metrics, false to opt out.
+	Enabled bool `json:"enabled"`
+}
+
+// UserEnhancedMetricsResponse defines model for UserEnhancedMetricsResponse.
+type UserEnhancedMetricsResponse struct {
+	// InstallCommand One-liner the user can run inside the VM to install the agent when enabling. Omitted when disabling.
+	InstallCommand *string                            `json:"install_command,omitempty"`
+	Message        *string                            `json:"message,omitempty"`
+	Metrics        *UserEnhancedMetricsResponseFields `json:"metrics,omitempty"`
+	Status         *bool                              `json:"status,omitempty"`
+}
+
+// UserEnhancedMetricsResponseFields defines model for UserEnhancedMetricsResponseFields.
+type UserEnhancedMetricsResponseFields struct {
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 // VolumeAttachmentFields defines model for Volume_Attachment_Fields.
 type VolumeAttachmentFields struct {
 	CreatedAt *time.CustomTime               `json:"created_at,omitempty"`
@@ -563,6 +592,9 @@ type CreateVMsJSONRequestBody = CreateInstancesPayload
 
 // AttachFirewallsToVMJSONRequestBody defines body for AttachFirewallsToVM for application/json ContentType.
 type AttachFirewallsToVMJSONRequestBody = AttachFirewallsToVMPayload
+
+// ToggleEnhancedMetricsForAVMJSONRequestBody defines body for ToggleEnhancedMetricsForAVM for application/json ContentType.
+type ToggleEnhancedMetricsForAVMJSONRequestBody = UserEnhancedMetricsPayload
 
 // AddVMLabelJSONRequestBody defines body for AddVMLabel for application/json ContentType.
 type AddVMLabelJSONRequestBody = EditLabelOfAnExistingVMPayload
@@ -676,6 +708,11 @@ type ClientInterface interface {
 	AttachFirewallsToVMWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	AttachFirewallsToVM(ctx context.Context, vmId int, body AttachFirewallsToVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ToggleEnhancedMetricsForAVMWithBody request with any body
+	ToggleEnhancedMetricsForAVMWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ToggleEnhancedMetricsForAVM(ctx context.Context, vmId int, body ToggleEnhancedMetricsForAVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// HardRebootVM request
 	HardRebootVM(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -825,6 +862,30 @@ func (c *Client) AttachFirewallsToVMWithBody(ctx context.Context, vmId int, cont
 
 func (c *Client) AttachFirewallsToVM(ctx context.Context, vmId int, body AttachFirewallsToVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewAttachFirewallsToVMRequest(c.Server, vmId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ToggleEnhancedMetricsForAVMWithBody(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewToggleEnhancedMetricsForAVMRequestWithBody(c.Server, vmId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ToggleEnhancedMetricsForAVM(ctx context.Context, vmId int, body ToggleEnhancedMetricsForAVMJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewToggleEnhancedMetricsForAVMRequest(c.Server, vmId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1479,6 +1540,53 @@ func NewAttachFirewallsToVMRequestWithBody(server string, vmId int, contentType 
 	return req, nil
 }
 
+// NewToggleEnhancedMetricsForAVMRequest calls the generic ToggleEnhancedMetricsForAVM builder with application/json body
+func NewToggleEnhancedMetricsForAVMRequest(server string, vmId int, body ToggleEnhancedMetricsForAVMJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewToggleEnhancedMetricsForAVMRequestWithBody(server, vmId, "application/json", bodyReader)
+}
+
+// NewToggleEnhancedMetricsForAVMRequestWithBody generates requests for ToggleEnhancedMetricsForAVM with any type of body
+func NewToggleEnhancedMetricsForAVMRequestWithBody(server string, vmId int, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "vm_id", runtime.ParamLocationPath, vmId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/virtual-machines/%s/enhanced-metrics", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewHardRebootVMRequest generates requests for HardRebootVM
 func NewHardRebootVMRequest(server string, vmId int) (*http.Request, error) {
 	var err error
@@ -2123,6 +2231,11 @@ type ClientWithResponsesInterface interface {
 
 	AttachFirewallsToVMWithResponse(ctx context.Context, vmId int, body AttachFirewallsToVMJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachFirewallsToVMResponse, error)
 
+	// ToggleEnhancedMetricsForAVMWithBodyWithResponse request with any body
+	ToggleEnhancedMetricsForAVMWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ToggleEnhancedMetricsForAVMResponse, error)
+
+	ToggleEnhancedMetricsForAVMWithResponse(ctx context.Context, vmId int, body ToggleEnhancedMetricsForAVMJSONRequestBody, reqEditors ...RequestEditorFn) (*ToggleEnhancedMetricsForAVMResponse, error)
+
 	// HardRebootVMWithResponse request
 	HardRebootVMWithResponse(ctx context.Context, vmId int, reqEditors ...RequestEditorFn) (*HardRebootVMResponse, error)
 
@@ -2344,6 +2457,31 @@ func (r AttachFirewallsToVMResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r AttachFirewallsToVMResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ToggleEnhancedMetricsForAVMResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *UserEnhancedMetricsResponse
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r ToggleEnhancedMetricsForAVMResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ToggleEnhancedMetricsForAVMResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2758,6 +2896,23 @@ func (c *ClientWithResponses) AttachFirewallsToVMWithResponse(ctx context.Contex
 		return nil, err
 	}
 	return ParseAttachFirewallsToVMResponse(rsp)
+}
+
+// ToggleEnhancedMetricsForAVMWithBodyWithResponse request with arbitrary body returning *ToggleEnhancedMetricsForAVMResponse
+func (c *ClientWithResponses) ToggleEnhancedMetricsForAVMWithBodyWithResponse(ctx context.Context, vmId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ToggleEnhancedMetricsForAVMResponse, error) {
+	rsp, err := c.ToggleEnhancedMetricsForAVMWithBody(ctx, vmId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseToggleEnhancedMetricsForAVMResponse(rsp)
+}
+
+func (c *ClientWithResponses) ToggleEnhancedMetricsForAVMWithResponse(ctx context.Context, vmId int, body ToggleEnhancedMetricsForAVMJSONRequestBody, reqEditors ...RequestEditorFn) (*ToggleEnhancedMetricsForAVMResponse, error) {
+	rsp, err := c.ToggleEnhancedMetricsForAVM(ctx, vmId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseToggleEnhancedMetricsForAVMResponse(rsp)
 }
 
 // HardRebootVMWithResponse request returning *HardRebootVMResponse
@@ -3229,6 +3384,53 @@ func ParseAttachFirewallsToVMResponse(rsp *http.Response) (*AttachFirewallsToVMR
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest ResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseToggleEnhancedMetricsForAVMResponse parses an HTTP response from a ToggleEnhancedMetricsForAVMWithResponse call
+func ParseToggleEnhancedMetricsForAVMResponse(rsp *http.Response) (*ToggleEnhancedMetricsForAVMResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ToggleEnhancedMetricsForAVMResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest UserEnhancedMetricsResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
