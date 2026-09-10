@@ -8,6 +8,9 @@ vars:
   API_SPEC_PATH: "{{.DIR_ARTIFACTS}}/api.json"
   LIB_DIR: "lib"
   DIR_PACKAGE: "{{.ROOT_DIR}}/{{.LIB_DIR}}"
+  # Stamped into the forced client headers. Set from the release tag in CI; falls back
+  # to "dev" for local runs so a build never silently ships an empty version.
+  SDK_VERSION: '{{.SDK_VERSION | default (env "SDK_VERSION") | default "dev"}}'
   HYPERSTACK_API_ADDRESS: "https://infrahub-api.nexgencloud.com/v1"
 
 env:
@@ -59,6 +62,45 @@ tasks:
         sed 's/PACKAGE_REPLACE/{{.TIME_PACKAGE}}/g' "{{.DIR_DATA}}/CustomTime.go" \
           > "{{.DIR_PACKAGE}}/{{.TIME_PACKAGE}}/CustomTime.go"
         echo "done"
+      # language=bash
+      - |
+        # Forced Hyperstack client identification headers.
+        #
+        # This is the client that actually ships as hyperstack-sdk-go, so it needs the
+        # same headers as the other five SDKs. oapi-codegen emits one package per API
+        # tag, each with its own applyEditors -- the single point every operation routes
+        # through before the request is sent.
+        #
+        # The helper goes in its own file in each tag package so the generated client
+        # needs no extra imports, and is invoked with `defer` at the top of applyEditors
+        # so it runs after every configured RequestEditorFn: a caller cannot override it.
+        echo -n "Injecting forced Hyperstack client headers... "
+        injected=0
+        for pkg_dir in "{{.DIR_PACKAGE}}"/*/; do
+          pkg_name="$(basename "$pkg_dir")"
+          # the shared time package holds no client, skip it
+          [ "$pkg_name" = "{{.TIME_PACKAGE}}" ] && continue
+          client_file="$pkg_dir$pkg_name"_client.go
+          [ -f "$client_file" ] || continue
+          sed -e "s/PACKAGE_REPLACE/$pkg_name/g" \
+              -e 's/__HYPERSTACK_SDK_VERSION__/{{.SDK_VERSION}}/g' \
+              "{{.DIR_DATA}}/HyperstackHeaders.go" > "$pkg_dir/HyperstackHeaders.go"
+          if ! grep -q 'hyperstackSetHeaders' "$client_file"; then
+            sed -i.tmp 's|\(applyEditors(ctx context.Context, req \*http.Request, additionalEditors \[\]RequestEditorFn) error {\)|\1 defer hyperstackSetHeaders(req)|' "$client_file"
+            rm -f "$client_file.tmp"
+          fi
+          grep -q 'defer hyperstackSetHeaders(req)' "$client_file" || {
+            echo ""; echo "FATAL: applyEditors anchor not found in $client_file"; exit 1
+          }
+          injected=$((injected + 1))
+        done
+        if [ "$injected" -eq 0 ]; then
+          echo ""; echo "FATAL: no generated tag packages found under {{.DIR_PACKAGE}}"; exit 1
+        fi
+        if grep -rl '__HYPERSTACK_SDK_VERSION__' "{{.DIR_PACKAGE}}" 2>/dev/null | grep -q .; then
+          echo ""; echo "FATAL: unsubstituted version placeholder remains"; exit 1
+        fi
+        echo "done ($injected packages)"
 
   build-api-spec:
     desc: |

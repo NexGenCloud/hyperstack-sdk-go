@@ -583,6 +583,7 @@ func (c *APIClient) prepareRequest(
 	for header, value := range c.cfg.DefaultHeader {
 		localVarRequest.Header.Add(header, value)
 	}
+	setHyperstackHeaders(localVarRequest)
 	return localVarRequest, nil
 }
 

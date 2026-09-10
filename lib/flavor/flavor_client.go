@@ -16,6 +16,18 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// CompatibleImage defines model for CompatibleImage.
+type CompatibleImage struct {
+	// Constraints JSON constraints object
+	Constraints *map[string]interface{} `json:"constraints,omitempty"`
+	ImageId     *int                    `json:"image_id,omitempty"`
+	ImageName   *string                 `json:"image_name,omitempty"`
+
+	// LinkType Either 'hard' or 'soft'
+	LinkType *string `json:"link_type,omitempty"`
+	Reason   *string `json:"reason,omitempty"`
+}
+
 // ErrorResponseModel defines model for ErrorResponseModel.
 type ErrorResponseModel struct {
 	ErrorReason *string `json:"error_reason,omitempty"`
@@ -25,20 +37,23 @@ type ErrorResponseModel struct {
 
 // FlavorFields defines model for Flavor_Fields.
 type FlavorFields struct {
-	Cpu            *int                    `json:"cpu,omitempty"`
-	CreatedAt      *time.CustomTime              `json:"created_at,omitempty"`
-	Disk           *int                    `json:"disk,omitempty"`
-	DisplayName    *string                 `json:"display_name,omitempty"`
-	Ephemeral      *int                    `json:"ephemeral,omitempty"`
-	Features       *map[string]interface{} `json:"features,omitempty"`
-	Gpu            *string                 `json:"gpu,omitempty"`
-	GpuCount       *int                    `json:"gpu_count,omitempty"`
-	Id             *int                    `json:"id,omitempty"`
-	Labels         *[]LableResonse         `json:"labels,omitempty"`
-	Name           *string                 `json:"name,omitempty"`
-	Ram            *float32                `json:"ram,omitempty"`
-	RegionName     *string                 `json:"region_name,omitempty"`
-	StockAvailable *bool                   `json:"stock_available,omitempty"`
+	Cpu         *int                    `json:"cpu,omitempty"`
+	CreatedAt   *time.CustomTime              `json:"created_at,omitempty"`
+	Disk        *int                    `json:"disk,omitempty"`
+	DisplayName *string                 `json:"display_name,omitempty"`
+	Ephemeral   *int                    `json:"ephemeral,omitempty"`
+	Features    *map[string]interface{} `json:"features,omitempty"`
+	Gpu         *string                 `json:"gpu,omitempty"`
+	GpuCount    *int                    `json:"gpu_count,omitempty"`
+	Id          *int                    `json:"id,omitempty"`
+
+	// ImageRestrictions Image compatibility restrictions for this flavor (flavor → image links)
+	ImageRestrictions *ImageRestrictions `json:"image_restrictions,omitempty"`
+	Labels            *[]LableResonse    `json:"labels,omitempty"`
+	Name              *string            `json:"name,omitempty"`
+	Ram               *float32           `json:"ram,omitempty"`
+	RegionName        *string            `json:"region_name,omitempty"`
+	StockAvailable    *bool              `json:"stock_available,omitempty"`
 }
 
 // FlavorItemGetResponse defines model for Flavor_Item_Get_Response.
@@ -53,6 +68,18 @@ type FlavorListResponse struct {
 	Data    *[]FlavorItemGetResponse `json:"data,omitempty"`
 	Message *string                  `json:"message,omitempty"`
 	Status  *bool                    `json:"status,omitempty"`
+}
+
+// ImageRestrictions defines model for ImageRestrictions.
+type ImageRestrictions struct {
+	// CompatibleImages List of images this flavor is allowed to launch, with link metadata
+	CompatibleImages *[]CompatibleImage `json:"compatible_images,omitempty"`
+
+	// HasImageRestrictions Whether the flavor is restricted to a set of images
+	HasImageRestrictions *bool `json:"has_image_restrictions,omitempty"`
+
+	// RestrictionType Either 'hard', 'soft', or null if no restrictions
+	RestrictionType *string `json:"restriction_type,omitempty"`
 }
 
 // LableResonse defines model for LableResonse.
@@ -204,7 +231,7 @@ func NewListFlavorsRequest(server string, params *ListFlavorsParams) (*http.Requ
 	return req, nil
 }
 
-func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
+func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error { defer hyperstackSetHeaders(req)
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
 			return err

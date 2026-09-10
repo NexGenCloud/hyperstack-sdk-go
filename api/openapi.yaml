@@ -13473,6 +13473,22 @@ components:
         reason:
           type: string
       type: object
+    CompatibleImage:
+      properties:
+        constraints:
+          description: JSON constraints object
+          properties: {}
+          type: object
+        image_id:
+          type: integer
+        image_name:
+          type: string
+        link_type:
+          description: Either 'hard' or 'soft'
+          type: string
+        reason:
+          type: string
+      type: object
     ComplianceFields:
       example:
         gpu_model: gpu_model
@@ -16017,6 +16033,7 @@ components:
         display_name: display_name
         stock_available: true
         gpu: gpu
+        image_restrictions: "{}"
         labels:
         - id: 7
           label: label
@@ -16050,6 +16067,12 @@ components:
           type: integer
         id:
           type: integer
+        image_restrictions:
+          allOf:
+          - $ref: '#/components/schemas/ImageRestrictions'
+          description: Image compatibility restrictions for this flavor (flavor →
+            image links)
+          type: object
         labels:
           items:
             $ref: '#/components/schemas/LableResonse'
@@ -16072,6 +16095,7 @@ components:
           display_name: display_name
           stock_available: true
           gpu: gpu
+          image_restrictions: "{}"
           labels:
           - id: 7
             label: label
@@ -16090,6 +16114,7 @@ components:
           display_name: display_name
           stock_available: true
           gpu: gpu
+          image_restrictions: "{}"
           labels:
           - id: 7
             label: label
@@ -16124,6 +16149,7 @@ components:
             display_name: display_name
             stock_available: true
             gpu: gpu
+            image_restrictions: "{}"
             labels:
             - id: 7
               label: label
@@ -16142,6 +16168,7 @@ components:
             display_name: display_name
             stock_available: true
             gpu: gpu
+            image_restrictions: "{}"
             labels:
             - id: 7
               label: label
@@ -16163,6 +16190,7 @@ components:
             display_name: display_name
             stock_available: true
             gpu: gpu
+            image_restrictions: "{}"
             labels:
             - id: 7
               label: label
@@ -16181,6 +16209,7 @@ components:
             display_name: display_name
             stock_available: true
             gpu: gpu
+            image_restrictions: "{}"
             labels:
             - id: 7
               label: label
@@ -16779,6 +16808,21 @@ components:
         status:
           description: ""
           type: boolean
+      type: object
+    ImageRestrictions:
+      properties:
+        compatible_images:
+          description: "List of images this flavor is allowed to launch, with link\
+            \ metadata"
+          items:
+            $ref: '#/components/schemas/CompatibleImage'
+          type: array
+        has_image_restrictions:
+          description: Whether the flavor is restricted to a set of images
+          type: boolean
+        restriction_type:
+          description: "Either 'hard', 'soft', or null if no restrictions"
+          type: string
       type: object
     Image_Fields:
       example:

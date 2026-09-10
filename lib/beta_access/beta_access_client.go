@@ -340,7 +340,7 @@ func NewGetBetaAccessRequestsRequest(server string, program string) (*http.Reque
 	return req, nil
 }
 
-func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
+func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error { defer hyperstackSetHeaders(req)
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
 			return err

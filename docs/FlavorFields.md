@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **Gpu** | Pointer to **string** |  | [optional] 
 **GpuCount** | Pointer to **int32** |  | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
+**ImageRestrictions** | Pointer to [**ImageRestrictions**](ImageRestrictions.md) | Image compatibility restrictions for this flavor (flavor → image links) | [optional] 
 **Labels** | Pointer to [**[]LableResonse**](LableResonse.md) |  | [optional] 
 **Name** | Pointer to **string** |  | [optional] 
 **Ram** | Pointer to **float32** |  | [optional] 
@@ -262,6 +263,31 @@ SetId sets Id field to given value.
 `func (o *FlavorFields) HasId() bool`
 
 HasId returns a boolean if a field has been set.
+
+### GetImageRestrictions
+
+`func (o *FlavorFields) GetImageRestrictions() ImageRestrictions`
+
+GetImageRestrictions returns the ImageRestrictions field if non-nil, zero value otherwise.
+
+### GetImageRestrictionsOk
+
+`func (o *FlavorFields) GetImageRestrictionsOk() (*ImageRestrictions, bool)`
+
+GetImageRestrictionsOk returns a tuple with the ImageRestrictions field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetImageRestrictions
+
+`func (o *FlavorFields) SetImageRestrictions(v ImageRestrictions)`
+
+SetImageRestrictions sets ImageRestrictions field to given value.
+
+### HasImageRestrictions
+
+`func (o *FlavorFields) HasImageRestrictions() bool`
+
+HasImageRestrictions returns a boolean if a field has been set.
 
 ### GetLabels
 
