@@ -4,13 +4,13 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Amount** | Pointer to **float32** |  | [optional] 
+**Amount** | **float32** | The amount to pay, in dollars. Must be at least $5.00. | 
 
 ## Methods
 
 ### NewPaymentInitiatePayload
 
-`func NewPaymentInitiatePayload() *PaymentInitiatePayload`
+`func NewPaymentInitiatePayload(amount float32, ) *PaymentInitiatePayload`
 
 NewPaymentInitiatePayload instantiates a new PaymentInitiatePayload object
 This constructor will assign default values to properties that have it defined,
@@ -44,11 +44,6 @@ and a boolean to check if the value has been set.
 
 SetAmount sets Amount field to given value.
 
-### HasAmount
-
-`func (o *PaymentInitiatePayload) HasAmount() bool`
-
-HasAmount returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

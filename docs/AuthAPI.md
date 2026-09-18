@@ -5,7 +5,6 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**ChangeOrganizationForToken**](AuthAPI.md#ChangeOrganizationForToken) | **Get** /auth/token/change-org/{org_id} | 
-[**DisableMFA**](AuthAPI.md#DisableMFA) | **Post** /auth/me/mfa/disable | 
 [**GetUserMFAStatus**](AuthAPI.md#GetUserMFAStatus) | **Get** /auth/me/mfa | Get MFA status for authenticated user
 [**GetUserOrganizations**](AuthAPI.md#GetUserOrganizations) | **Get** /auth/me/organizations | Get User Organizations
 [**RetrieveAuthenticatedUserDetails**](AuthAPI.md#RetrieveAuthenticatedUserDetails) | **Get** /auth/me | Retrieve Authenticated User Details
@@ -67,67 +66,6 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**AuthGetTokenResponseModel**](AuthGetTokenResponseModel.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## DisableMFA
-
-> CommonResponseModel DisableMFA(ctx).Execute()
-
-
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
-)
-
-func main() {
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.AuthAPI.DisableMFA(context.Background()).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `AuthAPI.DisableMFA``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `DisableMFA`: CommonResponseModel
-	fmt.Fprintf(os.Stdout, "Response from `AuthAPI.DisableMFA`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-This endpoint does not need any parameter.
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiDisableMFARequest struct via the builder pattern
-
-
-### Return type
-
-[**CommonResponseModel**](CommonResponseModel.md)
 
 ### Authorization
 

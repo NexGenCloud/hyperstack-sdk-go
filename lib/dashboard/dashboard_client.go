@@ -13,15 +13,6 @@ import (
 	"strings"
 )
 
-// ContainerOverviewFields defines model for Container_Overview_Fields.
-type ContainerOverviewFields struct {
-	CostPerHour *float32 `json:"cost_per_hour,omitempty"`
-	Count       *int     `json:"count,omitempty"`
-	Gpus        *int     `json:"gpus,omitempty"`
-	Ram         *float32 `json:"ram,omitempty"`
-	Vcpus       *int     `json:"vcpus,omitempty"`
-}
-
 // DashboardInfoResponse defines model for Dashboard_Info_Response.
 type DashboardInfoResponse struct {
 	Message  *string       `json:"message,omitempty"`
@@ -47,9 +38,8 @@ type InstanceOverviewFields struct {
 
 // OverviewInfo defines model for Overview_Info.
 type OverviewInfo struct {
-	Container *ContainerOverviewFields `json:"container,omitempty"`
-	Instance  *InstanceOverviewFields  `json:"instance,omitempty"`
-	Volume    *VolumeOverviewFields    `json:"volume,omitempty"`
+	Instance *InstanceOverviewFields `json:"instance,omitempty"`
+	Volume   *VolumeOverviewFields   `json:"volume,omitempty"`
 }
 
 // VolumeOverviewFields defines model for Volume_Overview_Fields.

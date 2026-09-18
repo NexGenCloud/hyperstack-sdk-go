@@ -71,10 +71,6 @@ tags:
   name: floating ip
 - description: Region APIs
   name: region
-- description: Templates APIs
-  name: template
-- description: Deployment APIs
-  name: deployment
 - description: Security Rule APIs
   name: security-rules
 - description: Profile APIs
@@ -83,8 +79,6 @@ tags:
   name: clusters
 - description: Cluster Event APIs
   name: cluster events
-- description: Compliance APIs
-  name: compliance
 - description: Firewalls APIs
   name: firewalls
 - description: Firewall Attachments APIs
@@ -770,47 +764,6 @@ paths:
       - accessToken: []
       - apiKey: []
       summary: Get MFA status for authenticated user
-      tags:
-      - auth
-  /auth/me/mfa/disable:
-    post:
-      description: Disable Multi-Factor Authentication (MFA) for the currently authenticated
-        user. This endpoint is used to turn off MFA.
-      operationId: Disable_MFA
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CommonResponseModel'
-          description: MFA Disabled
-        "401":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Unauthorized
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Forbidden - CSRF validation failed
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: User not found
-        "500":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Internal Server Error
-      security:
-      - accessToken: []
-      - apiKey: []
       tags:
       - auth
   /auth/me/organizations:
@@ -6231,217 +6184,11 @@ paths:
       summary: Getting Cluster Detail
       tags:
       - clusters
-  /core/compliance:
-    get:
-      description: "Returns a list of compliance objects each corresponding to available\
-        \ GPU models. These compliance objects contain minimum and maximum values\
-        \ for RAM in GB, number of vCPUs, and system disk capacity in GB. Use the\
-        \ optional `gpu` model parameter in the query string to filter responses by\
-        \ GPU model. For additional details on GPU compliance, [**click here**](https://docs.hyperstack.cloud/docs/hardware/flavors#adhering-to-gpu-compliance)."
-      operationId: Get_compliance
-      parameters:
-      - description: This is for gpu model
-        explode: true
-        in: query
-        name: gpu
-        required: false
-        schema:
-          type: string
-        style: form
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ComplianceResponse'
-          description: Compliance list retrieved successfully.
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Bad Request
-        "401":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Not Found
-        "406":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Not Acceptable
-        "500":
-          content: {}
-          description: Internal Server Error
-      security:
-      - accessToken: []
-      - apiKey: []
-      summary: Retrieve GPU compliance
-      tags:
-      - compliance
-    post:
-      operationId: Create_Compliance
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CompliancePayload'
-        required: true
-      responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateUpdateComplianceResponse'
-          description: Success
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Bad Request
-        "401":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Not Found
-        "405":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Method Not Allowed
-        "409":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Conflict
-        "500":
-          content: {}
-          description: Internal Server Error
-      security:
-      - accessToken: []
-      - apiKey: []
-      summary: Create compliance
-      tags:
-      - compliance
-      x-codegen-request-body-name: payload
-    put:
-      operationId: Update_compliance
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CompliancePayload'
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateUpdateComplianceResponse'
-          description: Success
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Bad Request
-        "401":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Not Found
-        "405":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Method Not Allowed
-        "500":
-          content: {}
-          description: Internal Server Error
-      security:
-      - accessToken: []
-      - apiKey: []
-      summary: Update a compliance
-      tags:
-      - compliance
-      x-codegen-request-body-name: payload
-  /core/compliance/{gpu_model}:
-    delete:
-      operationId: Delete_compliance
-      parameters:
-      - explode: false
-        in: path
-        name: gpu_model
-        required: true
-        schema:
-          type: string
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseModel'
-          description: Success
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Bad Request
-        "401":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Not Found
-        "500":
-          content: {}
-          description: Internal Server Error
-      security:
-      - accessToken: []
-      - apiKey: []
-      summary: Delete a compliance
-      tags:
-      - compliance
   /core/dashboard:
     get:
       description: "Returns hardware and pricing overview for your active resources,\
-        \ includingvirtual machines, containers, and volumes. For more details on\
-        \ the Dashboard feature, [**click here**](https://docs.hyperstack.cloud/docs/resource-management/dashboard/)."
+        \ includingvirtual machines and volumes. For more details on the Dashboard\
+        \ feature, [**click here**](https://docs.hyperstack.cloud/docs/resource-management/dashboard/)."
       operationId: Get_Dashboard
       responses:
         "200":
@@ -7840,411 +7587,6 @@ paths:
       summary: Import key pair
       tags:
       - keypair
-      x-codegen-request-body-name: payload
-  /core/marketplace/deployments:
-    get:
-      operationId: List_Deployments
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Deployments'
-          description: Getting deployments success
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Bad Request
-        "401":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Unauthorized
-        "500":
-          content: {}
-          description: Internal Server Error
-      security:
-      - accessToken: []
-      - apiKey: []
-      summary: List Deployments
-      tags:
-      - deployment
-    post:
-      operationId: Start_Deployment
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Start_Deployment_Payload'
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Start_Deployment'
-          description: Deployment created successfully
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Bad Request
-        "401":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Not Found
-        "409":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Conflict
-        "500":
-          content: {}
-          description: Internal Server Error
-      security:
-      - accessToken: []
-      - apiKey: []
-      summary: Start Deployment
-      tags:
-      - deployment
-      x-codegen-request-body-name: payload
-  /core/marketplace/deployments/{id}:
-    delete:
-      operationId: Delete_Deployment
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      responses:
-        "202":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseModel'
-          description: Success
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Bad Request
-        "401":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Not Found
-        "500":
-          content: {}
-          description: Internal Server Error
-      security:
-      - accessToken: []
-      - apiKey: []
-      summary: Delete Deployment
-      tags:
-      - deployment
-    get:
-      operationId: Get_deployment
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Start_Deployment'
-          description: Getting deployment detail success
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Bad Request
-        "401":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Not Found
-        "500":
-          content: {}
-          description: Internal Server Error
-      security:
-      - accessToken: []
-      - apiKey: []
-      summary: Details of Deployment by ID
-      tags:
-      - deployment
-  /core/marketplace/templates:
-    get:
-      description: "Returns a comprehensive list of templates, providing resource\
-        \ configuration details for each. Optionally, specify the `visibility` as\
-        \ `public` or `private` to retrieve templates with the desired visibility\
-        \ status. To learn more about the templates feature, [**click here**](https://docs.hyperstack.cloud/docs/features/templates#view-a-list-of-templates)."
-      operationId: List_templates
-      parameters:
-      - description: Specify the `visibility` status as either `public` or `private`
-          to filter and retrieve templates with the desired visibility.
-        explode: true
-        in: query
-        name: visibility
-        required: false
-        schema:
-          type: string
-        style: form
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Templates'
-          description: Templates list successfully retrieved.
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Bad Request
-        "401":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Unauthorized
-        "406":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Not Acceptable
-        "500":
-          content: {}
-          description: Internal Server Error
-      security:
-      - accessToken: []
-      - apiKey: []
-      summary: List templates
-      tags:
-      - template
-    post:
-      description: Creates a resource template for deployment.
-      operationId: Create_template
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/Create_template_request'
-        required: true
-      responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Template'
-          description: Template added successfully
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Bad Request
-        "401":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Unauthorized
-        "500":
-          content: {}
-          description: Internal Server Error
-      security:
-      - accessToken: []
-      - apiKey: []
-      summary: Create template
-      tags:
-      - template
-  /core/marketplace/templates/{id}:
-    delete:
-      description: Permanently deletes a template. Supply the template ID in the path
-        to delete the specified template.
-      operationId: Delete_template
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseModel'
-          description: Template deleted successfully.
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Bad Request
-        "401":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Not Found
-        "500":
-          content: {}
-          description: Internal Server Error
-      security:
-      - accessToken: []
-      - apiKey: []
-      summary: Delete template
-      tags:
-      - template
-    get:
-      description: "Retrieves the resource configuration details for a specified template.Provide\
-        \ the template ID in the path to retrieve details for the specified template.For\
-        \ additional information on template configuration details,[**click here**](https://docs.hyperstack.cloud/docs/api-references/)."
-      operationId: Get_template
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Template'
-          description: Template details retrieved successfully.
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Bad Request
-        "401":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Not Found
-        "500":
-          content: {}
-          description: Internal Server Error
-      security:
-      - accessToken: []
-      - apiKey: []
-      summary: Retrieve template details
-      tags:
-      - template
-    put:
-      description: "Updates the details of a template. Modify the template name, description\
-        \ and/or`is_public` status to change the public/private visibility of the\
-        \ template."
-      operationId: Update_template
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Update_Template'
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Template'
-          description: Template updated successfully.
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Bad Request
-        "401":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseModel'
-          description: Not Found
-        "500":
-          content: {}
-          description: Internal Server Error
-      security:
-      - accessToken: []
-      - apiKey: []
-      summary: Update template
-      tags:
-      - template
       x-codegen-request-body-name: payload
   /core/profiles:
     get:
@@ -13489,111 +12831,6 @@ components:
         reason:
           type: string
       type: object
-    ComplianceFields:
-      example:
-        gpu_model: gpu_model
-        cpu:
-        - 0
-        - 0
-        hdd:
-        - 6
-        - 6
-        ram:
-        - 1
-        - 1
-      properties:
-        cpu:
-          items:
-            type: integer
-          type: array
-        gpu_model:
-          type: string
-        hdd:
-          items:
-            type: integer
-          type: array
-        ram:
-          items:
-            type: integer
-          type: array
-      type: object
-    ComplianceModelFields:
-      example:
-        base_value: 0
-        gpu_model: gpu_model
-        variation_min: 5
-        variation_unit: 5
-        resource_type: resource_type
-        id: 6
-        variation_max: 1
-      properties:
-        base_value:
-          type: integer
-        gpu_model:
-          type: string
-        id:
-          type: integer
-        resource_type:
-          type: string
-        variation_max:
-          type: integer
-        variation_min:
-          type: integer
-        variation_unit:
-          type: integer
-      type: object
-    CompliancePayload:
-      example:
-        base_value: 0
-        gpu_model: gpu_model
-        variation_min: 1
-        variation_unit: 5
-        resource_type: resource_type
-        variation_max: 6
-      properties:
-        base_value:
-          type: integer
-        gpu_model:
-          type: string
-        resource_type:
-          type: string
-        variation_max:
-          type: integer
-        variation_min:
-          type: integer
-        variation_unit:
-          type: integer
-      required:
-      - base_value
-      - gpu_model
-      - resource_type
-      - variation_max
-      - variation_min
-      - variation_unit
-      type: object
-    ComplianceResponse:
-      example:
-        compliance:
-          gpu_model: gpu_model
-          cpu:
-          - 0
-          - 0
-          hdd:
-          - 6
-          - 6
-          ram:
-          - 1
-          - 1
-        message: message
-        status: true
-      properties:
-        compliance:
-          $ref: '#/components/schemas/ComplianceFields'
-        message:
-          type: string
-        status:
-          type: boolean
-      type: object
     ConsentActionResponse:
       example:
         consent:
@@ -13692,25 +12929,6 @@ components:
           description: Templates keyed by consent type
           properties: {}
           type: object
-      type: object
-    Container_Overview_Fields:
-      example:
-        cost_per_hour: 0.8008281904610115
-        gpus: 1
-        count: 6
-        vcpus: 5
-        ram: 5.962133916683182
-      properties:
-        cost_per_hour:
-          type: number
-        count:
-          type: integer
-        gpus:
-          type: integer
-        ram:
-          type: number
-        vcpus:
-          type: integer
       type: object
     Contract:
       example:
@@ -14353,21 +13571,23 @@ components:
     CreateInstancesResponse:
       example:
         instances:
-        - contract_id: 0
+        - contract_id: 6
           floating_ip_status: floating_ip_status
           keypair:
             name: name
           created_at: 2000-01-23T04:56:07.000+00:00
           callback_url: callback_url
           features: "{}"
+          cluster_id: 0
           port_randomization_status: port_randomization_status
           floating_ip: floating_ip
-          id: 4
+          id: 1
           locked: true
           image:
             name: name
           os: os
           requires_public_ip: true
+          dedicated_inference_id: 1
           enhanced_metrics:
             enabled: true
           power_state: power_state
@@ -14376,53 +13596,53 @@ components:
           - labels
           flavor:
             features: "{}"
-            disk: 5
-            gpu_count: 7
+            disk: 7
+            gpu_count: 3
             name: name
-            cpu: 5
-            ephemeral: 2
-            id: 9
+            cpu: 2
+            ephemeral: 9
+            id: 2
             gpu: gpu
             labels:
-            - id: 3
+            - id: 4
               label: label
-            - id: 3
+            - id: 4
               label: label
-            ram: 2.027123023002322
+            ram: 7.386281948385884
           vm_state: vm_state
           environment:
             features:
               green_status: GREEN
               network_optimised: true
-            org_id: 1
+            org_id: 5
             name: name
-            id: 6
+            id: 5
             region: region
           name: name
           fixed_ip: fixed_ip
           volume_attachments:
           - volume:
               volume_type: volume_type
-              size: 7
+              size: 4
               name: name
               description: description
-              id: 6
+              id: 1
               bootable: true
             protected: true
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 1
+            id: 7
             device: device
             status: status
           - volume:
               volume_type: volume_type
-              size: 7
+              size: 4
               name: name
               description: description
-              id: 6
+              id: 1
               bootable: true
             protected: true
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 1
+            id: 7
             device: device
             status: status
           security_rules:
@@ -14431,36 +13651,38 @@ components:
             created_at: 2000-01-23T04:56:07.000+00:00
             port_range_max: 1
             remote_ip_prefix: remote_ip_prefix
-            id: 7
+            id: 1
             direction: direction
-            port_range_min: 1
+            port_range_min: 6
             status: status
           - protocol: protocol
             ethertype: ethertype
             created_at: 2000-01-23T04:56:07.000+00:00
             port_range_max: 1
             remote_ip_prefix: remote_ip_prefix
-            id: 7
+            id: 1
             direction: direction
-            port_range_min: 1
+            port_range_min: 6
             status: status
           port_randomization: true
           status: status
-        - contract_id: 0
+        - contract_id: 6
           floating_ip_status: floating_ip_status
           keypair:
             name: name
           created_at: 2000-01-23T04:56:07.000+00:00
           callback_url: callback_url
           features: "{}"
+          cluster_id: 0
           port_randomization_status: port_randomization_status
           floating_ip: floating_ip
-          id: 4
+          id: 1
           locked: true
           image:
             name: name
           os: os
           requires_public_ip: true
+          dedicated_inference_id: 1
           enhanced_metrics:
             enabled: true
           power_state: power_state
@@ -14469,53 +13691,53 @@ components:
           - labels
           flavor:
             features: "{}"
-            disk: 5
-            gpu_count: 7
+            disk: 7
+            gpu_count: 3
             name: name
-            cpu: 5
-            ephemeral: 2
-            id: 9
+            cpu: 2
+            ephemeral: 9
+            id: 2
             gpu: gpu
             labels:
-            - id: 3
+            - id: 4
               label: label
-            - id: 3
+            - id: 4
               label: label
-            ram: 2.027123023002322
+            ram: 7.386281948385884
           vm_state: vm_state
           environment:
             features:
               green_status: GREEN
               network_optimised: true
-            org_id: 1
+            org_id: 5
             name: name
-            id: 6
+            id: 5
             region: region
           name: name
           fixed_ip: fixed_ip
           volume_attachments:
           - volume:
               volume_type: volume_type
-              size: 7
+              size: 4
               name: name
               description: description
-              id: 6
+              id: 1
               bootable: true
             protected: true
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 1
+            id: 7
             device: device
             status: status
           - volume:
               volume_type: volume_type
-              size: 7
+              size: 4
               name: name
               description: description
-              id: 6
+              id: 1
               bootable: true
             protected: true
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 1
+            id: 7
             device: device
             status: status
           security_rules:
@@ -14524,18 +13746,18 @@ components:
             created_at: 2000-01-23T04:56:07.000+00:00
             port_range_max: 1
             remote_ip_prefix: remote_ip_prefix
-            id: 7
+            id: 1
             direction: direction
-            port_range_min: 1
+            port_range_min: 6
             status: status
           - protocol: protocol
             ethertype: ethertype
             created_at: 2000-01-23T04:56:07.000+00:00
             port_range_max: 1
             remote_ip_prefix: remote_ip_prefix
-            id: 7
+            id: 1
             direction: direction
-            port_range_min: 1
+            port_range_min: 6
             status: status
           port_randomization: true
           status: status
@@ -14599,26 +13821,6 @@ components:
           type: string
         snapshot:
           $ref: '#/components/schemas/SnapshotFields'
-        status:
-          type: boolean
-      type: object
-    CreateUpdateComplianceResponse:
-      example:
-        compliance:
-          base_value: 0
-          gpu_model: gpu_model
-          variation_min: 5
-          variation_unit: 5
-          resource_type: resource_type
-          id: 6
-          variation_max: 1
-        message: message
-        status: true
-      properties:
-        compliance:
-          $ref: '#/components/schemas/ComplianceModelFields'
-        message:
-          type: string
         status:
           type: boolean
       type: object
@@ -15127,22 +14329,16 @@ components:
     Dashboard_Info_Response:
       example:
         overview:
-          container:
+          volume:
+            cost_per_hour: 2.3021358869347655
+            using: 9
+            count: 7
+          instance:
             cost_per_hour: 0.8008281904610115
             gpus: 1
             count: 6
             vcpus: 5
             ram: 5.962133916683182
-          volume:
-            cost_per_hour: 4.145608029883936
-            using: 1
-            count: 7
-          instance:
-            cost_per_hour: 2.3021358869347655
-            gpus: 9
-            count: 7
-            vcpus: 2
-            ram: 3.616076749251911
         message: message
         status: true
       properties:
@@ -15217,82 +14413,6 @@ components:
           items:
             type: integer
           type: array
-      type: object
-    Deployment_Fields:
-      example:
-        template: template
-        name: name
-        created_at: 2000-01-23T04:56:07.000+00:00
-        description: description
-        id: 0
-        status: status
-      properties:
-        created_at:
-          format: date-time
-          type: string
-        description:
-          type: string
-        id:
-          type: integer
-        name:
-          type: string
-        status:
-          type: string
-        template:
-          type: string
-      type: object
-    Deployment_Fields_for_start_deployments:
-      example:
-        template: template
-        variables: variables
-        name: name
-        created_at: 2000-01-23T04:56:07.000+00:00
-        description: description
-        id: 0
-        status: status
-      properties:
-        created_at:
-          format: date-time
-          type: string
-        description:
-          type: string
-        id:
-          type: integer
-        name:
-          type: string
-        status:
-          type: string
-        template:
-          type: string
-        variables:
-          type: string
-      type: object
-    Deployments:
-      example:
-        deployments:
-        - template: template
-          name: name
-          created_at: 2000-01-23T04:56:07.000+00:00
-          description: description
-          id: 0
-          status: status
-        - template: template
-          name: name
-          created_at: 2000-01-23T04:56:07.000+00:00
-          description: description
-          id: 0
-          status: status
-        message: message
-        status: true
-      properties:
-        deployments:
-          items:
-            $ref: '#/components/schemas/Deployment_Fields'
-          type: array
-        message:
-          type: string
-        status:
-          type: boolean
       type: object
     Detach_Volumes:
       example:
@@ -16001,7 +15121,7 @@ components:
       type: object
     FlavorLabelFields:
       example:
-        id: 3
+        id: 4
         label: label
       properties:
         id:
@@ -17091,21 +16211,23 @@ components:
     Instance:
       example:
         instance:
-          contract_id: 0
+          contract_id: 6
           floating_ip_status: floating_ip_status
           keypair:
             name: name
           created_at: 2000-01-23T04:56:07.000+00:00
           callback_url: callback_url
           features: "{}"
+          cluster_id: 0
           port_randomization_status: port_randomization_status
           floating_ip: floating_ip
-          id: 4
+          id: 1
           locked: true
           image:
             name: name
           os: os
           requires_public_ip: true
+          dedicated_inference_id: 1
           enhanced_metrics:
             enabled: true
           power_state: power_state
@@ -17114,53 +16236,53 @@ components:
           - labels
           flavor:
             features: "{}"
-            disk: 5
-            gpu_count: 7
+            disk: 7
+            gpu_count: 3
             name: name
-            cpu: 5
-            ephemeral: 2
-            id: 9
+            cpu: 2
+            ephemeral: 9
+            id: 2
             gpu: gpu
             labels:
-            - id: 3
+            - id: 4
               label: label
-            - id: 3
+            - id: 4
               label: label
-            ram: 2.027123023002322
+            ram: 7.386281948385884
           vm_state: vm_state
           environment:
             features:
               green_status: GREEN
               network_optimised: true
-            org_id: 1
+            org_id: 5
             name: name
-            id: 6
+            id: 5
             region: region
           name: name
           fixed_ip: fixed_ip
           volume_attachments:
           - volume:
               volume_type: volume_type
-              size: 7
+              size: 4
               name: name
               description: description
-              id: 6
+              id: 1
               bootable: true
             protected: true
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 1
+            id: 7
             device: device
             status: status
           - volume:
               volume_type: volume_type
-              size: 7
+              size: 4
               name: name
               description: description
-              id: 6
+              id: 1
               bootable: true
             protected: true
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 1
+            id: 7
             device: device
             status: status
           security_rules:
@@ -17169,18 +16291,18 @@ components:
             created_at: 2000-01-23T04:56:07.000+00:00
             port_range_max: 1
             remote_ip_prefix: remote_ip_prefix
-            id: 7
+            id: 1
             direction: direction
-            port_range_min: 1
+            port_range_min: 6
             status: status
           - protocol: protocol
             ethertype: ethertype
             created_at: 2000-01-23T04:56:07.000+00:00
             port_range_max: 1
             remote_ip_prefix: remote_ip_prefix
-            id: 7
+            id: 1
             direction: direction
-            port_range_min: 1
+            port_range_min: 6
             status: status
           port_randomization: true
           status: status
@@ -17281,9 +16403,9 @@ components:
         features:
           green_status: GREEN
           network_optimised: true
-        org_id: 1
+        org_id: 5
         name: name
-        id: 6
+        id: 5
         region: region
       properties:
         features:
@@ -17299,21 +16421,23 @@ components:
       type: object
     Instance_Fields:
       example:
-        contract_id: 0
+        contract_id: 6
         floating_ip_status: floating_ip_status
         keypair:
           name: name
         created_at: 2000-01-23T04:56:07.000+00:00
         callback_url: callback_url
         features: "{}"
+        cluster_id: 0
         port_randomization_status: port_randomization_status
         floating_ip: floating_ip
-        id: 4
+        id: 1
         locked: true
         image:
           name: name
         os: os
         requires_public_ip: true
+        dedicated_inference_id: 1
         enhanced_metrics:
           enabled: true
         power_state: power_state
@@ -17322,53 +16446,53 @@ components:
         - labels
         flavor:
           features: "{}"
-          disk: 5
-          gpu_count: 7
+          disk: 7
+          gpu_count: 3
           name: name
-          cpu: 5
-          ephemeral: 2
-          id: 9
+          cpu: 2
+          ephemeral: 9
+          id: 2
           gpu: gpu
           labels:
-          - id: 3
+          - id: 4
             label: label
-          - id: 3
+          - id: 4
             label: label
-          ram: 2.027123023002322
+          ram: 7.386281948385884
         vm_state: vm_state
         environment:
           features:
             green_status: GREEN
             network_optimised: true
-          org_id: 1
+          org_id: 5
           name: name
-          id: 6
+          id: 5
           region: region
         name: name
         fixed_ip: fixed_ip
         volume_attachments:
         - volume:
             volume_type: volume_type
-            size: 7
+            size: 4
             name: name
             description: description
-            id: 6
+            id: 1
             bootable: true
           protected: true
           created_at: 2000-01-23T04:56:07.000+00:00
-          id: 1
+          id: 7
           device: device
           status: status
         - volume:
             volume_type: volume_type
-            size: 7
+            size: 4
             name: name
             description: description
-            id: 6
+            id: 1
             bootable: true
           protected: true
           created_at: 2000-01-23T04:56:07.000+00:00
-          id: 1
+          id: 7
           device: device
           status: status
         security_rules:
@@ -17377,29 +16501,35 @@ components:
           created_at: 2000-01-23T04:56:07.000+00:00
           port_range_max: 1
           remote_ip_prefix: remote_ip_prefix
-          id: 7
+          id: 1
           direction: direction
-          port_range_min: 1
+          port_range_min: 6
           status: status
         - protocol: protocol
           ethertype: ethertype
           created_at: 2000-01-23T04:56:07.000+00:00
           port_range_max: 1
           remote_ip_prefix: remote_ip_prefix
-          id: 7
+          id: 1
           direction: direction
-          port_range_min: 1
+          port_range_min: 6
           status: status
         port_randomization: true
         status: status
       properties:
         callback_url:
           type: string
+        cluster_id:
+          description: "The COE cluster this VM is a node of, or null."
+          type: integer
         contract_id:
           type: integer
         created_at:
           format: date-time
           type: string
+        dedicated_inference_id:
+          description: "The dedicated inference endpoint this VM serves, or null."
+          type: integer
         enhanced_metrics:
           $ref: '#/components/schemas/Instance_Enhanced_Metrics_Fields'
         environment:
@@ -17455,19 +16585,19 @@ components:
     Instance_Flavor_Fields:
       example:
         features: "{}"
-        disk: 5
-        gpu_count: 7
+        disk: 7
+        gpu_count: 3
         name: name
-        cpu: 5
-        ephemeral: 2
-        id: 9
+        cpu: 2
+        ephemeral: 9
+        id: 2
         gpu: gpu
         labels:
-        - id: 3
+        - id: 4
           label: label
-        - id: 3
+        - id: 4
           label: label
-        ram: 2.027123023002322
+        ram: 7.386281948385884
       properties:
         cpu:
           type: integer
@@ -17509,11 +16639,11 @@ components:
       type: object
     Instance_Overview_Fields:
       example:
-        cost_per_hour: 2.3021358869347655
-        gpus: 9
-        count: 7
-        vcpus: 2
-        ram: 3.616076749251911
+        cost_per_hour: 0.8008281904610115
+        gpus: 1
+        count: 6
+        vcpus: 5
+        ram: 5.962133916683182
       properties:
         cost_per_hour:
           type: number
@@ -17529,21 +16659,23 @@ components:
     Instances:
       example:
         instances:
-        - contract_id: 0
+        - contract_id: 6
           floating_ip_status: floating_ip_status
           keypair:
             name: name
           created_at: 2000-01-23T04:56:07.000+00:00
           callback_url: callback_url
           features: "{}"
+          cluster_id: 0
           port_randomization_status: port_randomization_status
           floating_ip: floating_ip
-          id: 4
+          id: 1
           locked: true
           image:
             name: name
           os: os
           requires_public_ip: true
+          dedicated_inference_id: 1
           enhanced_metrics:
             enabled: true
           power_state: power_state
@@ -17552,53 +16684,53 @@ components:
           - labels
           flavor:
             features: "{}"
-            disk: 5
-            gpu_count: 7
+            disk: 7
+            gpu_count: 3
             name: name
-            cpu: 5
-            ephemeral: 2
-            id: 9
+            cpu: 2
+            ephemeral: 9
+            id: 2
             gpu: gpu
             labels:
-            - id: 3
+            - id: 4
               label: label
-            - id: 3
+            - id: 4
               label: label
-            ram: 2.027123023002322
+            ram: 7.386281948385884
           vm_state: vm_state
           environment:
             features:
               green_status: GREEN
               network_optimised: true
-            org_id: 1
+            org_id: 5
             name: name
-            id: 6
+            id: 5
             region: region
           name: name
           fixed_ip: fixed_ip
           volume_attachments:
           - volume:
               volume_type: volume_type
-              size: 7
+              size: 4
               name: name
               description: description
-              id: 6
+              id: 1
               bootable: true
             protected: true
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 1
+            id: 7
             device: device
             status: status
           - volume:
               volume_type: volume_type
-              size: 7
+              size: 4
               name: name
               description: description
-              id: 6
+              id: 1
               bootable: true
             protected: true
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 1
+            id: 7
             device: device
             status: status
           security_rules:
@@ -17607,36 +16739,38 @@ components:
             created_at: 2000-01-23T04:56:07.000+00:00
             port_range_max: 1
             remote_ip_prefix: remote_ip_prefix
-            id: 7
+            id: 1
             direction: direction
-            port_range_min: 1
+            port_range_min: 6
             status: status
           - protocol: protocol
             ethertype: ethertype
             created_at: 2000-01-23T04:56:07.000+00:00
             port_range_max: 1
             remote_ip_prefix: remote_ip_prefix
-            id: 7
+            id: 1
             direction: direction
-            port_range_min: 1
+            port_range_min: 6
             status: status
           port_randomization: true
           status: status
-        - contract_id: 0
+        - contract_id: 6
           floating_ip_status: floating_ip_status
           keypair:
             name: name
           created_at: 2000-01-23T04:56:07.000+00:00
           callback_url: callback_url
           features: "{}"
+          cluster_id: 0
           port_randomization_status: port_randomization_status
           floating_ip: floating_ip
-          id: 4
+          id: 1
           locked: true
           image:
             name: name
           os: os
           requires_public_ip: true
+          dedicated_inference_id: 1
           enhanced_metrics:
             enabled: true
           power_state: power_state
@@ -17645,53 +16779,53 @@ components:
           - labels
           flavor:
             features: "{}"
-            disk: 5
-            gpu_count: 7
+            disk: 7
+            gpu_count: 3
             name: name
-            cpu: 5
-            ephemeral: 2
-            id: 9
+            cpu: 2
+            ephemeral: 9
+            id: 2
             gpu: gpu
             labels:
-            - id: 3
+            - id: 4
               label: label
-            - id: 3
+            - id: 4
               label: label
-            ram: 2.027123023002322
+            ram: 7.386281948385884
           vm_state: vm_state
           environment:
             features:
               green_status: GREEN
               network_optimised: true
-            org_id: 1
+            org_id: 5
             name: name
-            id: 6
+            id: 5
             region: region
           name: name
           fixed_ip: fixed_ip
           volume_attachments:
           - volume:
               volume_type: volume_type
-              size: 7
+              size: 4
               name: name
               description: description
-              id: 6
+              id: 1
               bootable: true
             protected: true
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 1
+            id: 7
             device: device
             status: status
           - volume:
               volume_type: volume_type
-              size: 7
+              size: 4
               name: name
               description: description
-              id: 6
+              id: 1
               bootable: true
             protected: true
             created_at: 2000-01-23T04:56:07.000+00:00
-            id: 1
+            id: 7
             device: device
             status: status
           security_rules:
@@ -17700,18 +16834,18 @@ components:
             created_at: 2000-01-23T04:56:07.000+00:00
             port_range_max: 1
             remote_ip_prefix: remote_ip_prefix
-            id: 7
+            id: 1
             direction: direction
-            port_range_min: 1
+            port_range_min: 6
             status: status
           - protocol: protocol
             ethertype: ethertype
             created_at: 2000-01-23T04:56:07.000+00:00
             port_range_max: 1
             remote_ip_prefix: remote_ip_prefix
-            id: 7
+            id: 1
             direction: direction
-            port_range_min: 1
+            port_range_min: 6
             status: status
           port_randomization: true
           status: status
@@ -18791,25 +17925,17 @@ components:
       type: object
     Overview_Info:
       example:
-        container:
+        volume:
+          cost_per_hour: 2.3021358869347655
+          using: 9
+          count: 7
+        instance:
           cost_per_hour: 0.8008281904610115
           gpus: 1
           count: 6
           vcpus: 5
           ram: 5.962133916683182
-        volume:
-          cost_per_hour: 4.145608029883936
-          using: 1
-          count: 7
-        instance:
-          cost_per_hour: 2.3021358869347655
-          gpus: 9
-          count: 7
-          vcpus: 2
-          ram: 3.616076749251911
       properties:
-        container:
-          $ref: '#/components/schemas/Container_Overview_Fields'
         instance:
           $ref: '#/components/schemas/Instance_Overview_Fields'
         volume:
@@ -18984,7 +18110,11 @@ components:
     Payment_Initiate_Payload:
       properties:
         amount:
+          description: "The amount to pay, in dollars. Must be at least $5.00."
+          minimum: 5
           type: number
+      required:
+      - amount
       type: object
     Payment_Initiate_Response:
       example:
@@ -20636,9 +19766,9 @@ components:
         created_at: 2000-01-23T04:56:07.000+00:00
         port_range_max: 1
         remote_ip_prefix: remote_ip_prefix
-        id: 7
+        id: 1
         direction: direction
-        port_range_min: 1
+        port_range_min: 6
         status: status
       properties:
         created_at:
@@ -21008,43 +20138,6 @@ components:
         status:
           type: boolean
       type: object
-    Start_Deployment:
-      example:
-        message: message
-        deployment:
-          template: template
-          variables: variables
-          name: name
-          created_at: 2000-01-23T04:56:07.000+00:00
-          description: description
-          id: 0
-          status: status
-        status: true
-      properties:
-        deployment:
-          $ref: '#/components/schemas/Deployment_Fields_for_start_deployments'
-        message:
-          type: string
-        status:
-          type: boolean
-      type: object
-    Start_Deployment_Payload:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-        template_id:
-          type: integer
-        variables:
-          additionalProperties:
-            type: string
-          type: object
-      required:
-      - description
-      - name
-      - template_id
-      type: object
     SubResourceGraphBillingDetailsMetrics:
       example:
         cpu_incurred_bill_graph:
@@ -21396,75 +20489,6 @@ components:
             type: string
           type: array
       type: object
-    Template:
-      example:
-        template:
-          is_public: true
-          name: name
-          created_at: 2000-01-23T04:56:07.000+00:00
-          description: description
-          id: 0
-          content: content
-        message: message
-        status: true
-      properties:
-        message:
-          type: string
-        status:
-          type: boolean
-        template:
-          $ref: '#/components/schemas/Template_Fields'
-      type: object
-    Template_Fields:
-      example:
-        is_public: true
-        name: name
-        created_at: 2000-01-23T04:56:07.000+00:00
-        description: description
-        id: 0
-        content: content
-      properties:
-        content:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        description:
-          type: string
-        id:
-          type: integer
-        is_public:
-          type: boolean
-        name:
-          type: string
-      type: object
-    Templates:
-      example:
-        templates:
-        - is_public: true
-          name: name
-          created_at: 2000-01-23T04:56:07.000+00:00
-          description: description
-          id: 0
-          content: content
-        - is_public: true
-          name: name
-          created_at: 2000-01-23T04:56:07.000+00:00
-          description: description
-          id: 0
-          content: content
-        message: message
-        status: true
-      properties:
-        message:
-          type: string
-        status:
-          type: boolean
-        templates:
-          items:
-            $ref: '#/components/schemas/Template_Fields'
-          type: array
-      type: object
     TokenBasedBillingHistoryResponse:
       example:
         success: true
@@ -21707,15 +20731,6 @@ components:
           type: string
         status:
           type: boolean
-      type: object
-    Update_Template:
-      properties:
-        description:
-          type: string
-        is_public:
-          type: boolean
-        name:
-          type: string
       type: object
     Update_Volume_Attachment_Payload:
       properties:
@@ -22217,14 +21232,14 @@ components:
       example:
         volume:
           volume_type: volume_type
-          size: 7
+          size: 4
           name: name
           description: description
-          id: 6
+          id: 1
           bootable: true
         protected: true
         created_at: 2000-01-23T04:56:07.000+00:00
-        id: 1
+        id: 7
         device: device
         status: status
       properties:
@@ -22308,10 +21323,10 @@ components:
     Volume_Fields_for_Instance:
       example:
         volume_type: volume_type
-        size: 7
+        size: 4
         name: name
         description: description
-        id: 6
+        id: 1
         bootable: true
       properties:
         bootable:
@@ -22329,8 +21344,8 @@ components:
       type: object
     Volume_Overview_Fields:
       example:
-        cost_per_hour: 4.145608029883936
-        using: 1
+        cost_per_hour: 2.3021358869347655
+        using: 9
         count: 7
       properties:
         cost_per_hour:
@@ -23383,27 +22398,6 @@ components:
           type: boolean
         roles:
           $ref: '#/components/schemas/RbacRoleFields'
-      type: object
-    Create_template_request:
-      properties:
-        content:
-          description: YAML file is required
-          format: binary
-          type: string
-        description:
-          description: description is required
-          type: string
-        is_public:
-          description: is_public is required
-          type: string
-        name:
-          description: name is required
-          type: string
-      required:
-      - content
-      - description
-      - is_public
-      - name
       type: object
   securitySchemes:
     apiKey:

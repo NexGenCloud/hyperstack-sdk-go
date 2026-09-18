@@ -324,9 +324,15 @@ type InstanceEnvironmentFields struct {
 
 // InstanceFields defines model for Instance_Fields.
 type InstanceFields struct {
-	CallbackUrl             *string                           `json:"callback_url,omitempty"`
-	ContractId              *int                              `json:"contract_id,omitempty"`
-	CreatedAt               *time.CustomTime                        `json:"created_at,omitempty"`
+	CallbackUrl *string `json:"callback_url,omitempty"`
+
+	// ClusterId The COE cluster this VM is a node of, or null.
+	ClusterId  *int       `json:"cluster_id,omitempty"`
+	ContractId *int       `json:"contract_id,omitempty"`
+	CreatedAt  *time.CustomTime `json:"created_at,omitempty"`
+
+	// DedicatedInferenceId The dedicated inference endpoint this VM serves, or null.
+	DedicatedInferenceId    *int                              `json:"dedicated_inference_id,omitempty"`
 	EnhancedMetrics         *InstanceEnhancedMetricsFields    `json:"enhanced_metrics,omitempty"`
 	Environment             *InstanceEnvironmentFields        `json:"environment,omitempty"`
 	Features                *map[string]interface{}           `json:"features,omitempty"`

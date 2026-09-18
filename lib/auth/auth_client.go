@@ -43,12 +43,6 @@ type AuthUserInfoResponseModel struct {
 	User    *AuthUserFields `json:"user,omitempty"`
 }
 
-// CommonResponseModel defines model for CommonResponseModel.
-type CommonResponseModel struct {
-	Message *string `json:"message,omitempty"`
-	Status  *bool   `json:"status,omitempty"`
-}
-
 // ErrorResponseModel defines model for ErrorResponseModel.
 type ErrorResponseModel struct {
 	ErrorReason *string `json:"error_reason,omitempty"`
@@ -185,9 +179,6 @@ type ClientInterface interface {
 	// GetUserMFAStatus request
 	GetUserMFAStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DisableMFA request
-	DisableMFA(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// GetUserOrganizations request
 	GetUserOrganizations(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -209,18 +200,6 @@ func (c *Client) RetrieveAuthenticatedUserDetails(ctx context.Context, reqEditor
 
 func (c *Client) GetUserMFAStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetUserMFAStatusRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) DisableMFA(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDisableMFARequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -302,33 +281,6 @@ func NewGetUserMFAStatusRequest(server string) (*http.Request, error) {
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewDisableMFARequest generates requests for DisableMFA
-func NewDisableMFARequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/auth/me/mfa/disable")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -446,9 +398,6 @@ type ClientWithResponsesInterface interface {
 	// GetUserMFAStatusWithResponse request
 	GetUserMFAStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetUserMFAStatusResponse, error)
 
-	// DisableMFAWithResponse request
-	DisableMFAWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*DisableMFAResponse, error)
-
 	// GetUserOrganizationsWithResponse request
 	GetUserOrganizationsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetUserOrganizationsResponse, error)
 
@@ -499,32 +448,6 @@ func (r GetUserMFAStatusResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetUserMFAStatusResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type DisableMFAResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *CommonResponseModel
-	JSON401      *ErrorResponseModel
-	JSON403      *ErrorResponseModel
-	JSON404      *ErrorResponseModel
-	JSON500      *ErrorResponseModel
-}
-
-// Status returns HTTPResponse.Status
-func (r DisableMFAResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r DisableMFAResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -597,15 +520,6 @@ func (c *ClientWithResponses) GetUserMFAStatusWithResponse(ctx context.Context, 
 		return nil, err
 	}
 	return ParseGetUserMFAStatusResponse(rsp)
-}
-
-// DisableMFAWithResponse request returning *DisableMFAResponse
-func (c *ClientWithResponses) DisableMFAWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*DisableMFAResponse, error) {
-	rsp, err := c.DisableMFA(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseDisableMFAResponse(rsp)
 }
 
 // GetUserOrganizationsWithResponse request returning *GetUserOrganizationsResponse
@@ -693,60 +607,6 @@ func ParseGetUserMFAStatusResponse(rsp *http.Response) (*GetUserMFAStatusRespons
 			return nil, err
 		}
 		response.JSON401 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest ErrorResponseModel
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest ErrorResponseModel
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseDisableMFAResponse parses an HTTP response from a DisableMFAWithResponse call
-func ParseDisableMFAResponse(rsp *http.Response) (*DisableMFAResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &DisableMFAResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest CommonResponseModel
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest ErrorResponseModel
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON401 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
-		var dest ErrorResponseModel
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON403 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
 		var dest ErrorResponseModel

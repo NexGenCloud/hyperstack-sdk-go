@@ -99,7 +99,7 @@ import (
 )
 
 func main() {
-	payload := *openapiclient.NewPaymentInitiatePayload() // PaymentInitiatePayload | 
+	payload := *openapiclient.NewPaymentInitiatePayload(float32(123)) // PaymentInitiatePayload | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

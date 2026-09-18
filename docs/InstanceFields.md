@@ -5,8 +5,10 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **CallbackUrl** | Pointer to **string** |  | [optional] 
+**ClusterId** | Pointer to **int32** | The COE cluster this VM is a node of, or null. | [optional] 
 **ContractId** | Pointer to **int32** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
+**DedicatedInferenceId** | Pointer to **int32** | The dedicated inference endpoint this VM serves, or null. | [optional] 
 **EnhancedMetrics** | Pointer to [**InstanceEnhancedMetricsFields**](InstanceEnhancedMetricsFields.md) |  | [optional] 
 **Environment** | Pointer to [**InstanceEnvironmentFields**](InstanceEnvironmentFields.md) |  | [optional] 
 **Features** | Pointer to **map[string]interface{}** |  | [optional] 
@@ -74,6 +76,31 @@ SetCallbackUrl sets CallbackUrl field to given value.
 
 HasCallbackUrl returns a boolean if a field has been set.
 
+### GetClusterId
+
+`func (o *InstanceFields) GetClusterId() int32`
+
+GetClusterId returns the ClusterId field if non-nil, zero value otherwise.
+
+### GetClusterIdOk
+
+`func (o *InstanceFields) GetClusterIdOk() (*int32, bool)`
+
+GetClusterIdOk returns a tuple with the ClusterId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetClusterId
+
+`func (o *InstanceFields) SetClusterId(v int32)`
+
+SetClusterId sets ClusterId field to given value.
+
+### HasClusterId
+
+`func (o *InstanceFields) HasClusterId() bool`
+
+HasClusterId returns a boolean if a field has been set.
+
 ### GetContractId
 
 `func (o *InstanceFields) GetContractId() int32`
@@ -123,6 +150,31 @@ SetCreatedAt sets CreatedAt field to given value.
 `func (o *InstanceFields) HasCreatedAt() bool`
 
 HasCreatedAt returns a boolean if a field has been set.
+
+### GetDedicatedInferenceId
+
+`func (o *InstanceFields) GetDedicatedInferenceId() int32`
+
+GetDedicatedInferenceId returns the DedicatedInferenceId field if non-nil, zero value otherwise.
+
+### GetDedicatedInferenceIdOk
+
+`func (o *InstanceFields) GetDedicatedInferenceIdOk() (*int32, bool)`
+
+GetDedicatedInferenceIdOk returns a tuple with the DedicatedInferenceId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDedicatedInferenceId
+
+`func (o *InstanceFields) SetDedicatedInferenceId(v int32)`
+
+SetDedicatedInferenceId sets DedicatedInferenceId field to given value.
+
+### HasDedicatedInferenceId
+
+`func (o *InstanceFields) HasDedicatedInferenceId() bool`
+
+HasDedicatedInferenceId returns a boolean if a field has been set.
 
 ### GetEnhancedMetrics
 

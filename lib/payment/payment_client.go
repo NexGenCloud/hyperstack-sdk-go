@@ -58,7 +58,8 @@ type PaymentInitiateFields struct {
 
 // PaymentInitiatePayload defines model for Payment_Initiate_Payload.
 type PaymentInitiatePayload struct {
-	Amount *float32 `json:"amount,omitempty"`
+	// Amount The amount to pay, in dollars. Must be at least $5.00.
+	Amount float32 `json:"amount"`
 }
 
 // PaymentInitiateResponse defines model for Payment_Initiate_Response.

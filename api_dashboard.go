@@ -33,7 +33,7 @@ func (r ApiGetDashboardRequest) Execute() (*DashboardInfoResponse, *http.Respons
 /*
 GetDashboard Retrieve Dashboard
 
-Returns hardware and pricing overview for your active resources, includingvirtual machines, containers, and volumes. For more details on the Dashboard feature, [**click here**](https://docs.hyperstack.cloud/docs/resource-management/dashboard/).
+Returns hardware and pricing overview for your active resources, includingvirtual machines and volumes. For more details on the Dashboard feature, [**click here**](https://docs.hyperstack.cloud/docs/resource-management/dashboard/).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiGetDashboardRequest

@@ -74,15 +74,11 @@ type APIClient struct {
 
 	ClustersAPI *ClustersAPIService
 
-	ComplianceAPI *ComplianceAPIService
-
 	CreditAPI *CreditAPIService
 
 	CustomerContractAPI *CustomerContractAPIService
 
 	DashboardAPI *DashboardAPIService
-
-	DeploymentAPI *DeploymentAPIService
 
 	EmailOptInOutAPI *EmailOptInOutAPIService
 
@@ -136,8 +132,6 @@ type APIClient struct {
 
 	StockAPI *StockAPIService
 
-	TemplateAPI *TemplateAPIService
-
 	UserAPI *UserAPIService
 
 	UserConsentAPI *UserConsentAPIService
@@ -190,11 +184,9 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.CallbacksAPI = (*CallbacksAPIService)(&c.common)
 	c.ClusterEventsAPI = (*ClusterEventsAPIService)(&c.common)
 	c.ClustersAPI = (*ClustersAPIService)(&c.common)
-	c.ComplianceAPI = (*ComplianceAPIService)(&c.common)
 	c.CreditAPI = (*CreditAPIService)(&c.common)
 	c.CustomerContractAPI = (*CustomerContractAPIService)(&c.common)
 	c.DashboardAPI = (*DashboardAPIService)(&c.common)
-	c.DeploymentAPI = (*DeploymentAPIService)(&c.common)
 	c.EmailOptInOutAPI = (*EmailOptInOutAPIService)(&c.common)
 	c.EnvironmentAPI = (*EnvironmentAPIService)(&c.common)
 	c.FIPExclusionsAPI = (*FIPExclusionsAPIService)(&c.common)
@@ -221,7 +213,6 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.SnapshotEventsAPI = (*SnapshotEventsAPIService)(&c.common)
 	c.SnapshotsAPI = (*SnapshotsAPIService)(&c.common)
 	c.StockAPI = (*StockAPIService)(&c.common)
-	c.TemplateAPI = (*TemplateAPIService)(&c.common)
 	c.UserAPI = (*UserAPIService)(&c.common)
 	c.UserConsentAPI = (*UserConsentAPIService)(&c.common)
 	c.UserConsentEventsAPI = (*UserConsentEventsAPIService)(&c.common)

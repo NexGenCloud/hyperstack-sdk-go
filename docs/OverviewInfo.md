@@ -4,7 +4,6 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Container** | Pointer to [**ContainerOverviewFields**](ContainerOverviewFields.md) |  | [optional] 
 **Instance** | Pointer to [**InstanceOverviewFields**](InstanceOverviewFields.md) |  | [optional] 
 **Volume** | Pointer to [**VolumeOverviewFields**](VolumeOverviewFields.md) |  | [optional] 
 
@@ -26,31 +25,6 @@ will change when the set of required properties is changed
 NewOverviewInfoWithDefaults instantiates a new OverviewInfo object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
-
-### GetContainer
-
-`func (o *OverviewInfo) GetContainer() ContainerOverviewFields`
-
-GetContainer returns the Container field if non-nil, zero value otherwise.
-
-### GetContainerOk
-
-`func (o *OverviewInfo) GetContainerOk() (*ContainerOverviewFields, bool)`
-
-GetContainerOk returns a tuple with the Container field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetContainer
-
-`func (o *OverviewInfo) SetContainer(v ContainerOverviewFields)`
-
-SetContainer sets Container field to given value.
-
-### HasContainer
-
-`func (o *OverviewInfo) HasContainer() bool`
-
-HasContainer returns a boolean if a field has been set.
 
 ### GetInstance
 
