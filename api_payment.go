@@ -28,14 +28,14 @@ type ApiGetPaymentReceiptRequest struct {
 	paymentId  string
 }
 
-func (r ApiGetPaymentReceiptRequest) Execute() (*http.Response, error) {
+func (r ApiGetPaymentReceiptRequest) Execute() (*PaymentReceiptResponse, *http.Response, error) {
 	return r.ApiService.GetPaymentReceiptExecute(r)
 }
 
 /*
 GetPaymentReceipt Retrieve Payment Receipt
 
-Retrieve the payment receipt from Stripe for a specific payment
+Retrieve the URL of the Stripe-hosted invoice page for a specific payment. The hosted URL is refreshed by Stripe on every retrieval, so it never expires.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param paymentId
@@ -50,16 +50,19 @@ func (a *PaymentAPIService) GetPaymentReceipt(ctx context.Context, paymentId str
 }
 
 // Execute executes the request
-func (a *PaymentAPIService) GetPaymentReceiptExecute(r ApiGetPaymentReceiptRequest) (*http.Response, error) {
+//
+//	@return PaymentReceiptResponse
+func (a *PaymentAPIService) GetPaymentReceiptExecute(r ApiGetPaymentReceiptRequest) (*PaymentReceiptResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod = http.MethodGet
-		localVarPostBody   interface{}
-		formFiles          []formFile
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *PaymentReceiptResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PaymentAPIService.GetPaymentReceipt")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/billing/payment/receipt/{payment_id}"
@@ -102,19 +105,19 @@ func (a *PaymentAPIService) GetPaymentReceiptExecute(r ApiGetPaymentReceiptReque
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -127,49 +130,58 @@ func (a *PaymentAPIService) GetPaymentReceiptExecute(r ApiGetPaymentReceiptReque
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 			newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ErrorResponseModel
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 			newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
 			var v ErrorResponseModel
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 			newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ErrorResponseModel
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 			newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiInitiatePaymentRequest struct {
@@ -190,7 +202,7 @@ func (r ApiInitiatePaymentRequest) Execute() (*PaymentInitiateResponse, *http.Re
 /*
 InitiatePayment POST: Initiate payment
 
-Creates a payment for a specified amount, adding credit to the balance of your [**organization**](/docs/rbac/organization). Include the `amount` in the body of the request to make a payment for the specified value in dollars. View a history of past payments by calling the [**Retrieve Payment History**](/docs/api-reference/billing-resources/retrieve-payment-history) API. For additional information [**click here**](None/docs/api-reference/billing-resources/create-payment).
+Creates a payment for a specified amount, adding credit to the balance of your [**organization**](/docs/rbac/organization). Include the `amount` in the body of the request to make a payment for the specified value in dollars. View a history of past payments by calling the [**Retrieve Payment History**](/docs/api-reference/billing-resources/retrieve-payment-history) API. For additional information [**click here**](https://docs.hyperstack.cloud/docs/api-reference/billing-resources/create-payment).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiInitiatePaymentRequest
@@ -353,7 +365,7 @@ func (r ApiListPaymentDetailsRequest) Execute() (*PaymentDetailsResponse, *http.
 /*
 ListPaymentDetails GET: View payment details
 
-Retrieves a list of all payments made within your [**organization**](/docs/rbac/organization) and their details, including the amount, payment status, and more. For additional information [**click here**](None/docs/api-reference/billing-resources/retrieve-payment-history/).
+Retrieves a list of all payments made within your [**organization**](/docs/rbac/organization) and their details, including the amount, payment status, and more. For additional information [**click here**](https://docs.hyperstack.cloud/docs/api-reference/billing-resources/retrieve-payment-history/).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiListPaymentDetailsRequest

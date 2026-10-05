@@ -69,6 +69,13 @@ type PaymentInitiateResponse struct {
 	Status  *bool                  `json:"status,omitempty"`
 }
 
+// PaymentReceiptResponse defines model for Payment_Receipt_Response.
+type PaymentReceiptResponse struct {
+	Message    *string `json:"message,omitempty"`
+	ReceiptUrl *string `json:"receipt_url,omitempty"`
+	Status     *bool   `json:"status,omitempty"`
+}
+
 // InitiatePaymentJSONRequestBody defines body for InitiatePayment for application/json ContentType.
 type InitiatePaymentJSONRequestBody = PaymentInitiatePayload
 
@@ -416,6 +423,7 @@ func (r InitiatePaymentResponse) StatusCode() int {
 type GetPaymentReceiptResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON200      *PaymentReceiptResponse
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
 	JSON403      *ErrorResponseModel
@@ -595,6 +603,13 @@ func ParseGetPaymentReceiptResponse(rsp *http.Response) (*GetPaymentReceiptRespo
 	}
 
 	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PaymentReceiptResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
 		var dest ErrorResponseModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

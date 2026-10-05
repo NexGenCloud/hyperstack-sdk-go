@@ -1734,7 +1734,7 @@ paths:
     get:
       description: "Retrieve the billing status of your account to ensure that it\
         \ is active. An active billing status ensures uninterrupted service. For additional\
-        \ information [**click here**](None/docs/api-reference/billing-resources/alive/)."
+        \ information [**click here**](https://docs.hyperstack.cloud/docs/api-reference/billing-resources/alive/)."
       operationId: Get_alive
       responses:
         "200":
@@ -1928,7 +1928,7 @@ paths:
       description: "Retrieves the current auto top-up configuration and status for\
         \ your organization. Returns the status (active, disabled, pending_setup,\
         \ or null if never configured), along with the threshold and top-up amounts.\
-        \ For additional information, [**click here**](None/docs/api-reference/billing-resources/)."
+        \ For additional information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/billing-resources/)."
       operationId: Get_auto_top-up_status
       responses:
         "200":
@@ -4386,7 +4386,7 @@ paths:
       description: "Retrieve the previous day's costs for instances, volumes, and\
         \ clusters. Returns a breakdown of  the costs and the total cost for the last\
         \ day. For additional information on Retrieve Previous Day Usage Costs, [**click\
-        \ here**](None/docs/api-reference/billing-resources/last-day-usage/)"
+        \ here**](https://docs.hyperstack.cloud/docs/api-reference/billing-resources/last-day-usage/)"
       operationId: Get_last_day_cost
       responses:
         "200":
@@ -4542,7 +4542,7 @@ paths:
         \ active resource by defualt(`deleted=false` will return active resources).\
         \ Additionally, adding `deleted=true` in query parameter will return inactive\
         \ resources. For additional information on view usage costs for all resources,\
-        \ [**click here**](None/docs/billing/pricebook/)"
+        \ [**click here**](https://docs.hyperstack.cloud/docs/billing/pricebook/)"
       operationId: Get_usage
       parameters:
       - description: '`true` will return inactive resources and `false` will return
@@ -4921,7 +4921,7 @@ paths:
     get:
       description: "Retrieves a list of all payments made within your [**organization**](/docs/rbac/organization)\
         \ and their details, including the amount, payment status, and more. For additional\
-        \ information [**click here**](None/docs/api-reference/billing-resources/retrieve-payment-history/)."
+        \ information [**click here**](https://docs.hyperstack.cloud/docs/api-reference/billing-resources/retrieve-payment-history/)."
       operationId: List_payment_details
       responses:
         "200":
@@ -4970,7 +4970,7 @@ paths:
         \ `amount` in the body of the request to make a payment for the specified\
         \ value in dollars. View a history of past payments by calling the [**Retrieve\
         \ Payment History**](/docs/api-reference/billing-resources/retrieve-payment-history)\
-        \ API. For additional information [**click here**](None/docs/api-reference/billing-resources/create-payment)."
+        \ API. For additional information [**click here**](https://docs.hyperstack.cloud/docs/api-reference/billing-resources/create-payment)."
       operationId: Initiate_Payment
       requestBody:
         content:
@@ -5021,7 +5021,9 @@ paths:
       x-codegen-request-body-name: payload
   /billing/payment/receipt/{payment_id}:
     get:
-      description: Retrieve the payment receipt from Stripe for a specific payment
+      description: "Retrieve the URL of the Stripe-hosted invoice page for a specific\
+        \ payment. The hosted URL is refreshed by Stripe on every retrieval, so it\
+        \ never expires."
       operationId: Get_payment_receipt
       parameters:
       - explode: false
@@ -5033,7 +5035,10 @@ paths:
         style: simple
       responses:
         "200":
-          content: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment_Receipt_Response'
           description: Success
         "400":
           content:
@@ -5074,7 +5079,7 @@ paths:
         \ Ensuring a positive credit balance allows you to create resources. However,\
         \ for prepaid accounts, if the credit balance falls below $0, all associated\
         \ resources will be temporarily suspended until a [**payment**](/docs/api-reference/billing-resources/create-payment)\
-        \ is made. For additional information, [**click here**](None/docs/api-reference/billing-resources/retrieve-credit-balance/)."
+        \ is made. For additional information, [**click here**](https://docs.hyperstack.cloud/docs/api-reference/billing-resources/retrieve-credit-balance/)."
       operationId: Get_user_credit
       responses:
         "200":
@@ -18126,6 +18131,19 @@ components:
         data:
           $ref: '#/components/schemas/Payment_Initiate_Fields'
         message:
+          type: string
+        status:
+          type: boolean
+      type: object
+    Payment_Receipt_Response:
+      example:
+        receipt_url: receipt_url
+        message: message
+        status: true
+      properties:
+        message:
+          type: string
+        receipt_url:
           type: string
         status:
           type: boolean

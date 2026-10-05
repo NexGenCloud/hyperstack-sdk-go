@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## GetPaymentReceipt
 
-> GetPaymentReceipt(ctx, paymentId).Execute()
+> PaymentReceiptResponse GetPaymentReceipt(ctx, paymentId).Execute()
 
 Retrieve Payment Receipt
 
@@ -35,11 +35,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.PaymentAPI.GetPaymentReceipt(context.Background(), paymentId).Execute()
+	resp, r, err := apiClient.PaymentAPI.GetPaymentReceipt(context.Background(), paymentId).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `PaymentAPI.GetPaymentReceipt``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `GetPaymentReceipt`: PaymentReceiptResponse
+	fmt.Fprintf(os.Stdout, "Response from `PaymentAPI.GetPaymentReceipt`: %v\n", resp)
 }
 ```
 
@@ -62,7 +64,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**PaymentReceiptResponse**](PaymentReceiptResponse.md)
 
 ### Authorization
 

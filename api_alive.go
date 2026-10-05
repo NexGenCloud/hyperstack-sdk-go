@@ -33,7 +33,7 @@ func (r ApiGetAliveRequest) Execute() (*http.Response, error) {
 /*
 GetAlive GET: Alive
 
-Retrieve the billing status of your account to ensure that it is active. An active billing status ensures uninterrupted service. For additional information [**click here**](None/docs/api-reference/billing-resources/alive/).
+Retrieve the billing status of your account to ensure that it is active. An active billing status ensures uninterrupted service. For additional information [**click here**](https://docs.hyperstack.cloud/docs/api-reference/billing-resources/alive/).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiGetAliveRequest

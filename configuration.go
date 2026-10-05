@@ -89,7 +89,7 @@ type Configuration struct {
 func NewConfiguration() *Configuration {
 	cfg := &Configuration{
 		DefaultHeader: make(map[string]string),
-		UserAgent:     "hyperstack-go-sdk/v1.55.7-alpha",
+		UserAgent:     "hyperstack-go-sdk/v1.55.10-alpha",
 		Debug:         false,
 		Servers: ServerConfigurations{
 			{

@@ -29,9 +29,10 @@ func Test_hyperstack_PaymentAPIService(t *testing.T) {
 
 		var paymentId string
 
-		httpRes, err := apiClient.PaymentAPI.GetPaymentReceipt(context.Background(), paymentId).Execute()
+		resp, httpRes, err := apiClient.PaymentAPI.GetPaymentReceipt(context.Background(), paymentId).Execute()
 
 		require.Nil(t, err)
+		require.NotNil(t, resp)
 		assert.Equal(t, 200, httpRes.StatusCode)
 
 	})
