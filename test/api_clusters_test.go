@@ -242,6 +242,20 @@ func Test_hyperstack_ClustersAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ClustersAPIService RestoreAHibernatedCluster", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var clusterId int32
+
+		resp, httpRes, err := apiClient.ClustersAPI.RestoreAHibernatedCluster(context.Background(), clusterId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ClustersAPIService UpdateNodeGroup", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test

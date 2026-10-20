@@ -55,6 +55,11 @@ type ObjectStorageAccessKeyResponse struct {
 	UserId      int                      `json:"user_id"`
 }
 
+// ObjectStorageAccessKeyUpdateRequest defines model for object_storage__AccessKeyUpdateRequest.
+type ObjectStorageAccessKeyUpdateRequest struct {
+	Description string `json:"description"`
+}
+
 // ObjectStorageDeleteResponse defines model for object_storage__DeleteResponse.
 type ObjectStorageDeleteResponse struct {
 	Message string `json:"message"`
@@ -86,6 +91,9 @@ type ListAccessKeysEndpointParams struct {
 
 // CreateAccessKeyEndpointJSONRequestBody defines body for CreateAccessKeyEndpoint for application/json ContentType.
 type CreateAccessKeyEndpointJSONRequestBody = ObjectStorageAccessKeyCreateRequest
+
+// UpdateAccessKeyEndpointJSONRequestBody defines body for UpdateAccessKeyEndpoint for application/json ContentType.
+type UpdateAccessKeyEndpointJSONRequestBody = ObjectStorageAccessKeyUpdateRequest
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -170,6 +178,11 @@ type ClientInterface interface {
 
 	// DeleteAccessKeyEndpoint request
 	DeleteAccessKeyEndpoint(ctx context.Context, accessKeyId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateAccessKeyEndpointWithBody request with any body
+	UpdateAccessKeyEndpointWithBody(ctx context.Context, accessKeyId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateAccessKeyEndpoint(ctx context.Context, accessKeyId string, body UpdateAccessKeyEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) ListAccessKeysEndpoint(ctx context.Context, params *ListAccessKeysEndpointParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -210,6 +223,30 @@ func (c *Client) CreateAccessKeyEndpoint(ctx context.Context, body CreateAccessK
 
 func (c *Client) DeleteAccessKeyEndpoint(ctx context.Context, accessKeyId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteAccessKeyEndpointRequest(c.Server, accessKeyId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateAccessKeyEndpointWithBody(ctx context.Context, accessKeyId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAccessKeyEndpointRequestWithBody(c.Server, accessKeyId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateAccessKeyEndpoint(ctx context.Context, accessKeyId string, body UpdateAccessKeyEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAccessKeyEndpointRequest(c.Server, accessKeyId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -375,6 +412,53 @@ func NewDeleteAccessKeyEndpointRequest(server string, accessKeyId string) (*http
 	return req, nil
 }
 
+// NewUpdateAccessKeyEndpointRequest calls the generic UpdateAccessKeyEndpoint builder with application/json body
+func NewUpdateAccessKeyEndpointRequest(server string, accessKeyId string, body UpdateAccessKeyEndpointJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateAccessKeyEndpointRequestWithBody(server, accessKeyId, "application/json", bodyReader)
+}
+
+// NewUpdateAccessKeyEndpointRequestWithBody generates requests for UpdateAccessKeyEndpoint with any type of body
+func NewUpdateAccessKeyEndpointRequestWithBody(server string, accessKeyId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "access_key_id", runtime.ParamLocationPath, accessKeyId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/object-storage/access-keys/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error { defer hyperstackSetHeaders(req)
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -428,6 +512,11 @@ type ClientWithResponsesInterface interface {
 
 	// DeleteAccessKeyEndpointWithResponse request
 	DeleteAccessKeyEndpointWithResponse(ctx context.Context, accessKeyId string, reqEditors ...RequestEditorFn) (*DeleteAccessKeyEndpointResponse, error)
+
+	// UpdateAccessKeyEndpointWithBodyWithResponse request with any body
+	UpdateAccessKeyEndpointWithBodyWithResponse(ctx context.Context, accessKeyId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAccessKeyEndpointResponse, error)
+
+	UpdateAccessKeyEndpointWithResponse(ctx context.Context, accessKeyId string, body UpdateAccessKeyEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAccessKeyEndpointResponse, error)
 }
 
 type ListAccessKeysEndpointResponse struct {
@@ -500,6 +589,30 @@ func (r DeleteAccessKeyEndpointResponse) StatusCode() int {
 	return 0
 }
 
+type UpdateAccessKeyEndpointResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ObjectStorageAccessKeyResponse
+	JSON400      *ObjectStorageErrorResponse
+	JSON404      *ObjectStorageErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateAccessKeyEndpointResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateAccessKeyEndpointResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 // ListAccessKeysEndpointWithResponse request returning *ListAccessKeysEndpointResponse
 func (c *ClientWithResponses) ListAccessKeysEndpointWithResponse(ctx context.Context, params *ListAccessKeysEndpointParams, reqEditors ...RequestEditorFn) (*ListAccessKeysEndpointResponse, error) {
 	rsp, err := c.ListAccessKeysEndpoint(ctx, params, reqEditors...)
@@ -533,6 +646,23 @@ func (c *ClientWithResponses) DeleteAccessKeyEndpointWithResponse(ctx context.Co
 		return nil, err
 	}
 	return ParseDeleteAccessKeyEndpointResponse(rsp)
+}
+
+// UpdateAccessKeyEndpointWithBodyWithResponse request with arbitrary body returning *UpdateAccessKeyEndpointResponse
+func (c *ClientWithResponses) UpdateAccessKeyEndpointWithBodyWithResponse(ctx context.Context, accessKeyId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAccessKeyEndpointResponse, error) {
+	rsp, err := c.UpdateAccessKeyEndpointWithBody(ctx, accessKeyId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAccessKeyEndpointResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateAccessKeyEndpointWithResponse(ctx context.Context, accessKeyId string, body UpdateAccessKeyEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAccessKeyEndpointResponse, error) {
+	rsp, err := c.UpdateAccessKeyEndpoint(ctx, accessKeyId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAccessKeyEndpointResponse(rsp)
 }
 
 // ParseListAccessKeysEndpointResponse parses an HTTP response from a ListAccessKeysEndpointWithResponse call
@@ -617,6 +747,46 @@ func ParseDeleteAccessKeyEndpointResponse(rsp *http.Response) (*DeleteAccessKeyE
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest ObjectStorageDeleteResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ObjectStorageErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ObjectStorageErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateAccessKeyEndpointResponse parses an HTTP response from a UpdateAccessKeyEndpointWithResponse call
+func ParseUpdateAccessKeyEndpointResponse(rsp *http.Response) (*UpdateAccessKeyEndpointResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateAccessKeyEndpointResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ObjectStorageAccessKeyResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

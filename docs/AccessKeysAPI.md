@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**CreateAccessKeyEndpoint**](AccessKeysAPI.md#CreateAccessKeyEndpoint) | **Post** /object-storage/access-keys | Generate a new access key
 [**DeleteAccessKeyEndpoint**](AccessKeysAPI.md#DeleteAccessKeyEndpoint) | **Delete** /object-storage/access-keys/{access_key_id} | Remove an existing access key
 [**ListAccessKeysEndpoint**](AccessKeysAPI.md#ListAccessKeysEndpoint) | **Get** /object-storage/access-keys | List access keys
+[**UpdateAccessKeyEndpoint**](AccessKeysAPI.md#UpdateAccessKeyEndpoint) | **Patch** /object-storage/access-keys/{access_key_id} | Rename an existing access key
 
 
 
@@ -203,6 +204,76 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpdateAccessKeyEndpoint
+
+> ObjectStorageAccessKeyResponse UpdateAccessKeyEndpoint(ctx, accessKeyId).Body(body).Execute()
+
+Rename an existing access key
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	accessKeyId := "accessKeyId_example" // string | 
+	body := *openapiclient.NewObjectStorageAccessKeyUpdateRequest("Description_example") // ObjectStorageAccessKeyUpdateRequest |  (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.AccessKeysAPI.UpdateAccessKeyEndpoint(context.Background(), accessKeyId).Body(body).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `AccessKeysAPI.UpdateAccessKeyEndpoint``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UpdateAccessKeyEndpoint`: ObjectStorageAccessKeyResponse
+	fmt.Fprintf(os.Stdout, "Response from `AccessKeysAPI.UpdateAccessKeyEndpoint`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**accessKeyId** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateAccessKeyEndpointRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **body** | [**ObjectStorageAccessKeyUpdateRequest**](ObjectStorageAccessKeyUpdateRequest.md) |  | 
+
+### Return type
+
+[**ObjectStorageAccessKeyResponse**](ObjectStorageAccessKeyResponse.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

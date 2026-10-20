@@ -61,4 +61,18 @@ func Test_hyperstack_AccessKeysAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test AccessKeysAPIService UpdateAccessKeyEndpoint", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var accessKeyId string
+
+		resp, httpRes, err := apiClient.AccessKeysAPI.UpdateAccessKeyEndpoint(context.Background(), accessKeyId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 }

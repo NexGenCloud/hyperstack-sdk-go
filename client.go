@@ -153,6 +153,8 @@ type APIClient struct {
 	VolumeAttachmentAPI *VolumeAttachmentAPIService
 
 	VouchersAPI *VouchersAPIService
+
+	ZendeskAPI *ZendeskAPIService
 }
 
 type service struct {
@@ -224,6 +226,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.VolumeAPI = (*VolumeAPIService)(&c.common)
 	c.VolumeAttachmentAPI = (*VolumeAttachmentAPIService)(&c.common)
 	c.VouchersAPI = (*VouchersAPIService)(&c.common)
+	c.ZendeskAPI = (*ZendeskAPIService)(&c.common)
 
 	return c
 }

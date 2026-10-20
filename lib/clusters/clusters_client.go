@@ -36,20 +36,21 @@ const (
 
 // ClusterFields defines model for ClusterFields.
 type ClusterFields struct {
-	ApiAddress        *string                   `json:"api_address,omitempty"`
-	CreatedAt         *time.CustomTime                `json:"created_at,omitempty"`
-	EnvironmentName   *string                   `json:"environment_name,omitempty"`
-	Id                *int                      `json:"id,omitempty"`
-	IsReconciling     *bool                     `json:"is_reconciling,omitempty"`
-	KeypairName       *string                   `json:"keypair_name,omitempty"`
-	KubeConfig        *string                   `json:"kube_config,omitempty"`
-	KubernetesVersion *string                   `json:"kubernetes_version,omitempty"`
-	MasterFlavor      *ClusterFlavorFields      `json:"master_flavor,omitempty"`
-	Name              *string                   `json:"name,omitempty"`
-	NodeGroups        *[]ClusterNodeGroupFields `json:"node_groups,omitempty"`
-	Nodes             *[]ClusterNodeFields      `json:"nodes,omitempty"`
-	Status            *string                   `json:"status,omitempty"`
-	StatusReason      *string                   `json:"status_reason,omitempty"`
+	ApiAddress           *string                   `json:"api_address,omitempty"`
+	CreatedAt            *time.CustomTime                `json:"created_at,omitempty"`
+	EnvironmentName      *string                   `json:"environment_name,omitempty"`
+	HasPersistentStorage *bool                     `json:"has_persistent_storage,omitempty"`
+	Id                   *int                      `json:"id,omitempty"`
+	IsReconciling        *bool                     `json:"is_reconciling,omitempty"`
+	KeypairName          *string                   `json:"keypair_name,omitempty"`
+	KubeConfig           *string                   `json:"kube_config,omitempty"`
+	KubernetesVersion    *string                   `json:"kubernetes_version,omitempty"`
+	MasterFlavor         *ClusterFlavorFields      `json:"master_flavor,omitempty"`
+	Name                 *string                   `json:"name,omitempty"`
+	NodeGroups           *[]ClusterNodeGroupFields `json:"node_groups,omitempty"`
+	Nodes                *[]ClusterNodeFields      `json:"nodes,omitempty"`
+	Status               *string                   `json:"status,omitempty"`
+	StatusReason         *string                   `json:"status_reason,omitempty"`
 }
 
 // ClusterListResponse defines model for ClusterListResponse.
@@ -142,6 +143,20 @@ type ClusterResponse struct {
 	Cluster *ClusterFields `json:"cluster,omitempty"`
 	Message *string        `json:"message,omitempty"`
 	Status  *bool          `json:"status,omitempty"`
+}
+
+// ClusterRestoreFailedNode defines model for ClusterRestoreFailedNode.
+type ClusterRestoreFailedNode struct {
+	Error *string `json:"error,omitempty"`
+	Id    *int    `json:"id,omitempty"`
+}
+
+// ClusterRestoreResponse defines model for ClusterRestoreResponse.
+type ClusterRestoreResponse struct {
+	FailedNodes    *[]ClusterRestoreFailedNode `json:"failed_nodes,omitempty"`
+	Message        *string                     `json:"message,omitempty"`
+	RestoringNodes *[]int                      `json:"restoring_nodes,omitempty"`
+	Status         *bool                       `json:"status,omitempty"`
 }
 
 // ClusterVersion defines model for ClusterVersion.
@@ -433,6 +448,9 @@ type ClientInterface interface {
 	// ReconcileCluster request
 	ReconcileCluster(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// RestoreAHibernatedCluster request
+	RestoreAHibernatedCluster(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// DeleteCluster request
 	DeleteCluster(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -670,6 +688,18 @@ func (c *Client) DeleteClusterNode(ctx context.Context, clusterId int, nodeId in
 
 func (c *Client) ReconcileCluster(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewReconcileClusterRequest(c.Server, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RestoreAHibernatedCluster(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRestoreAHibernatedClusterRequest(c.Server, clusterId)
 	if err != nil {
 		return nil, err
 	}
@@ -1371,6 +1401,40 @@ func NewReconcileClusterRequest(server string, clusterId int) (*http.Request, er
 	return req, nil
 }
 
+// NewRestoreAHibernatedClusterRequest generates requests for RestoreAHibernatedCluster
+func NewRestoreAHibernatedClusterRequest(server string, clusterId int) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "cluster_id", runtime.ParamLocationPath, clusterId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/core/clusters/%s/restore", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewDeleteClusterRequest generates requests for DeleteCluster
 func NewDeleteClusterRequest(server string, id int) (*http.Request, error) {
 	var err error
@@ -1536,6 +1600,9 @@ type ClientWithResponsesInterface interface {
 
 	// ReconcileClusterWithResponse request
 	ReconcileClusterWithResponse(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*ReconcileClusterResponse, error)
+
+	// RestoreAHibernatedClusterWithResponse request
+	RestoreAHibernatedClusterWithResponse(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*RestoreAHibernatedClusterResponse, error)
 
 	// DeleteClusterWithResponse request
 	DeleteClusterWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteClusterResponse, error)
@@ -1922,6 +1989,31 @@ func (r ReconcileClusterResponse) StatusCode() int {
 	return 0
 }
 
+type RestoreAHibernatedClusterResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ClusterRestoreResponse
+	JSON400      *ErrorResponseModel
+	JSON401      *ErrorResponseModel
+	JSON404      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r RestoreAHibernatedClusterResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RestoreAHibernatedClusterResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type DeleteClusterResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2145,6 +2237,15 @@ func (c *ClientWithResponses) ReconcileClusterWithResponse(ctx context.Context, 
 		return nil, err
 	}
 	return ParseReconcileClusterResponse(rsp)
+}
+
+// RestoreAHibernatedClusterWithResponse request returning *RestoreAHibernatedClusterResponse
+func (c *ClientWithResponses) RestoreAHibernatedClusterWithResponse(ctx context.Context, clusterId int, reqEditors ...RequestEditorFn) (*RestoreAHibernatedClusterResponse, error) {
+	rsp, err := c.RestoreAHibernatedCluster(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRestoreAHibernatedClusterResponse(rsp)
 }
 
 // DeleteClusterWithResponse request returning *DeleteClusterResponse
@@ -2860,6 +2961,53 @@ func ParseReconcileClusterResponse(rsp *http.Response) (*ReconcileClusterRespons
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest ManualReconciliationModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRestoreAHibernatedClusterResponse parses an HTTP response from a RestoreAHibernatedClusterWithResponse call
+func ParseRestoreAHibernatedClusterResponse(rsp *http.Response) (*RestoreAHibernatedClusterResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RestoreAHibernatedClusterResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ClusterRestoreResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **ApiAddress** | Pointer to **string** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **EnvironmentName** | Pointer to **string** |  | [optional] 
+**HasPersistentStorage** | Pointer to **bool** |  | [optional] 
 **Id** | Pointer to **int32** |  | [optional] 
 **IsReconciling** | Pointer to **bool** |  | [optional] 
 **KeypairName** | Pointer to **string** |  | [optional] 
@@ -112,6 +113,31 @@ SetEnvironmentName sets EnvironmentName field to given value.
 `func (o *ClusterFields) HasEnvironmentName() bool`
 
 HasEnvironmentName returns a boolean if a field has been set.
+
+### GetHasPersistentStorage
+
+`func (o *ClusterFields) GetHasPersistentStorage() bool`
+
+GetHasPersistentStorage returns the HasPersistentStorage field if non-nil, zero value otherwise.
+
+### GetHasPersistentStorageOk
+
+`func (o *ClusterFields) GetHasPersistentStorageOk() (*bool, bool)`
+
+GetHasPersistentStorageOk returns a tuple with the HasPersistentStorage field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetHasPersistentStorage
+
+`func (o *ClusterFields) SetHasPersistentStorage(v bool)`
+
+SetHasPersistentStorage sets HasPersistentStorage field to given value.
+
+### HasHasPersistentStorage
+
+`func (o *ClusterFields) HasHasPersistentStorage() bool`
+
+HasHasPersistentStorage returns a boolean if a field has been set.
 
 ### GetId
 

@@ -62,20 +62,21 @@ type AttachFirewallsToVMPayload struct {
 
 // ClusterFields defines model for ClusterFields.
 type ClusterFields struct {
-	ApiAddress        *string                   `json:"api_address,omitempty"`
-	CreatedAt         *time.CustomTime                `json:"created_at,omitempty"`
-	EnvironmentName   *string                   `json:"environment_name,omitempty"`
-	Id                *int                      `json:"id,omitempty"`
-	IsReconciling     *bool                     `json:"is_reconciling,omitempty"`
-	KeypairName       *string                   `json:"keypair_name,omitempty"`
-	KubeConfig        *string                   `json:"kube_config,omitempty"`
-	KubernetesVersion *string                   `json:"kubernetes_version,omitempty"`
-	MasterFlavor      *ClusterFlavorFields      `json:"master_flavor,omitempty"`
-	Name              *string                   `json:"name,omitempty"`
-	NodeGroups        *[]ClusterNodeGroupFields `json:"node_groups,omitempty"`
-	Nodes             *[]ClusterNodeFields      `json:"nodes,omitempty"`
-	Status            *string                   `json:"status,omitempty"`
-	StatusReason      *string                   `json:"status_reason,omitempty"`
+	ApiAddress           *string                   `json:"api_address,omitempty"`
+	CreatedAt            *time.CustomTime                `json:"created_at,omitempty"`
+	EnvironmentName      *string                   `json:"environment_name,omitempty"`
+	HasPersistentStorage *bool                     `json:"has_persistent_storage,omitempty"`
+	Id                   *int                      `json:"id,omitempty"`
+	IsReconciling        *bool                     `json:"is_reconciling,omitempty"`
+	KeypairName          *string                   `json:"keypair_name,omitempty"`
+	KubeConfig           *string                   `json:"kube_config,omitempty"`
+	KubernetesVersion    *string                   `json:"kubernetes_version,omitempty"`
+	MasterFlavor         *ClusterFlavorFields      `json:"master_flavor,omitempty"`
+	Name                 *string                   `json:"name,omitempty"`
+	NodeGroups           *[]ClusterNodeGroupFields `json:"node_groups,omitempty"`
+	Nodes                *[]ClusterNodeFields      `json:"nodes,omitempty"`
+	Status               *string                   `json:"status,omitempty"`
+	StatusReason         *string                   `json:"status_reason,omitempty"`
 }
 
 // ClusterNodeFields defines model for ClusterNodeFields.

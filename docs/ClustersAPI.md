@@ -20,6 +20,7 @@ Method | HTTP request | Description
 [**ListClusters**](ClustersAPI.md#ListClusters) | **Get** /core/clusters | List Clusters
 [**ListNodeGroups**](ClustersAPI.md#ListNodeGroups) | **Get** /core/clusters/{cluster_id}/node-groups | List node groups for a cluster
 [**ReconcileCluster**](ClustersAPI.md#ReconcileCluster) | **Post** /core/clusters/{cluster_id}/reconcile | Reconcile a cluster
+[**RestoreAHibernatedCluster**](ClustersAPI.md#RestoreAHibernatedCluster) | **Post** /core/clusters/{cluster_id}/restore | Restore a hibernated cluster&#39;s nodes and reconcile the cluster
 [**UpdateNodeGroup**](ClustersAPI.md#UpdateNodeGroup) | **Patch** /core/clusters/{cluster_id}/node-groups/{node_group_id} | Update a node group in a cluster
 
 
@@ -1101,6 +1102,74 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**ManualReconciliationModel**](ManualReconciliationModel.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## RestoreAHibernatedCluster
+
+> ClusterRestoreResponse RestoreAHibernatedCluster(ctx, clusterId).Execute()
+
+Restore a hibernated cluster's nodes and reconcile the cluster
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+	clusterId := int32(56) // int32 | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ClustersAPI.RestoreAHibernatedCluster(context.Background(), clusterId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.RestoreAHibernatedCluster``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `RestoreAHibernatedCluster`: ClusterRestoreResponse
+	fmt.Fprintf(os.Stdout, "Response from `ClustersAPI.RestoreAHibernatedCluster`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**clusterId** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRestoreAHibernatedClusterRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**ClusterRestoreResponse**](ClusterRestoreResponse.md)
 
 ### Authorization
 

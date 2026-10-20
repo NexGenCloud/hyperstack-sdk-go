@@ -41,6 +41,8 @@ tags:
   name: user-consent-events
 - description: User email preference management
   name: email-opt-in-out
+- description: Zendesk messaging (Web Widget) end-user authentication
+  name: Zendesk
 - description: Dashboard APIs
   name: dashboard
 - description: Stock APIs
@@ -1730,6 +1732,43 @@ paths:
       summary: Remove RBAC Role From User
       tags:
       - assigning member role
+  /auth/zendesk/messaging-token:
+    get:
+      description: "Returns a short-lived signed JWT for the currently authenticated\
+        \ user, to be passed to the Zendesk Web Widget's loginUser API so chat tickets\
+        \ are attributed to the real user instead of an anonymous 'Web User'."
+      operationId: Get_Zendesk_Messaging_Token
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZendeskMessagingToken'
+          description: Signed messaging JWT
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Messaging authentication disabled
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Messaging authentication not configured
+      security:
+      - accessToken: []
+      - apiKey: []
+      summary: Retrieve a Zendesk messaging JWT for the current user
+      tags:
+      - Zendesk
   /billing/alive:
     get:
       description: "Retrieve the billing status of your account to ensure that it\
@@ -6098,6 +6137,51 @@ paths:
       - accessToken: []
       - apiKey: []
       summary: Reconcile a cluster
+      tags:
+      - clusters
+  /core/clusters/{cluster_id}/restore:
+    post:
+      operationId: Restore_a_hibernated_cluster
+      parameters:
+      - explode: false
+        in: path
+        name: cluster_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterRestoreResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Not Found
+        "500":
+          content: {}
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      - apiKey: []
+      summary: Restore a hibernated cluster's nodes and reconcile the cluster
       tags:
       - clusters
   /core/clusters/{id}:
@@ -10704,6 +10788,48 @@ paths:
       summary: Remove an existing access key
       tags:
       - Access Keys
+    patch:
+      operationId: updateAccessKeyEndpoint
+      parameters:
+      - explode: false
+        in: path
+        name: access_key_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/object_storage__AccessKeyUpdateRequest'
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/object_storage__AccessKeyResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/object_storage__ErrorResponse'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/object_storage__ErrorResponse'
+          description: Not Found
+        "422":
+          content: {}
+          description: Validation Error
+      summary: Rename an existing access key
+      tags:
+      - Access Keys
+      x-codegen-request-body-name: body
   /object-storage/buckets:
     get:
       operationId: listBucketsEndpoint
@@ -11672,6 +11798,7 @@ components:
     ClusterFields:
       example:
         created_at: 2000-01-23T04:56:07.000+00:00
+        has_persistent_storage: true
         keypair_name: keypair_name
         api_address: api_address
         node_groups:
@@ -11811,6 +11938,8 @@ components:
           type: string
         environment_name:
           type: string
+        has_persistent_storage:
+          type: boolean
         id:
           type: integer
         is_reconciling:
@@ -11843,6 +11972,7 @@ components:
         message: message
         clusters:
         - created_at: 2000-01-23T04:56:07.000+00:00
+          has_persistent_storage: true
           keypair_name: keypair_name
           api_address: api_address
           node_groups:
@@ -11975,6 +12105,7 @@ components:
           environment_name: environment_name
           status: status
         - created_at: 2000-01-23T04:56:07.000+00:00
+          has_persistent_storage: true
           keypair_name: keypair_name
           api_address: api_address
           node_groups:
@@ -12543,6 +12674,7 @@ components:
       example:
         cluster:
           created_at: 2000-01-23T04:56:07.000+00:00
+          has_persistent_storage: true
           keypair_name: keypair_name
           api_address: api_address
           node_groups:
@@ -12681,6 +12813,42 @@ components:
           $ref: '#/components/schemas/ClusterFields'
         message:
           type: string
+        status:
+          type: boolean
+      type: object
+    ClusterRestoreFailedNode:
+      example:
+        id: 0
+        error: error
+      properties:
+        error:
+          type: string
+        id:
+          type: integer
+      type: object
+    ClusterRestoreResponse:
+      example:
+        message: message
+        restoring_nodes:
+        - 6
+        - 6
+        failed_nodes:
+        - id: 0
+          error: error
+        - id: 0
+          error: error
+        status: true
+      properties:
+        failed_nodes:
+          items:
+            $ref: '#/components/schemas/ClusterRestoreFailedNode'
+          type: array
+        message:
+          type: string
+        restoring_nodes:
+          items:
+            type: integer
+          type: array
         status:
           type: boolean
       type: object
@@ -13024,6 +13192,7 @@ components:
       example:
         cluster:
           created_at: 2000-01-23T04:56:07.000+00:00
+          has_persistent_storage: true
           keypair_name: keypair_name
           api_address: api_address
           node_groups:
@@ -13190,6 +13359,7 @@ components:
         instances:
         - cluster:
             created_at: 2000-01-23T04:56:07.000+00:00
+            has_persistent_storage: true
             keypair_name: keypair_name
             api_address: api_address
             node_groups:
@@ -13331,6 +13501,7 @@ components:
           status: status
         - cluster:
             created_at: 2000-01-23T04:56:07.000+00:00
+            has_persistent_storage: true
             keypair_name: keypair_name
             api_address: api_address
             node_groups:
@@ -17127,6 +17298,7 @@ components:
       example:
         cluster:
           created_at: 2000-01-23T04:56:07.000+00:00
+          has_persistent_storage: true
           keypair_name: keypair_name
           api_address: api_address
           node_groups:
@@ -21601,6 +21773,21 @@ components:
           description: ""
           type: boolean
       type: object
+    ZendeskMessagingToken:
+      example:
+        message: message
+        status: true
+        token: token
+      properties:
+        message:
+          type: string
+        status:
+          type: boolean
+        token:
+          description: Signed HS256 JWT to pass to the Zendesk Web Widget loginUser
+            API
+          type: string
+      type: object
     attributes:
       example:
         base_model: base_model
@@ -22168,6 +22355,17 @@ components:
       - region
       - user_id
       title: AccessKeyResponse
+      type: object
+    object_storage__AccessKeyUpdateRequest:
+      properties:
+        description:
+          maxLength: 250
+          minLength: 1
+          title: Description
+          type: string
+      required:
+      - description
+      title: AccessKeyUpdateRequest
       type: object
     object_storage__BucketListResponse:
       example:
