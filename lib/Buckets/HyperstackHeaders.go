@@ -19,7 +19,7 @@ import (
 const hyperstackSDKName = "hyperstack-go-sdk"
 
 // hyperstackSDKVersion is substituted from $SDK_VERSION at generation time.
-const hyperstackSDKVersion = "v1.56.2-alpha"
+const hyperstackSDKVersion = "v1.56.3-alpha"
 
 var hyperstackClient = sanitizeHyperstackHeader(hyperstackSDKName + "/" + hyperstackSDKVersion)
 
