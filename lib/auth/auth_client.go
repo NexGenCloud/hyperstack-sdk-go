@@ -184,6 +184,9 @@ type ClientInterface interface {
 
 	// ChangeOrganizationForToken request
 	ChangeOrganizationForToken(ctx context.Context, orgId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CheckAccessTokenStatus request
+	CheckAccessTokenStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) RetrieveAuthenticatedUserDetails(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -224,6 +227,18 @@ func (c *Client) GetUserOrganizations(ctx context.Context, reqEditors ...Request
 
 func (c *Client) ChangeOrganizationForToken(ctx context.Context, orgId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewChangeOrganizationForTokenRequest(c.Server, orgId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CheckAccessTokenStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCheckAccessTokenStatusRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -349,6 +364,33 @@ func NewChangeOrganizationForTokenRequest(server string, orgId int) (*http.Reque
 	return req, nil
 }
 
+// NewCheckAccessTokenStatusRequest generates requests for CheckAccessTokenStatus
+func NewCheckAccessTokenStatusRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/auth/token/status")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error { defer hyperstackSetHeaders(req)
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -403,6 +445,9 @@ type ClientWithResponsesInterface interface {
 
 	// ChangeOrganizationForTokenWithResponse request
 	ChangeOrganizationForTokenWithResponse(ctx context.Context, orgId int, reqEditors ...RequestEditorFn) (*ChangeOrganizationForTokenResponse, error)
+
+	// CheckAccessTokenStatusWithResponse request
+	CheckAccessTokenStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CheckAccessTokenStatusResponse, error)
 }
 
 type RetrieveAuthenticatedUserDetailsResponse struct {
@@ -504,6 +549,28 @@ func (r ChangeOrganizationForTokenResponse) StatusCode() int {
 	return 0
 }
 
+type CheckAccessTokenStatusResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON401      *ErrorResponseModel
+}
+
+// Status returns HTTPResponse.Status
+func (r CheckAccessTokenStatusResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CheckAccessTokenStatusResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 // RetrieveAuthenticatedUserDetailsWithResponse request returning *RetrieveAuthenticatedUserDetailsResponse
 func (c *ClientWithResponses) RetrieveAuthenticatedUserDetailsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveAuthenticatedUserDetailsResponse, error) {
 	rsp, err := c.RetrieveAuthenticatedUserDetails(ctx, reqEditors...)
@@ -538,6 +605,15 @@ func (c *ClientWithResponses) ChangeOrganizationForTokenWithResponse(ctx context
 		return nil, err
 	}
 	return ParseChangeOrganizationForTokenResponse(rsp)
+}
+
+// CheckAccessTokenStatusWithResponse request returning *CheckAccessTokenStatusResponse
+func (c *ClientWithResponses) CheckAccessTokenStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CheckAccessTokenStatusResponse, error) {
+	rsp, err := c.CheckAccessTokenStatus(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCheckAccessTokenStatusResponse(rsp)
 }
 
 // ParseRetrieveAuthenticatedUserDetailsResponse parses an HTTP response from a RetrieveAuthenticatedUserDetailsWithResponse call
@@ -715,6 +791,32 @@ func ParseChangeOrganizationForTokenResponse(rsp *http.Response) (*ChangeOrganiz
 			return nil, err
 		}
 		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCheckAccessTokenStatusResponse parses an HTTP response from a CheckAccessTokenStatusWithResponse call
+func ParseCheckAccessTokenStatusResponse(rsp *http.Response) (*CheckAccessTokenStatusResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CheckAccessTokenStatusResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
 
 	}
 
