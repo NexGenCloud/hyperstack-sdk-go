@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **BillingAddress1** | Pointer to **string** |  | [optional] 
 **BillingAddress2** | Pointer to **string** |  | [optional] 
 **Business** | Pointer to **bool** |  | [optional] 
+**City** | Pointer to **string** |  | [optional] 
 **CompanyName** | Pointer to **string** |  | [optional] 
 **Country** | Pointer to **string** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
@@ -113,6 +114,31 @@ SetBusiness sets Business field to given value.
 `func (o *UsersInfoFields) HasBusiness() bool`
 
 HasBusiness returns a boolean if a field has been set.
+
+### GetCity
+
+`func (o *UsersInfoFields) GetCity() string`
+
+GetCity returns the City field if non-nil, zero value otherwise.
+
+### GetCityOk
+
+`func (o *UsersInfoFields) GetCityOk() (*string, bool)`
+
+GetCityOk returns a tuple with the City field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCity
+
+`func (o *UsersInfoFields) SetCity(v string)`
+
+SetCity sets City field to given value.
+
+### HasCity
+
+`func (o *UsersInfoFields) HasCity() bool`
+
+HasCity returns a boolean if a field has been set.
 
 ### GetCompanyName
 

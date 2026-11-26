@@ -14,7 +14,7 @@ import (
 
 // hyperstackSDKVersion is stamped from $SDK_VERSION at generation time; the Go
 // generator emits no version constant of its own.
-const hyperstackSDKVersion = "v1.57.8-alpha"
+const hyperstackSDKVersion = "v1.57.9-alpha"
 
 const hyperstackSDKName = "hyperstack-go-sdk"
 

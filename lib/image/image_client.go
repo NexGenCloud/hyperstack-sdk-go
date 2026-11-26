@@ -600,6 +600,7 @@ type DeleteImageResponse struct {
 	JSON200      *ResponseModel
 	JSON400      *ErrorResponseModel
 	JSON401      *ErrorResponseModel
+	JSON403      *ErrorResponseModel
 	JSON404      *ErrorResponseModel
 }
 
@@ -815,6 +816,13 @@ func ParseDeleteImageResponse(rsp *http.Response) (*DeleteImageResponse, error) 
 			return nil, err
 		}
 		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponseModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
 		var dest ErrorResponseModel

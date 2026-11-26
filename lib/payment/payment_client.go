@@ -53,7 +53,12 @@ type PaymentDetailsResponse struct {
 
 // PaymentInitiateFields defines model for Payment_Initiate_Fields.
 type PaymentInitiateFields struct {
-	PaymentId *string `json:"payment_id,omitempty"`
+	// AutoTopupLinked Whether the purchase is linked to a pending auto top up. If true, the checkout saves the card for off-session use (setup_future_usage=off_session).
+	AutoTopupLinked *bool      `json:"auto_topup_linked,omitempty"`
+	CheckoutUrl     *string    `json:"checkout_url,omitempty"`
+	ExpiresAt       *time.CustomTime `json:"expires_at,omitempty"`
+	PaymentId       *string    `json:"payment_id,omitempty"`
+	SessionId       *string    `json:"session_id,omitempty"`
 }
 
 // PaymentInitiatePayload defines model for Payment_Initiate_Payload.

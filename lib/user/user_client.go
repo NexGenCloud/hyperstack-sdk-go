@@ -40,6 +40,7 @@ type UserInfoPostPayload struct {
 	BillingAddress1 *string `json:"billing_address1,omitempty"`
 	BillingAddress2 *string `json:"billing_address2,omitempty"`
 	Business        bool    `json:"business"`
+	City            *string `json:"city,omitempty"`
 	CompanyName     *string `json:"company_name,omitempty"`
 	Country         string  `json:"country"`
 	Email           *string `json:"email,omitempty"`
@@ -55,6 +56,7 @@ type UsersInfoFields struct {
 	BillingAddress1 *string    `json:"billing_address1,omitempty"`
 	BillingAddress2 *string    `json:"billing_address2,omitempty"`
 	Business        *bool      `json:"business,omitempty"`
+	City            *string    `json:"city,omitempty"`
 	CompanyName     *string    `json:"company_name,omitempty"`
 	Country         *string    `json:"country,omitempty"`
 	CreatedAt       *time.CustomTime `json:"created_at,omitempty"`

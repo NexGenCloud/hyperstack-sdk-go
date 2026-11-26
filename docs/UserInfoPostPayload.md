@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **BillingAddress1** | Pointer to **string** |  | [optional] 
 **BillingAddress2** | Pointer to **string** |  | [optional] 
 **Business** | **bool** |  | 
+**City** | Pointer to **string** |  | [optional] 
 **CompanyName** | Pointer to **string** |  | [optional] 
 **Country** | **string** |  | 
 **Email** | Pointer to **string** |  | [optional] 
@@ -104,6 +105,31 @@ and a boolean to check if the value has been set.
 
 SetBusiness sets Business field to given value.
 
+
+### GetCity
+
+`func (o *UserInfoPostPayload) GetCity() string`
+
+GetCity returns the City field if non-nil, zero value otherwise.
+
+### GetCityOk
+
+`func (o *UserInfoPostPayload) GetCityOk() (*string, bool)`
+
+GetCityOk returns a tuple with the City field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCity
+
+`func (o *UserInfoPostPayload) SetCity(v string)`
+
+SetCity sets City field to given value.
+
+### HasCity
+
+`func (o *UserInfoPostPayload) HasCity() bool`
+
+HasCity returns a boolean if a field has been set.
 
 ### GetCompanyName
 
