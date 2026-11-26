@@ -5,6 +5,7 @@ All URIs are relative to *https://infrahub-api.nexgencloud.com/v1*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**ChangeOrganizationForToken**](AuthAPI.md#ChangeOrganizationForToken) | **Get** /auth/token/change-org/{org_id} | 
+[**CheckAccessTokenStatus**](AuthAPI.md#CheckAccessTokenStatus) | **Get** /auth/token/status | Check the authenticated access token
 [**GetUserMFAStatus**](AuthAPI.md#GetUserMFAStatus) | **Get** /auth/me/mfa | Get MFA status for authenticated user
 [**GetUserOrganizations**](AuthAPI.md#GetUserOrganizations) | **Get** /auth/me/organizations | Get User Organizations
 [**RetrieveAuthenticatedUserDetails**](AuthAPI.md#RetrieveAuthenticatedUserDetails) | **Get** /auth/me | Retrieve Authenticated User Details
@@ -66,6 +67,65 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**AuthGetTokenResponseModel**](AuthGetTokenResponseModel.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## CheckAccessTokenStatus
+
+> CheckAccessTokenStatus(ctx).Execute()
+
+Check the authenticated access token
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/NexGenCloud/hyperstack-sdk-go/hyperstack"
+)
+
+func main() {
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.AuthAPI.CheckAccessTokenStatus(context.Background()).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `AuthAPI.CheckAccessTokenStatus``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
+
+This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCheckAccessTokenStatusRequest struct via the builder pattern
+
+
+### Return type
+
+ (empty response body)
 
 ### Authorization
 

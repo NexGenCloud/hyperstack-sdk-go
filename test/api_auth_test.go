@@ -37,6 +37,17 @@ func Test_hyperstack_AuthAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test AuthAPIService CheckAccessTokenStatus", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		httpRes, err := apiClient.AuthAPI.CheckAccessTokenStatus(context.Background()).Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test AuthAPIService GetUserMFAStatus", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test

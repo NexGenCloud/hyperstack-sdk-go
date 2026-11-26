@@ -1330,6 +1330,32 @@ paths:
       - apiKey: []
       tags:
       - auth
+  /auth/token/status:
+    get:
+      description: "Returns active=true when the token is accepted, otherwise 401\
+        \ with error_reason `token_revoked` (logged out, or issued before a password\
+        \ change / MFA disable / admin revoke) or `unauthorized` (expired, invalid,\
+        \ from another environment, or the user no longer exists). Only Bearer access\
+        \ tokens are accepted; API keys are rejected."
+      operationId: Check_Access_Token_Status
+      responses:
+        "200":
+          content: {}
+          description: Access token is active
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseModel'
+          description: Unauthorized or revoked token
+        "500":
+          content: {}
+          description: Internal Server Error
+      security:
+      - accessToken: []
+      summary: Check the authenticated access token
+      tags:
+      - auth
   /auth/user-consent:
     get:
       description: Fetch all the recorded consents given from a User
@@ -17490,7 +17516,7 @@ components:
         - - 2023-09-01T01:19:00+00:00
           - 60
           - 1041433070000000
-        - - 2023-09-01T01:24:00+00:00
+        - - 2023-09-01T01:20:00+00:00
           - 60
           - 1041441320000000
         columns:
@@ -17511,7 +17537,7 @@ components:
           - - 2023-09-01T01:19:00+00:00
             - 60
             - 1041433070000000
-          - - 2023-09-01T01:24:00+00:00
+          - - 2023-09-01T01:20:00+00:00
             - 60
             - 1041441320000000
           items:
@@ -17531,7 +17557,7 @@ components:
           - - 2023-09-01T01:19:00+00:00
             - 60
             - 1041433070000000
-          - - 2023-09-01T01:24:00+00:00
+          - - 2023-09-01T01:20:00+00:00
             - 60
             - 1041441320000000
           columns:
@@ -17544,7 +17570,7 @@ components:
           - - 2023-09-01T01:19:00+00:00
             - 60
             - 1041433070000000
-          - - 2023-09-01T01:24:00+00:00
+          - - 2023-09-01T01:20:00+00:00
             - 60
             - 1041441320000000
           columns:
@@ -17557,7 +17583,7 @@ components:
           - - 2023-09-01T01:19:00+00:00
             - 60
             - 1041433070000000
-          - - 2023-09-01T01:24:00+00:00
+          - - 2023-09-01T01:20:00+00:00
             - 60
             - 1041441320000000
           columns:
@@ -17570,7 +17596,7 @@ components:
           - - 2023-09-01T01:19:00+00:00
             - 60
             - 1041433070000000
-          - - 2023-09-01T01:24:00+00:00
+          - - 2023-09-01T01:20:00+00:00
             - 60
             - 1041441320000000
           columns:
@@ -17583,7 +17609,7 @@ components:
           - - 2023-09-01T01:19:00+00:00
             - 60
             - 1041433070000000
-          - - 2023-09-01T01:24:00+00:00
+          - - 2023-09-01T01:20:00+00:00
             - 60
             - 1041441320000000
           columns:
@@ -17596,7 +17622,7 @@ components:
           - - 2023-09-01T01:19:00+00:00
             - 60
             - 1041433070000000
-          - - 2023-09-01T01:24:00+00:00
+          - - 2023-09-01T01:20:00+00:00
             - 60
             - 1041441320000000
           columns:
